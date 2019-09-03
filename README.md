@@ -40,6 +40,7 @@ For [Instantiations](https://www.instantiations.com/) and VASmalltalk, having gi
 - Open Application Manager and try the menu option "Import/Export" -> "Import Applications from Tonel packages..." and "Export Applications as Tonel packages..."
 <img width="793" alt="Screen Shot 2019-09-03 at 1 41 20 PM" src="https://user-images.githubusercontent.com/1032834/64197391-621ea780-ce5c-11e9-8312-55994d01f68e.png">
 - Or..you can do it from code too:
+
 ```smalltalk
 (TonelLoader
  on: (TonelReader new readPackagesFrom:
