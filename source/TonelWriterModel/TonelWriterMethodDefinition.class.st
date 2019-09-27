@@ -84,13 +84,38 @@ TonelWriterMethodDefinition >> initializeUniquelyKnownAs: aSymbol in: aClass cat
 	#category : 'testing'
 }
 TonelWriterMethodDefinition >> isPoolPragma [
-	"Enter the new method definition below and click 'Resume'."
+	"Answer whether receiver compiled method is a declaration of a Pool Dictionary."
 
 	^(selector copyFrom: 1 to: (selector size min: self pragmaPrefix size)) 
 		= self pragmaPrefix and: 
 				[(self methodBody trimSeparators 
 					beginsWithSubCollection: '"%%PRAGMA DECLARE') 
 						and: [self methodBody includesSubstring: 'isPool: true']]
+]
+
+{
+	#category : 'testing'
+}
+TonelWriterMethodDefinition >> isRealPragma [
+		
+	^self isVirtual not and: [self isPoolPragma]
+]
+
+{
+	#category : 'testing'
+}
+TonelWriterMethodDefinition >> isVirtual [
+	"Answer whether receiver wraps an actual compiled method."
+	
+	^false
+]
+
+{
+	#category : 'testing'
+}
+TonelWriterMethodDefinition >> isVirtualPragma [
+		
+	^self isVirtual and: [self isPoolPragma]
 ]
 
 {

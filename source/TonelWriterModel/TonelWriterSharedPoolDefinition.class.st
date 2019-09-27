@@ -44,7 +44,7 @@ TonelWriterSharedPoolDefinition >> classInstanceVariableNames [
 }
 TonelWriterSharedPoolDefinition >> classVariableNames [
 
-	^self pool keys
+	^self pool keys reject: [:each | each first = $! ]
 ]
 
 {

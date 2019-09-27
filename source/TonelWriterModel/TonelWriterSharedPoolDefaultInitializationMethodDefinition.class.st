@@ -12,19 +12,16 @@ TonelWriterSharedPoolDefaultInitializationMethodDefinition >> methodBody [
 	| stream |
 
 	stream := WriteStream on: String new.
-	self pool pool associations
-		do: [:assoc |
-			stream
-				tab;
-				nextPutAll: assoc key;
-				nextPutAll: ' := ';
-				nextPutAll: assoc value printString
-
-			]
-		separatedBy: [
-			stream
-				nextPut: $.;
-				cr].
+	self pool pool associations do: [:assoc |
+		assoc key first = $!
+			ifFalse: [
+				stream
+					tab;
+					nextPutAll: assoc key;
+					nextPutAll: ' := ';
+					nextPutAll: assoc value printString;
+					nextPut: $.;
+					cr]].
 	^stream contents
 ]
 

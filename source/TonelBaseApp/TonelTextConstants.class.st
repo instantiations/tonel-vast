@@ -70,5 +70,6 @@ TonelTextConstants class >> initialize [
 	TonelMsg25 := 'The selected Tonel repository is not valid or does not contain any package.'.
 	TonelMsg06 := 'Application %1 exists but is not loaded. Please choose a base version.'.
 	TonelMsg09 := 'Base edition for %1 is managed by %2. You are currently %3 and cannot create new editions of the application.'.
-	TonelMsg21 := 'The following Tonel Packages will be imported as VAST Applications'
+	TonelMsg21 := 'The following Tonel Packages will be imported as VAST Applications'.
+
 ]

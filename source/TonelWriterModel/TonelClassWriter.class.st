@@ -151,8 +151,9 @@ TonelClassWriter >> writeCategoryOf: aClassDefinition on: aWriteStream [
 }
 TonelClassWriter >> writeClassMethodsOf: aClassDefinition on: aWriteStream [
 
-	aClassDefinition withClassMethodDefinitionsDo: [:methodDefition |
-		methodWriter write: methodDefition on: aWriteStream]
+	aClassDefinition withClassMethodDefinitionsDo: [:methodDefinition |
+		methodDefinition isRealPragma
+			ifFalse: [methodWriter write: methodDefinition on: aWriteStream]]
 ]
 
 {

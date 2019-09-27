@@ -14,5 +14,6 @@ Class {
 }
 TonelTestsConstants class >> initialize [
 	Constant2 := 2.
-	Constant1 := 1
+	Constant1 := 1.
+
 ]

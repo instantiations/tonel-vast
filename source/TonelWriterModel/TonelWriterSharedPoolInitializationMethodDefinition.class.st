@@ -42,6 +42,15 @@ TonelWriterSharedPoolInitializationMethodDefinition >> hasDefaultVACategories [
 ]
 
 {
+	#category : 'testing'
+}
+TonelWriterSharedPoolInitializationMethodDefinition >> isVirtual [
+	"Answer whether receiver wraps an actual compiled method."
+	
+	^true
+]
+
+{
 	#category : 'accessing'
 }
 TonelWriterSharedPoolInitializationMethodDefinition >> methodDeclaration [

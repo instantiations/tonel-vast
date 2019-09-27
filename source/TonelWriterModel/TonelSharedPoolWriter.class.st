@@ -5,7 +5,7 @@ Class {
 }
 
 {
-	#category : 'Not categorized'
+	#category : 'writing'
 }
 TonelSharedPoolWriter >> writeClassMethodsOf: aClassDefinition on: aWriteStream [
 
@@ -15,7 +15,7 @@ TonelSharedPoolWriter >> writeClassMethodsOf: aClassDefinition on: aWriteStream 
 ]
 
 {
-	#category : 'Not categorized'
+	#category : 'writing'
 }
 TonelSharedPoolWriter >> writeInstanceMethodsOf: aClassDefinition on: aWriteStream [
 
