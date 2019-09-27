@@ -3,7 +3,7 @@ Extension {
 }
 
 {
-	#category : '*TonelWriterTests-TonelSubapplication',
+	#category : '*TonelSubapplication',
 	#vaCategories : ['Accessing']
 }
 TonelMockA >> extensionForTestInSubApp [

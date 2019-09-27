@@ -25,10 +25,7 @@ TonelWriterClassExtensionDefinition >> categoryFormattedAsExtensionOf: anApp [
 		stream
 			nextPut: $';
 			nextPut: $*;
-			nextPutAll: (
-				anApp isApplication
-					ifTrue: [anApp name]
-					ifFalse: [anApp rootApplication name , '-' , anApp name]);
+			nextPutAll: (anApp name);
 			nextPut: $']
 
 

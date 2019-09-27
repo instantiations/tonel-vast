@@ -1,7 +1,7 @@
 Class {
 	#name : 'TonelMockD',
 	#superclass : 'Object',
-	#category : 'TonelWriterTests-TonelSubapplication'
+	#category : 'TonelSubapplication'
 }
 
 {

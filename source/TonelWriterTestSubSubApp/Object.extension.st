@@ -3,7 +3,7 @@ Extension {
 }
 
 {
-	#category : '*TonelWriterTests-TonelWriterTestSubSubApp',
+	#category : '*TonelWriterTestSubSubApp',
 	#vaCategories : ['Another One','Real Category']
 }
 Object >> subSubExtensionForTest [

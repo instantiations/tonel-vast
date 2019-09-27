@@ -13,7 +13,7 @@ Class {
 	#classInstVars : [
 		'classInstVar1'
 	],
-	#category : 'TonelWriterTests-TonelWriterTestShadowSubSubSubApp'
+	#category : 'TonelWriterTestShadowSubSubSubApp'
 }
 
 {

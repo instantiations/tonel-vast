@@ -230,7 +230,7 @@ TonelWriterTest >> testShadowApplications [
 	#classInstVars : [
 		''classInstVar1''
 	],
-	#category : ''TonelWriterTests-TonelWriterTestShadowSubSubApp''
+	#category : ''TonelWriterTestShadowSubSubApp''
 }
 
 {
@@ -250,7 +250,7 @@ TonelShadowMockJ >> shadowMethodForTest [
 }
 
 {
-	#category : ''*TonelWriterTests-TonelWriterTestShadowSubSubApp'',
+	#category : ''*TonelWriterTestShadowSubSubApp'',
 	#vaCategories : [''Not categorized'']
 }
 Object >> shadowSubSubExtensionForTest [
@@ -285,7 +285,7 @@ TonelWriterTest >> testShadowSubApplications [
 	#classInstVars : [
 		''classInstVar1''
 	],
-	#category : ''TonelWriterTests-TonelWriterTestShadowSubSubSubApp''
+	#category : ''TonelWriterTestShadowSubSubSubApp''
 }
 
 {
@@ -305,7 +305,7 @@ TonelShadowMockK >> shadowSubMethodForTest [
 }
 
 {
-	#category : ''*TonelWriterTests-TonelWriterTestShadowSubSubSubApp'',
+	#category : ''*TonelWriterTestShadowSubSubSubApp'',
 	#vaCategories : [''Not categorized'']
 }
 Object >> shadowSubSubSubExtensionForTest [

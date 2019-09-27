@@ -8,3 +8,11 @@ Class {
 	#type : 'variable',
 	#category : 'TonelWriterTests'
 }
+
+{
+	#category : 'Initializing'
+}
+TonelTestsConstants class >> initialize [
+	Constant2 := 2.
+	Constant1 := 1
+]

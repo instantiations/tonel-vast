@@ -24,9 +24,7 @@ TonelWriterClassDefinition class >> of: aClass definedIn: anApplication [
 }
 TonelWriterClassDefinition >> applicationName [
 
-	^application isSubApplication
-		ifTrue: [application rootApplication asString , '-' , application asString]
-		ifFalse: [application asString]
+	^application asString
 ]
 
 {

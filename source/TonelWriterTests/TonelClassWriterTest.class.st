@@ -48,7 +48,7 @@ TonelClassWriterTest >> testWriteClassInSubApp [
 				'Class {
 	#name : ''TonelMockD'',
 	#superclass : ''Object'',
-	#category : ''TonelWriterTests-TonelSubapplication''
+	#category : ''TonelSubapplication''
 }
 
 {
@@ -76,7 +76,7 @@ TonelClassWriterTest >> testWriteClassInSubSubApp [
 				'Class {
 	#name : ''TonelMockH'',
 	#superclass : ''Object'',
-	#category : ''TonelWriterTests-TonelWriterTestSubSubApp''
+	#category : ''TonelWriterTestSubSubApp''
 }
 '
 ]

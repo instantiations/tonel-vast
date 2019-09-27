@@ -28,9 +28,7 @@ TonelWriterSharedPoolDefinition class >> of: aClass named: aSymbol definedIn: an
 }
 TonelWriterSharedPoolDefinition >> applicationName [
 
-	^application definedApplication isSubApplication
-		ifTrue: [application definedApplication rootApplication asString , '-' , application definedApplication asString]
-		ifFalse: [application definedApplication asString]
+	^application definedApplication asString
 ]
 
 {
@@ -71,6 +69,24 @@ TonelWriterSharedPoolDefinition >> createInitializationMethod: selector [
 ]
 
 {
+	#category : 'Not categorized'
+}
+TonelWriterSharedPoolDefinition >> defaultInitializationMethod [
+
+	^TonelWriterSharedPoolDefaultInitializationMethodDefinition
+		uniquelyKnownAs: #initialize
+		in: self
+		categorizedAs: (
+			String streamContents: [:stream |
+				stream
+					nextPut: $';
+					nextPutAll: 'Initializing';
+					nextPut: $'])
+
+
+]
+
+{
 	#category : 'Accessing'
 }
 TonelWriterSharedPoolDefinition >> definedClassName [
@@ -93,24 +109,6 @@ TonelWriterSharedPoolDefinition >> definedClassSuperclassName [
 TonelWriterSharedPoolDefinition >> fileName [
 
 	^'<1s>.class.st' expandMacrosWith: poolName asString
-]
-
-{
-	#category : 'Not categorized'
-}
-TonelWriterSharedPoolDefinition >> initializationMethod [
-
-	^TonelWriterSharedPoolDefaultInitializationMethodDefinition
-		uniquelyKnownAs: #initialize
-		in: self
-		categorizedAs: (
-			String streamContents: [:stream |
-				stream
-					nextPut: $';
-					nextPutAll: 'Initializing';
-					nextPut: $'])
-
-
 ]
 
 {
@@ -145,7 +143,7 @@ TonelWriterSharedPoolDefinition >> pool [
 	#category : 'Accessing'
 }
 TonelWriterSharedPoolDefinition >> poolInitializationMethods [
-	"Enter the new method definition below and click 'Resume'."
+	"Returns the methods used to initialize the values of the shared pool. Or create a default if needed."
 
 	| initializationMethods |
 
@@ -153,6 +151,7 @@ TonelWriterSharedPoolDefinition >> poolInitializationMethods [
 	application definedApplication class methodDictionary keysAndValuesDo: [:selector :compiledMethod |
 		(('_SHAREDPOOL_' , poolName , '_*') match: selector)
 			ifTrue: [initializationMethods add: (self createInitializationMethod: selector)]].
+	initializationMethods isEmpty ifTrue: [initializationMethods add: self defaultInitializationMethod].
 	^initializationMethods
 ]
 

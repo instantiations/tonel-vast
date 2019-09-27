@@ -3,7 +3,7 @@ Extension {
 }
 
 {
-	#category : '*TonelWriterTests-TonelWriterTestShadowSubSubApp',
+	#category : '*TonelWriterTestShadowSubSubApp',
 	#vaCategories : ['Not categorized']
 }
 Object >> shadowSubSubExtensionForTest [
