@@ -177,9 +177,13 @@ TonelLoader >> initializeApplications [
 ]
 
 {
-	#category : 'loading'
+	#category : 'loading',
+	#vaVisibility : 'private'
 }
 TonelLoader >> load [
+	"Private - Loads all the applications in the reader.
+	 NOTE: The reader sorts the packages in alphabetical order, so if there is any dependency 
+	 between them, it might fail."
 
 	self loadApplications: self applications
 ]
@@ -210,6 +214,14 @@ TonelLoader >> loadApplications: aCollection [
 	confirmer := System image confirmer: self.
 	[aCollection do: [:each | (TonelApplicationLoader on: each in: self) load]]
 		ensure: [System image confirmer: confirmer]
+]
+
+{
+	#category : 'loading'
+}
+TonelLoader >> loadApplicationsNamed: aCollection [
+
+	self loadApplications: (aCollection collect: [:each | self applicationNamed: each])
 ]
 
 {
