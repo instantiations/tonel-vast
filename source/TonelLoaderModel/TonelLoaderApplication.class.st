@@ -19,7 +19,7 @@ TonelLoaderApplication >> accountForPoolDictionaryClasses [
 
 	poolClasses := self tonelDefinedClasses select: [:tonelClass | tonelClass isSharedPool].
 	self tonelDefinedClasses removeAllKeys: poolClasses keys.
-	poolClasses do: [:tonelClass | self tonelDefinedClasses at: (tonelClass name , 'Pool') put: tonelClass]
+	poolClasses do: [:tonelClass | self tonelDefinedClasses at: (tonelClass name) put: tonelClass]
 
 
 
@@ -266,6 +266,14 @@ TonelLoaderApplication >> rootTonelApplication [
 	"The receiver is the root application."
 	
 	^self
+]
+
+{
+	#category : 'accessing'
+}
+TonelLoaderApplication >> tonelPoolDictionaries [
+	
+	^self tonelDefinedClasses select: [:each | each isSharedPool ]
 ]
 
 {

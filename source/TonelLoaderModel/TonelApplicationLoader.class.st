@@ -132,6 +132,15 @@ TonelApplicationLoader >> chooseVersionName [
 ]
 
 {
+	#category : 'loading-internal'
+}
+TonelApplicationLoader >> convertSharedPoolClasses [
+	"Enter the new method definition below and click 'Resume'."
+	
+	self tonelApplication convertSharedPoolClasses
+]
+
+{
 	#category : 'loading-internal',
 	#vaVisibility : 'private'
 }
@@ -142,8 +151,8 @@ TonelApplicationLoader >> createAndLoadApplication [
 	self
 		chooseVersionName;
 		createApplication;
-		createClasses;
 		definePoolDictionaries;
+		createClasses;
 		prepareRemovedClasses;
 		updateClassDefinitions;
 		deleteRemovedClasses;
@@ -168,8 +177,9 @@ TonelApplicationLoader >> createApplication [
 }
 TonelApplicationLoader >> createClasses [
 
-	self tonelApplication allClassesWithAssociation tonelSingleEdgeTopologicallySortedCollection
-		do: [:ea | ea key createEditionIn: ea value]
+	(self tonelApplication allClassesWithAssociation tonelSingleEdgeTopologicallySortedCollection
+		reject: [:each | each key isSharedPool])
+			do: [:ea | ea key createEditionIn: ea value]
 ]
 
 {
@@ -262,6 +272,7 @@ TonelApplicationLoader >> load [
 	"self autogenerateClassSideNewInitializers."
 	[
 		self
+			convertSharedPoolClasses;
 			checkClassExtensions;
 			checkSuperclasses;
 			checkForUnloadedApplication;

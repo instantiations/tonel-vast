@@ -1,6 +1,6 @@
 Class {
 	#name : 'TonelWriterTest',
-	#superclass : 'TonelBaseTest',
+	#superclass : 'TonelMethodWriterTest',
 	#category : 'TonelWriterTests'
 }
 

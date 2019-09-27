@@ -48,11 +48,17 @@ TonelReaderAbstractClassDefinition >> deleteRemovedInstanceMethodsFrom: aClass i
 	#vaVisibility : 'private'
 }
 TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp [
-	| concreteClass |
-	concreteClass := self concreteClassIn: anApp.
-	self
-		deleteRemovedInstanceMethodsFrom: concreteClass in: anApp;
-		deleteRemovedClassMethodsFrom: concreteClass in: anApp
+
+	(self concreteClassIn: anApp)
+		ifNil: [
+			self isSharedPool
+				ifFalse: [self error: ('Cannot find the concrete app for <1p>' expandMacrosWith: self name)]
+		]
+		ifNotNil: [:concreteClass |
+			self
+				deleteRemovedInstanceMethodsFrom: concreteClass in: anApp;
+				deleteRemovedClassMethodsFrom: concreteClass in: anApp]
+
 ]
 
 {

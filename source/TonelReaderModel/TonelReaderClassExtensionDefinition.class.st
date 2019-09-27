@@ -39,3 +39,11 @@ TonelReaderClassExtensionDefinition >> identifier [
 
 	^self name asSymbol
 ]
+
+{
+	#category : 'testing'
+}
+TonelReaderClassExtensionDefinition >> isSharedPool [
+	
+	^false
+]

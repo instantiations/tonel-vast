@@ -149,6 +149,14 @@ TonelReaderClassDefinition >> classVariables [
 ]
 
 {
+	#category : 'Initialize-Release',
+	#vaVisibility : 'private'
+}
+TonelReaderClassDefinition >> computeWhetherSharedPool [
+	^self superclassIdentifier = #SharedPool
+]
+
+{
 	#category : 'accessing'
 }
 TonelReaderClassDefinition >> extension [
@@ -210,7 +218,7 @@ TonelReaderClassDefinition >> initializeWithName: nameString superclass: superSt
 	extension := false.
 	tonelMethods := OrderedCollection new.
 	
-	self amendSharedPoolClass
+
 ]
 
 {
@@ -225,7 +233,7 @@ TonelReaderClassDefinition >> instanceVariables [
 	#category : 'testing'
 }
 TonelReaderClassDefinition >> isSharedPool [
-	^isSharedPool
+	^isSharedPool ifNil: [isSharedPool := self computeWhetherSharedPool]
 ]
 
 {

@@ -136,3 +136,23 @@ TonelWriterApplicationDefinition >> withDefinitionsOfExtendedClassesDo: aBlock [
 	application extended do: [:classExtension |
 		aBlock value: (TonelWriterClassExtensionDefinition of: classExtension extendedIn: application)]
 ]
+
+{
+	#category : 'Enumerating'
+}
+TonelWriterApplicationDefinition >> withPoolPragmaMethodsDo: aBlock [
+
+	| enumeratingBlock |
+
+	enumeratingBlock := [:methodDefinition |
+		methodDefinition isPoolPragma ifTrue: [aBlock value: methodDefinition]].
+	self withDefinitionsOfDefinedClassesDo: [:aClassDefinition |
+		aClassDefinition withClassMethodDefinitionsDo: enumeratingBlock.
+		aClassDefinition withInstanceMethodDefinitionsDo: enumeratingBlock].
+	self withDefinitionsOfExtendedClassesDo: [:aClassDefinition |
+		aClassDefinition withClassMethodDefinitionsDo: enumeratingBlock.
+		aClassDefinition withInstanceMethodDefinitionsDo: enumeratingBlock]
+
+
+
+]

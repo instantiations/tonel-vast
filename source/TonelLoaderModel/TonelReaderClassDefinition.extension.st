@@ -61,9 +61,11 @@ TonelReaderClassDefinition >> amendSharedPoolClass [
 		superclassIdentifier = #SharedPool
 			ifTrue: [
 				self createPragmaMethod. 
-				identifier := (name, 'Pool') asSymbol.	"$NON-NLS$"
-				poolDictionaries := poolDictionaries, ' ', name.	"$NON-NLS$"
+				identifier := name asSymbol.	
 				superclassIdentifier := #Object. 
+				"$NON-NLS$"
+				"poolDictionaries := poolDictionaries copyWith: name."
+				
 				true ]
 			ifFalse: [ false ]
 ]
@@ -158,31 +160,57 @@ TonelReaderClassDefinition >> createIn: anApp [
 }
 TonelReaderClassDefinition >> createPragmaMethod [
 
-	self addMethod:
-		((TonelReaderMethodDefinition 
+	self addMethod: (
+		(TonelReaderMethodDefinition
 			className: self name
 			classSide: true
-			categories: #('Tonel-Pool Definition')  "$NON-NLS$"
-			stamp: '')  "$NON-NLS$"
-				 source: self pragmaSourceFromClassVariables).
-	
-	classVariables := ''  "$NON-NLS$"
-	
+			categories: #('Tonel-Pool Definition') "$NON-NLS$"
+			stamp: '') "$NON-NLS$"
+				declaration: true;
+				source: self pragmaSourceFromClassVariables).
+
+	classVariables := '' "$NON-NLS$"
 ]
 
 {
 	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
+	#vaCategories : ['loading-pools'],
+	#vaVisibility : 'private'
+}
+TonelReaderClassDefinition >> createSharedPoolInitializerMethodFor: aTonelMethod [
+
+	^('_SHAREDPOOL_' , self identifier , '_' , aTonelMethod selector) asSymbol
+]
+
+{
+	#category : '*TonelLoaderModel',
+	#vaCategories : ['loading-pools']
+}
+TonelReaderClassDefinition >> declarePoolDictionariesIn: anApp [
+
+	(tonelMethods select: [:each | each isDeclaration]) do: [:aTonelMethod | 
+		aTonelMethod loadFor: anApp into: anApp.
+		EmInterface current rebuildNamespaceFor: anApp
+	].
+]
+
+{
+	#category : '*TonelLoaderModel',
+	#vaCategories : ['loading-pools']
 }
 TonelReaderClassDefinition >> definePoolDictionariesIn: anApp [
 
-	self isSharedPool
-		ifTrue: [| concreteClass |
-			concreteClass := self concreteClassIn: anApp.
-			tonelMethods do: [:aTonelMethod |
-				(aTonelMethod categories includes: 'TN-Pool Definition') "$NON-NLS$"
-					ifTrue: [aTonelMethod loadFor: concreteClass into: anApp]].
-			EmInterface current rebuildNamespaceFor: anApp]
+	self isSharedPool 
+		ifTrue: 
+			[self poolInitializationMethods do: 
+					[:aTonelMethod | 
+					| selector methodCopy |
+					selector := self createSharedPoolInitializerMethodFor: aTonelMethod.
+					methodCopy := aTonelMethod copy.
+					methodCopy selector: selector.
+					methodCopy ammendSourceSelector.
+					methodCopy loadFor: anApp into: anApp.
+					anApp perform: selector]]
 ]
 
 {
@@ -225,24 +253,47 @@ TonelReaderClassDefinition >> moveDefinedInto: anApp [
 
 {
 	#category : '*TonelLoaderModel',
+	#vaCategories : ['loading-pools']
+}
+TonelReaderClassDefinition >> poolInitializationMethods [
+	"It is assumed that SharedPool initialization methods are unary and in the class side.
+	 Usually a class side #initialize, but could also be something like #initializeConstants."
+
+	^tonelMethods reject: [:each | each isDeclaration or: [each isClassSide not and: [each selector isUnary not]]]
+]
+
+{
+	#category : '*TonelLoaderModel',
 	#vaCategories : ['loading-pools'],
 	#vaVisibility : 'private'
 }
 TonelReaderClassDefinition >> pragmaSourceFromClassVariables [
-	
-	^ String streamContents: [ :sourceStream |
-			sourceStream 
-				nextPutAll: ('_PRAGMA_%1' bindWith: self name); cr; cr;  "$NON-NLS$"
-				nextPutAll: '"%%PRAGMA DECLARE'; cr;  "$NON-NLS$"
-				tab; nextPutAll: ('(name:%1 isPool: true )' bindWith: self name); cr; cr.  "$NON-NLS$"
 
-			(self classVariables subStrings: ' ') do: [ :eachVar |  "$NON-NLS$"
-				sourceStream 
-					nextPutAll: (' (name: %1 pool: %2 isConstant: false valueExpression: '''')' bindWith: eachVar with: self name);  "$NON-NLS$"
-					cr ].
-	
-			sourceStream cr; cr; nextPutAll: '"' ]  "$NON-NLS$"
-		
+	^String streamContents: [:sourceStream |
+		sourceStream
+			nextPutAll: ('_PRAGMA_%1' bindWith: self name);
+			cr;
+			cr; "$NON-NLS$"
+			nextPutAll: '"%%PRAGMA DECLARE';
+			cr; "$NON-NLS$"
+			tab;
+			nextPutAll: ('(name:%1 isPool: true )' bindWith: self name);
+			cr;
+			cr. "$NON-NLS$"
+
+		(self classVariables) do: [:eachVar | "$NON-NLS$"
+			sourceStream
+				nextPutAll: (
+					' (name: %1 pool: %2 isConstant: false valueExpression: '''')'
+						bindWith: eachVar
+						with: self name); "$NON-NLS$"
+				cr].
+
+		sourceStream
+			cr;
+			cr;
+			nextPutAll: '"'] "$NON-NLS$"
+
 
 ]
 
@@ -260,7 +311,7 @@ TonelReaderClassDefinition >> superclassChangeIn: aClass [
 	#category : '*TonelLoaderModel',
 	#vaCategories : ['comparing']
 }
-TonelReaderClassDefinition >> topologicalSubordinateOf: aTonelLoaderClass [
+TonelReaderClassDefinition >> tonelTopologicalSubordinateOf: aTonelLoaderClass [
 	"This method will return true if the current TonelLoaderClass is a 
 	  subclass or extension of aTonelLoaderClass."
 	
@@ -305,7 +356,7 @@ TonelReaderClassDefinition >> updateVariables [
 				classInstanceVariables: (self classInstanceVariables)
 				instanceVariables: (self instanceVariables)
 				classVariables: (self classVariables)
-				sharedPoolNames: #()"((self poolDictionaries) collect: [:ea | ea asSymbol])"]
+				sharedPoolNames: ((self poolDictionaries) collect: [:ea | ea asSymbol])]
 
 
 ]

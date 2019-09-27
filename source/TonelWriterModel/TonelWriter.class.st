@@ -120,6 +120,8 @@ TonelWriter >> writeApplication: anApplication into: souceDirectory [
 	packageDirectory :=
 		self createDirectoryNamed: applicationDefition definedApplicationName inside: souceDirectory.
 	self writePackageDescriptionFor: applicationDefition into: packageDirectory.
+	
+	self writePoolDictionariesDefinedIn: applicationDefition into: packageDirectory.
 	self writeClassesDefinedIn: applicationDefition into: packageDirectory.
 	self writeMethodExtensions: applicationDefition into: packageDirectory.
 
@@ -266,6 +268,33 @@ TonelWriter >> writePackageVASubapplicationsOf: anApplicationDefinition on: aStr
 			confExpressions := confExpressions asArray.
 			json := STON toStringPretty: confExpressions.
 			aStream nextPutAll: json]
+]
+
+{
+	#category : 'Writing - Application',
+	#vaVisibility : 'private'
+}
+TonelWriter >> writePoolDictionariesDefinedIn: applicationDefinition into: packageDirectory [
+
+	| classWriter |
+
+	classWriter :=
+		TonelSharedPoolWriter writingOn: fileSystem into: packageDirectory lineDelimiter: lineDelimiter.
+
+	applicationDefinition withPoolPragmaMethodsDo: [:each |
+		self writePoolDictionaryFromMethod: each definedIn: applicationDefinition using: classWriter]
+]
+
+{
+	#category : 'Writing - Application',
+	#vaVisibility : 'private'
+}
+TonelWriter >> writePoolDictionaryFromMethod: methodDefinition definedIn: applicationDefinition using: classWriter [
+
+	| writerPoolDefinition sharedPool |
+	sharedPool := Smalltalk at: methodDefinition pragmaSuffix asSymbol.
+	writerPoolDefinition := TonelWriterSharedPoolDefinition of: sharedPool named:  methodDefinition pragmaSuffix asSymbol definedIn: applicationDefinition.
+	classWriter write: writerPoolDefinition
 ]
 
 {

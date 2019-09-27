@@ -79,7 +79,7 @@ TonelTools class >> exportTonelApplication [
 TonelTools class >> exportTonelTools [
 
 	TonelWriter new
-		writeProjectIncluding: (#(TonelFileSystem TonelLoaderModel TonelLoaderTests TonelReaderModel TonelReaderTests TonelTools TonelWriterModel TonelWriterTests) collect: [:symbol | Smalltalk at: symbol])  
+		writeProjectIncluding: (#(TonelBaseApp TonelFileSystem TonelLoaderModel TonelLoaderTests TonelReaderModel TonelReaderTests TonelTools TonelWriterModel TonelWriterTests) collect: [:symbol | Smalltalk at: symbol])  
 		into: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-vast').
 
 ]

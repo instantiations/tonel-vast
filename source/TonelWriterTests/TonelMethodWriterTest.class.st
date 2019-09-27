@@ -1,9 +1,6 @@
 Class {
 	#name : 'TonelMethodWriterTest',
-	#superclass : 'TestCase',
-	#instVars : [
-		'writer'
-	],
+	#superclass : 'TonelBaseTest',
 	#category : 'TonelWriterTests'
 }
 
@@ -21,6 +18,7 @@ TonelMethodWriterTest >> newStream [
 }
 TonelMethodWriterTest >> setUp [
 
+	super setUp.
 	writer := TonelMethodWriter with: TonelWriter lineDelimiter
 ]
 

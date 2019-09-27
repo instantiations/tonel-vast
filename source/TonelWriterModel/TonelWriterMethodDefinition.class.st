@@ -81,6 +81,19 @@ TonelWriterMethodDefinition >> initializeUniquelyKnownAs: aSymbol in: aClass cat
 ]
 
 {
+	#category : 'testing'
+}
+TonelWriterMethodDefinition >> isPoolPragma [
+	"Enter the new method definition below and click 'Resume'."
+
+	^(selector copyFrom: 1 to: (selector size min: self pragmaPrefix size)) 
+		= self pragmaPrefix and: 
+				[(self methodBody trimSeparators 
+					beginsWithSubCollection: '"%%PRAGMA DECLARE') 
+						and: [self methodBody includesSubstring: 'isPool: true']]
+]
+
+{
 	#category : 'Accessing'
 }
 TonelWriterMethodDefinition >> methodBody [
@@ -126,6 +139,23 @@ TonelWriterMethodDefinition >> methodDeclaration [
 	messagePattern := parseTree messagePattern.
 	declaration := messagePattern asString trimBoth: [:char | char isSeparator].
 	^declaration
+]
+
+{
+	#category : 'Accessing',
+	#vaVisibility : 'private'
+}
+TonelWriterMethodDefinition >> pragmaPrefix [
+	^'_PRAGMA_'
+]
+
+{
+	#category : 'Accessing',
+	#vaVisibility : 'private'
+}
+TonelWriterMethodDefinition >> pragmaSuffix [
+
+	^selector copyFrom: (self pragmaPrefix size + 1 min: selector size) to: selector size
 ]
 
 {

@@ -135,7 +135,7 @@ Class {
 	#name: ''X'',
 	#superclass: ''Y'',
 	#category: ''Z'',
-	#type : ''variable''
+	#type : #variable
 }'
 		rule: #typeDef
 		equals: (
@@ -143,7 +143,7 @@ Class {
 				name: 'X'
 				superclass: 'Y'
 				variable: nil
-				fieldType: 'variable'
+				fieldType: 'pointers'
 				instanceVariables: #()
 				classVariables: #()
 				poolDictionaries: #())

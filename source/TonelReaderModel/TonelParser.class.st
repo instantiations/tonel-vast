@@ -253,14 +253,18 @@ TonelParser >> methodDefList [
 }
 TonelParser >> newClassDefinitionFrom: anArray [
 
-	| metadata |
-
+	| metadata typeName |
 	metadata := anArray at: 6.
+	typeName := (metadata at: #type ifAbsent: ['']) asString.
+	(#('pointers' 'bytes' 'words' 'longs') indexOf: typeName) = 0 ifTrue: [
+		typeName := 'pointers'
+	].
+
 	^((TonelReaderClassDefinition
 		name: (metadata at: #name)
 		superclass: (metadata at: #superclass)
 		variable: nil
-		fieldType: (metadata at: #type ifAbsent: ['pointers'])
+		fieldType: typeName
 		instanceVariables: (metadata at: #instVars ifAbsent: [#()])
 		classVariables: (metadata at: #classVars ifAbsent: [#()])
 		poolDictionaries: (metadata at: #pools ifAbsent: [#()]))
@@ -268,6 +272,8 @@ TonelParser >> newClassDefinitionFrom: anArray [
 			classInstanceVariables: (metadata at: #classInstVars ifAbsent: [#()]);
 			classComment: 'this is a test';
 			yourself)
+			
+			
 ]
 
 {

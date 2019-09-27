@@ -121,16 +121,27 @@ TonelWriterClassDefinition >> instanceVariableNames [
 ]
 
 {
+	#category : 'Accessing'
+}
+TonelWriterClassDefinition >> isTonelSpecialSelector: aSymbol [
+	"Answer whether aSymbol matches a method used for compatibility or utility in Tonel."
+	
+	^'_SHAREDPOOL_*' match: aSymbol
+]
+
+{
 	#category : 'Accessing',
 	#vaVisibility : 'private'
 }
 TonelWriterClassDefinition >> methodDefinitionsOf: aClassOrMetaclass [
 
-	^(aClassOrMetaclass allSelectorsFor: aClassOrMetaclass controller) collect: [:selector |
-		TonelWriterMethodDefinition
-			uniquelyKnownAs: selector
-			in: aClassOrMetaclass
-			categorizedAs: (self formattedCategoryOf: selector in: aClassOrMetaclass)]
+	^((aClassOrMetaclass allSelectorsFor: aClassOrMetaclass controller) 
+		reject: [:each | self isTonelSpecialSelector: each]) collect: 
+				[:selector | 
+				TonelWriterMethodDefinition 
+					uniquelyKnownAs: selector
+					in: aClassOrMetaclass
+					categorizedAs: (self formattedCategoryOf: selector in: aClassOrMetaclass)]
 ]
 
 {

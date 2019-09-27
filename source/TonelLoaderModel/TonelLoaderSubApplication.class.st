@@ -227,6 +227,15 @@ TonelLoaderSubApplication >> conditions [
 {
 	#category : 'loading'
 }
+TonelLoaderSubApplication >> convertSharedPoolClasses [
+	
+	self tonelDefinedClasses do: [:each | each amendSharedPoolClass ].
+	self subApplications do: [:tonelSubApp | tonelSubApp convertSharedPoolClasses]
+]
+
+{
+	#category : 'loading'
+}
 TonelLoaderSubApplication >> createDescriptionFor: theAppOrSubApp [
 	"If the receiver has been changed, then attempt to set the description
 	 (Notes) for the real (sub)application class. Answer false if the description
@@ -306,8 +315,14 @@ TonelLoaderSubApplication >> createSubApplicationsFor: anAppOrSubApp withRoot: r
 	#category : 'accessing'
 }
 TonelLoaderSubApplication >> definedClasses [
-	
-	^self packageDefinition definedClasses
+	^self packageDefinedClasses reject: [:each | each isSharedPool]
+]
+
+{
+	#category : 'accessing'
+}
+TonelLoaderSubApplication >> definedSharedPools [
+	^self packageDefinedClasses select: [:each | each isSharedPool]
 ]
 
 {
@@ -329,7 +344,9 @@ TonelLoaderSubApplication >> definePoolDictionariesFor: emParentApp [
 }
 TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 
-	self tonelDefinedClasses do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp]
+	self definedSharedPools do: [:aTonelClass | aTonelClass declarePoolDictionariesIn: anApp].
+	self updateSharedPoolsDefinitionOf: anApp.
+	self definedSharedPools do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp].
 ]
 
 {
@@ -410,9 +427,10 @@ TonelLoaderSubApplication >> identifier [
 {
 	#category : 'querying'
 }
-TonelLoaderSubApplication >> includesClass: aClassName [
+TonelLoaderSubApplication >> includesClass: className [
 
-	^self tonelClasses includesKey: aClassName
+	(self tonelClasses keys allSatisfy: [:each | each isSymbol]) ifFalse: [self halt].
+	^self tonelClasses includesKey: className asSymbol
 ]
 
 {
@@ -520,7 +538,7 @@ TonelLoaderSubApplication >> loadBaseEdition [
 TonelLoaderSubApplication >> loadClassesIn: anApp [
 
 	self tonelExtendedClasses do: [:each | each loadInto: anApp ].
-	self tonelClasses do: [:each | each loadInto: anApp].
+	(self tonelClasses reject: [:each | each isSharedPool]) do: [:each | each loadInto: anApp].
 ]
 
 {
@@ -609,6 +627,13 @@ TonelLoaderSubApplication >> name [
 TonelLoaderSubApplication >> notes [
 		
 	^self rootTonelApplication notes
+]
+
+{
+	#category : 'accessing'
+}
+TonelLoaderSubApplication >> packageDefinedClasses [
+	^self packageDefinition definedClasses
 ]
 
 {
@@ -759,7 +784,7 @@ TonelLoaderSubApplication >> tonelDefinedClasses [
 
 	definedClasses := Dictionary new.
 	self packageDefinition classDefinitions
-		keysDo: [:key | key name = self name ifFalse: [definedClasses at: key name put: key]].
+		keysDo: [:key | key name = self name ifFalse: [definedClasses at: key name asSymbol put: key]].
 	^definedClasses
 ]
 
@@ -771,8 +796,32 @@ TonelLoaderSubApplication >> tonelExtendedClasses [
 	| extendedClasses |
 
 	extendedClasses := Dictionary new.
-	self packageDefinition extensions keysDo: [:key | extendedClasses at: key name put: key].
+	self packageDefinition extensions keysDo: [:key | extendedClasses at: key name asSymbol put: key].
 	^extendedClasses
+]
+
+{
+	#category : 'loading'
+}
+TonelLoaderSubApplication >> updateSharedPoolsDefinitionOf: anApp [
+	"Updates the app class definition to reference the shared pools classes it declares."
+	
+	| updatedSharedPoolsNames |
+	updatedSharedPoolsNames := Set new.
+	updatedSharedPoolsNames addAll: anApp sharedPoolNames.
+	updatedSharedPoolsNames addAll: ((self definedSharedPools) collect: [:ea | ea identifier asSymbol]).
+	
+	anApp creatorClass
+				createClassNamed: anApp environmentKey
+				in: anApp environment
+				for: (anApp hasController ifTrue: [anApp controller] ifFalse: [nil])
+				subclassOf: anApp superclass
+				instanceShape: anApp instanceShape
+				classInstanceVariables: (anApp class instVarNames)
+				instanceVariables: (anApp instVarNames)
+				classVariables: (anApp classVarNames)
+				sharedPoolNames: updatedSharedPoolsNames asArray
+	
 ]
 
 {
@@ -798,7 +847,7 @@ TonelLoaderSubApplication >> versionClassesIn: anApp as: versionName [
 }
 TonelLoaderSubApplication >> versionClassesIn: anApp for: aLoader [
 
-	self tonelClasses do: [:each | each versionIn: anApp for: aLoader]
+	(self tonelClasses reject: [:each | each isSharedPool]) do: [:each | each versionIn: anApp for: aLoader]
 ]
 
 {
@@ -810,6 +859,10 @@ TonelLoaderSubApplication >> versionFor: aLoader [
 
 	theApp := Smalltalk classAt: self identifier.
 	self subApplications do: [:aTonelSubApp | aTonelSubApp versionFor: aLoader].
-	(theApp isEdition and: [(self concreteClasses allSatisfy: [:each | each isVersionIn: theApp])])
-		ifTrue: [self version: theApp as: aLoader versionName]
+	theApp isEdition ifFalse: [^self].
+	(self concreteClasses allSatisfy: [:each | each isVersionIn: theApp]) ifFalse: [^self].
+	(theApp isEditionIn: theApp) ifTrue: [
+			theApp versionNameIn: theApp is: aLoader versionName.
+			theApp releaseClass: theApp ].
+	self version: theApp as: aLoader versionName
 ]

@@ -70,7 +70,7 @@ TonelReaderClassExtensionDefinition >> loadMethodsInto: anApp [
 	#category : '*TonelLoaderModel',
 	#vaCategories : ['comparing']
 }
-TonelReaderClassExtensionDefinition >> topologicalSubordinateOf: aTonelLoaderClass [
+TonelReaderClassExtensionDefinition >> tonelTopologicalSubordinateOf: aTonelLoaderClass [
 	"This method will return true if the receiver is a extension of aTonelLoaderClass."
 
 	^aTonelLoaderClass extension not and: [self name = aTonelLoaderClass name]

@@ -8,7 +8,8 @@ Class {
 		'classSide',
 		'categories',
 		'stamp',
-		'selector'
+		'selector',
+		'declaration'
 	],
 	#pools : [
 		'CldtConstants',
@@ -55,6 +56,27 @@ TonelReaderMethodDefinition >> = aReaderMethodDefinition [
 ]
 
 {
+	#category : 'Internal',
+	#vaVisibility : 'private'
+}
+TonelReaderMethodDefinition >> ammendSourceSelector [
+
+		| sourceLines newSource |
+		sourceLines := (self source subStrings: LineDelimiter).
+		newSource := String new writeStream.
+		newSource nextPutAll: self selector asString; nextPutAll: LineDelimiter.
+		
+		sourceLines size > 1 ifTrue: [
+			(2 to: sourceLines size) do: [:index |
+				newSource nextPutAll: (sourceLines at: index)
+			] separatedBy: [newSource nextPutAll: LineDelimiter ]
+		].
+		self source: newSource contents
+		
+		
+]
+
+{
 	#category : 'Accessing'
 }
 TonelReaderMethodDefinition >> categories [
@@ -69,6 +91,29 @@ TonelReaderMethodDefinition >> className [
 ]
 
 {
+	#category : 'Accessing'
+}
+TonelReaderMethodDefinition >> className: aString [
+
+	
+	className := aString
+]
+
+{
+	#category : 'Accessing'
+}
+TonelReaderMethodDefinition >> declaration [
+	^declaration ifNil: [declaration := false]
+]
+
+{
+	#category : 'Accessing'
+}
+TonelReaderMethodDefinition >> declaration: aBoolean [
+	declaration := aBoolean
+]
+
+{
 	#category : 'Initialize-Release',
 	#vaVisibility : 'private'
 }
@@ -78,7 +123,8 @@ TonelReaderMethodDefinition >> initializeClassName: nameString classSide: aBoole
 	classSide := aBoolean.
 	categories := aCollection.
 	stamp := stampString.
-	public := true
+	public := true.
+	declaration := false
 ]
 
 {
@@ -86,6 +132,14 @@ TonelReaderMethodDefinition >> initializeClassName: nameString classSide: aBoole
 }
 TonelReaderMethodDefinition >> isClassSide [
 	^classSide
+]
+
+{
+	#category : 'testing'
+}
+TonelReaderMethodDefinition >> isDeclaration [
+
+	^self declaration or: [self selector beginsWithSubCollection: #_PRAGMA_]
 ]
 
 {
