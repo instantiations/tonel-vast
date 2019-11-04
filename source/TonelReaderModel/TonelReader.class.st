@@ -36,9 +36,7 @@ TonelReader >> addContentFrom: filePath toPackage: package [
 
 	filePath readStreamDo: [:aStream | | result |
 		result := TonelParser parseStream: aStream.
-		result size > 1
-			ifTrue: [
-				result first addToPackage: package withAll: (result copyFrom: 2 to: result size)]]
+		result first addToPackage: package withAll: (result size > 1 ifTrue: [result copyFrom: 2 to: result size] ifFalse: [Array new])]
 ]
 
 {

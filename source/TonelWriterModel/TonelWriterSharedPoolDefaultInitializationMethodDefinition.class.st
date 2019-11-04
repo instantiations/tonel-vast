@@ -19,7 +19,7 @@ TonelWriterSharedPoolDefaultInitializationMethodDefinition >> methodBody [
 					tab;
 					nextPutAll: assoc key;
 					nextPutAll: ' := ';
-					nextPutAll: assoc value printString;
+					nextPutAll: assoc value storeString;
 					nextPut: $.;
 					cr]].
 	^stream contents
