@@ -537,8 +537,12 @@ TonelLoaderSubApplication >> loadBaseEdition [
 }
 TonelLoaderSubApplication >> loadClassesIn: anApp [
 
-	self tonelExtendedClasses do: [:each | each loadInto: anApp ].
-	(self tonelClasses reject: [:each | each isSharedPool]) do: [:each | each loadInto: anApp].
+		(self 
+		topologicallySort:self tonelExtendedClasses 
+		in: anApp) do: [:each | each key loadInto: anApp].
+	(self 
+		topologicallySort: (self tonelClasses reject: [:each1 | each1 isSharedPool])
+		in: anApp) do: [:each | each key loadInto: anApp]
 ]
 
 {
@@ -798,6 +802,14 @@ TonelLoaderSubApplication >> tonelExtendedClasses [
 	extendedClasses := Dictionary new.
 	self packageDefinition extensions keysDo: [:key | extendedClasses at: key name asSymbol put: key].
 	^extendedClasses
+]
+
+{
+	#category : 'loading',
+	#vaVisibility : 'private'
+}
+TonelLoaderSubApplication >> topologicallySort: aDictionary in: anApp [
+	^(aDictionary values collect: [:each | each -> anApp]) tonelSingleEdgeTopologicallySortedCollection
 ]
 
 {

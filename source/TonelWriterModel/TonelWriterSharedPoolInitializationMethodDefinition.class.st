@@ -53,6 +53,24 @@ TonelWriterSharedPoolInitializationMethodDefinition >> isVirtual [
 {
 	#category : 'accessing'
 }
+TonelWriterSharedPoolInitializationMethodDefinition >> methodBody [
+
+	| bodyStream |
+	bodyStream :=
+		(self compiledMethod sourceString
+			copyFrom: (selector size + (CldtConstants::LineDelimiter size) + 1)
+			to: self compiledMethod sourceString size)
+				readStream.
+				
+	
+	^bodyStream
+			skipSeparators;
+			contents.
+]
+
+{
+	#category : 'accessing'
+}
 TonelWriterSharedPoolInitializationMethodDefinition >> methodDeclaration [
 
 	| selectorParts |
