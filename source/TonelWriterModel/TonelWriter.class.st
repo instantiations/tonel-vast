@@ -291,9 +291,8 @@ TonelWriter >> writePoolDictionariesDefinedIn: applicationDefinition into: packa
 }
 TonelWriter >> writePoolDictionaryFromMethod: methodDefinition definedIn: applicationDefinition using: classWriter [
 
-	| writerPoolDefinition sharedPool |
-	sharedPool := Smalltalk at: methodDefinition pragmaSuffix asSymbol.
-	writerPoolDefinition := TonelWriterSharedPoolDefinition of: sharedPool named:  methodDefinition pragmaSuffix asSymbol definedIn: applicationDefinition.
+	| writerPoolDefinition |
+	writerPoolDefinition := TonelWriterSharedPoolDefinition declaredBy: methodDefinition definedIn: applicationDefinition.
 	classWriter write: writerPoolDefinition
 ]
 

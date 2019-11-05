@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'category',
 		'selector',
-		'class'
+		'definitionClass'
 	],
 	#category : 'TonelWriterModel'
 }
@@ -22,7 +22,7 @@ TonelWriterMethodDefinition class >> uniquelyKnownAs: aSymbol in: aClass categor
 }
 TonelWriterMethodDefinition >> allCategories [
 
-	^class categoriesFor: selector
+	^definitionClass categoriesFor: selector
 ]
 
 {
@@ -36,17 +36,25 @@ TonelWriterMethodDefinition >> category [
 {
 	#category : 'Accessing'
 }
-TonelWriterMethodDefinition >> className [
+TonelWriterMethodDefinition >> compiledMethod [
 
-	^class name
+	^definitionClass >> selector
 ]
 
 {
 	#category : 'Accessing'
 }
-TonelWriterMethodDefinition >> compiledMethod [
+TonelWriterMethodDefinition >> definitionClass [
 
-	^class >> selector
+	^definitionClass
+]
+
+{
+	#category : 'Accessing'
+}
+TonelWriterMethodDefinition >> definitionClassName [
+
+	^self definitionClass name
 ]
 
 {
@@ -75,7 +83,7 @@ TonelWriterMethodDefinition >> hasDefaultVAVisibility [
 }
 TonelWriterMethodDefinition >> initializeUniquelyKnownAs: aSymbol in: aClass categorizedAs: aCategory [
 
-	class := aClass.
+	definitionClass := aClass.
 	selector := aSymbol.
 	category := aCategory
 ]
@@ -86,8 +94,8 @@ TonelWriterMethodDefinition >> initializeUniquelyKnownAs: aSymbol in: aClass cat
 TonelWriterMethodDefinition >> isPoolPragma [
 	"Answer whether receiver compiled method is a declaration of a Pool Dictionary."
 
-	^(selector copyFrom: 1 to: (selector size min: self pragmaPrefix size)) 
-		= self pragmaPrefix and: 
+	^(EmNamespaceSupport declarationPattern match: selector )
+		and: 
 				[(self methodBody trimSeparators 
 					beginsWithSubCollection: '"%%PRAGMA DECLARE') 
 						and: [self methodBody includesSubstring: 'isPool: true']]
@@ -171,7 +179,9 @@ TonelWriterMethodDefinition >> methodDeclaration [
 	#vaVisibility : 'private'
 }
 TonelWriterMethodDefinition >> pragmaPrefix [
-	^'_PRAGMA_'
+	| pattern |
+	pattern := EmNamespaceSupport declarationPattern.
+	^pattern copyFrom: 1 to: pattern size - 1.
 ]
 
 {

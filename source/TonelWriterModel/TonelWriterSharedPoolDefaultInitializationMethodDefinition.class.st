@@ -8,20 +8,12 @@ Class {
 	#category : 'accessing'
 }
 TonelWriterSharedPoolDefaultInitializationMethodDefinition >> methodBody [
-
 	| stream |
-
 	stream := WriteStream on: String new.
-	self pool pool associations do: [:assoc |
-		assoc key first = $!
-			ifFalse: [
-				stream
-					tab;
-					nextPutAll: assoc key;
-					nextPutAll: ' := ';
-					nextPutAll: assoc value storeString;
-					nextPut: $.;
-					cr]].
+	self poolDeclarations do: 
+			[:declaration | 
+			declaration name first = $! 
+				ifFalse: [self writeDeclaration: declaration on: stream]].
 	^stream contents
 ]
 
@@ -31,4 +23,30 @@ TonelWriterSharedPoolDefaultInitializationMethodDefinition >> methodBody [
 TonelWriterSharedPoolDefaultInitializationMethodDefinition >> methodDeclaration [
 
 	^'initialize'
+]
+
+{
+	#category : 'accessing',
+	#vaVisibility : 'private'
+}
+TonelWriterSharedPoolDefaultInitializationMethodDefinition >> poolDeclarations [
+
+	^self definitionClass poolDeclarations
+
+
+]
+
+{
+	#category : 'accessing',
+	#vaVisibility : 'private'
+}
+TonelWriterSharedPoolDefaultInitializationMethodDefinition >> writeDeclaration: declaration on: stream [
+
+	^stream
+		tab;
+		nextPutAll: declaration name;
+		nextPutAll: ' := ';
+		nextPutAll: declaration valueExpression storeString;
+		nextPut: $.;
+		cr
 ]

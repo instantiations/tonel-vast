@@ -69,7 +69,7 @@ TonelMethodWriter >> write: aMethodDefinition on: aWriteStream [
 			self writeCategoryOf: aMethodDefinition on: aWriteStream.
 			self writeVACategoriesOf: aMethodDefinition on: aWriteStream.
 			self writeVAVisibilityOf: aMethodDefinition on: aWriteStream.
-			aWriteStream << lineDelimiter << '}' << lineDelimiter << aMethodDefinition className <<
+			aWriteStream << lineDelimiter << '}' << lineDelimiter << aMethodDefinition definitionClassName <<
 				' >> ' << methodDeclaration << ' [' << lineDelimiter << normalizedBody <<
 				lineDelimiter << ']' << lineDelimiter]
 ]

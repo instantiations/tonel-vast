@@ -2,8 +2,8 @@ Class {
 	#name : 'TonelTestsConstants',
 	#superclass : 'SharedPool',
 	#classVars : [
-		'Constant2',
-		'Constant1'
+		'Constant1',
+		'Constant2'
 	],
 	#type : 'variable',
 	#category : 'TonelWriterTests'
@@ -13,7 +13,7 @@ Class {
 	#category : 'Initializing'
 }
 TonelTestsConstants class >> initialize [
-	Constant2 := 2.
-	Constant1 := 1.
+	Constant1 := '1'.
+	Constant2 := '2'.
 
 ]

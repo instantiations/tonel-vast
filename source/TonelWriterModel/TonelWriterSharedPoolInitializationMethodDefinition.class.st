@@ -20,17 +20,17 @@ TonelWriterSharedPoolInitializationMethodDefinition >> application: aTonelWriter
 {
 	#category : 'accessing'
 }
-TonelWriterSharedPoolInitializationMethodDefinition >> className [
+TonelWriterSharedPoolInitializationMethodDefinition >> compiledMethod [
 
-	^self pool definedClassName, ' class'
+	^application definedApplication class >> selector
 ]
 
 {
 	#category : 'accessing'
 }
-TonelWriterSharedPoolInitializationMethodDefinition >> compiledMethod [
+TonelWriterSharedPoolInitializationMethodDefinition >> definitionClassName [
 
-	^application definedApplication class >> selector
+	^self pool definedClassName, ' class'
 ]
 
 {
@@ -83,7 +83,7 @@ TonelWriterSharedPoolInitializationMethodDefinition >> methodDeclaration [
 }
 TonelWriterSharedPoolInitializationMethodDefinition >> pool [
 
-	^class
+	^definitionClass
 ]
 
 {
