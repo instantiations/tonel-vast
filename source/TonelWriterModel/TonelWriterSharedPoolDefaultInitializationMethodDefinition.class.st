@@ -46,7 +46,7 @@ TonelWriterSharedPoolDefaultInitializationMethodDefinition >> writeDeclaration: 
 		tab;
 		nextPutAll: declaration name;
 		nextPutAll: ' := ';
-		nextPutAll: declaration valueExpression storeString;
+		nextPutAll: declaration valueExpression;
 		nextPut: $.;
 		cr
 ]

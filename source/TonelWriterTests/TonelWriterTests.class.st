@@ -1,6 +1,9 @@
 Class {
 	#name : 'TonelWriterTests',
 	#superclass : 'Application',
+	#pools : [
+		'TonelTestsConstants'
+	],
 	#category : 'TonelWriterTests'
 }
 

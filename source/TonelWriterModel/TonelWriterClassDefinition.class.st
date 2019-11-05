@@ -147,7 +147,15 @@ TonelWriterClassDefinition >> methodDefinitionsOf: aClassOrMetaclass [
 }
 TonelWriterClassDefinition >> poolNames [
 
-	^class sharedPoolNames
+	^class = application
+		ifTrue: [
+			(application class selectors
+				select: [:each | EmNamespaceSupport declarationPattern match: each asString])
+					collect: [:selector |
+						selector
+							copyFrom: EmNamespaceSupport declarationPattern size
+							to: selector size]]
+		ifFalse: [class sharedPoolNames]
 ]
 
 {

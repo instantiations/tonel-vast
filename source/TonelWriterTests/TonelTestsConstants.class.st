@@ -13,7 +13,7 @@ Class {
 	#category : 'Initializing'
 }
 TonelTestsConstants class >> initialize [
-	Constant1 := '1'.
-	Constant2 := '2'.
+	Constant1 := 1.
+	Constant2 := 2.
 
 ]

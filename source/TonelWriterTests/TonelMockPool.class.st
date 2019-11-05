@@ -12,6 +12,6 @@ Class {
 	#category : 'Initializing'
 }
 TonelMockPool class >> initialize [
-	TMMx01 := '''Sample Pool Element'''.
+	TMMx01 := 'Sample Pool Element'.
 
 ]
