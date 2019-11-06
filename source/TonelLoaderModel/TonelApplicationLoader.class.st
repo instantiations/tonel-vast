@@ -37,18 +37,31 @@ TonelApplicationLoader >> allLoadedApplications [
 TonelApplicationLoader >> attemptVersionFromGit [
 	"Private - Attempts to read git metadata from the repository path of the loader (if available)."
 
-	(self loader reader repositoryPath) ifNotNil: [:repoPath | | gitMasterCheckoutFile gitMasterPath
-		  commitHash |
-		(gitMasterPath := ((((repoPath append: '.git') append: 'refs') append: 'heads')
-			append: 'master'))
-				exists
+	(self loader reader repositoryPath) ifNotNil: [:repoPath | | gitBranchCommitFile gitBranchPath
+		  gitHeadPath commitHash commitDate |
+		gitHeadPath := ((repoPath append: '.git') append: 'HEAD').
+		gitHeadPath exists
+			ifTrue: [| refsPathString headFile stat |
+				[
+					headFile := CfsReadFileStream open: gitHeadPath asString.
+					refsPathString := headFile nextLine.
+					refsPathString := refsPathString copyFrom: 6 to: refsPathString size]
+						ensure: [headFile close].
+				gitBranchPath := (((repoPath append: '.git') append: refsPathString)).
+				gitBranchPath exists
 					ifTrue: [
-						gitMasterCheckoutFile := CfsReadFileStream open: gitMasterPath asString.
-						[commitHash := (gitMasterCheckoutFile nextLine first: 7)]
-							ensure: [gitMasterCheckoutFile close].
-						commitHash isEmptyOrNil ifFalse: [self versionName: commitHash]]]
-
-
+						gitBranchCommitFile := CfsReadFileStream open: gitBranchPath asString.
+						[
+							commitHash := (gitBranchCommitFile nextLine first: 7).
+							stat := gitBranchPath cfsStat.
+							commitDate := DateAndTime
+								date: stat stMtime first
+								time: stat stMtime last]
+									ensure: [gitBranchCommitFile close].
+						commitHash isEmptyOrNil
+							ifFalse: [
+								self versionName:
+									(commitHash , (' (<1p>)' expandMacrosWith: commitDate))]]]]
 ]
 
 {
@@ -125,7 +138,7 @@ TonelApplicationLoader >> chooseVersionName [
 	"The version name string may be empty if the user pressed OK without entering
 	 anything (or deleting the pre-entered name), or nil if the user pressed Cancel."
 
-	self attemptVersionFromGit.
+	[self attemptVersionFromGit] on: Error do: [:ex | ex return].
 	self versionName: (
 		(System prompt: TonelMsg11 answer: self versionName) "$NLS$ Enter the version name to be used for imported classes and applications"
 			ifNil: ['']) "$NON-NLS$"
