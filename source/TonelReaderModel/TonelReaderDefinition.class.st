@@ -7,17 +7,13 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'constants'
-}
+{ #category : 'constants' }
 TonelReaderDefinition class >> definitionType [
 
 	self subclassResponsibility
 ]
 
-{
-	#category : 'Instance Creation'
-}
+{ #category : 'Instance Creation' }
 TonelReaderDefinition class >> fromMetadata: aDictionary [
 
 	^self new
@@ -25,9 +21,7 @@ TonelReaderDefinition class >> fromMetadata: aDictionary [
 		yourself
 ]
 
-{
-	#category : 'Instance Creation'
-}
+{ #category : 'Instance Creation' }
 TonelReaderDefinition class >> name: aString [
 
 	^self new
@@ -35,43 +29,33 @@ TonelReaderDefinition class >> name: aString [
 		yourself
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelReaderDefinition >> initializeFromMetadata: aDictionary [
 
 	name := aDictionary at: #name
 
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelReaderDefinition >> initializeWith: aString [
 
 	name := aString.
 
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderDefinition >> name [
 	^name
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderDefinition >> name: anObject [
 	name := anObject
 ]
 
-{
-	#category : 'printing'
-}
+{ #category : 'printing' }
 TonelReaderDefinition >> printIdentifierOn: aStream [
 
 		aStream 
@@ -81,18 +65,14 @@ TonelReaderDefinition >> printIdentifierOn: aStream [
 			
 ]
 
-{
-	#category : 'printing'
-}
+{ #category : 'printing' }
 TonelReaderDefinition >> printOn: aStream [
 
 	self printTonelTypeOn: aStream.
 	self printIdentifierOn: aStream
 ]
 
-{
-	#category : 'printing'
-}
+{ #category : 'printing' }
 TonelReaderDefinition >> printTonelTypeOn: aStream [
 
 	super printOn: aStream

@@ -4,9 +4,7 @@ Class {
 	#category : 'TonelReaderTests'
 }
 
-{
-	#category : 'Initialization'
-}
+{ #category : 'Initialization' }
 TonelReaderTest >> setUp [
 
 	super setUp.
@@ -14,9 +12,7 @@ TonelReaderTest >> setUp [
 	self reader: (TonelReader on: self fileSystem)
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelReaderTest >> testWriteProject [
 
 	self
@@ -24,9 +20,7 @@ TonelReaderTest >> testWriteProject [
 		from: self directoryForTestingPath
 ]
 
-{
-	#category : 'Tests - Support'
-}
+{ #category : 'Tests - Support' }
 TonelReaderTest >> writeThenReadProjectIncluding: applicationNames from: aRootDirPath [
 
 	self writer

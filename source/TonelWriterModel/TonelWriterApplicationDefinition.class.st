@@ -7,17 +7,13 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{
-	#category : 'Instance creation'
-}
+{ #category : 'Instance creation' }
 TonelWriterApplicationDefinition class >> for: anApplication [
 
 	^self new initializeFor: anApplication
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterApplicationDefinition >> allPossibleDirectSubApplications [
 
 	| confExpressions allApps |
@@ -44,52 +40,34 @@ TonelWriterApplicationDefinition >> allPossibleDirectSubApplications [
 	^allApps
 ]
 
-{
-	#category : 'Accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Accessing',
+  #vaVisibility : 'private' }
 TonelWriterApplicationDefinition >> classDefinitionsFromClassesDefinedIn: anApplication [
 
 	^anApplication defined
 		collect: [:class | TonelWriterClassDefinition of: class definedIn: anApplication]
 ]
 
-{
-	#category : 'Accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Accessing',
+  #vaVisibility : 'private' }
 TonelWriterApplicationDefinition >> classDefinitionsOfDefinedClasses [
 
 	^self classDefinitionsFromClassesDefinedIn: application
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterApplicationDefinition >> definedApplication [
 
 	^application 
 ]
 
-{
-	#category : 'Accessing'
-}
-TonelWriterApplicationDefinition >> definedApplicationName [
-
-	^application asString
-]
-
-{
-	#category : 'Defaults'
-}
+{ #category : 'Defaults' }
 TonelWriterApplicationDefinition >> hasDefaultParent [
 
 	^ application isApplication
 ]
 
-{
-	#category : 'Defaults'
-}
+{ #category : 'Defaults' }
 TonelWriterApplicationDefinition >> hasDefaultPrerequisites [
 
 	| prereqs |
@@ -98,9 +76,7 @@ TonelWriterApplicationDefinition >> hasDefaultPrerequisites [
 	^prereqs size = 1 and: [prereqs first = 'Kernel']
 ]
 
-{
-	#category : 'Defaults'
-}
+{ #category : 'Defaults' }
 TonelWriterApplicationDefinition >> hasDefaultSubApps [
 
 	| confExpressions subapps |
@@ -111,35 +87,35 @@ TonelWriterApplicationDefinition >> hasDefaultSubApps [
 	^confExpressions first = 'true' and: [subapps isEmpty]
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelWriterApplicationDefinition >> initializeFor: anApplication [
 
 	application := anApplication
 ]
 
-{
-	#category : 'Enumerating'
-}
+{ #category : 'Accessing' }
+TonelWriterApplicationDefinition >> tonelPackageName [
+
+	^(application respondsTo: #_TONEL_packageName)
+		ifTrue: [application _TONEL_packageName]
+		ifFalse: [application name asString]
+]
+
+{ #category : 'Enumerating' }
 TonelWriterApplicationDefinition >> withDefinitionsOfDefinedClassesDo: aBlock [
 
 	self classDefinitionsOfDefinedClasses do: [:classDefition | aBlock value: classDefition]
 ]
 
-{
-	#category : 'Enumerating'
-}
+{ #category : 'Enumerating' }
 TonelWriterApplicationDefinition >> withDefinitionsOfExtendedClassesDo: aBlock [
 
 	application extended do: [:classExtension |
 		aBlock value: (TonelWriterClassExtensionDefinition of: classExtension extendedIn: application)]
 ]
 
-{
-	#category : 'Enumerating'
-}
+{ #category : 'Enumerating' }
 TonelWriterApplicationDefinition >> withPoolPragmaMethodsDo: aBlock [
 
 	| enumeratingBlock |

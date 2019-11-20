@@ -10,17 +10,13 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderAbstractClassDefinition >> identifier [
 
 	self subclassResponsibility
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderAbstractClassDefinition >> tonelMethods [
 
 	^tonelMethods

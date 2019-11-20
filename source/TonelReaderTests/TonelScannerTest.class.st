@@ -4,17 +4,13 @@ Class {
 	#category : 'TonelReaderTests'
 }
 
-{
-	#category : 'instance creation'
-}
+{ #category : 'instance creation' }
 TonelScannerTest class >> new [
 
 	^super new initialize
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelScannerTest >> testRemoveFromEnclosingStartEnd [
 	| scanner nl |
 	nl := CldtConstants::LineDelimiter.

@@ -24,45 +24,35 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelSourceScanner >> isStartingComment [
 	"Comment start with a double quote in Smalltalk syntax"
 
 	^ char = $"
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelSourceScanner >> isStartingLiteralArray [
 	"Literal array starts with a sharp sign followed by parenthesis in Smalltalk syntax"
 
 	^ char = $( and: [ prevChar = $# ]
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelSourceScanner >> isStartingLiteralCharacter [
 	"A literal Character start with a dollar sign in Smalltalk syntax"
 
 	^ char = $$
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelSourceScanner >> isStartingString [
 	"String start with single quote in Smalltalk syntax"
 
 	^ char = $'
 ]
 
-{
-	#category : 'private'
-}
+{ #category : 'private' }
 TonelSourceScanner >> prepareToScan [
 	result := String new writeStream.
 	isFinished := false.
@@ -70,17 +60,13 @@ TonelSourceScanner >> prepareToScan [
 	count := 0
 ]
 
-{
-	#category : 'private'
-}
+{ #category : 'private' }
 TonelSourceScanner >> readNext [
 	prevChar := char.
 	result nextPut: (char := stream next)
 ]
 
-{
-	#category : 'private'
-}
+{ #category : 'private' }
 TonelSourceScanner >> readUntil: aBlock [
 	[ stream atEnd ]
 		whileFalse: [ self readNext.
@@ -88,9 +74,7 @@ TonelSourceScanner >> readUntil: aBlock [
 				ifTrue: [ ^ self ] ]
 ]
 
-{
-	#category : 'private'
-}
+{ #category : 'private' }
 TonelSourceScanner >> readUntilTermination: matchChar [
 	| terminationCount |
 	"This is used to read sequences that start and finish with same character termination. 
@@ -102,9 +86,7 @@ TonelSourceScanner >> readUntilTermination: matchChar [
 			terminationCount even and: [ stream peek ~= matchChar ] ]
 ]
 
-{
-	#category : 'scanning'
-}
+{ #category : 'scanning' }
 TonelSourceScanner >> scan [
 
 	self prepareToScan.
@@ -116,9 +98,7 @@ TonelSourceScanner >> scan [
 	TonelParseError signal: 'Can''t parse method body'
 ]
 
-{
-	#category : 'scanning'
-}
+{ #category : 'scanning' }
 TonelSourceScanner >> scanForBlock [
 	| match |
 	match := false.
@@ -132,9 +112,7 @@ TonelSourceScanner >> scanForBlock [
 	^ match
 ]
 
-{
-	#category : 'scanning'
-}
+{ #category : 'scanning' }
 TonelSourceScanner >> scanForComment [
 	self isStartingComment
 		ifFalse: [ ^ false ].
@@ -142,9 +120,7 @@ TonelSourceScanner >> scanForComment [
 	^ true
 ]
 
-{
-	#category : 'scanning'
-}
+{ #category : 'scanning' }
 TonelSourceScanner >> scanForLiteralArray [
 	| literalCount |
 	self isStartingLiteralArray
@@ -162,9 +138,7 @@ TonelSourceScanner >> scanForLiteralArray [
 	^ true
 ]
 
-{
-	#category : 'scanning'
-}
+{ #category : 'scanning' }
 TonelSourceScanner >> scanForLiteralCharacter [
 	self isStartingLiteralCharacter
 		ifFalse: [ ^ false ].
@@ -172,9 +146,7 @@ TonelSourceScanner >> scanForLiteralCharacter [
 	^ true
 ]
 
-{
-	#category : 'scanning'
-}
+{ #category : 'scanning' }
 TonelSourceScanner >> scanForString [
 	self isStartingString
 		ifFalse: [ ^ false ].
@@ -182,9 +154,7 @@ TonelSourceScanner >> scanForString [
 	^ true
 ]
 
-{
-	#category : 'scanning'
-}
+{ #category : 'scanning' }
 TonelSourceScanner >> scanNextChunk [
 	self readNext.
 	self scanForBlock

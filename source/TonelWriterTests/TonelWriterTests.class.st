@@ -7,9 +7,7 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'Testing'
-}
+{ #category : 'Testing' }
 TonelWriterTests class >> exceptionsForClassesWithoutProtocol [
 
 	^Array with: TonelMockB with: TonelMockC with: TonelMockE

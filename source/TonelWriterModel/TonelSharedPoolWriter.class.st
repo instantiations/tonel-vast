@@ -4,9 +4,7 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{
-	#category : 'writing'
-}
+{ #category : 'writing' }
 TonelSharedPoolWriter >> writeClassMethodsOf: aClassDefinition on: aWriteStream [
 
 	aClassDefinition poolInitializationMethods do: [:method |
@@ -14,9 +12,7 @@ TonelSharedPoolWriter >> writeClassMethodsOf: aClassDefinition on: aWriteStream 
 	]
 ]
 
-{
-	#category : 'writing'
-}
+{ #category : 'writing' }
 TonelSharedPoolWriter >> writeInstanceMethodsOf: aClassDefinition on: aWriteStream [
 
 ]

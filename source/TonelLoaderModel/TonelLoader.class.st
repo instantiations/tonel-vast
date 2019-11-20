@@ -14,18 +14,14 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelLoader class >> appNameSuffix [
 	"Read comment of appNameSuffix:"
 
 	^ AppNameSuffix ifNil: [ AppNameSuffix := self defaultAppNameSuffix ]
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelLoader class >> appNameSuffix: rootAppSuffix [
 	"Allows the user to specify the suffix to be used for the created root application
 	by the MetacelloImporter. The default will be 'App'. 
@@ -37,18 +33,14 @@ TonelLoader class >> appNameSuffix: rootAppSuffix [
 	AppNameSuffix := rootAppSuffix
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelLoader class >> appSuperGroupSetting [
 	"Read comment of appSuperGroupSetting:"
 	
 	^ AppSuperGroupSetting ifNil: [ AppSuperGroupSetting := self defaultAppSuperGroupSetting ]
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelLoader class >> appSuperGroupSetting: superGroup [
 	"Allows the user to specify the 'Super Group' setting to be used for the created applications and subapplications
 	by the MetacelloImporter. The default will be #none. 
@@ -59,18 +51,14 @@ TonelLoader class >> appSuperGroupSetting: superGroup [
 	AppSuperGroupSetting := superGroup
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelLoader class >> compilerWarningLevel [
 	 "Read comment of compilerWarningLevel:"
 	 
 	^ CompilerWarningLevel ifNil: [ CompilerWarningLevel := self defaultCompilerWarningLevel ]
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelLoader class >> compilerWarningLevel: aLevel [
 	"Allows the user to specify the compiler warning level used while MonticelloImporter compiles 
 	 the new methods. When we are importing code, we want to get our code in VA as soon as possible.
@@ -84,33 +72,25 @@ TonelLoader class >> compilerWarningLevel: aLevel [
 	CompilerWarningLevel := aLevel
 ]
 
-{
-	#category : 'Accessing - Defaults'
-}
+{ #category : 'Accessing - Defaults' }
 TonelLoader class >> defaultAppNameSuffix [
 	
 	^ 'App'
 ]
 
-{
-	#category : 'Accessing - Defaults'
-}
+{ #category : 'Accessing - Defaults' }
 TonelLoader class >> defaultAppSuperGroupSetting [
 	
 	^ #none
 ]
 
-{
-	#category : 'Accessing - Defaults'
-}
+{ #category : 'Accessing - Defaults' }
 TonelLoader class >> defaultCompilerWarningLevel [
 	
 	^ 0
 ]
 
-{
-	#category : 'instance creation'
-}
+{ #category : 'instance creation' }
 TonelLoader class >> on: aTonelReader [
 
 	"Creates a new instance of receiver usin aTonelReader as its reader."
@@ -118,56 +98,44 @@ TonelLoader class >> on: aTonelReader [
 	^self new setReader: aTonelReader
 ]
 
-{
-	#category : 'lookup'
-}
+{ #category : 'lookup' }
 TonelLoader >> applicationNamed: aString [
 	"Returns the application with name aString or raise an error if not found."
 
 	^self applications detect: [:one | one name = aString]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoader >> applications [
 
 	applications ifNil: [self initializeApplications].
 	^applications
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoader >> checkRepositoryContents [
 	self applications isEmpty 
 		ifTrue: 
 			[self error: 'The selected directory does not contain any Tonel Package']
 ]
 
-{
-	#category : 'interacting'
-}
+{ #category : 'interacting' }
 TonelLoader >> confirm: aString [
 
 
 	^true
 ]
 
-{
-	#category : 'initializing',
-	#vaVisibility : 'private'
-}
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
 TonelLoader >> createReaderForRepository: directoryPath [
 
 	self setReader: (TonelReader new).
 	self reader readPackagesFrom: directoryPath.
 ]
 
-{
-	#category : 'initializing',
-	#vaVisibility : 'private'
-}
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
 TonelLoader >> initializeApplications [
 	"Initializes receiver applications ensuring each application initializes its subapplications deeply."
 
@@ -176,10 +144,8 @@ TonelLoader >> initializeApplications [
 	applications do: [:each | each initializeSubApplicationsWithRoot: each]
 ]
 
-{
-	#category : 'loading',
-	#vaVisibility : 'private'
-}
+{ #category : 'loading',
+  #vaVisibility : 'private' }
 TonelLoader >> load [
 	"Private - Loads all the applications in the reader.
 	 NOTE: The reader sorts the packages in alphabetical order, so if there is any dependency 
@@ -188,25 +154,19 @@ TonelLoader >> load [
 	self loadApplications: self applications
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoader >> loadApplication: aTonelApplication [
 
 	self loadApplications: (Array with: aTonelApplication)
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoader >> loadApplicationNamed: aStringOrSymbol [
 
 	self loadApplication: (self applicationNamed: aStringOrSymbol)
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoader >> loadApplications: aCollection [
 
 	| confirmer |
@@ -216,52 +176,47 @@ TonelLoader >> loadApplications: aCollection [
 		ensure: [System image confirmer: confirmer]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
+TonelLoader >> loadApplicationsForPackagesNamed: aCollection [
+	"Loads the applications whose package name matches the names in aCollection."
+	
+	self loadApplications: (aCollection collect: [:each | self applications detect: [:one | one packageName = each]])
+]
+
+{ #category : 'loading' }
 TonelLoader >> loadApplicationsNamed: aCollection [
 
 	self loadApplications: (aCollection collect: [:each | self applicationNamed: each])
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoader >> loadedApplications [
 
 	^System loadedApplications
 ]
 
-{
-	#category : 'logging'
-}
+{ #category : 'logging' }
 TonelLoader >> log: aString [
 
 	self class owningImage logApplicationNotice: aString.
 ]
 
-{
-	#category : 'interacting'
-}
+{ #category : 'interacting' }
 TonelLoader >> proceed: aString [
 
 
 	^true
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoader >> reader [
 	"Returns the TonelReader of receiver."
 	
 	^reader
 ]
 
-{
-	#category : 'initializing',
-	#vaVisibility : 'private'
-}
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
 TonelLoader >> setReader: aTonelReader [
 
 	"Assigns aTonelReader as receiver's reader."
@@ -269,9 +224,7 @@ TonelLoader >> setReader: aTonelReader [
 	reader := aTonelReader
 ]
 
-{
-	#category : 'lookup'
-}
+{ #category : 'lookup' }
 TonelLoader >> subApplicationNamed: aString [
 
 	^self subApplications
@@ -281,19 +234,15 @@ TonelLoader >> subApplicationNamed: aString [
 			self subApplications add: (TonelLoaderSubApplication on: subAppPackage in: self)]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoader >> subApplications [
 
 	^subApplications ifNil: [subApplications := OrderedCollection new]
 	
 ]
 
-{
-	#category : 'lookup',
-	#vaVisibility : 'private'
-}
+{ #category : 'lookup',
+  #vaVisibility : 'private' }
 TonelLoader >> subApplicationsFor: aTonelLoaderSubApplication [
 	"Returns the collection of subapplications of aTonelLoaderSubApplication."
 

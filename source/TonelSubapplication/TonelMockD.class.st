@@ -4,9 +4,7 @@ Class {
 	#category : 'TonelSubapplication'
 }
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelMockD >> withoutCategory [
 
 	"Created for tests"

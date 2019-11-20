@@ -4,9 +4,7 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'Tests - Support'
-}
+{ #category : 'Tests - Support' }
 TonelWriterTest >> assertTonelWriterModel [
 
 	self
@@ -31,9 +29,7 @@ TonelWriterTest >> assertTonelWriterModel [
 		deny: (self fileSystem files includesKey: '\TonelWriterModel\TonelWriter.extension.st')
 ]
 
-{
-	#category : 'Tests - Support'
-}
+{ #category : 'Tests - Support' }
 TonelWriterTest >> assertTonelWriterModelOnPath: aPath [
 
 	self
@@ -60,9 +56,7 @@ TonelWriterTest >> assertTonelWriterModelOnPath: aPath [
 		deny: (self fileSystem includes: aPath , '\TonelWriterModel\TonelWriter.extension.st')
 ]
 
-{
-	#category : 'Tests - Support'
-}
+{ #category : 'Tests - Support' }
 TonelWriterTest >> assertTonelWriterTestOnPath: aPath [
 
 	self
@@ -196,18 +190,14 @@ TonelWriterTest >> assertTonelWriterTestOnPath: aPath [
 	self deny: (self fileSystem includes: aPath , '\TonelWriterTests\TonelWriter.class.st')
 ]
 
-{
-	#category : 'Initialization'
-}
+{ #category : 'Initialization' }
 TonelWriterTest >> setUp [
 
 	super setUp.
 	self writer: (TonelWriter on: self fileSystem)
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelWriterTest >> testShadowApplications [
 
 	self writer writeApplication: TonelWriterTests into: self directoryForTestingPath.
@@ -249,10 +239,8 @@ TonelShadowMockJ >> shadowMethodForTest [
 	#name : ''Object''
 }
 
-{
-	#category : ''*TonelWriterTestShadowSubSubApp'',
-	#vaCategories : [''Not categorized'']
-}
+{ #category : ''*TonelWriterTestShadowSubSubApp'',
+  #vaCategories : [''Not categorized''] }
 Object >> shadowSubSubExtensionForTest [
 
 	^''shadow sub sub Method extension for testing TonelWriter''
@@ -260,9 +248,7 @@ Object >> shadowSubSubExtensionForTest [
 '.
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelWriterTest >> testShadowSubApplications [
 
 	self writer writeApplication: TonelWriterTests into: self directoryForTestingPath.
@@ -315,9 +301,7 @@ Object >> shadowSubSubSubExtensionForTest [
 '.
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelWriterTest >> testWriteApplication [
 
 	self writer writeApplication: TonelWriterModel into: self directoryForTestingPath.
@@ -325,18 +309,14 @@ TonelWriterTest >> testWriteApplication [
 
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelWriterTest >> testWriteApplicationWithExtensionsSubappsAndShadows [
 
 	self writer writeApplication: TonelWriterTests into: self directoryForTestingPath.
 	self assertTonelWriterTestOnPath: ''.
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelWriterTest >> testWriteProject [
 
 	self writer

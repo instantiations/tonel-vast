@@ -8,9 +8,7 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'Initializing'
-}
+{ #category : 'Initializing' }
 TonelMockPool class >> initialize [
 	TMMx01 := 'Sample Pool Element'.
 

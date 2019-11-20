@@ -10,26 +10,20 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{
-	#category : 'Instance Creation'
-}
+{ #category : 'Instance Creation' }
 TonelClassExtensionWriter class >> writingOn: aFileSystem into: aPackageDirectory lineDelimiter: aLineDelimiter [
 
 	^self new initializeWritingOn: aFileSystem into: aPackageDirectory lineDelimiter: aLineDelimiter
 ]
 
-{
-	#category : 'Utility',
-	#vaVisibility : 'private'
-}
+{ #category : 'Utility',
+  #vaVisibility : 'private' }
 TonelClassExtensionWriter >> filePathFor: aClassExtensionDefinition [
 
 	^filePath append: aClassExtensionDefinition fileName
 ]
 
-{
-	#category : 'Initialization'
-}
+{ #category : 'Initialization' }
 TonelClassExtensionWriter >> initializeWritingOn: aFileSystem into: aPackageDirectory lineDelimiter: aLineDelimiter [
 
 	fileSystem := aFileSystem.
@@ -38,10 +32,8 @@ TonelClassExtensionWriter >> initializeWritingOn: aFileSystem into: aPackageDire
 	methodWriter := TonelMethodWriter with: lineDelimiter
 ]
 
-{
-	#category : 'Utility',
-	#vaVisibility : 'private'
-}
+{ #category : 'Utility',
+  #vaVisibility : 'private' }
 TonelClassExtensionWriter >> withStreamOn: aFilePath do: aBlock [
 
 	fileSystem
@@ -49,9 +41,7 @@ TonelClassExtensionWriter >> withStreamOn: aFilePath do: aBlock [
 		during: [:writeStream | aBlock value: (TonelUTF8StreamWriterWrapper wrapping: writeStream)]
 ]
 
-{
-	#category : 'Writing'
-}
+{ #category : 'Writing' }
 TonelClassExtensionWriter >> write: aClassExtensionDefinition [
 
 	filePath exists ifFalse: [filePath realize].
@@ -60,10 +50,8 @@ TonelClassExtensionWriter >> write: aClassExtensionDefinition [
 		do: [:writeStream | self write: aClassExtensionDefinition on: writeStream]
 ]
 
-{
-	#category : 'Writing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Writing',
+  #vaVisibility : 'private' }
 TonelClassExtensionWriter >> write: aClassExtensionDefinition on: aWriteStream [
 
 	^self
@@ -72,20 +60,16 @@ TonelClassExtensionWriter >> write: aClassExtensionDefinition on: aWriteStream [
 		writeInstanceMethodsOf: aClassExtensionDefinition on: aWriteStream
 ]
 
-{
-	#category : 'Writing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Writing',
+  #vaVisibility : 'private' }
 TonelClassExtensionWriter >> writeClassMethodsOf: aClassExtensionDefinition on: aWriteStream [
 
 	aClassExtensionDefinition withClassMethodDefinitionsDo: [:methodDefition |
 		methodWriter write: methodDefition on: aWriteStream]
 ]
 
-{
-	#category : 'Writing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Writing',
+  #vaVisibility : 'private' }
 TonelClassExtensionWriter >> writeDefinitionOf: aClassExtensionDefinition on: aWriteStream [
 
 	aWriteStream << 'Extension {' << lineDelimiter << Character tab << '#name : ' <<
@@ -93,10 +77,8 @@ TonelClassExtensionWriter >> writeDefinitionOf: aClassExtensionDefinition on: aW
 		lineDelimiter
 ]
 
-{
-	#category : 'Writing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Writing',
+  #vaVisibility : 'private' }
 TonelClassExtensionWriter >> writeInstanceMethodsOf: aClassExtensionDefinition on: aWriteStream [
 
 	aClassExtensionDefinition withInstanceMethodDefinitionsDo: [:methodDefition |

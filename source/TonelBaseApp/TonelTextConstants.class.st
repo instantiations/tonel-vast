@@ -37,9 +37,7 @@ Class {
 	#category : 'TonelBaseApp'
 }
 
-{
-	#category : 'Initializing'
-}
+{ #category : 'Initializing' }
 TonelTextConstants class >> initialize [
 	TonelMsg01 := 'Import Applications from Tonel packages...'.
 	TonelMsg02 := 'Export Applications as Tonel packages...'.

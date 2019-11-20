@@ -9,9 +9,7 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'Initializing'
-}
+{ #category : 'Initializing' }
 TonelTestsConstants class >> initialize [
 	Constant1 := 1.
 	Constant2 := 2.

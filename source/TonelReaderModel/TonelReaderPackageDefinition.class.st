@@ -10,28 +10,22 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'constants'
-}
+{ #category : 'constants' }
 TonelReaderPackageDefinition class >> definitionType [
 
 	^'Package'
 ]
 
-{
-	#category : 'operations',
-	#vaVisibility : 'private'
-}
+{ #category : 'operations',
+  #vaVisibility : 'private' }
 TonelReaderPackageDefinition >> addClassDefinition: aTonelReaderClassDefinition withAll: anArray [
 
 
 	self classDefinitions at: aTonelReaderClassDefinition put: anArray
 ]
 
-{
-	#category : 'operations',
-	#vaVisibility : 'private'
-}
+{ #category : 'operations',
+  #vaVisibility : 'private' }
 TonelReaderPackageDefinition >> addExtension: aTonelReaderClassExtensionDefinition withAll: anArray [
 
 
@@ -39,51 +33,39 @@ TonelReaderPackageDefinition >> addExtension: aTonelReaderClassExtensionDefiniti
 	
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderPackageDefinition >> appName [
 
 	^self name copyWithout: $-
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderPackageDefinition >> classDefinitions [
 
 	^classDefinitions ifNil: [classDefinitions := Dictionary new]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderPackageDefinition >> definedClasses [
 
 	^self classDefinitions keys
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderPackageDefinition >> extendedClasses [
 	"Enter the new method definition below and click 'Resume'."
 	
 	^self extensions keys copy
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderPackageDefinition >> extensions [
 
 	^extensions ifNil: [extensions := Dictionary new]
 ]
 
-{
-	#category : 'initializing',
-	#vaVisibility : 'private'
-}
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
 TonelReaderPackageDefinition >> initializeFromMetadata: aDictionary [
 
 	| dialectMetadata |
@@ -102,16 +84,12 @@ TonelReaderPackageDefinition >> initializeFromMetadata: aDictionary [
 
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderPackageDefinition >> metadata [
 	^metadata ifNil: [metadata := Dictionary new]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderPackageDefinition >> parent [
 	^self metadata at: #vaParent ifAbsent: [nil]
 ]

@@ -10,24 +10,18 @@ Class {
 	#category : 'TonelReaderTests'
 }
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelMock class >> classMethod [
 	^ 8
 ]
 
-{
-	#category : 'instance creation'
-}
+{ #category : 'instance creation' }
 TonelMock class >> new [
 
 	^super new initialize
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelMock >> instanceMethod [
 	^ true
 ]

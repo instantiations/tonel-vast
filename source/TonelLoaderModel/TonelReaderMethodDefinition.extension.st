@@ -2,10 +2,8 @@ Extension {
 	#name : 'TonelReaderMethodDefinition'
 }
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Static Methods']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Static Methods'] }
 TonelReaderMethodDefinition class >> failedRemoveMethodFor: nameString [
 
 	^ (self 
@@ -20,11 +18,9 @@ TonelReaderMethodDefinition class >> failedRemoveMethodFor: nameString [
 		
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Static Methods'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Static Methods'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition class >> failedRemoveSource [
 
 	^ 'failedRemove
@@ -32,10 +28,8 @@ TonelReaderMethodDefinition class >> failedRemoveSource [
 	self loaded'  "$NON-NLS$"
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Static Methods']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Static Methods'] }
 TonelReaderMethodDefinition class >> loadedMethodFor: nameString [
 
 	^ (self 
@@ -50,11 +44,9 @@ TonelReaderMethodDefinition class >> loadedMethodFor: nameString [
 		
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Static Methods'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Static Methods'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition class >> loadedSource [
 
 	^ 'loaded
@@ -64,10 +56,8 @@ TonelReaderMethodDefinition class >> loadedSource [
 		(aClass class includesSelector: #initializeOnLoad) ifTrue: [ aClass initializeOnLoad ] ]'	"$NON-NLS$"
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Static Methods']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Static Methods'] }
 TonelReaderMethodDefinition class >> newInitializeMethodFor: nameString [
 
 	^ (self 
@@ -82,11 +72,9 @@ TonelReaderMethodDefinition class >> newInitializeMethodFor: nameString [
 		
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Static Methods'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Static Methods'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition class >> newInitializeSource [
 
 	^ 'new
@@ -94,10 +82,8 @@ TonelReaderMethodDefinition class >> newInitializeSource [
 	^super new initialize'	"$NON-NLS$"
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Static Methods']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Static Methods'] }
 TonelReaderMethodDefinition class >> removingMethodFor: nameString [
 
 	^ (self 
@@ -112,11 +98,9 @@ TonelReaderMethodDefinition class >> removingMethodFor: nameString [
 		
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Static Methods'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Static Methods'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition class >> removingSource [
 
 	^ 'removing
@@ -126,11 +110,9 @@ TonelReaderMethodDefinition class >> removingSource [
 		(aClass class includesSelector: #unload) ifTrue: [ aClass unload ] ]'	"$NON-NLS$"
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Loading-Internal'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Loading-Internal'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition >> commentedSource [
 	
 	^ String streamContents: [ :outStream | | inStream |
@@ -149,20 +131,16 @@ TonelReaderMethodDefinition >> commentedSource [
 			tab; nextPutAll: TonelMsg17 ]  "$NLS$ ^ self halt: 'The source for this method failed to compile'"
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Loading-Internal'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Loading-Internal'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition >> hasChangesIn: aClass [
 	^(self isUnchangedIn: aClass) not
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Loading-Internal'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Loading-Internal'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition >> hasSourceChangesIn: aClass [
 	| aMethod |
 
@@ -176,11 +154,9 @@ TonelReaderMethodDefinition >> hasSourceChangesIn: aClass [
 					aMethod sourceString = self commentedSource]) not]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['testing'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition >> isUnchangedIn: aClass [
 
 	| aMethod |
@@ -197,11 +173,9 @@ TonelReaderMethodDefinition >> isUnchangedIn: aClass [
 							aMethod sourceString = self commentedSource ] ] ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Loading-Internal'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Loading-Internal'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition >> loadFailedFor: aClass into: anApp [
 
 	(aClass
@@ -218,10 +192,8 @@ TonelReaderMethodDefinition >> loadFailedFor: aClass into: anApp [
 	^nil
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Loading'] }
 TonelReaderMethodDefinition >> loadFor: aClass into: anApp [
 	(self hasChangesIn: aClass)
 		ifTrue: [ "Recompile if the source has changed"
@@ -244,11 +216,9 @@ TonelReaderMethodDefinition >> loadFor: aClass into: anApp [
 				in: self categories]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Loading-Internal'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Loading-Internal'],
+  #vaVisibility : 'private' }
 TonelReaderMethodDefinition >> onSideClass: aClass [
 	^self isClassSide
 		ifTrue: [aClass class]

@@ -14,67 +14,51 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelMockA class >> classVar [
 
 	ClassVar := 1
 ]
 
-{
-	#category : 'Testing'
-}
+{ #category : 'Testing' }
 TonelMockA class >> isTonelMock [
 
 	^true
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelMockA >> denominator [
 
 	^denominator
 ]
 
-{
-	#category : 'Private',
-	#vaVisibility : 'private'
-}
+{ #category : 'Private',
+  #vaVisibility : 'private' }
 TonelMockA >> privateMethod [
 
 	^'privateMethod'
 ]
 
-{
-	#category : 'Evaluating'
-}
+{ #category : 'Evaluating' }
 TonelMockA >> value [
 
 	^numerator / denominator
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelMockA >> withComment [
 	"This is a mock method being used within the tests of Tonel"
 
 	^'Method with comment'
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelMockA >> withDenominatorDo: aDyadicBlock [
 
 	^aDyadicBlock value: denominator
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelMockA >> withLocalVariable [
 
 	| localVariable |
@@ -84,9 +68,7 @@ TonelMockA >> withLocalVariable [
 	^localVariable
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelMockA >> withModeThanOneLine [
 
 	^(self value > 4) 
@@ -94,10 +76,8 @@ TonelMockA >> withModeThanOneLine [
 		ifFalse: [numerator]
 ]
 
-{
-	#category : 'Accessing',
-	#vaCategories : ['Accessing','Evaluating','Private']
-}
+{ #category : 'Accessing',
+ #vaCategories : ['Accessing','Evaluating','Private'] }
 TonelMockA >> withMultipleCategories [
 
 	^ 'withMultipleCategories'

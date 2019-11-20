@@ -4,9 +4,7 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefaultInitializationMethodDefinition >> methodBody [
 	| stream |
 	stream := WriteStream on: String new.
@@ -17,18 +15,14 @@ TonelWriterSharedPoolDefaultInitializationMethodDefinition >> methodBody [
 	^stream contents
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefaultInitializationMethodDefinition >> methodDeclaration [
 
 	^'initialize'
 ]
 
-{
-	#category : 'accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
 TonelWriterSharedPoolDefaultInitializationMethodDefinition >> poolDeclarations [
 
 	^self definitionClass poolDeclarations
@@ -36,10 +30,8 @@ TonelWriterSharedPoolDefaultInitializationMethodDefinition >> poolDeclarations [
 
 ]
 
-{
-	#category : 'accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
 TonelWriterSharedPoolDefaultInitializationMethodDefinition >> writeDeclaration: declaration on: stream [
 
 	^stream

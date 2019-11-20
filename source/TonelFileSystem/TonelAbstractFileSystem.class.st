@@ -4,17 +4,13 @@ Class {
 	#category : 'TonelFileSystem'
 }
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelAbstractFileSystem >> createAppendStreamOn: aFilePath [
 
 	^self subclassResponsibility
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelAbstractFileSystem >> createAppendStreamOn: filePath during: aOneArgBlock [
 
 	| appendStream |
@@ -23,26 +19,20 @@ TonelAbstractFileSystem >> createAppendStreamOn: filePath during: aOneArgBlock [
 	^[aOneArgBlock value: appendStream] ensure: [appendStream close]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelAbstractFileSystem >> createReadStreamOn: aFilePath [
 
 	^self subclassResponsibility
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelAbstractFileSystem >> createReadStreamOn: aFilePath do: aBlock [
 	| stream |
 	stream := self createReadStreamOn: aFilePath.
 	^[aBlock value: stream] ensure: [stream close]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelAbstractFileSystem >> createWriteStreamOn: filePath during: aOneArgBlock [
 
 	| appendStream |
@@ -51,9 +41,7 @@ TonelAbstractFileSystem >> createWriteStreamOn: filePath during: aOneArgBlock [
 	^[aOneArgBlock value: appendStream] ensure: [appendStream close]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelAbstractFileSystem >> recursivelyRemoveWithAllFiles: aFilePath [
 
 	^self subclassResponsibility

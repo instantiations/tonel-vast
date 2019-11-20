@@ -2,10 +2,8 @@ Extension {
 	#name : 'TonelReaderClassDefinition'
 }
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Initialize-Release']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Initialize-Release'] }
 TonelReaderClassDefinition class >> appNamed: aString [
 	
 	^ (self
@@ -20,10 +18,8 @@ TonelReaderClassDefinition class >> appNamed: aString [
 			yourself
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['Initialize-Release']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Initialize-Release'] }
 TonelReaderClassDefinition class >> subAppNamed: aString [
 	
 	^ (self
@@ -38,11 +34,9 @@ TonelReaderClassDefinition class >> subAppNamed: aString [
 			yourself
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> addSubAppMethods [
 	self 
 		addMethod: (TonelReaderMethodDefinition loadedMethodFor: self name);
@@ -50,11 +44,9 @@ TonelReaderClassDefinition >> addSubAppMethods [
 		addMethod: (TonelReaderMethodDefinition failedRemoveMethodFor: self name)
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-pools'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-pools'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> amendSharedPoolClass [
 
 	isSharedPool :=
@@ -70,11 +62,9 @@ TonelReaderClassDefinition >> amendSharedPoolClass [
 			ifFalse: [ false ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['testing'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> classCommentChangesIn: aClass [
 	"Class extensions cannot supply a new class comment."
 	
@@ -82,21 +72,17 @@ TonelReaderClassDefinition >> classCommentChangesIn: aClass [
 		and: [ self classComment ~= aClass comment ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> concreteClassIn: anApp [
 
 	^anApp defined detect: [:ea | ea name = self identifier] ifNone: []
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> createDefinedIn: anApp [
 
 	(Smalltalk classAt: self identifier) notNil
@@ -116,10 +102,8 @@ TonelReaderClassDefinition >> createDefinedIn: anApp [
 					sharedPoolString: '' ]  "$NON-NLS$"
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderClassDefinition >> createEditionIn: anApp [
 
 	| baseClass |
@@ -132,32 +116,26 @@ TonelReaderClassDefinition >> createEditionIn: anApp [
 					ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> createExtendedIn: anApp [
 	EmInterface current
 		extend: (Smalltalk classAt: self identifier)
 		in: anApp
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> createIn: anApp [
 	
 	self createDefinedIn: anApp
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-pools'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-pools'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> createPragmaMethod [
 
 	self addMethod: (
@@ -172,20 +150,16 @@ TonelReaderClassDefinition >> createPragmaMethod [
 	classVariables := '' "$NON-NLS$"
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-pools'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-pools'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> createSharedPoolInitializerMethodFor: aTonelMethod [
 
 	^('_SHAREDPOOL_' , self identifier , '_' , aTonelMethod selector) asSymbol
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-pools']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-pools'] }
 TonelReaderClassDefinition >> declarePoolDictionariesIn: anApp [
 
 	(tonelMethods select: [:each | each isDeclaration]) do: [:aTonelMethod | 
@@ -194,10 +168,8 @@ TonelReaderClassDefinition >> declarePoolDictionariesIn: anApp [
 	].
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-pools']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-pools'] }
 TonelReaderClassDefinition >> definePoolDictionariesIn: anApp [
 
 	self isSharedPool 
@@ -213,10 +185,8 @@ TonelReaderClassDefinition >> definePoolDictionariesIn: anApp [
 					anApp perform: selector]]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['testing']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'] }
 TonelReaderClassDefinition >> hasChangesIn: anApp [
 
 	^hasChanges ifNil: [| baseClass |
@@ -225,11 +195,9 @@ TonelReaderClassDefinition >> hasChangesIn: anApp [
 				or: [self hasChangesIn: anApp comparedTo: baseClass]]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['testing'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> hasChangesIn: anApp comparedTo: aClass [
 	^ (self superclassChangeIn: aClass)
 		or: [ (self methodChangesIn: aClass) notEmpty
@@ -238,11 +206,9 @@ TonelReaderClassDefinition >> hasChangesIn: anApp comparedTo: aClass [
 					or: [ self hasMethodsRemovedFrom: aClass in: anApp ] ] ] ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> moveDefinedInto: anApp [
 	| aClass |
 	aClass := Smalltalk classAt: self identifier.
@@ -251,10 +217,8 @@ TonelReaderClassDefinition >> moveDefinedInto: anApp [
 	
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-pools']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-pools'] }
 TonelReaderClassDefinition >> poolInitializationMethods [
 	"It is assumed that SharedPool initialization methods are unary and in the class side.
 	 Usually a class side #initialize, but could also be something like #initializeConstants."
@@ -262,11 +226,9 @@ TonelReaderClassDefinition >> poolInitializationMethods [
 	^tonelMethods reject: [:each | each isDeclaration or: [each isClassSide not and: [each selector isUnary not]]]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-pools'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-pools'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> pragmaSourceFromClassVariables [
 
 	^String streamContents: [:sourceStream |
@@ -297,20 +259,16 @@ TonelReaderClassDefinition >> pragmaSourceFromClassVariables [
 
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> superclassChangeIn: aClass [
 	^self extension not
 		and: [(self superclassIdentifier = aClass superclass name) not]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['comparing']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['comparing'] }
 TonelReaderClassDefinition >> tonelTopologicalSubordinateOf: aTonelLoaderClass [
 	"This method will return true if the current TonelLoaderClass is a 
 	  subclass or extension of aTonelLoaderClass."
@@ -321,11 +279,9 @@ TonelReaderClassDefinition >> tonelTopologicalSubordinateOf: aTonelLoaderClass [
 				self name = aTonelLoaderClass name]]]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> updateCommentIn: anApp [
 	"If the receiver represents a class definition, then update the
 	 class comment if it has changed."
@@ -336,10 +292,8 @@ TonelReaderClassDefinition >> updateCommentIn: anApp [
 			ifFalse: [ concreteClass comment: self classComment ] ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderClassDefinition >> updateVariables [
 
 	| aClass |
@@ -361,11 +315,9 @@ TonelReaderClassDefinition >> updateVariables [
 
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> variableChangesIn: aClass [
 
 	^ self extension not

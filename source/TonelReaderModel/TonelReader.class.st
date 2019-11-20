@@ -10,28 +10,22 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'Instance Creation'
-}
+{ #category : 'Instance Creation' }
 TonelReader class >> new [
 
 	^self on: TonelCfsFileSystem new
 	
 ]
 
-{
-	#category : 'Instance Creation'
-}
+{ #category : 'Instance Creation' }
 TonelReader class >> on: aFileSystem [
 
 	^super new initializeOn: aFileSystem
 	
 ]
 
-{
-	#category : 'Reading - Project',
-	#vaVisibility : 'private'
-}
+{ #category : 'Reading - Project',
+  #vaVisibility : 'private' }
 TonelReader >> addContentFrom: filePath toPackage: package [
 
 	filePath readStreamDo: [:aStream | | result |
@@ -39,18 +33,14 @@ TonelReader >> addContentFrom: filePath toPackage: package [
 		result first addToPackage: package withAll: (result size > 1 ifTrue: [result copyFrom: 2 to: result size] ifFalse: [Array new])]
 ]
 
-{
-	#category : 'Accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Accessing',
+  #vaVisibility : 'private' }
 TonelReader >> addPackage: aPackageDefinition [
 
 	^self packages add: aPackageDefinition
 ]
 
-{
-	#category : 'Reading - Project'
-}
+{ #category : 'Reading - Project' }
 TonelReader >> computeSourceDirFrom: aPath [
 
 	^(self readSourceDirectoryNameFrom: aPath) 
@@ -58,17 +48,13 @@ TonelReader >> computeSourceDirFrom: aPath [
 		ifNotNil: [:dir | aPath append: dir]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelReader >> defaultSourceDirectory [
 	^'.'
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelReader >> initializeOn: aFileSystem [
 
 	fileSystem := aFileSystem.
@@ -76,63 +62,49 @@ TonelReader >> initializeOn: aFileSystem [
 	
 ]
 
-{
-	#category : 'Not categorized',
-	#vaVisibility : 'private'
-}
+{ #category : 'Not categorized',
+  #vaVisibility : 'private' }
 TonelReader >> lookupPackage: aPackageDefinition ifNone: aBlock [
 
 	^self lookupPackageNamed: aPackageDefinition name ifNone: aBlock
 ]
 
-{
-	#category : 'Not categorized',
-	#vaVisibility : 'private'
-}
+{ #category : 'Not categorized',
+  #vaVisibility : 'private' }
 TonelReader >> lookupPackageNamed: aString [
 
 	^self packages detect: [:each | each name = aString] ifNone: [self packages errorNotFound]
 ]
 
-{
-	#category : 'Not categorized',
-	#vaVisibility : 'private'
-}
+{ #category : 'Not categorized',
+  #vaVisibility : 'private' }
 TonelReader >> lookupPackageNamed: aString ifNone: aBlock [
 	^self packages detect: [:each | each name = aString] ifNone: aBlock
 ]
 
-{
-	#category : 'Accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Accessing',
+  #vaVisibility : 'private' }
 TonelReader >> packageFrom: aPackageDefinition [
 
 	^(self lookupPackage: aPackageDefinition ifNone: [self addPackage: aPackageDefinition]) 
 ]
 
-{
-	#category : 'Accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Accessing',
+  #vaVisibility : 'private' }
 TonelReader >> packages [
 
 	^packages ifNil: [	packages := OrderedCollection new]
 ]
 
-{
-	#category : 'Reading - Project',
-	#vaVisibility : 'private'
-}
+{ #category : 'Reading - Project',
+  #vaVisibility : 'private' }
 TonelReader >> readPackageDirectories: aCollection [
 
 	aCollection do: [:each | self readPackageFrom: each]
 ]
 
-{
-	#category : 'Reading - Project',
-	#vaVisibility : 'private'
-}
+{ #category : 'Reading - Project',
+  #vaVisibility : 'private' }
 TonelReader >> readPackageFileFrom: packageDirectory [
 
 	| package |
@@ -148,10 +120,8 @@ TonelReader >> readPackageFileFrom: packageDirectory [
 
 ]
 
-{
-	#category : 'Reading - Project',
-	#vaVisibility : 'private'
-}
+{ #category : 'Reading - Project',
+  #vaVisibility : 'private' }
 TonelReader >> readPackageFrom: packageDirectory [
 
 	| package |
@@ -165,9 +135,7 @@ TonelReader >> readPackageFrom: packageDirectory [
 					self addContentFrom: filePath toPackage: package]]
 ]
 
-{
-	#category : 'Reading - Project'
-}
+{ #category : 'Reading - Project' }
 TonelReader >> readPackages: aCollection fromSourceDir: sourceDirPath [
 
 	| packagesDirectories |
@@ -177,9 +145,7 @@ TonelReader >> readPackages: aCollection fromSourceDir: sourceDirPath [
 	self readPackageDirectories: packagesDirectories
 ]
 
-{
-	#category : 'Reading - Project'
-}
+{ #category : 'Reading - Project' }
 TonelReader >> readPackagesFrom: aPath [
 
 	| sourceDirectory |
@@ -188,9 +154,7 @@ TonelReader >> readPackagesFrom: aPath [
 	self readPackages: nil fromSourceDir: sourceDirectory
 ]
 
-{
-	#category : 'Reading - Project'
-}
+{ #category : 'Reading - Project' }
 TonelReader >> readSourceDirectoryNameFrom: aPath [
 
 	| projectPropertiesPath sourceDirectoryName |
@@ -209,10 +173,8 @@ TonelReader >> readSourceDirectoryNameFrom: aPath [
 	^sourceDirectoryName
 ]
 
-{
-	#category : 'Reading - Project',
-	#vaVisibility : 'private'
-}
+{ #category : 'Reading - Project',
+  #vaVisibility : 'private' }
 TonelReader >> readSourcePropertiesFrom: aSourceDirPath [
 
 	| sourcePropertiesPath |
@@ -232,18 +194,14 @@ TonelReader >> readSourcePropertiesFrom: aSourceDirPath [
 			format asSymbol = #tonel ifFalse: [self error: 'The format specified on .properties must be Tonel']]
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelReader >> repositoryPath [
 
 	^repositoryPath
 ]
 
-{
-	#category : 'Reading - Project',
-	#vaVisibility : 'private'
-}
+{ #category : 'Reading - Project',
+  #vaVisibility : 'private' }
 TonelReader >> validateDirectory: aSourceDirectory [
 
 	aSourceDirectory exists ifFalse: [self error:( ('Source directory <1p> does not exist.') expandMacrosWith: aSourceDirectory)]

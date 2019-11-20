@@ -7,9 +7,7 @@ Class {
 	#category : 'TonelFileSystem'
 }
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> assertIsDirectory: aFilePath [
 
 	(self isDirectory: aFilePath) ifTrue: [^self].
@@ -17,25 +15,19 @@ TonelCfsFileSystem >> assertIsDirectory: aFilePath [
 
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> cfsPathFrom: aFilePath [
 
 	^CfsPath named: aFilePath
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> contentsOfFileAt: aFilePath [
 
 	^self createReadStreamOn: aFilePath during: [:readStream | readStream contents]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> createAppendStreamOn: aFilePath [
 
 	^self
@@ -48,9 +40,7 @@ TonelCfsFileSystem >> createAppendStreamOn: aFilePath [
 					with: errorMessage asString)]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> createReadStreamOn: aFilePath [
 
 	| stream |
@@ -60,9 +50,7 @@ TonelCfsFileSystem >> createReadStreamOn: aFilePath [
 		ifFalse: [stream]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> createReadStreamOn: aFilePath during: aOneArgBlock [
 
 	| readStream |
@@ -71,9 +59,7 @@ TonelCfsFileSystem >> createReadStreamOn: aFilePath during: aOneArgBlock [
 	^[aOneArgBlock value: readStream] ensure: [readStream close]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> createWriteStreamOn: aFilePath [
 
 	^self
@@ -83,26 +69,20 @@ TonelCfsFileSystem >> createWriteStreamOn: aFilePath [
 			self error: 'Cannot open write file stream: ' , aFilePath , ' error: ' , errorMessage]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> fileNamesInDirectoryAt: aFilePath [
 
 	^((self cfsPathFrom: aFilePath) filesMatching: '*')
 		reject: [:filePathString | (CfsPath named: filePathString) isDirectory]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> includes: aFilePath [
 
 	^(self cfsPathFrom: aFilePath) exists
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> isDirectory: aFilePath [
 
 	| directoryDescriptor filePathString |
@@ -116,10 +96,8 @@ TonelCfsFileSystem >> isDirectory: aFilePath [
 		true]
 ]
 
-{
-	#category : 'Not categorized',
-	#vaVisibility : 'private'
-}
+{ #category : 'Not categorized',
+  #vaVisibility : 'private' }
 TonelCfsFileSystem >> open: path withFlags: flags ifUnable: aOneArgBlock [
 
 	| streamOrCfsError |
@@ -131,17 +109,13 @@ TonelCfsFileSystem >> open: path withFlags: flags ifUnable: aOneArgBlock [
 		ifFalse: [streamOrCfsError]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> pathnameFrom: aString [
 
 	^aString asPath
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> recursivelyRemoveWithAllFiles: aFilePath [
 
 	| result |
@@ -155,9 +129,7 @@ TonelCfsFileSystem >> recursivelyRemoveWithAllFiles: aFilePath [
 					result message]
 ]
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelCfsFileSystem >> subDirectoriesOf: aFilePath [
 
 	| path |

@@ -4,17 +4,13 @@ Class {
 	#category : 'TonelReaderTests'
 }
 
-{
-	#category : 'instance creation'
-}
+{ #category : 'instance creation' }
 TonelSourceScannerTest class >> new [
 
 	^super new initialize
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelSourceScannerTest >> testScan [
 
 	| scanner |
@@ -40,9 +36,7 @@ TonelSourceScannerTest >> testScan [
 		yourself'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelSourceScannerTest >> testScanForComment [
 	| scanner |
 	scanner := TonelSourceScanner on: '""' readStream.
@@ -87,9 +81,7 @@ comment"'.
 		equals: '"simple comment with colons at the end"""'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelSourceScannerTest >> testScanForLiteralArray [
 	| scanner |
 	scanner := TonelSourceScanner on: '#()' readStream.
@@ -137,9 +129,7 @@ TonelSourceScannerTest >> testScanForLiteralArray [
 		equals: '#(a (b c))'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelSourceScannerTest >> testScanForString [
 	| scanner |
 	scanner := TonelSourceScanner on: '''-.*$''' readStream.
@@ -199,9 +189,7 @@ string'''.
 		equals: '''simple string with colons at the end'''''
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelSourceScannerTest >> testScanMethodWithLotsOfSpecials [
 
 	| scanner |
@@ -255,9 +243,7 @@ TonelSourceScannerTest >> testScanMethodWithLotsOfSpecials [
 	^ self scanError: ''Expecting a literal type'''
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelSourceScannerTest >> testScanMethodWithParserErrors [
 	| scanner |
 	scanner := TonelSourceScanner
@@ -270,9 +256,7 @@ TonelSourceScannerTest >> testScanMethodWithParserErrors [
 			'#(#(''self foo. + 3'' 11) #(''#('' 3) #(''self 0'' 6) #(''self asdf;;asfd'' 11))'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelSourceScannerTest >> testScanMethodWithTerminatingBrackets [
 	| scanner |
 	scanner := TonelSourceScanner on: '[[''-.*$'']]' readStream.

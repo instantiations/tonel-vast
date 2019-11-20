@@ -1,16 +1,10 @@
 Class {
 	#name : 'TonelWriterClassDefinition',
-	#superclass : 'Object',
-	#instVars : [
-		'class',
-		'application'
-	],
+	#superclass : 'TonelWriterAbstractClassDefinition',
 	#category : 'TonelWriterModel'
 }
 
-{
-	#category : 'Instance Creation'
-}
+{ #category : 'Instance Creation' }
 TonelWriterClassDefinition class >> of: aClass definedIn: anApplication [
 
 	| inst |
@@ -19,118 +13,70 @@ TonelWriterClassDefinition class >> of: aClass definedIn: anApplication [
 	^inst initializeOf: aClass definedIn: anApplication
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> applicationName [
 
 	^application asString
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> classInstanceVariableNames [
 
 	^class class instVarNames
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> classVariableNames [
 
 	^class classVarNames
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> definedClassName [
 
 	^class name
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> definedClassSuperclassName [
 
 	^class superclass ifNil: [#nil] ifNotNil: [class superclass name]
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> definitionRecord [
 
 	^class definitionRecord
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> fileName [
 
 	^'<1s>.class.st' expandMacrosWith: class asString
 ]
 
-{
-	#category : 'Printing',
-	#vaVisibility : 'private'
-}
-TonelWriterClassDefinition >> formattedCategoryOf: selector in: aClassOrMetaclass [
-
-	| category |
-
-	category := (aClassOrMetaclass categoriesFor: selector) asSortedCollection first.
-
-	^String streamContents: [:stream |
-		stream
-			nextPut: $';
-			nextPutAll: category;
-			nextPut: $']
-]
-
-{
-	#category : 'Defaults'
-}
+{ #category : 'Defaults' }
 TonelWriterClassDefinition >> hasDefaultSubclassType [
 
 	^self subclassType asString = 'pointers'
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelWriterClassDefinition >> initializeOf: aClass definedIn: anApplication [
 
 	class := aClass.
 	application := anApplication
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> instanceVariableNames [
 
 	^class instVarNames
 ]
 
-{
-	#category : 'Accessing'
-}
-TonelWriterClassDefinition >> isTonelSpecialSelector: aSymbol [
-	"Answer whether aSymbol matches a method used for compatibility or utility in Tonel."
-	
-	^'_SHAREDPOOL_*' match: aSymbol
-]
-
-{
-	#category : 'Accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Accessing',
+  #vaVisibility : 'private' }
 TonelWriterClassDefinition >> methodDefinitionsOf: aClassOrMetaclass [
 
 	^((aClassOrMetaclass allSelectorsFor: aClassOrMetaclass controller) 
@@ -142,9 +88,7 @@ TonelWriterClassDefinition >> methodDefinitionsOf: aClassOrMetaclass [
 					categorizedAs: (self formattedCategoryOf: selector in: aClassOrMetaclass)]
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> poolNames [
 
 	^class = application
@@ -158,25 +102,25 @@ TonelWriterClassDefinition >> poolNames [
 		ifFalse: [class sharedPoolNames]
 ]
 
-{
-	#category : 'Printing'
-}
+{ #category : 'Printing' }
 TonelWriterClassDefinition >> printOn: aStream [
 
 	aStream nextPutAll: ('Tonel class definition of <1p>' expandMacrosWith: class)
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> subclassType [
 
 	^self definitionRecord tonelKindOfSubclass
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
+TonelWriterClassDefinition >> tonelPackageName [
+
+	^application tonelPackageName
+]
+
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> withClassMethodDefinitionsDo: aBlock [
 
 	self
@@ -184,26 +128,20 @@ TonelWriterClassDefinition >> withClassMethodDefinitionsDo: aBlock [
 		do: [:methodDefinition | aBlock value: methodDefinition]
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> withFormattedCommentDo: aBlock [
 
 	class comment notEmpty ifTrue: [aBlock value: (class comment copyReplaceAll: '"' with: '""')]
 ]
 
-{
-	#category : 'Accessing'
-}
+{ #category : 'Accessing' }
 TonelWriterClassDefinition >> withInstanceMethodDefinitionsDo: aBlock [
 
 	self withMethodDefinitionsOf: class do: [:methodDefinition | aBlock value: methodDefinition]
 ]
 
-{
-	#category : 'Accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'Accessing',
+  #vaVisibility : 'private' }
 TonelWriterClassDefinition >> withMethodDefinitionsOf: aClassOrMetaclass do: aBlock [
 
 	(self methodDefinitionsOf: aClassOrMetaclass)

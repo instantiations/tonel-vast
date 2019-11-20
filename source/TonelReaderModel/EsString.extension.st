@@ -2,10 +2,8 @@ Extension {
 	#name : 'EsString'
 }
 
-{
-	#category : '*TonelReaderModel',
-	#vaCategories : ['Not categorized']
-}
+{ #category : '*TonelReaderModel',
+ #vaCategories : ['Not categorized'] }
 EsString >> lineIndicesDo: aBlock [
 	"execute aBlock with 3 arguments for each line:
 	- start index of line
@@ -41,10 +39,8 @@ EsString >> lineIndicesDo: aBlock [
 					nextCR := self indexOf: cr startingAt: start ]]]
 ]
 
-{
-	#category : '*TonelReaderModel',
-	#vaCategories : ['Not categorized']
-}
+{ #category : '*TonelReaderModel',
+ #vaCategories : ['Not categorized'] }
 EsString >> withLineEndings: lineEndingString [
 
 	| stream |

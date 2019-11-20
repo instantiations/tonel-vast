@@ -16,9 +16,7 @@ Class {
 	#category : 'TonelWriterTestShadowSubSubApp'
 }
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelShadowMockJ >> shadowMethodForTest [
 
 	^'Shadow Method for testing TonelWriter'

@@ -4,17 +4,13 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'loading/removing'
-}
+{ #category : 'loading/removing' }
 TonelReaderModel class >> failedRemove [
 
 	self loaded
 ]
 
-{
-	#category : 'loading/removing'
-}
+{ #category : 'loading/removing' }
 TonelReaderModel class >> loaded [
 	"Send #initializeOnLoad to every class defined in this subapplication that implements it."
 
@@ -22,9 +18,7 @@ TonelReaderModel class >> loaded [
 		(aClass class includesSelector: #initializeOnLoad) ifTrue: [ aClass initializeOnLoad ] ]
 ]
 
-{
-	#category : 'loading/removing'
-}
+{ #category : 'loading/removing' }
 TonelReaderModel class >> removing [
 	"Send #unload to every class defined in this subapplication that implements it."
 

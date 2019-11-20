@@ -2,19 +2,15 @@ Extension {
 	#name : 'TonelReaderClassExtensionDefinition'
 }
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['accessing']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['accessing'] }
 TonelReaderClassExtensionDefinition >> concreteClassIn: anApp [
 
 	^(anApp extended) detect: [:ea | ea name = self identifier] ifNone: []
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderClassExtensionDefinition >> createEditionIn: anApp [
 
 	| baseClass |
@@ -27,37 +23,29 @@ TonelReaderClassExtensionDefinition >> createEditionIn: anApp [
 					ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderClassExtensionDefinition >> createExtendedIn: anApp [
 
 	EmInterface current extend: (Smalltalk classAt: self identifier) in: anApp
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderClassExtensionDefinition >> createIn: anApp [
 
 	self createExtendedIn: anApp
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['testing']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'] }
 TonelReaderClassExtensionDefinition >> hasChangesIn: anApp comparedTo: aClass [
 	^(self methodChangesIn: aClass) notEmpty
 			or: [ self hasMethodsRemovedFrom: aClass in: anApp ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderClassExtensionDefinition >> loadMethodsInto: anApp [
 
 	| concreteClass |
@@ -66,10 +54,8 @@ TonelReaderClassExtensionDefinition >> loadMethodsInto: anApp [
 	self tonelMethods do: [:aTonelMethod | aTonelMethod loadFor: concreteClass into: anApp]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['comparing']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['comparing'] }
 TonelReaderClassExtensionDefinition >> tonelTopologicalSubordinateOf: aTonelLoaderClass [
 	"This method will return true if the receiver is a extension of aTonelLoaderClass."
 

@@ -4,9 +4,7 @@ Class {
 	#category : 'TonelTools'
 }
 
-{
-	#category : 'ENVY Menu Extensions'
-}
+{ #category : 'ENVY Menu Extensions' }
 TonelTools class >> addToApplicationsMenu: aMenu browser: aBrowser [
 	"There are several browsers with an Applications menu item, but only the Application Manager
 	 browser supports importing.  Add a new item to the Import... or Import/Export... submenu."
@@ -33,9 +31,7 @@ TonelTools class >> addToApplicationsMenu: aMenu browser: aBrowser [
 
 ]
 
-{
-	#category : 'operations'
-}
+{ #category : 'operations' }
 TonelTools class >> exportTonelApplication [
 
 	| selectedApps repositoryPath |
@@ -70,9 +66,7 @@ TonelTools class >> exportTonelApplication [
 	
 ]
 
-{
-	#category : 'operations'
-}
+{ #category : 'operations' }
 TonelTools class >> exportTonelTools [
 
 	TonelWriter new
@@ -81,9 +75,7 @@ TonelTools class >> exportTonelTools [
 
 ]
 
-{
-	#category : 'operations'
-}
+{ #category : 'operations' }
 TonelTools class >> loadTonelRepository [
 	"Enter the new method definition below and click 'Resume'."
 

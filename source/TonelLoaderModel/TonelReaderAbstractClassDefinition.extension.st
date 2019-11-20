@@ -2,21 +2,17 @@ Extension {
 	#name : 'TonelReaderAbstractClassDefinition'
 }
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['accessing'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['accessing'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> concreteClassIn: anApp [
 
 	self subclassResponsibility 
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-changes'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-changes'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> deleteRemovedClassMethodsFrom: aClass in: anApp [
 
 	aClass class methodDictionary do: [ :compiledMethod |
@@ -27,11 +23,9 @@ TonelReaderAbstractClassDefinition >> deleteRemovedClassMethodsFrom: aClass in: 
 						ifTrue: [ EmInterface current removeMethods: (Array with: compiledMethod) ] ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-changes'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-changes'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> deleteRemovedInstanceMethodsFrom: aClass in: anApp [
 
 	aClass methodDictionary do: [ :compiledMethod |
@@ -42,11 +36,9 @@ TonelReaderAbstractClassDefinition >> deleteRemovedInstanceMethodsFrom: aClass i
 						ifTrue: [ EmInterface current removeMethods: (Array with: compiledMethod) ] ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-changes'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-changes'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp [
 
 	(self concreteClassIn: anApp)
@@ -61,11 +53,9 @@ TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp [
 
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['testing'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> hasClassMethodsRemovedFrom: aClass in: anApp [
 
 	^ aClass class methodDictionary anySatisfy: [ :compiledMethod |
@@ -75,11 +65,9 @@ TonelReaderAbstractClassDefinition >> hasClassMethodsRemovedFrom: aClass in: anA
 					compiledMethod selector = anMCMethod selector ] ] ] ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['testing'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> hasInstanceMethodsRemovedFrom: aClass in: anApp [
 
 	^ aClass methodDictionary anySatisfy: [ :compiledMethod |
@@ -89,20 +77,16 @@ TonelReaderAbstractClassDefinition >> hasInstanceMethodsRemovedFrom: aClass in: 
 					compiledMethod selector = anMCMethod selector ] ] ] ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['testing'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: anApp [
 	^(self hasInstanceMethodsRemovedFrom: aClass in: anApp)
 		or: [self hasClassMethodsRemovedFrom: aClass in: anApp]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> loadInto: anApp [
 	self 
 		loadMethodsInto: anApp;
@@ -111,11 +95,9 @@ TonelReaderAbstractClassDefinition >> loadInto: anApp [
 		makeConsistentIn: anApp
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> loadMethodsInto: anApp [
 
 	| concreteClass |
@@ -124,11 +106,9 @@ TonelReaderAbstractClassDefinition >> loadMethodsInto: anApp [
 	self tonelMethods do: [:aTonelMethod | aTonelMethod loadFor: concreteClass into: anApp]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-changes'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-changes'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> makeConsistentIn: anApp [
 	"Load the current edition, which is similar to 'ReLoad Current'. This is done to
 	  ensure that the loaded edition is consistent in the library (and can be versioned)"
@@ -136,20 +116,16 @@ TonelReaderAbstractClassDefinition >> makeConsistentIn: anApp [
 		loadClasses: (Array with: ((self concreteClassIn: anApp) asEditionIn: anApp))
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading-changes'],
-	#vaVisibility : 'private'
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-changes'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> methodChangesIn: aClass [
 
 	^self tonelMethods select: [:aTonelMethod | aTonelMethod hasChangesIn: aClass]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> updateCommentIn: anApp [
 	"If the receiver represents a class definition, then update the
 	 class comment if it has changed."
@@ -157,10 +133,8 @@ TonelReaderAbstractClassDefinition >> updateCommentIn: anApp [
 	
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> versionIn: anApp as: versionName [
 	"If @versionName has not been provided, leave the open edition
 	 of the class represented by the receiver as-is and answer self.
@@ -177,10 +151,8 @@ TonelReaderAbstractClassDefinition >> versionIn: anApp as: versionName [
 			anApp releaseClass: theClass ] ]
 ]
 
-{
-	#category : '*TonelLoaderModel',
-	#vaCategories : ['loading']
-}
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> versionIn: anApp for: aLoader [
 	"If @versionName has not been provided, leave the open edition
 	 of the class represented by the receiver as-is and answer self.

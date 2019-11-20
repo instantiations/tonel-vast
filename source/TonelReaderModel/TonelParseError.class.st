@@ -8,9 +8,7 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'instance creation'
-}
+{ #category : 'instance creation' }
 TonelParseError class >> new [
 
 	^super new initialize

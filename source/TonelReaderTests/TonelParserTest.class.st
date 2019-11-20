@@ -4,42 +4,32 @@ Class {
 	#category : 'TonelReaderTests'
 }
 
-{
-	#category : 'instance creation'
-}
+{ #category : 'instance creation' }
 TonelParserTest class >> new [
 
 	^super new initialize
 ]
 
-{
-	#category : 'asserting'
-}
+{ #category : 'asserting' }
 TonelParserTest >> assertParse: aString rule: rule equals: result [
 	self assert: (self parse: aString rule: rule) equals: result
 ]
 
-{
-	#category : 'private'
-}
+{ #category : 'private' }
 TonelParserTest >> parse: aString rule: rule [
 	| parser |
 	parser := TonelParser on: aString readStream.
 	^ parser perform: rule
 ]
 
-{
-	#category : 'asserting'
-}
+{ #category : 'asserting' }
 TonelParserTest >> shouldParse: aString rule: rule raise: error [
 	| parser |
 	parser := TonelParser on: aString readStream.
 	self should: [ parser perform: rule ] raise: error
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testClassDefBytesType [
 
 	self
@@ -71,14 +61,12 @@ Class {
 
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testClassDefFullyDefined [
 
 	self
 		assertParse:
-			'
+			'"I''m a the class comment with quotes"
 Class {
 	#name : ''X'',
 	#superclass : ''Y'',
@@ -114,15 +102,13 @@ Class {
 				poolDictionaries: #('P'))
 					category: 'Z';
 					classInstanceVariables: #('classInstVar1' 'classInstVar2' 'classInstVar3');
-					classComment: 'this is a test';
+					classComment: 'I''m a the class comment with quotes';
 					yourself)
 
 
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testClassDefVariableType [
 
 	self
@@ -154,9 +140,7 @@ Class {
 
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testComment [
 	self
 		shouldParse: 'this "should" be an error'
@@ -172,9 +156,7 @@ TonelParserTest >> testComment [
 		equals: '"this" is a comment with "nested" colons "also at the end"'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testExtractSelector [
 	| parser |
 	
@@ -196,9 +178,7 @@ selector: arg3')
 		equals: #some:keyword:selector:.
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testExtractSelectorWithComments [
 	| parser |
 	
@@ -220,16 +200,12 @@ selector: arg3')
 		equals: #some:keyword:selector:.
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testLiteralDollarCharacterAtEndOfLiteralArray [
 	self assertParse: '[^#($$)]' rule: #methodBody equals: '^#($$)'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMaybeReturnADollar [
 	self
 		assertParse: '[self testSomething ifTrue: [^$$]]'
@@ -237,9 +213,7 @@ TonelParserTest >> testMaybeReturnADollar [
 		equals: 'self testSomething ifTrue: [^$$]'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMetadata [
 
 	self
@@ -266,9 +240,7 @@ TonelParserTest >> testMetadata [
 				yourself)
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethod [
 	self
 		assertParse: 'Object>>name'
@@ -288,9 +260,7 @@ TonelParserTest >> testMethod [
 		equals: #(#('Object' 'class') 'name: aString')
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodBody [
 
 	self
@@ -316,9 +286,7 @@ what] is inside').
 		equals: ' method body with "''", ''"'', "[", '']'''
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodBodyWithBlockContainingDollarCharacter [
 	"https://github.com/pharo-vcs/tonel/issues/44"
 
@@ -328,9 +296,7 @@ TonelParserTest >> testMethodBodyWithBlockContainingDollarCharacter [
 	self assertParse: '[$$]' rule: #methodBody equals: '$$'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodBodyWithCommentNextToDollarCharLiteral [
 	self
 		assertParse: '[^$$"what about this one]"]'
@@ -338,9 +304,7 @@ TonelParserTest >> testMethodBodyWithCommentNextToDollarCharLiteral [
 		equals: '^$$"what about this one]"'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodBodyWithSquareBracketInsideLiteralArray [
 	self
 		assertParse: '[ "What about this valid literal Array guys" ^#( [ )]'
@@ -348,9 +312,7 @@ TonelParserTest >> testMethodBodyWithSquareBracketInsideLiteralArray [
 		equals: ' "What about this valid literal Array guys" ^#( [ )'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodBodyWithSquareBracketInsideLiteralArray2 [
 	self
 		assertParse:
@@ -360,9 +322,7 @@ TonelParserTest >> testMethodBodyWithSquareBracketInsideLiteralArray2 [
 			'^#( "note that we need to prefix ) with $, but this is not necessary for ] and }" '')]}'' $) ] } )'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodBodyWithTrickyDollarCharLiteralInLiteralArray [
 	self
 		assertParse:
@@ -372,9 +332,7 @@ TonelParserTest >> testMethodBodyWithTrickyDollarCharLiteralInLiteralArray [
 			'^#( $$''please use space before this string)(''$$"please use space before this comment or avoid putting a ] in it"$$(this really is a literal array with a ] in it))'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodDef [
 
 	self
@@ -408,9 +366,7 @@ Object class>>name [
 				yourself)
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodDefList [
 	| parsed |
 	parsed := self
@@ -441,9 +397,7 @@ Object>>printOn: aStream [
 	self assert: parsed size equals: 3
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodDefPrivateCategory [
 
 	self
@@ -465,9 +419,7 @@ Object>>name [
 					yourself)
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testMethodDefVACustomKeys [
 
 	self
@@ -493,17 +445,13 @@ Object>>name [
 					yourself)
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testType [
 	self assertParse: 'Class' rule: #type equals: 'Class'.
 	self assertParse: 'Extension' rule: #type equals: 'Extension'
 ]
 
-{
-	#category : 'tests'
-}
+{ #category : 'tests' }
 TonelParserTest >> testTypeDef [
 
 	self

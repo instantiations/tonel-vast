@@ -4,9 +4,7 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'Initialization'
-}
+{ #category : 'Initialization' }
 TonelClassWriterTest >> setUp [
 
 	super setUp.
@@ -17,9 +15,7 @@ TonelClassWriterTest >> setUp [
 			lineDelimiter: TonelWriter lineDelimiter)
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClass [
 
 	self writer write: (TonelWriterClassDefinition of: TonelMockB definedIn: TonelWriterTests).
@@ -35,9 +31,7 @@ TonelClassWriterTest >> testWriteClass [
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassInSubApp [
 
 	self writer write: (TonelWriterClassDefinition of: TonelMockD definedIn: TonelSubapplication).
@@ -63,9 +57,7 @@ TonelMockD >> withoutCategory [
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassInSubSubApp [
 
 	self writer write: (TonelWriterClassDefinition of: TonelMockH definedIn: TonelWriterTestSubSubApp).
@@ -81,9 +73,7 @@ TonelClassWriterTest >> testWriteClassInSubSubApp [
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassSubclassingNil [
 
 	self writer write: (TonelWriterClassDefinition of: TonelMockE definedIn: TonelWriterTests).
@@ -102,9 +92,7 @@ Class {
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithByteSubclass [
 
 	self writer write: (TonelWriterClassDefinition of: TonelBytesMock definedIn: TonelWriterTests).
@@ -121,9 +109,7 @@ TonelClassWriterTest >> testWriteClassWithByteSubclass [
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithCIassAndClassInstanceVariables [
 
 	self writer write: (TonelWriterClassDefinition of: TonelMockF definedIn: TonelWriterTests).
@@ -145,9 +131,7 @@ TonelClassWriterTest >> testWriteClassWithCIassAndClassInstanceVariables [
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithComment [
 
 	self writer write: (TonelWriterClassDefinition of: TonelMockA definedIn: TonelWriterTests).
@@ -262,9 +246,7 @@ TonelMockA >> withMultipleCategories [
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithExtensionMethod [
 
 	self writer write: (TonelWriterClassDefinition of: TonelMockA definedIn: TonelWriterTests).
@@ -379,9 +361,7 @@ TonelMockA >> withMultipleCategories [
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithInstanceVariables [
 
 	self writer write: (TonelWriterClassDefinition of: TonelMockC definedIn: TonelWriterTests).
@@ -401,9 +381,7 @@ TonelClassWriterTest >> testWriteClassWithInstanceVariables [
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithPoolDictionaryUsage [
 
 	self writer write: (TonelWriterClassDefinition of: TonelMockG definedIn: TonelWriterTests).
@@ -430,9 +408,7 @@ TonelMockG >> methodWithPoolDictionaryUsage [
 '
 ]
 
-{
-	#category : 'Tests'
-}
+{ #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithVariableSubclass [
 
 	self writer write: (TonelWriterClassDefinition of: TonelVariableMock definedIn: TonelWriterTests).

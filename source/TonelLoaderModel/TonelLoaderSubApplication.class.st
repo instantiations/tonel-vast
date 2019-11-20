@@ -18,9 +18,7 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
-{
-	#category : 'Instance Creation'
-}
+{ #category : 'Instance Creation' }
 TonelLoaderSubApplication class >> on: aPackageDefinition in: aTonelLoader [
 
 	^(self new)
@@ -29,9 +27,7 @@ TonelLoaderSubApplication class >> on: aPackageDefinition in: aTonelLoader [
 		yourself
 ]
 
-{
-	#category : 'configuring'
-}
+{ #category : 'configuring' }
 TonelLoaderSubApplication >> addPrerequisite: application [
 
 	application ifNotNil: [ :newPrereq |
@@ -41,9 +37,7 @@ TonelLoaderSubApplication >> addPrerequisite: application [
 				self prerequisites add: newPrereq ] ]
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> allClassesToRemoveIncludingExtensions: aBoolean [
 
 	^(self classesToRemoveIncludingExtensions: aBoolean) asOrderedCollection
@@ -57,9 +51,7 @@ TonelLoaderSubApplication >> allClassesToRemoveIncludingExtensions: aBoolean [
 		yourself
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> allClassesWithAssociation [
 	| theApp |
 	theApp := Smalltalk classAt: self identifier.
@@ -73,9 +65,7 @@ TonelLoaderSubApplication >> allClassesWithAssociation [
 		yourself
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> allDefinedClasses [
 	"Answer a Dictionary of all the Tonel classes defined
 	 in the receiver and the receiver's subapplications."
@@ -91,16 +81,12 @@ TonelLoaderSubApplication >> allDefinedClasses [
 		yourself
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> availableShadows [
 	^SubApplication shadowsFor: self name
 ]
 
-{
-	#category : 'configuring'
-}
+{ #category : 'configuring' }
 TonelLoaderSubApplication >> changeCurrentUserAndSuperGroupSettingOf: theApp [
 	"Sets the Super Group setting for @theApp. Note that for doing so, we must first
 	 switch the current envy user to the manager of the @theApp.
@@ -126,9 +112,7 @@ TonelLoaderSubApplication >> changeCurrentUserAndSuperGroupSettingOf: theApp [
 
 ]
 
-{
-	#category : 'configuring'
-}
+{ #category : 'configuring' }
 TonelLoaderSubApplication >> changeSuperGroupSettingOf: theApp [
 	"Read comment of #changeCurrentUserAndSuperGroupSettingOf:"
 
@@ -139,10 +123,8 @@ TonelLoaderSubApplication >> changeSuperGroupSettingOf: theApp [
 	]
 ]
 
-{
-	#category : 'configuring',
-	#vaVisibility : 'private'
-}
+{ #category : 'configuring',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> checkClassExtensionsExcepting: classNames [
 	"Class extensions attempt to add the Application that defines the class being
 	 extended as a prerequisite."
@@ -156,9 +138,7 @@ TonelLoaderSubApplication >> checkClassExtensionsExcepting: classNames [
 					self addPrerequisite: rootClass controller rootApplication ] ] ].
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> checkSuperclassesExcepting: classDefinitions [
 	"Class definitions attempt to add the Application that defines their superclass
 	 as a prerequisite."
@@ -173,9 +153,7 @@ TonelLoaderSubApplication >> checkSuperclassesExcepting: classDefinitions [
 		tonelSubApp checkSuperclassesExcepting: classDefinitions ]
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> classesToRemoveIncludingExtensions: aBoolean [
 	| theApp classSet |
 	
@@ -193,18 +171,14 @@ TonelLoaderSubApplication >> classesToRemoveIncludingExtensions: aBoolean [
 
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> computePrerequisites [
 	
 	^OrderedCollection new
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> concreteClasses [
 	"Returns the list of concrete classes of receiver defined and extended classes.
 	 If this is called before creating the classes and extensions, then it might answer a different response.
@@ -215,27 +189,21 @@ TonelLoaderSubApplication >> concreteClasses [
 	^((self tonelDefinedClasses , self tonelExtendedClasses) collect: [:each | each concreteClassIn: realApp]) asSet asArray
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> conditions [
 
 	conditions ifNil: [self initializeConditions].
 	^conditions
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> convertSharedPoolClasses [
 	
 	self tonelDefinedClasses do: [:each | each amendSharedPoolClass ].
 	self subApplications do: [:tonelSubApp | tonelSubApp convertSharedPoolClasses]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> createDescriptionFor: theAppOrSubApp [
 	"If the receiver has been changed, then attempt to set the description
 	 (Notes) for the real (sub)application class. Answer false if the description
@@ -244,10 +212,8 @@ TonelLoaderSubApplication >> createDescriptionFor: theAppOrSubApp [
 	^ theAppOrSubApp description: self notes 
 ]
 
-{
-	#category : 'loading',
-	#vaVisibility : 'private'
-}
+{ #category : 'loading',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> createEditionIn: parentEmApp underCondition: conditionCode withRoot: emRootApp [
 
 	| emApp |
@@ -263,9 +229,7 @@ TonelLoaderSubApplication >> createEditionIn: parentEmApp underCondition: condit
 	^emApp
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> createFor: parentApp underCondition: conditionCode withRoot: rootApp [
 
 	| aSubApp |
@@ -277,9 +241,7 @@ TonelLoaderSubApplication >> createFor: parentApp underCondition: conditionCode 
 	^aSubApp
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> createSubApplicationIn: emParentApp condition: conditionCode [
 
 
@@ -292,9 +254,7 @@ TonelLoaderSubApplication >> createSubApplicationIn: emParentApp condition: cond
 		newSubApp configurationExpression: conditionCode ]"
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> createSubApplicationsFor: anAppOrSubApp withRoot: rootApp [
 
 	self loadableConditions keysAndValuesDo: 
@@ -311,23 +271,17 @@ TonelLoaderSubApplication >> createSubApplicationsFor: anAppOrSubApp withRoot: r
 							self createDescriptionFor: emSubApplication]]]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> definedClasses [
 	^self packageDefinedClasses reject: [:each | each isSharedPool]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> definedSharedPools [
 	^self packageDefinedClasses select: [:each | each isSharedPool]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> definePoolDictionariesFor: emParentApp [
 
 	(self hasChangesFor: emParentApp inRootApp: nil) 
@@ -339,9 +293,7 @@ TonelLoaderSubApplication >> definePoolDictionariesFor: emParentApp [
 				definePoolDictionariesInSubApplicationsFor: theApp]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 
 	self definedSharedPools do: [:aTonelClass | aTonelClass declarePoolDictionariesIn: anApp].
@@ -349,26 +301,20 @@ TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 	self definedSharedPools do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp].
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> definePoolDictionariesInSubApplicationsFor: anApp [
 
 	self subApplications do: [:tonelSubApp | tonelSubApp definePoolDictionariesFor: anApp]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> deleteRemovedSubApplications [
 
 	self removeDeletedSubApplicationsFor: (Smalltalk classAt: self identifier).
 	self subApplications do: [:tonelSubApp | tonelSubApp deleteRemovedSubApplications]
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> hasChangesFor: emRootApp inRootApp: rootApp [
 
 	^hasChanges ifNil: [ "poolsAccounted ifFalse: [ self accountForPoolDictionaryClasses ]."
@@ -389,54 +335,42 @@ TonelLoaderSubApplication >> hasChangesFor: emRootApp inRootApp: rootApp [
 							or: [self subApplicationsHaveChangesFor: emApp inRootApp: rootApp]]]]
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> hasRemovedClassesFor: anApp [
 	^(self hasRemovedDefinedClassesFor: anApp)
 		or: [self hasRemovedExtendedClassesFor: anApp]
 ]
 
-{
-	#category : 'testing',
-	#vaVisibility : 'private'
-}
+{ #category : 'testing',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> hasRemovedDefinedClassesFor: anApp [
 	^anApp defined anySatisfy: [:definedClass |
 		(definedClass ~= anApp) and: [
 			(self definedClasses anySatisfy: [:each | each name asString = definedClass name asString]) not]]
 ]
 
-{
-	#category : 'testing',
-	#vaVisibility : 'private'
-}
+{ #category : 'testing',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> hasRemovedExtendedClassesFor: anApp [
 	^anApp extended anySatisfy: [:extendedClass |
 		(self tonelExtendedClasses includesKey: extendedClass name asString) not]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> identifier [
 
 	^self name asSymbol
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> includesClass: className [
 
 	(self tonelClasses keys allSatisfy: [:each | each isSymbol]) ifFalse: [self halt].
 	^self tonelClasses includesKey: className asSymbol
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> initialize [
 
 	| theApp |
@@ -446,10 +380,8 @@ TonelLoaderSubApplication >> initialize [
 	self subApplications do: [:each | each initialize]
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> initializeConditions [
 
 	conditions := Dictionary new.
@@ -465,18 +397,14 @@ TonelLoaderSubApplication >> initializeConditions [
 	^conditions
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> initializeSubApplications [
 
 	self initializeSubApplicationsWithRoot: self rootTonelApplication
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> initializeSubApplicationsWithRoot: rootTonelApplication [
 	"Forces the initalization and lookup of receiver sub applications."
 
@@ -494,9 +422,7 @@ TonelLoaderSubApplication >> initializeSubApplicationsWithRoot: rootTonelApplica
 	subApplications := conditionsSubApps asOrderedCollection
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> loadableConditions [
 
 	| loadableConditions |
@@ -510,9 +436,7 @@ TonelLoaderSubApplication >> loadableConditions [
 	
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> loadBaseEdition [
 	"This method contains some voodoo."
 
@@ -532,9 +456,7 @@ TonelLoaderSubApplication >> loadBaseEdition [
 	
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> loadClassesIn: anApp [
 
 		(self 
@@ -545,17 +467,13 @@ TonelLoaderSubApplication >> loadClassesIn: anApp [
 		in: anApp) do: [:each | each key loadInto: anApp]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> loader [
 
 	^loader
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> loadFor: aLoader [
 	"Load the real application for @aLoader."
 	
@@ -567,9 +485,7 @@ TonelLoaderSubApplication >> loadFor: aLoader [
 			loadSubApplicationsIn: theApp for: aLoader ]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> loadFor: theRootApp as: versionName [
 
 	(self hasChangesFor: theRootApp inRootApp: nil) 
@@ -584,27 +500,21 @@ TonelLoaderSubApplication >> loadFor: theRootApp as: versionName [
 				version: theApp as: versionName]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> loadSubApplicationsFor: anApp as: versionName [
 
 	(self subApplications) do: [:tonelSubApp | tonelSubApp loadFor: anApp as: versionName]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> loadSubApplicationsIn: anApp for: aLoader [
 
 	self subApplications do: [ :subApp |
 		subApp loadFor: anApp as: aLoader versionName ]
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> logIgnoredShadowSubapps: aCollection [
 
 	Transcript
@@ -617,49 +527,44 @@ TonelLoaderSubApplication >> logIgnoredShadowSubapps: aCollection [
 		cr
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> name [
 
 	^name ifNil: [name := self packageDefinition appName]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> notes [
 		
 	^self rootTonelApplication notes
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> packageDefinedClasses [
 	^self packageDefinition definedClasses
 ]
 
-{
-	#category : 'accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> packageDefinition [
 
 	^packageDefinition
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
+TonelLoaderSubApplication >> packageName [
+
+	^ self packageDefinition name asString
+		
+]
+
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> prerequisites [
 
 	^prerequisites ifNil: [prerequisites := self computePrerequisites]
 ]
 
-{
-	#category : 'printing'
-}
+{ #category : 'printing' }
 TonelLoaderSubApplication >> printOn: aStream [
 
 	super printOn: aStream.
@@ -668,9 +573,7 @@ TonelLoaderSubApplication >> printOn: aStream [
 	nextPut: $>
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> realSuperclassFor: aTonelClassDefinition using: tonelSuperclasses [
 	"Answer a concrete superclass for @aTonelClassDefinition.
 	 This may entail climbing the class hierarchy of classes in @tonelSuperclasses
@@ -686,7 +589,9 @@ TonelLoaderSubApplication >> realSuperclassFor: aTonelClassDefinition using: ton
 			ifNil: [
 				aClassDefinition :=
 					tonelSuperclasses detect: [:aPotentialSuperclass |
-						aPotentialSuperclass identifier = aClassDefinition superclassIdentifier]]
+						aPotentialSuperclass identifier = aClassDefinition superclassIdentifier] ifNone: [
+						TonelLoaderError signal: (TonelMsg10 bindWith: aClassDefinition superclassIdentifier) 
+						]]
 			ifNotNil: [:rootClass | ^rootClass]].
 
 	self halt: (
@@ -700,9 +605,7 @@ TonelLoaderSubApplication >> realSuperclassFor: aTonelClassDefinition using: ton
 
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> removeDeletedSubApplicationsFor: theApp [
 
 	theApp subApplications do: [:subApp |
@@ -713,52 +616,40 @@ TonelLoaderSubApplication >> removeDeletedSubApplicationsFor: theApp [
 					removeSubApplication: subApp]]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> rootTonelApplication [
 	"Answer the Tonel application in which the receiver is a subApp."
 
 	^rootApplication
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> rootTonelApplication: aTonelLoaderApplication [
 	
 	rootApplication := aTonelLoaderApplication
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> setLoader: aTonelLoader [
 
 	loader := aTonelLoader
 ]
 
-{
-	#category : 'Initialization',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> setPackageDefinition: aPackageDefinition [
 
 	packageDefinition := aPackageDefinition
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> subApplications [
 	subApplications ifNil: [self initializeSubApplications].
 	^subApplications
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderSubApplication >> subApplicationsHaveChangesFor: theApp inRootApp: rootApp [
 
 	^(self subApplications 
@@ -770,18 +661,14 @@ TonelLoaderSubApplication >> subApplicationsHaveChangesFor: theApp inRootApp: ro
 							noneSatisfy: [:aTonelSubApp | aTonelSubApp identifier = definedSubApp name]]]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> tonelClasses [
 	"Returns the list of classed defined and extended by receiver."
 
 	^self tonelDefinedClasses , self tonelExtendedClasses
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> tonelDefinedClasses [
 
 	| definedClasses |
@@ -792,9 +679,7 @@ TonelLoaderSubApplication >> tonelDefinedClasses [
 	^definedClasses
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderSubApplication >> tonelExtendedClasses [
 	
 	| extendedClasses |
@@ -804,17 +689,13 @@ TonelLoaderSubApplication >> tonelExtendedClasses [
 	^extendedClasses
 ]
 
-{
-	#category : 'loading',
-	#vaVisibility : 'private'
-}
+{ #category : 'loading',
+  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> topologicallySort: aDictionary in: anApp [
 	^(aDictionary values collect: [:each | each -> anApp]) tonelSingleEdgeTopologicallySortedCollection
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderSubApplication >> updateSharedPoolsDefinitionOf: anApp [
 	"Updates the app class definition to reference the shared pools classes it declares."
 	
@@ -836,9 +717,7 @@ TonelLoaderSubApplication >> updateSharedPoolsDefinitionOf: anApp [
 	
 ]
 
-{
-	#category : 'versioning'
-}
+{ #category : 'versioning' }
 TonelLoaderSubApplication >> version: anApp as: versionName [
 	"If @versionName has not been provided, leave the open edition
 	 of @anApp as-is and answer self; otherwise make a version of @anApp."
@@ -846,25 +725,19 @@ TonelLoaderSubApplication >> version: anApp as: versionName [
 	versionName isEmpty ifFalse: [anApp versionName: versionName]
 ]
 
-{
-	#category : 'versioning'
-}
+{ #category : 'versioning' }
 TonelLoaderSubApplication >> versionClassesIn: anApp as: versionName [
 
 	self tonelClasses do: [:aTonelClass | aTonelClass versionIn: anApp as: versionName]
 ]
 
-{
-	#category : 'versioning'
-}
+{ #category : 'versioning' }
 TonelLoaderSubApplication >> versionClassesIn: anApp for: aLoader [
 
 	(self tonelClasses reject: [:each | each isSharedPool]) do: [:each | each versionIn: anApp for: aLoader]
 ]
 
-{
-	#category : 'versioning'
-}
+{ #category : 'versioning' }
 TonelLoaderSubApplication >> versionFor: aLoader [
 
 	| theApp |

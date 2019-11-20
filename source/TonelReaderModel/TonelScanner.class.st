@@ -10,47 +10,35 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'instance creation'
-}
+{ #category : 'instance creation' }
 TonelScanner class >> new [
 	self error: 'Use #on:'
 ]
 
-{
-	#category : 'instance creation'
-}
+{ #category : 'instance creation' }
 TonelScanner class >> on: aStream [
 	^ self basicNew
 		initializeStream: aStream;
 		yourself
 ]
 
-{
-	#category : 'initialization'
-}
+{ #category : 'initialization' }
 TonelScanner >> initializeStream: aStream [
 	self initialize.
 	stream := aStream
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelScanner >> isEnter: aCharacter [
 	^ #(13 10) includes: aCharacter value
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelScanner >> isSeparator: aCharacter [
 	^ aCharacter isSeparator
 ]
 
-{
-	#category : 'private'
-}
+{ #category : 'private' }
 TonelScanner >> removeFrom: aString enclosingStart: startChar end: endChar [
 	^ self
 		removeFrom: aString
@@ -59,9 +47,7 @@ TonelScanner >> removeFrom: aString enclosingStart: startChar end: endChar [
 		clean: #both
 ]
 
-{
-	#category : 'private'
-}
+{ #category : 'private' }
 TonelScanner >> removeFrom: aString enclosingStart: startChar end: endChar clean: cleanSymbol [
 	"cleanSymbol can be #left, #right and #both"
 
@@ -93,9 +79,7 @@ TonelScanner >> removeFrom: aString enclosingStart: startChar end: endChar clean
 	^ result contents copyFrom: start + 1 to: end + 1
 ]
 
-{
-	#category : 'scanning'
-}
+{ #category : 'scanning' }
 TonelScanner >> scan [
 	self subclassResponsibility
 ]

@@ -8,9 +8,7 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelLoaderSubAppsCondition class >> condition: conditionCode subApps: aCollection [
 
 	^self new
@@ -18,10 +16,8 @@ TonelLoaderSubAppsCondition class >> condition: conditionCode subApps: aCollecti
 		yourself
 ]
 
-{
-	#category : 'Not categorized',
-	#vaVisibility : 'private'
-}
+{ #category : 'Not categorized',
+  #vaVisibility : 'private' }
 TonelLoaderSubAppsCondition >> setCondition: conditionCode subApps: aCollection [
 
 	condition := conditionCode.

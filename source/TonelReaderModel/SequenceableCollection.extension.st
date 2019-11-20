@@ -2,10 +2,8 @@ Extension {
 	#name : 'SequenceableCollection'
 }
 
-{
-	#category : '*TonelReaderModel',
-	#vaCategories : ['Not categorized']
-}
+{ #category : '*TonelReaderModel',
+ #vaCategories : ['Not categorized'] }
 SequenceableCollection >> pairsCollect: aBlock [
 	"Evaluate aBlock with my elements taken two at a time, and return an Array with the results"
 

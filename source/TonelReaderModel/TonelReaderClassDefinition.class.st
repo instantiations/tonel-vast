@@ -20,17 +20,13 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'constants'
-}
+{ #category : 'constants' }
 TonelReaderClassDefinition class >> definitionType [
 
 	^'Class' "$NON-NLS$"
 ]
 
-{
-	#category : 'Initialize-Release'
-}
+{ #category : 'Initialize-Release' }
 TonelReaderClassDefinition class >> name: aString [
 
 	^self new
@@ -38,9 +34,7 @@ TonelReaderClassDefinition class >> name: aString [
 		yourself
 ]
 
-{
-	#category : 'Initialize-Release'
-}
+{ #category : 'Initialize-Release' }
 TonelReaderClassDefinition class >> name: nameString superclass: superString variable: varBoolean fieldType: fieldTypeString instanceVariables: instVarString classVariables: classVarString poolDictionaries: poolDictString [
 
 	^self new
@@ -55,9 +49,7 @@ TonelReaderClassDefinition class >> name: nameString superclass: superString var
 
 ]
 
-{
-	#category : 'comparing'
-}
+{ #category : 'comparing' }
 TonelReaderClassDefinition >> = classDefinition [
 
 
@@ -76,18 +68,14 @@ TonelReaderClassDefinition >> = classDefinition [
 													classDefinition poolDictionaries]]]]]]]]]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> addMethod: aTonelMethodDefinition [
 
 	tonelMethods add: aTonelMethodDefinition
 ]
 
-{
-	#category : 'accessing',
-	#vaVisibility : 'private'
-}
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> addToPackage: packageDefinition withAll: anArray [
 
 	
@@ -95,94 +83,70 @@ TonelReaderClassDefinition >> addToPackage: packageDefinition withAll: anArray [
 	packageDefinition addClassDefinition: self withAll: anArray
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> category [
 
 	^category ifNil: [category := '']
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> category: aString [
 
 	category := aString
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> classComment [
 
 	^ classComment ifNil: [classComment := '']  "$NON-NLS$"
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> classComment: aString [
 	classComment := aString
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> classInstanceVariables [
 
 	^ classInstanceVariables ifNil: [ classInstanceVariables := '' ]	"$NON-NLS$"
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> classInstanceVariables: aString [
 	classInstanceVariables := aString
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> classVariables [
 	^classVariables
 ]
 
-{
-	#category : 'Initialize-Release',
-	#vaVisibility : 'private'
-}
+{ #category : 'Initialize-Release',
+  #vaVisibility : 'private' }
 TonelReaderClassDefinition >> computeWhetherSharedPool [
 	^self superclassIdentifier = #SharedPool
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> extension [
 	"Answer whether receiver represents a class extension."
 
 	^false
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> fieldType [
 
 	^ fieldType ifNil: [ fieldType := 'pointers' ]  "$NON-NLS$"
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> identifier [
 	^identifier
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelReaderClassDefinition >> includesClassSideNewMethod [
 
 	^(self tonelMethods
@@ -191,9 +155,7 @@ TonelReaderClassDefinition >> includesClassSideNewMethod [
 			notNil
 ]
 
-{
-	#category : 'Initialize-Release'
-}
+{ #category : 'Initialize-Release' }
 TonelReaderClassDefinition >> initialize: aString [
 	name := aString.
 	identifier := aString asSymbol.
@@ -201,9 +163,7 @@ TonelReaderClassDefinition >> initialize: aString [
 	isSharedPool := false
 ]
 
-{
-	#category : 'Initialize-Release'
-}
+{ #category : 'Initialize-Release' }
 TonelReaderClassDefinition >> initializeWithName: nameString superclass: superString variable: varBoolean fieldType: fieldTypeString instanceVariables: instVarString classVariables: classVarString poolDictionaries: poolDictString [
 		
 	name := nameString.
@@ -221,38 +181,28 @@ TonelReaderClassDefinition >> initializeWithName: nameString superclass: superSt
 
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> instanceVariables [
 	^instanceVariables
 	
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelReaderClassDefinition >> isSharedPool [
 	^isSharedPool ifNil: [isSharedPool := self computeWhetherSharedPool]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> poolDictionaries [
 	^poolDictionaries
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> superclassIdentifier [
 	^superclassIdentifier
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelReaderClassDefinition >> variableClass [
 
 	^variableClass ifNil: [variableClass := false]

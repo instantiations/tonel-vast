@@ -9,100 +9,74 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelBaseTest class >> isAbstract [
 	^ self name = #TonelBaseTest
 ]
 
-{
-	#category : 'Preconditions'
-}
+{ #category : 'Preconditions' }
 TonelBaseTest >> assertContentsOfFileAt: aLocation equals: aString [
 
 	self assert: (fileSystem contentsOfFileAt: self directoryForTestingString, aLocation) isEqualSkippingSeparatorsTo: aString
 ]
 
-{
-	#category : 'Preconditions'
-}
+{ #category : 'Preconditions' }
 TonelBaseTest >> assertFileSystemIncludesFileAt: aLocation [
 
 	self assert: (self fileSystem includes: self directoryForTestingString,  aLocation)
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelBaseTest >> directoryForTestingPath [
 
 	^ ((CfsPath named: '.') append: self class name)
 ]
 
-{
-	#category : 'Initialization'
-}
+{ #category : 'Initialization' }
 TonelBaseTest >> directoryForTestingString [
 	^ self directoryForTestingPath asString
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelBaseTest >> fileSystem [
 	^fileSystem
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelBaseTest >> fileSystem: anObject [
 	fileSystem := anObject
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelBaseTest >> reader [
 	^reader
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelBaseTest >> reader: anObject [
 	reader := anObject
 ]
 
-{
-	#category : 'Initialization'
-}
+{ #category : 'Initialization' }
 TonelBaseTest >> setUp [
 
 	super setUp.
 	fileSystem := TonelCfsFileSystem new
 ]
 
-{
-	#category : 'Initialization'
-}
+{ #category : 'Initialization' }
 TonelBaseTest >> tearDown [
 
 	self directoryForTestingPath exists
 		ifTrue: [fileSystem recursivelyRemoveWithAllFiles: self directoryForTestingPath asString]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelBaseTest >> writer [
 	^writer
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelBaseTest >> writer: anObject [
 	writer := anObject
 ]

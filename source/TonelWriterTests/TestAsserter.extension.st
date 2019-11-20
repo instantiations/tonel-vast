@@ -2,10 +2,8 @@ Extension {
 	#name : 'TestAsserter'
 }
 
-{
-	#category : '*TonelWriterTests',
-	#vaCategories : ['Asserting']
-}
+{ #category : '*TonelWriterTests',
+ #vaCategories : ['Asserting'] }
 TestAsserter >> assert: firstString isEqualSkippingSeparatorsTo: secondString [
 
 	| firstSanitizedString secondSanitizedString |

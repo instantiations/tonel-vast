@@ -8,9 +8,7 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
-{
-	#category : 'configuring'
-}
+{ #category : 'configuring' }
 TonelLoaderApplication >> accountForPoolDictionaryClasses [
 	"Add 'Pool' to the keys of any pool dictionary classes (by removing
 	  those classes from the list, then adding them with the new key)"
@@ -25,26 +23,20 @@ TonelLoaderApplication >> accountForPoolDictionaryClasses [
 
 ]
 
-{
-	#category : 'configuring'
-}
+{ #category : 'configuring' }
 TonelLoaderApplication >> addPrerequisite: aClass [
 
 
 	super addPrerequisite: aClass 
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderApplication >> allDefinedClassNames [
 	
 	^self allDefinedClasses keys
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderApplication >> allDependentApplications [
 	"Return the complete set of applications which are dependent
 	 on the receiver starting with its direct dependents. Sort them
@@ -67,26 +59,20 @@ TonelLoaderApplication >> allDependentApplications [
 	^ result
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderApplication >> availableShadows [
 	^Application shadowsFor: self name
 ]
 
-{
-	#category : 'configuring'
-}
+{ #category : 'configuring' }
 TonelLoaderApplication >> changeSuperGroupSettingOf: aClass [
 
 	
 	super changeSuperGroupSettingOf: aClass
 ]
 
-{
-	#category : 'initializing',
-	#vaVisibility : 'private'
-}
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
 TonelLoaderApplication >> computePrerequisites [
 
 	^(self packageDefinition metadata at: #vaPrerequisites ifAbsent: [#()]) asOrderedCollection
@@ -97,9 +83,7 @@ TonelLoaderApplication >> computePrerequisites [
 					Application shadowClass named: each asSymbol timeStamp: EmTimeStamp undefined]]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderApplication >> concretePrerequisites [
 	"Reduce the collection of prerequisite Applications to only
 	 those that are immediate prerequisites of the receiver."
@@ -110,9 +94,7 @@ TonelLoaderApplication >> concretePrerequisites [
 				checkApp withAllPrerequisites includes: eachApp ] ] ]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderApplication >> create [
 	"Create (or modify) a real Application from the receiver."
 
@@ -124,13 +106,12 @@ TonelLoaderApplication >> create [
 			"If prerequisites are not set it wont be able to load classes"
 			theApp prerequisites: self prerequisites.
 			self
+				createTonelPackageNameMethodFor: theApp;
 				createDescriptionFor: theApp;
 				createSubApplicationsFor: theApp withRoot: theApp]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderApplication >> createApplication [
 	"Create a real Application based on the receiver."
 	
@@ -139,18 +120,14 @@ TonelLoaderApplication >> createApplication [
 		with: self concretePrerequisites
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderApplication >> createDescriptionFor: aClass [
 
 	
 	super createDescriptionFor: aClass
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderApplication >> createEdition [
 	| theApp |
 	
@@ -165,9 +142,28 @@ TonelLoaderApplication >> createEdition [
 	^theApp
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
+TonelLoaderApplication >> createTonelPackageNameMethodFor: anApp [
+
+	"Enter the new method definition below and click 'Resume'."
+	
+	| source |
+	source := #_TONEL_packageName, '<n><t>^<1p>' expandMacrosWith: self packageName.
+	
+	((anApp class)
+						basicCompile: source
+						notifying: Transcript "Have it notify itself?"
+						ifFail: [])
+							ifNotNil: [:compiledMethod |
+								anApp class
+									install: compiledMethod
+									asPrivate: true
+									withSource: source
+									ifNewAddTo: anApp
+									categorizeIn: #('Tonel-Metadata')].
+]
+
+{ #category : 'loading' }
 TonelLoaderApplication >> definePoolDictionaries [
 	self hasChanges
 		ifTrue: [ | theApp |
@@ -177,17 +173,13 @@ TonelLoaderApplication >> definePoolDictionaries [
 				definePoolDictionariesInSubApplicationsFor: theApp]
 ]
 
-{
-	#category : 'querying'
-}
+{ #category : 'querying' }
 TonelLoaderApplication >> dependentApplications [
 
 	^dependents ifNil: [dependents := OrderedCollection new]
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelLoaderApplication >> hasChanges [
 	"Answer true if anything within the application has changed based on
 	 this import; otherwise answer false."
@@ -205,9 +197,7 @@ TonelLoaderApplication >> hasChanges [
 											or: [self subApplicationsHaveChangesFor: theApp inRootApp: nil]]]]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderApplication >> loadBaseApplication [
 	"If the real application represented by the receiver is not currently loaded,
 	 and if it already exists, then load it."
@@ -217,9 +207,7 @@ TonelLoaderApplication >> loadBaseApplication [
 			ifTrue: [self loadBaseEdition ] ]
 ]
 
-{
-	#category : 'loading'
-}
+{ #category : 'loading' }
 TonelLoaderApplication >> loadPrerequisites [
 
 	self prerequisiteApps do: [:each |
@@ -242,31 +230,23 @@ TonelLoaderApplication >> loadPrerequisites [
 							TonelLoaderError signal: (TonelMsg18 bindWith: self name) "$NLS$ Could not load base edition of %1. Load aborted."]]]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderApplication >> notes [
 	^notes ifNil: [notes := String new]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderApplication >> notes: anObject [
 	notes := anObject
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderApplication >> poolsAccounted [
 
 	^poolsAccounted ifNil: [poolsAccounted := false]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderApplication >> prerequisiteApps [
 	"Answer a collection of real Applications that are prerequisites of
 	 the receiver."
@@ -277,34 +257,26 @@ TonelLoaderApplication >> prerequisiteApps [
 			ifFalse: [eachPrereq]]
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderApplication >> prerequisites: anOrderedCollection [
 
 	prerequisites := anOrderedCollection
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderApplication >> rootTonelApplication [
 	"The receiver is the root application."
 	
 	^self
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelLoaderApplication >> tonelPoolDictionaries [
 	
 	^self tonelDefinedClasses select: [:each | each isSharedPool ]
 ]
 
-{
-	#category : 'validating'
-}
+{ #category : 'validating' }
 TonelLoaderApplication >> verifyBaseEditionUser [
 
 	(Smalltalk classAt: self identifier) ifNotNil: [:theApp |

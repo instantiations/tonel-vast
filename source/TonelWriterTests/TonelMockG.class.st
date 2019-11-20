@@ -7,9 +7,7 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'Not categorized'
-}
+{ #category : 'Not categorized' }
 TonelMockG >> methodWithPoolDictionaryUsage [
 
 	^Cr

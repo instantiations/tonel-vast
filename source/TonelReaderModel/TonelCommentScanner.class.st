@@ -7,9 +7,7 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{
-	#category : 'scanning'
-}
+{ #category : 'scanning' }
 TonelCommentScanner >> scan [
 
 	| result ch eatNext |

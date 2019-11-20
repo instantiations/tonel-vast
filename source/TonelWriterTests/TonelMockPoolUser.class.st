@@ -7,9 +7,7 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelMockPoolUser >> poolConstantAccessor [
 
 	^TMMx01

@@ -7,9 +7,7 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelWriterSharedPoolInitializationMethodDefinition >> application: aTonelWriterApplicationDefinition [
 
 	
@@ -17,42 +15,32 @@ TonelWriterSharedPoolInitializationMethodDefinition >> application: aTonelWriter
 	
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelWriterSharedPoolInitializationMethodDefinition >> compiledMethod [
 
 	^application definedApplication class >> selector
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelWriterSharedPoolInitializationMethodDefinition >> definitionClassName [
 
 	^self pool definedClassName, ' class'
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelWriterSharedPoolInitializationMethodDefinition >> hasDefaultVACategories [
 
 	^true
 ]
 
-{
-	#category : 'testing'
-}
+{ #category : 'testing' }
 TonelWriterSharedPoolInitializationMethodDefinition >> isVirtual [
 	"Answer whether receiver wraps an actual compiled method."
 	
 	^true
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelWriterSharedPoolInitializationMethodDefinition >> methodBody [
 
 	| bodyStream |
@@ -68,9 +56,7 @@ TonelWriterSharedPoolInitializationMethodDefinition >> methodBody [
 			contents.
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelWriterSharedPoolInitializationMethodDefinition >> methodDeclaration [
 
 	| selectorParts |
@@ -78,17 +64,13 @@ TonelWriterSharedPoolInitializationMethodDefinition >> methodDeclaration [
 	^$_ join: (selectorParts copyFrom: 3 to: selectorParts size).
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelWriterSharedPoolInitializationMethodDefinition >> pool [
 
 	^definitionClass
 ]
 
-{
-	#category : 'accessing'
-}
+{ #category : 'accessing' }
 TonelWriterSharedPoolInitializationMethodDefinition >> visibilityString [
 
 	^'public'

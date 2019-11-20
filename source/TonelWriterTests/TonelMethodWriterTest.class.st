@@ -4,27 +4,21 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
-{
-	#category : 'Utility',
-	#vaVisibility : 'private'
-}
+{ #category : 'Utility',
+  #vaVisibility : 'private' }
 TonelMethodWriterTest >> newStream [
 
 	^TonelUTF8StreamWriterWrapper wrapping: String new writeStream
 ]
 
-{
-	#category : 'Initialization'
-}
+{ #category : 'Initialization' }
 TonelMethodWriterTest >> setUp [
 
 	super setUp.
 	writer := TonelMethodWriter with: TonelWriter lineDelimiter
 ]
 
-{
-	#category : 'Test'
-}
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWriteClassMethodDefinition [
 
 	| definition stream |
@@ -33,7 +27,7 @@ TonelMethodWriterTest >> testWriteClassMethodDefinition [
 		TonelWriterMethodDefinition
 			uniquelyKnownAs: #isTonelMock
 			in: TonelMockA class
-			categorizedAs: (self wrapBetweenSingleQuotes: 'Testing').
+			categorizedAs: 'Testing'.
 	stream := self newStream.
 	writer write: definition on: stream.
 	self
@@ -50,9 +44,7 @@ TonelMockA class >> isTonelMock [
 '
 ]
 
-{
-	#category : 'Test'
-}
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWriteMethodDefinition [
 
 	| definition stream |
@@ -61,7 +53,7 @@ TonelMethodWriterTest >> testWriteMethodDefinition [
 		TonelWriterMethodDefinition
 			uniquelyKnownAs: #denominator
 			in: TonelMockA
-			categorizedAs: (self wrapBetweenSingleQuotes: 'Accessing').
+			categorizedAs: 'Accessing'.
 	stream := self newStream.
 	writer write: definition on: stream.
 	self
@@ -78,9 +70,7 @@ TonelMockA >> denominator [
 '
 ]
 
-{
-	#category : 'Test'
-}
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWriteMethodDefinitionWithBinaryMessage [
 
 	| definition stream |
@@ -89,7 +79,7 @@ TonelMethodWriterTest >> testWriteMethodDefinitionWithBinaryMessage [
 		TonelWriterMethodDefinition
 			uniquelyKnownAs: #value
 			in: TonelMockA
-			categorizedAs: (self wrapBetweenSingleQuotes: 'Evaluating').
+			categorizedAs: 'Evaluating'.
 	stream := self newStream.
 	writer write: definition on: stream.
 	self
@@ -106,9 +96,7 @@ TonelMockA >> value [
 '
 ]
 
-{
-	#category : 'Test'
-}
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWriteMethodDefinitionWithCommment [
 
 	| definition stream |
@@ -117,7 +105,7 @@ TonelMethodWriterTest >> testWriteMethodDefinitionWithCommment [
 		TonelWriterMethodDefinition
 			uniquelyKnownAs: #withComment
 			in: TonelMockA
-			categorizedAs: (self wrapBetweenSingleQuotes: 'Accessing').
+			categorizedAs: 'Accessing'.
 	stream := self newStream.
 	writer write: definition on: stream.
 	self
@@ -135,9 +123,7 @@ TonelMockA >> withComment [
 '
 ]
 
-{
-	#category : 'Test'
-}
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWriteMethodDefinitionWithLocalVariable [
 
 	| definition stream |
@@ -146,7 +132,7 @@ TonelMethodWriterTest >> testWriteMethodDefinitionWithLocalVariable [
 		TonelWriterMethodDefinition
 			uniquelyKnownAs: #withLocalVariable
 			in: TonelMockA
-			categorizedAs: (self wrapBetweenSingleQuotes: 'Accessing').
+			categorizedAs: 'Accessing'.
 	stream := self newStream.
 	writer write: definition on: stream.
 	self
@@ -167,9 +153,7 @@ TonelMockA >> withLocalVariable [
 '
 ]
 
-{
-	#category : 'Test'
-}
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWriteMethodDefinitionWithMoreThanOneLine [
 
 	| definition stream |
@@ -178,7 +162,7 @@ TonelMethodWriterTest >> testWriteMethodDefinitionWithMoreThanOneLine [
 		TonelWriterMethodDefinition
 			uniquelyKnownAs: #withModeThanOneLine
 			in: TonelMockA
-			categorizedAs: (self wrapBetweenSingleQuotes: 'Accessing').
+			categorizedAs: 'Accessing'.
 	stream := self newStream.
 	writer write: definition on: stream.
 	self
@@ -197,9 +181,7 @@ TonelMockA >> withModeThanOneLine [
 '
 ]
 
-{
-	#category : 'Test'
-}
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWritePrivateMethodDefinition [
 
 	| definition stream |
@@ -208,7 +190,7 @@ TonelMethodWriterTest >> testWritePrivateMethodDefinition [
 		TonelWriterMethodDefinition
 			uniquelyKnownAs: #privateMethod
 			in: TonelMockA
-			categorizedAs: (self wrapBetweenSingleQuotes: 'Private').
+			categorizedAs: 'Private'.
 	stream := self newStream.
 	writer write: definition on: stream.
 	self
@@ -226,10 +208,8 @@ TonelMockA >> privateMethod [
 '
 ]
 
-{
-	#category : 'Utility',
-	#vaVisibility : 'private'
-}
+{ #category : 'Utility',
+  #vaVisibility : 'private' }
 TonelMethodWriterTest >> wrapBetweenSingleQuotes: aString [
 
 	^String streamContents: [:stream |
