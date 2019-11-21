@@ -23,9 +23,11 @@ TonelReaderTest >> testWriteProject [
 { #category : 'Tests - Support' }
 TonelReaderTest >> writeThenReadProjectIncluding: applicationNames from: aRootDirPath [
 
-	self writer
-		writeProjectIncluding: (applicationNames collect: [:each | Smalltalk at: each asSymbol])
-		sourceDirectoryNamed: 'source'
-		into: aRootDirPath.
-	self reader readPackages: applicationNames fromSourceDir: (aRootDirPath append: 'source')
+	self writer 
+		writeProjectIncluding: (applicationNames 
+				collect: [:each | Smalltalk at: each asSymbol])
+		into: aRootDirPath
+		sourceDirectoryName: 'source'.
+	self reader readPackages: applicationNames
+		fromSourceDir: (aRootDirPath append: 'source')
 ]

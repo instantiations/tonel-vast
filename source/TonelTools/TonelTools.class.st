@@ -88,7 +88,7 @@ TonelTools class >> loadTonelRepository [
 			ifNil: [^self]
 			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].
 	reader := TonelReader new.
-	(repositoryPath exists and: [(reader computeSourceDirFrom: repositoryPath) exists])
+	(repositoryPath exists and: [(reader computeSourcesDirectoryFrom: repositoryPath) exists])
 		ifFalse: [
 			self halt: TonelMsg14 "$NLS$ The selected Tonel repository does not contain a valid sources directory.".
 			^self].

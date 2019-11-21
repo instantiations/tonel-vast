@@ -47,7 +47,9 @@ TonelWriterMethodDefinition >> definitionClassName [
 
 { #category : 'Defaults' }
 TonelWriterMethodDefinition >> hasDefaultVACategories [
-	"If there is only one category, no need to write #vaCategories key as we are
+	"Answer whether receiver should write the categories into aCollection."
+	"NOTE:
+	 If there is only one category, no need to write #vaCategories key as we are
 	 already writing #category:.
 	 In the case of extension methods the first in allCategories will be the real one in VA
 	 while the one of #category will be one with *X compatible with Tonel/Pharo"
