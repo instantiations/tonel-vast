@@ -14,43 +14,7 @@
   </p>
 </p>
 
-For [Instantiations](https://www.instantiations.com/) and VASmalltalk, having git support is a priority. The first step is to have a plaintext file based output and input for the sources of its Applications.
 
-[Tonel](https://github.com/pharo-vcs/tonel) is the current file format widely accepted by the Smalltalk community to store source code on disk with a VCS-friendly format.
-
-## License
-- The code is licensed under [MIT](LICENSE).
-- The documentation is licensed under [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/).
-
-
-## Installation
-
-- Download [VAST 9.2 ECAP 2 or newer from Instantiations](https://www.instantiations.com/ecap/).
-- Clone this repository.
-- From the configuration map browser, import all versions of the `Tonel` map from `envy/Tonel.dat`. Then "Load With Required Maps" the latest version of it.
-- Run SUnit Suite for all `Tonel` map (right click on the map -> `Test Loaded Applications`). You should see around 58 unit tests and most of them passing.
-- Explore the [documentation](docs/).
-
-
-## Quick Start
-
-- Open Application Manager and try the menu option "Import/Export" -> "Import Applications from Tonel packages..." and "Export Applications as Tonel packages..."
-<img width="500" alt="Import/Export" src="https://user-images.githubusercontent.com/1032834/64197391-621ea780-ce5c-11e9-8312-55994d01f68e.png">
-- Or..you can do it from code too:
-
-```smalltalk
-(TonelLoader
- on: (TonelReader new readPackagesFrom:
-   ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\TonelRepositories\tonel-demos')))
-     loadApplicationNamed: 'TonelExampleApp'.
-     
-TonelWriter new writeInWorkingDirectoryProjectIncluding: (Array with: TonelExampleApp)
-
-"WARNING: This deletes everything in the target directory."
-TonelWriter new
- writeProjectIncluding: (Array with: TonelTestPackageAApp)  
- into: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\TonelRepositories\tonel-demos').
- ```
 
 ## Tonel for VAST in a Nutshell
 
@@ -68,7 +32,58 @@ Relies on the parser to create first-class objects representing each abstraction
 Uses the reader to compile classes, methods, extensions, etc. And create the required editions and versions in the ENVY Library.
 
 ### Tonel Writer
-Writes to disk, in a Tonel compatible format (plus the VAST Specific features described below) the Applications, SubApplications, Methods, Extensions, etc.
+Writes to disk, in a Tonel compatible format (plus the VAST Specific features described below) the Applications, SubApplications, Shared Pools, Methods, Extensions, etc.
+
+If the Application has a class side `#tonelPackageName` selector it then will honor it when creating the package name.
+
+
+## Purpose 
+For [Instantiations](https://www.instantiations.com/) and VA Smalltalk, having git support is a priority. The first step is to have a plaintext file based output and input for the sources of its Applications.
+
+[Tonel](https://github.com/pharo-vcs/tonel) is the current file format widely accepted by the Smalltalk community to store source code on disk with a VCS-friendly format.
+
+## License
+- The code is licensed under [MIT](LICENSE).
+- The documentation is licensed under [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/).
+
+
+## Installation
+
+- Download [VAST 9.2 or newer from Instantiations](https://www.instantiations.com/products/vasmalltalk/download.html).
+- Clone this repository.
+- From the configuration map browser, import all versions of the `Tonel` map from `envy/Tonel.dat`. Then "Load With Required Maps" the latest version of it.
+- Explore the [documentation](docs/).
+- (optional) Run SUnit Suite for all `Tonel` map (right click on the map -> `Test Loaded Applications`). You should see around 58 unit tests and most of them passing).
+
+## Quick Start
+
+### Using GUI menus
+
+- Open Application Manager and try the menu option "Import/Export" -> "Import Applications from Tonel packages..." and "Export Applications as Tonel packages..."
+<img width="500" alt="Import/Export" src="https://user-images.githubusercontent.com/1032834/64197391-621ea780-ce5c-11e9-8312-55994d01f68e.png">
+
+
+### Programmatically
+
+```smalltalk
+| reader |
+reader := (TonelReader new readPackagesFrom:
+            ((CfsPath named: CfsDirectoryDescriptor getcwd) 
+              append: '..\TonelRepositories\tonel-demos'))).
+reader createLoader loadApplicationNamed: 'TonelExampleApp'.
+
+"or you can load by Tonel package name"
+reader createLoader 
+  loadApplicationsForPackagesNamed: #('YourPackage-Core' 'YourPackage-Tests').
+
+"Writing back to Tonel"
+TonelWriter new
+	clearSourcesDirectory; "deletes everything in the target directory"
+	writeProjectIncluding: (Array with: TonelExampleApp) 
+    into: ((CfsPath named: CfsDirectoryDescriptor getcwd) 
+          append: '..\TonelRepositories\tonel-demos').
+ ```
+
 
 ## VAST specific features
 
@@ -158,29 +173,32 @@ So if you currently write an existing _Application_ with shadow _SubApplications
 
 ## Compatibility Recommendations
 
-If you want to make your code fully compatible and interoperable with other Smalltalk dialects you must restrict yourself to the minimum support provided by Tonel.  
+If you want to make your code fully compatible and interoperable with other Smalltalk dialects there is a specific document with the [recommendations for compatibility](docs/compatibility.md).
 
-### Application hierarchy
 
-It is recommended you only use  _Applications_ **without** _SubApplications_, so the mapping _Application_ (VAST) ->_Package_ (Tonel) will be straighforward in both directions.
 
-You could use _SubApplications_ that will be read as _Packages_ in other dialects, but that _hierarchy_ information is going to be lost if the other dialect writes it back to Tonel format. This is so because the "metadata" we use to store the parent application, the config expressions, etc. is not read by other dialects and discarded once written back.
 
-E.g.
-1. You have the VAST Application named `MyCoolApp` with `MyCoolSubappA` and `MyCoolSubAppB`
-2. You write them to disk using the Tonel Writer
-3. You load them into Pharo, they will be imported as three separate _Packages_ `MyCoolApp`, `MyCoolSubappA` and `MyCoolSubAppB` with no specific load order.
-4. Assuming everything loaded correctly, you make some changes in Pharo and write them back to a Tonel repository.
-5. Back in VAST you load from that Tonel repository
-6. Regardless of the names, `MyCoolApp`, `MyCoolSubappA` and `MyCoolSubAppB` will be read as separate _Applications_ because in step 4 no metadata was written about `#vaSubapplications` nor `#vaParent`.
 
-### Method Visibility
+## Shared Pools
 
-For the same reasons as in the Application Hierarchy, all methods should have `public` visibility.
+VAST's way of declaring and/or initializing Shared Pools is different from other Smalltalk dialects, and to explain how this work with Tonel, there is a specific document explaining [how VAST Tonel handles shared pools](docs/sharedpools.md).
 
+
+
+## ENVY Application versions
+
+When loading an Application (from a Tonel package), the loader will ask for the desired version you want to assign, if you don't specify any version, the Application won't be versioned and will remain as an edition.
+
+### Git integration
+
+When reading from a project directory that has a git repository (in `.git` directory), the _loader_ will attempt to read the commit hash and commit timestamp, and suggest the version name of each Application built from them. E.g. `081729b (2019-11-05T15:44:06-03:00)`.
 
 ## Examples and Demos
 There is a [whole Github project](https://github.com/vasmalltalk/tonel-demos/) that contains demos about Tonel integration with VASmalltalk.
+
+## Roadmap / Next steps
+
+See the [roadmap document](docs/roadmap.md) for further details.
 
 
 ## Acknowledgments
@@ -190,4 +208,4 @@ There is a [whole Github project](https://github.com/vasmalltalk/tonel-demos/) t
 
 ## Contributing
 
-Check the [Contribution Guidelines](CONTRIBUTING.md)
+Check the [Contribution Guidelines](docs/CONTRIBUTING.md)
