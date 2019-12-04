@@ -33,8 +33,8 @@ TonelWriterTest >> assertTonelWriterModel [
 TonelWriterTest >> assertTonelWriterModelOnPath: aPath [
 
 	self
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterModel\package.st';
-		assertContentsOfFileAt: aPath , '\TonelWriterModel\package.st'
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterModel/package.st';
+		assertContentsOfFileAt: aPath , '/TonelWriterModel/package.st'
 			equals:
 			'Package {
 	#name : ''TonelWriterModel'',
@@ -42,26 +42,26 @@ TonelWriterTest >> assertTonelWriterModelOnPath: aPath [
 }
 ';
 		assertFileSystemIncludesFileAt:
-			aPath , '\TonelWriterModel\TonelWriterApplicationDefinition.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterModel\TonelWriterClassDefinition.class.st';
+			aPath , '/TonelWriterModel/TonelWriterApplicationDefinition.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterModel/TonelWriterClassDefinition.class.st';
 		assertFileSystemIncludesFileAt:
-			aPath , '\TonelWriterModel\TonelWriterClassExtensionDefinition.class.st';
+			aPath , '/TonelWriterModel/TonelWriterClassExtensionDefinition.class.st';
 		assertFileSystemIncludesFileAt:
-			aPath , '\TonelWriterModel\TonelClassExtensionWriter.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterModel\TonelClassWriter.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterModel\TonelWriterMethodDefinition.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterModel\TonelMethodWriter.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterModel\TonelWriter.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterModel\TonelWriterModel.class.st';
-		deny: (self fileSystem includes: aPath , '\TonelWriterModel\TonelWriter.extension.st')
+			aPath , '/TonelWriterModel/TonelClassExtensionWriter.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterModel/TonelClassWriter.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterModel/TonelWriterMethodDefinition.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterModel/TonelMethodWriter.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterModel/TonelWriter.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterModel/TonelWriterModel.class.st';
+		deny: (self fileSystem includes: aPath , '/TonelWriterModel/TonelWriter.extension.st')
 ]
 
 { #category : 'Tests - Support' }
 TonelWriterTest >> assertTonelWriterTestOnPath: aPath [
 
 	self
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\Object.extension.st';
-		assertContentsOfFileAt: aPath , '\TonelWriterTests\package.st'
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/Object.extension.st';
+		assertContentsOfFileAt: aPath , '/TonelWriterTests/package.st'
 			equals:
 				'Package {
 	#name : ''TonelWriterTests'',
@@ -76,19 +76,19 @@ TonelWriterTest >> assertTonelWriterTestOnPath: aPath [
 ]
 }
 ';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelClassWriterTest.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelMethodWriterTest.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelMockA.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelMockB.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelMockC.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelMockE.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelMockF.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelMockG.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelWriter.extension.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelWriterTest.class.st';
-		assertFileSystemIncludesFileAt: aPath , '\TonelWriterTests\TonelWriterTests.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelClassWriterTest.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelMethodWriterTest.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelMockA.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelMockB.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelMockC.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelMockE.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelMockF.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelMockG.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelWriter.extension.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelWriterTest.class.st';
+		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/TonelWriterTests.class.st';
 
-		assertContentsOfFileAt: aPath , '\TonelSubapplication\package.st'
+		assertContentsOfFileAt: aPath , '/TonelSubapplication/package.st'
 			equals:
 			'Package {
 	#name : ''TonelSubapplication'',
@@ -110,26 +110,26 @@ TonelWriterTest >> assertTonelWriterTestOnPath: aPath [
 }
 ';
 		assertFileSystemIncludesFileAt:
-			aPath , '\TonelSubapplication\TonelMockD.class.st';
+			aPath , '/TonelSubapplication/TonelMockD.class.st';
 		assertFileSystemIncludesFileAt:
-			aPath , '\TonelSubapplication\TonelSubapplication.class.st';
+			aPath , '/TonelSubapplication/TonelSubapplication.class.st';
 		assertFileSystemIncludesFileAt:
-			aPath , '\TonelSubapplication\Object.extension.st';
+			aPath , '/TonelSubapplication/Object.extension.st';
 		assertFileSystemIncludesFileAt:
-			aPath , '\TonelSubapplication\TonelMockA.extension.st';
+			aPath , '/TonelSubapplication/TonelMockA.extension.st';
 
 
 		assertFileSystemIncludesFileAt:
 			aPath ,
-				'\TonelWriterTestSubSubApp\TonelMockH.class.st';
+				'/TonelWriterTestSubSubApp/TonelMockH.class.st';
 		assertFileSystemIncludesFileAt:
 			aPath ,
-				'\TonelWriterTestSubSubApp\TonelWriterTestSubSubApp.class.st';
+				'/TonelWriterTestSubSubApp/TonelWriterTestSubSubApp.class.st';
 		assertFileSystemIncludesFileAt:
 			aPath ,
-				'\TonelWriterTestSubSubApp\Object.extension.st';
+				'/TonelWriterTestSubSubApp/Object.extension.st';
 		assertContentsOfFileAt:
-				aPath , '\TonelWriterTestSubSubApp\package.st'
+				aPath , '/TonelWriterTestSubSubApp/package.st'
 			equals:
 				'Package {
 	#name : ''TonelWriterTestSubSubApp'',
@@ -140,16 +140,16 @@ TonelWriterTest >> assertTonelWriterTestOnPath: aPath [
 
 		assertFileSystemIncludesFileAt:
 			aPath ,
-				'\TonelWriterTestShadowSubSubApp\TonelShadowMockJ.class.st';
+				'/TonelWriterTestShadowSubSubApp/TonelShadowMockJ.class.st';
 		assertFileSystemIncludesFileAt:
 			aPath ,
-				'\TonelWriterTestShadowSubSubApp\TonelWriterTestShadowSubSubApp.class.st';
+				'/TonelWriterTestShadowSubSubApp/TonelWriterTestShadowSubSubApp.class.st';
 		assertFileSystemIncludesFileAt:
 			aPath ,
-				'\TonelWriterTestShadowSubSubApp\Object.extension.st';
+				'/TonelWriterTestShadowSubSubApp/Object.extension.st';
 		assertContentsOfFileAt:
 				aPath ,
-					'\TonelWriterTestShadowSubSubApp\package.st'
+					'/TonelWriterTestShadowSubSubApp/package.st'
 			equals:
 				'Package {
 	#name : ''TonelWriterTestShadowSubSubApp'',
@@ -168,16 +168,16 @@ TonelWriterTest >> assertTonelWriterTestOnPath: aPath [
 
 		assertFileSystemIncludesFileAt:
 			aPath ,
-				'\TonelWriterTestShadowSubSubSubApp\TonelShadowMockK.class.st';
+				'/TonelWriterTestShadowSubSubSubApp/TonelShadowMockK.class.st';
 		assertFileSystemIncludesFileAt:
 			aPath ,
-				'\TonelWriterTestShadowSubSubSubApp\TonelWriterTestShadowSubSubSubApp.class.st';
+				'/TonelWriterTestShadowSubSubSubApp/TonelWriterTestShadowSubSubSubApp.class.st';
 		assertFileSystemIncludesFileAt:
 			aPath ,
-				'\TonelWriterTestShadowSubSubSubApp\Object.extension.st';
+				'/TonelWriterTestShadowSubSubSubApp/Object.extension.st';
 		assertContentsOfFileAt:
 				aPath ,
-					'\TonelWriterTestShadowSubSubSubApp\package.st'
+					'/TonelWriterTestShadowSubSubSubApp/package.st'
 			equals:
 				'Package {
 	#name : ''TonelWriterTestShadowSubSubSubApp'',
@@ -187,7 +187,7 @@ TonelWriterTest >> assertTonelWriterTestOnPath: aPath [
 
 
 
-	self deny: (self fileSystem includes: aPath , '\TonelWriterTests\TonelWriter.class.st')
+	self deny: (self fileSystem includes: aPath , '/TonelWriterTests/TonelWriter.class.st')
 ]
 
 { #category : 'Initialization' }
@@ -203,7 +203,7 @@ TonelWriterTest >> testShadowApplications [
 	self writer writeApplication: TonelWriterTests into: self directoryForTestingPath.
 	
 	self assertContentsOfFileAt:
-				'.\TonelWriterTestShadowSubSubApp\TonelShadowMockJ.class.st'
+				'/TonelWriterTestShadowSubSubApp/TonelShadowMockJ.class.st'
 			equals:
 				'Class {
 	#name : ''TonelShadowMockJ'',
@@ -233,7 +233,7 @@ TonelShadowMockJ >> shadowMethodForTest [
 ';
 
 	 assertContentsOfFileAt:
-				'.\TonelWriterTestShadowSubSubApp\Object.extension.st'
+				'/TonelWriterTestShadowSubSubApp/Object.extension.st'
 			equals:
 				'Extension {
 	#name : ''Object''
@@ -254,7 +254,7 @@ TonelWriterTest >> testShadowSubApplications [
 	self writer writeApplication: TonelWriterTests into: self directoryForTestingPath.
 	
 	self assertContentsOfFileAt:
-				'.\TonelWriterTestShadowSubSubSubApp\TonelShadowMockK.class.st'
+				'/TonelWriterTestShadowSubSubSubApp/TonelShadowMockK.class.st'
 			equals:
 				'Class {
 	#name : ''TonelShadowMockK'',
@@ -284,7 +284,7 @@ TonelShadowMockK >> shadowSubMethodForTest [
 ';
 
 	 assertContentsOfFileAt:
-				'.\TonelWriterTestShadowSubSubSubApp\Object.extension.st'
+				'/TonelWriterTestShadowSubSubSubApp/Object.extension.st'
 			equals:
 				'Extension {
 	#name : ''Object''
@@ -322,6 +322,6 @@ TonelWriterTest >> testWriteProject [
 	self writer
 		writeProjectIncluding: (Array with: TonelWriterTests with: TonelWriterModel)
 		into: self directoryForTestingPath.
-	self assertTonelWriterModelOnPath:  '\source'.
-	self assertTonelWriterTestOnPath:  '\source'
+	self assertTonelWriterModelOnPath:  '/source'.
+	self assertTonelWriterTestOnPath:  '/source'
 ]
