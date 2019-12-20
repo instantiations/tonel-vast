@@ -9,7 +9,7 @@ Tonel doesn't provide any artifact to have something similar as a Configuration 
 
 ## Strategy based behavior
 
-The current behavior of the loader is interactive, meaning that we need input from the user. This has to do with the fact that the ENVY/Manager codebase itself is GUI dependant at some parts, but we can have a few pluggable settings/strategies to handle some of the current UI interactions to resolve things like:
+The current behavior of the loader is interactive, meaning that we need input from the user. This has to do with the fact that the ENVY/Manager codebase itself is GUI dependent at some parts, but we can have a few pluggable settings/strategies to handle some of the current UI interactions to resolve things like:
 
 * Version naming (from git, fossil, manual, etc.)
 * Use the same version for all Applications/Classes
@@ -23,6 +23,6 @@ Be able to migrate the history of an application (or set of applications) from t
 
 ## Real use testing
 
-This codebase was tested with the test cases, the example repositories mentioned before and [VAST Tensorflow](https://github.com/vasmalltalk/tensorflow-vast/) library.
+This codebase was tested with a good suite of unit testing, the example repositories mentioned before and [VAST Tensorflow](https://github.com/vasmalltalk/tensorflow-vast/) library.
 
 VAST users might have other use cases and needs that weren't considered in this codebase. If you have suggestions or issues [please report them](https://github.com/vasmalltalk/tonel-vast/issues/) so we can continue .

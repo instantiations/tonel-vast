@@ -5,7 +5,7 @@ If you want to make your code fully compatible and interoperable with other Smal
 
 ## Application hierarchy
 
-It is recommended you only use  _Applications_ **without** _SubApplications_, so the mapping _Application_ (VAST) ->_Package_ (Tonel) will be straighforward in both directions.
+It is recommended you only use  _Applications_ **without** _SubApplications_, so the mapping _Application_ (VAST) ->_Package_ (Tonel) will be straightforward in both directions.
 
 You could use _SubApplications_ that will be read as _Packages_ in other dialects, but that _hierarchy_ information is going to be lost if the other dialect writes it back to Tonel format. This is so because the "metadata" we use to store the parent application, the config expressions, etc. is not read by other dialects and discarded once written back.
 
@@ -20,4 +20,3 @@ E.g.
 ## Method Visibility
 
 For the same reasons as in the Application Hierarchy, all methods should have `public` visibility.
-

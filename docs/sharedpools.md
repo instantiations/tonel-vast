@@ -2,7 +2,7 @@
 
 ## Introduction
 
-VAST's way of declaring and/or initializing Shared Pools is different from other Smalltalk dialects, as it uses [_declaration methods_](https://www.instantiations.com/docs/92/wwhelp/wwhimpl/js/html/wwhelp.htm#href=pr/stpr670.html) by means of `_PRAGMA_*` prefixed methods and `%%PRAGMA DECLARE ...` content comment. 
+VAST's way of declaring and/or initializing Shared Pools is different from other Smalltalk dialects, as it uses [_declaration methods_](https://www.instantiations.com/docs/92/wwhelp/wwhimpl/js/html/wwhelp.htm#href=pr/stpr670.html) by means of `_PRAGMA_*` prefixed methods and `%%PRAGMA DECLARE ...` content comment.
 
 This way of declaring Shared Pools has the benefit of being able to declare the shared pool, its keys, and whether the values are constant, how the values are initialized, etc, everything in a single declaration.
 
@@ -80,7 +80,6 @@ Application subclass: #YourApp
 
 And then create an initialization method like the following:
 ```smalltalk
-
 YourApp class>>#_SHAREDPOOL_YourSharedPool_initialize
 	YSP_Key1 := 1.
 	YSP_Key2 := 2.
