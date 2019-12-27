@@ -4,7 +4,10 @@ Class {
 	#instVars : [
 		'reader',
 		'applications',
-		'subApplications'
+		'subApplications',
+		'baseEditionStrategy',
+		'prerequistesStrategy',
+		'versionStrategy'
 	],
 	#classVars : [
 		'CompilerWarningLevel',
@@ -98,6 +101,13 @@ TonelLoader class >> on: aTonelReader [
 	^self new setReader: aTonelReader
 ]
 
+{ #category : 'instance creation' }
+TonelLoader class >> readPackagesFrom: aCfsPath [
+
+		
+	^(TonelReader new readPackagesFrom: aCfsPath) createLoader
+]
+
 { #category : 'lookup' }
 TonelLoader >> applicationNamed: aString [
 	"Returns the application with name aString or raise an error if not found."
@@ -110,6 +120,31 @@ TonelLoader >> applications [
 
 	applications ifNil: [self initializeApplications].
 	^applications
+]
+
+{ #category : 'strategies' }
+TonelLoader >> baseEditionStrategy [
+	^baseEditionStrategy
+]
+
+{ #category : 'strategies' }
+TonelLoader >> baseEditionStrategy: anObject [
+	baseEditionStrategy := anObject
+]
+
+{ #category : 'strategies' }
+TonelLoader >> beInteractive [
+
+	self prerequistesStrategy: (TonelLoaderInteractivePrereqStrategy for: self).
+	self baseEditionStrategy: (TonelLoaderInteractiveBaseEditionStrategy for: self).
+	self versionStrategy: (TonelLoaderInteractiveVersionStrategy for: self)
+]
+
+{ #category : 'strategies' }
+TonelLoader >> beUnattended [
+	self useComputedPrerequisites.
+	self useLatestBaseEditions.
+	self doNotCreateVersions
 ]
 
 { #category : 'loading' }
@@ -132,6 +167,19 @@ TonelLoader >> createReaderForRepository: directoryPath [
 
 	self setReader: (TonelReader new).
 	self reader readPackagesFrom: directoryPath.
+]
+
+{ #category : 'strategies' }
+TonelLoader >> doNotCreateVersions [
+	self versionStrategy: (TonelLoaderNoVersionStrategy for: self)
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelLoader >> initialize [
+
+	super initialize.
+	self beInteractive
 ]
 
 { #category : 'initializing',
@@ -189,6 +237,12 @@ TonelLoader >> loadApplicationsNamed: aCollection [
 	self loadApplications: (aCollection collect: [:each | self applicationNamed: each])
 ]
 
+{ #category : 'interacting' }
+TonelLoader >> loadBaseEditionFor: aTonelApplication [
+
+	^self baseEditionStrategy loadBaseEditionFor: aTonelApplication
+]
+
 { #category : 'accessing' }
 TonelLoader >> loadedApplications [
 
@@ -199,6 +253,23 @@ TonelLoader >> loadedApplications [
 TonelLoader >> log: aString [
 
 	self class owningImage logApplicationNotice: aString.
+]
+
+{ #category : 'strategies' }
+TonelLoader >> prerequisitesFor: aTonelLoaderApplication current: anOrderedCollection [
+
+
+	^self prerequistesStrategy prerequisitesFor: aTonelLoaderApplication current: anOrderedCollection 
+]
+
+{ #category : 'strategies' }
+TonelLoader >> prerequistesStrategy [
+	^prerequistesStrategy
+]
+
+{ #category : 'strategies' }
+TonelLoader >> prerequistesStrategy: anObject [
+	prerequistesStrategy := anObject
 ]
 
 { #category : 'interacting' }
@@ -249,4 +320,35 @@ TonelLoader >> subApplicationsFor: aTonelLoaderSubApplication [
 	^(self reader packages
 		select: [:each | each parent = aTonelLoaderSubApplication packageDefinition name])
 			collect: [:each | self subApplicationNamed: each name]
+]
+
+{ #category : 'strategies' }
+TonelLoader >> useComputedPrerequisites [
+	self prerequistesStrategy: (TonelLoaderComputedPrerequisitesStrategy for: self)
+]
+
+{ #category : 'strategies' }
+TonelLoader >> useLatestBaseEditions [
+	self baseEditionStrategy: (TonelLoaderLatestBaseEditionStrategy for: self)
+]
+
+{ #category : 'strategies' }
+TonelLoader >> useVersionFromGitRepository [
+	self versionStrategy: (TonelLoaderGitVersionStrategy for: self)
+]
+
+{ #category : 'interacting' }
+TonelLoader >> versionFor: aTonelApplication [
+
+	^self versionStrategy versionFor: aTonelApplication
+]
+
+{ #category : 'strategies' }
+TonelLoader >> versionStrategy [
+	^versionStrategy
+]
+
+{ #category : 'strategies' }
+TonelLoader >> versionStrategy: anObject [
+	versionStrategy := anObject
 ]

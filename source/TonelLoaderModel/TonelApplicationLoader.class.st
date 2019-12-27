@@ -20,44 +20,6 @@ TonelApplicationLoader class >> on: aTonelApplication in: aTonelLoader [
 		yourself
 ]
 
-{ #category : 'querying' }
-TonelApplicationLoader >> allLoadedApplications [
-	
-	^self loader loadedApplications
-]
-
-{ #category : 'versioning',
-  #vaVisibility : 'private' }
-TonelApplicationLoader >> attemptVersionFromGit [
-	"Private - Attempts to read git metadata from the repository path of the loader (if available)."
-
-	(self loader reader repositoryPath) ifNotNil: [:repoPath | | gitBranchCommitFile gitBranchPath
-		  gitHeadPath commitHash commitDate |
-		gitHeadPath := ((repoPath append: '.git') append: 'HEAD').
-		gitHeadPath exists
-			ifTrue: [| refsPathString headFile stat |
-				[
-					headFile := CfsReadFileStream open: gitHeadPath asString.
-					refsPathString := headFile nextLine.
-					refsPathString := refsPathString copyFrom: 6 to: refsPathString size]
-						ensure: [headFile close].
-				gitBranchPath := (((repoPath append: '.git') append: refsPathString)).
-				gitBranchPath exists
-					ifTrue: [
-						gitBranchCommitFile := CfsReadFileStream open: gitBranchPath asString.
-						[
-							commitHash := (gitBranchCommitFile nextLine first: 7).
-							stat := gitBranchPath cfsStat.
-							commitDate := DateAndTime
-								date: stat stMtime first
-								time: stat stMtime last]
-									ensure: [gitBranchCommitFile close].
-						commitHash isEmptyOrNil
-							ifFalse: [
-								self versionName:
-									(commitHash , (' (<1p>)' expandMacrosWith: commitDate))]]]]
-]
-
 { #category : 'loading-internal' }
 TonelApplicationLoader >> autogenerateClassSideNewInitializers [
 
@@ -83,7 +45,9 @@ TonelApplicationLoader >> checkClassExtensions [
   #vaVisibility : 'private' }
 TonelApplicationLoader >> checkForUnloadedApplication [
 
-	self tonelApplication loadBaseApplication
+	Smalltalk classAt: self tonelApplication identifier ifAbsent: [
+		(Application allNamesWithoutPackages includes: self tonelApplication identifier)
+			ifTrue: [self loader loadBaseEditionFor: self tonelApplication ] ]
 ]
 
 { #category : 'loading-internal' }
@@ -102,26 +66,20 @@ TonelApplicationLoader >> checkThatUserCanModifyApplication [
 { #category : 'loading-prompters',
   #vaVisibility : 'private' }
 TonelApplicationLoader >> choosePrerequisites [
-
-	self tonelApplication prerequisites: (EtPrerequisiteCollectingPrompter
-		prompt: ('Please select the prequisites for %1 (chains will be resolved after selection)' bindWith: self tonelApplication name)  "$NLS$ Please select the prequisites for %1 (chains will be resolved after selection)"
-		chooseFrom: (
-			self allLoadedApplications reject: [ :anApp | 
-				self tonelApplication allDependentApplications includes: anApp ])
-		current: self tonelApplication prerequisites
-		alwaysRequired: (Set with: Kernel))
+	self tonelApplication prerequisites: self computePrerequisites
 ]
 
 { #category : 'loading-prompters',
   #vaVisibility : 'private' }
 TonelApplicationLoader >> chooseVersionName [
-	"The version name string may be empty if the user pressed OK without entering
-	 anything (or deleting the pre-entered name), or nil if the user pressed Cancel."
 
-	[self attemptVersionFromGit] on: Error do: [:ex | ex return].
-	self versionName: (
-		(System prompt: TonelMsg11 answer: self versionName) "$NLS$ Enter the version name to be used for imported classes and applications"
-			ifNil: ['']) "$NON-NLS$"
+	self versionName: (self loader versionFor: self tonelApplication)
+	
+]
+
+{ #category : 'loading-prompters' }
+TonelApplicationLoader >> computePrerequisites [
+	^self loader prerequisitesFor: self tonelApplication current:  tonelApplication prerequisites
 ]
 
 { #category : 'loading-internal' }
