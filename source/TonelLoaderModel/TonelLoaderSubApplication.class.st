@@ -746,8 +746,9 @@ TonelLoaderSubApplication >> versionFor: aLoader [
 	self subApplications do: [:aTonelSubApp | aTonelSubApp versionFor: aLoader].
 	theApp isEdition ifFalse: [^self].
 	(self concreteClasses allSatisfy: [:each | each isVersionIn: theApp]) ifFalse: [^self].
-	(theApp isEditionIn: theApp) ifTrue: [
+	(theApp isEditionIn: theApp)
+		ifTrue: [
 			theApp versionNameIn: theApp is: aLoader versionName.
-			theApp releaseClass: theApp ].
+			(theApp isVersionIn: theApp) ifTrue: [theApp releaseClass: theApp]].
 	self version: theApp as: aLoader versionName
 ]

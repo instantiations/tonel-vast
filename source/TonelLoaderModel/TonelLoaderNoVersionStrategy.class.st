@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : 'Not categorized' }
+TonelLoaderNoVersionStrategy >> alwaysCreateEditions [
+
+	^alwaysCreateEditions
+]
+
+{ #category : 'Not categorized' }
 TonelLoaderNoVersionStrategy >> versionFor: aTonelLoaderApplication [
 	"Always returns nil as the version, so all applications and subapplications will remain open editions."
 

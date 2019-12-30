@@ -98,7 +98,7 @@ TonelLoaderApplication >> concretePrerequisites [
 TonelLoaderApplication >> create [
 	"Create (or modify) a real Application from the receiver."
 
-	self hasChanges 
+	(self loader alwaysCreateEditions or: [self hasChanges])
 		ifTrue: 
 			[| theApp |
 			self loadPrerequisites.	

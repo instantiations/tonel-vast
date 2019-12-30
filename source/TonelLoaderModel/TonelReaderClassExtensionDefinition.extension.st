@@ -18,8 +18,8 @@ TonelReaderClassExtensionDefinition >> createEditionIn: anApp [
 	(baseClass := self concreteClassIn: anApp) isNil
 		ifTrue: [self createIn: anApp]
 		ifFalse: [
-			((self hasChangesIn: anApp comparedTo: baseClass)
-				and: [(baseClass isEditionIn: anApp) not])
+			((baseClass isEditionIn: anApp) not
+				and: [(self hasChangesIn: anApp comparedTo: baseClass)])
 					ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
 ]
 

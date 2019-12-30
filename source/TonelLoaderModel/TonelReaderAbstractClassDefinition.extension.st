@@ -161,10 +161,10 @@ TonelReaderAbstractClassDefinition >> versionIn: anApp for: aLoader [
 	 version the open edition of the class represented by the receiver
 	 and release it into @anApp."
 
-	aLoader versionName isEmpty ifFalse: [ | theClass |
+	aLoader hasVersionName ifFalse: [ | theClass |
 		self makeConsistentIn: anApp.
 		theClass := Smalltalk classAt: self identifier.
-		(theClass isEditionIn: anApp) ifTrue: [
+		((theClass isEditionIn: anApp) and: [aLoader hasVersionName]) ifTrue: [
 			theClass versionNameIn: anApp is: aLoader versionName.
 			anApp releaseClass: theClass ] ]
 ]

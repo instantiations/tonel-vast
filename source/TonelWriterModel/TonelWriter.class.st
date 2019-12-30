@@ -97,7 +97,7 @@ TonelWriter >> ensureDirectory: aString inside: aPath recreate: aBoolean [
 	| path |
 
 	path := aPath append: aString.
-	(path exists and: [aBoolean]) ifTrue: [path deleteAll].
+	(aBoolean and: [path exists]) ifTrue: [path deleteAll].
 	path realize.
 	^path
 ]

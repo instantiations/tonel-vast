@@ -18,6 +18,12 @@ TonelLoaderStrategy class >> for: aTonelLoader [
 		yourself
 ]
 
+{ #category : 'instance creation' }
+TonelLoaderStrategy class >> new [
+
+	^super new initialize
+]
+
 { #category : 'initializing' }
 TonelLoaderStrategy >> loader [
 

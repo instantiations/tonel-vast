@@ -190,6 +190,20 @@ TonelApplicationLoader >> detectAllRootSuperclassesWithinApp [
 	^superclasses
 ]
 
+{ #category : 'testing' }
+TonelApplicationLoader >> hasVersionName [
+
+	^self versionName isEmptyOrNil not
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelApplicationLoader >> initialize [
+
+	super initialize.
+	versionName := String new.
+]
+
 { #category : 'loading-internal',
   #vaVisibility : 'private' }
 TonelApplicationLoader >> initializeApplication [
@@ -291,7 +305,7 @@ TonelApplicationLoader >> versionApplication [
 { #category : 'accessing' }
 TonelApplicationLoader >> versionName [
 
-	^versionName
+	^versionName ifNil: [versionName := String new]
 ]
 
 { #category : 'accessing' }

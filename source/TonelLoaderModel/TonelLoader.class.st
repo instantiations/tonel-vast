@@ -102,10 +102,16 @@ TonelLoader class >> on: aTonelReader [
 ]
 
 { #category : 'instance creation' }
-TonelLoader class >> readPackagesFrom: aCfsPath [
+TonelLoader class >> readFromPath: aCfsPath [
 
 		
 	^(TonelReader new readPackagesFrom: aCfsPath) createLoader
+]
+
+{ #category : 'strategies' }
+TonelLoader >> alwaysCreateEditions [
+
+	^self versionStrategy alwaysCreateEditions
 ]
 
 { #category : 'lookup' }
@@ -172,6 +178,12 @@ TonelLoader >> createReaderForRepository: directoryPath [
 { #category : 'strategies' }
 TonelLoader >> doNotCreateVersions [
 	self versionStrategy: (TonelLoaderNoVersionStrategy for: self)
+]
+
+{ #category : 'Not categorized' }
+TonelLoader >> hasVersionName [
+	"Enter the new method definition below and click 'Resume'."
+	self halt
 ]
 
 { #category : 'initializing',
@@ -328,13 +340,13 @@ TonelLoader >> useComputedPrerequisites [
 ]
 
 { #category : 'strategies' }
-TonelLoader >> useLatestBaseEditions [
-	self baseEditionStrategy: (TonelLoaderLatestBaseEditionStrategy for: self)
+TonelLoader >> useGitVersion [
+	self versionStrategy: (TonelLoaderGitVersionStrategy for: self)
 ]
 
 { #category : 'strategies' }
-TonelLoader >> useVersionFromGitRepository [
-	self versionStrategy: (TonelLoaderGitVersionStrategy for: self)
+TonelLoader >> useLatestBaseEditions [
+	self baseEditionStrategy: (TonelLoaderLatestBaseEditionStrategy for: self)
 ]
 
 { #category : 'interacting' }
