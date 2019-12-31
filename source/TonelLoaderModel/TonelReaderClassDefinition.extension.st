@@ -54,7 +54,7 @@ TonelReaderClassDefinition >> amendSharedPoolClass [
 			ifTrue: [
 				self createPragmaMethod. 
 				identifier := name asSymbol.	
-				superclassIdentifier := #Object. 
+				"superclassIdentifier := #Object." 
 				"$NON-NLS$"
 				"poolDictionaries := poolDictionaries copyWith: name."
 				

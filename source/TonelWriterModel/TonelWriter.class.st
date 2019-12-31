@@ -108,7 +108,8 @@ TonelWriter >> initializeOn: aFileSystem [
 	"Private - Initializes receiver on aFileSystem."
 
 	fileSystem := aFileSystem.
-	lineDelimiter := self class lineDelimiter
+	lineDelimiter := self class lineDelimiter.
+	self clearSourcesDirectory.
 ]
 
 { #category : 'Accessing' }

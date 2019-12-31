@@ -284,13 +284,12 @@ TonelLoaderSubApplication >> definedSharedPools [
 { #category : 'loading' }
 TonelLoaderSubApplication >> definePoolDictionariesFor: emParentApp [
 
-	(self hasChangesFor: emParentApp inRootApp: nil) 
-		ifTrue: 
-			[| theApp |
-			theApp := Smalltalk classAt: self identifier.
-			self
-				definePoolDictionariesForClassesIn: theApp;
-				definePoolDictionariesInSubApplicationsFor: theApp]
+	| theApp |
+
+	theApp := Smalltalk classAt: self identifier.
+	self
+		definePoolDictionariesForClassesIn: theApp;
+		definePoolDictionariesInSubApplicationsFor: theApp
 ]
 
 { #category : 'loading' }
@@ -315,24 +314,20 @@ TonelLoaderSubApplication >> deleteRemovedSubApplications [
 ]
 
 { #category : 'querying' }
-TonelLoaderSubApplication >> hasChangesFor: emRootApp inRootApp: rootApp [
+TonelLoaderSubApplication >> hasChangesFor: emApp inRootApp: rootApp [
 
 	^hasChanges ifNil: [ "poolsAccounted ifFalse: [ self accountForPoolDictionaryClasses ]."
-
-		| emApp |
 		hasChanges :=
-			(emApp := Smalltalk classAt: self identifier) isNil or: [
-				(emApp rootApplication = rootApp) not
-					ifTrue: [
-						TonelLoaderError signal: (
-							TonelMsg05
-								bindWith: self name
-								with: emApp rootApplication name asString
-								with: rootApp name asString) "Subapp belongs to another app in the image"]. "$NLS$ The SubApplication %1 exists in the image, but is a subapplication of %2, not %3"
-				(self tonelDefinedClasses anySatisfy: [:tonelClass | tonelClass hasChangesIn: emApp])
-					or: [
-						(self hasRemovedClassesFor: emApp)
-							or: [self subApplicationsHaveChangesFor: emApp inRootApp: rootApp]]]]
+			(emApp rootApplication = rootApp) not
+				ifTrue: [
+					TonelLoaderError signal: (
+						TonelMsg05
+							bindWith: self name
+							with: emApp rootApplication name asString
+							with: rootApp name asString) "Subapp belongs to another app in the image"]. "$NLS$ The SubApplication %1 exists in the image, but is a subapplication of %2, not %3"
+		(self tonelDefinedClasses anySatisfy: [:tonelClass | tonelClass hasChangesIn: emApp]) or: [
+			(self hasRemovedClassesFor: emApp)
+				or: [self subApplicationsHaveChangesFor: emApp inRootApp: rootApp]]]
 ]
 
 { #category : 'querying' }
@@ -457,14 +452,13 @@ TonelLoaderSubApplication >> loadBaseEdition [
 ]
 
 { #category : 'loading' }
-TonelLoaderSubApplication >> loadClassesIn: anApp [
+TonelLoaderSubApplication >> loadClassesIn: anApp using: aLoader [
 
-		(self 
-		topologicallySort:self tonelExtendedClasses 
-		in: anApp) do: [:each | each key loadInto: anApp].
+	(self topologicallySort: self tonelExtendedClasses in: anApp) 
+		do: [:each | each key loadInto: anApp using: aLoader].
 	(self 
 		topologicallySort: (self tonelClasses reject: [:each1 | each1 isSharedPool])
-		in: anApp) do: [:each | each key loadInto: anApp]
+		in: anApp) do: [:each | each key loadInto: anApp using: aLoader]
 ]
 
 { #category : 'accessing' }
@@ -474,43 +468,48 @@ TonelLoaderSubApplication >> loader [
 ]
 
 { #category : 'loading' }
-TonelLoaderSubApplication >> loadFor: aLoader [
-	"Load the real application for @aLoader."
-	
-	self hasChanges ifTrue: [ | theApp |
-		theApp := Smalltalk classAt: self identifier.
-		self 
-			loadClassesIn: theApp;
-			versionClassesIn: theApp for: aLoader;
-			loadSubApplicationsIn: theApp for: aLoader ]
+TonelLoaderSubApplication >> loadFor: tonelApp inRootApp: rootApp using: aLoader [
+
+	| theApp |
+
+	theApp := Smalltalk at: self identifier.
+	(theApp isNil or: [self hasChangesFor: theApp inRootApp: rootApp])
+		ifTrue: [
+			self
+				loadClassesIn: theApp using: aLoader;
+				loadSubApplicationsOf: theApp inRootApp: rootApp using: aLoader;
+				removeDeletedSubApplicationsFor: theApp;
+				versionClassesIn: theApp using: aLoader
+						"version: theApp as: aLoader versionName"
+						]
 ]
 
 { #category : 'loading' }
-TonelLoaderSubApplication >> loadFor: theRootApp as: versionName [
+TonelLoaderSubApplication >> loadSubApplicationsOf: anApp inRootApp: rootApp using: aLoader [
 
-	(self hasChangesFor: theRootApp inRootApp: nil) 
+	self subApplications do: 
+			[:tonelSubApp | 
+			tonelSubApp 
+				loadFor: self
+				inRootApp: rootApp
+				using: aLoader]
+]
+
+{ #category : 'loading' }
+TonelLoaderSubApplication >> loadUsing: aLoader [
+
+	"Load the real application for @aLoader."
+
+	self hasChanges 
 		ifTrue: 
 			[| theApp |
 			theApp := Smalltalk classAt: self identifier.
 			self
-				loadClassesIn: theApp;
-				versionClassesIn: theApp as: versionName;
-				loadSubApplicationsFor: theApp as: versionName;
-				removeDeletedSubApplicationsFor: theApp;
-				version: theApp as: versionName]
-]
-
-{ #category : 'loading' }
-TonelLoaderSubApplication >> loadSubApplicationsFor: anApp as: versionName [
-
-	(self subApplications) do: [:tonelSubApp | tonelSubApp loadFor: anApp as: versionName]
-]
-
-{ #category : 'loading' }
-TonelLoaderSubApplication >> loadSubApplicationsIn: anApp for: aLoader [
-
-	self subApplications do: [ :subApp |
-		subApp loadFor: anApp as: aLoader versionName ]
+				loadClassesIn: theApp using: aLoader;
+				loadSubApplicationsOf: theApp
+					inRootApp: theApp
+					using: aLoader;
+				versionClassesIn: theApp using: aLoader]
 ]
 
 { #category : 'Initialization',
@@ -726,24 +725,24 @@ TonelLoaderSubApplication >> version: anApp as: versionName [
 ]
 
 { #category : 'versioning' }
-TonelLoaderSubApplication >> versionClassesIn: anApp as: versionName [
-
-	self tonelClasses do: [:aTonelClass | aTonelClass versionIn: anApp as: versionName]
-]
-
-{ #category : 'versioning' }
 TonelLoaderSubApplication >> versionClassesIn: anApp for: aLoader [
 
 	(self tonelClasses reject: [:each | each isSharedPool]) do: [:each | each versionIn: anApp for: aLoader]
 ]
 
 { #category : 'versioning' }
-TonelLoaderSubApplication >> versionFor: aLoader [
+TonelLoaderSubApplication >> versionClassesIn: anApp using: aLoader [
+
+	(self tonelClasses reject: [:each | each isSharedPool]) do: [:aTonelClass | aTonelClass versionIn: anApp for: aLoader]
+]
+
+{ #category : 'versioning' }
+TonelLoaderSubApplication >> versionUsing: aLoader [
 
 	| theApp |
 
 	theApp := Smalltalk classAt: self identifier.
-	self subApplications do: [:aTonelSubApp | aTonelSubApp versionFor: aLoader].
+	self subApplications do: [:aTonelSubApp | aTonelSubApp versionUsing: aLoader].
 	theApp isEdition ifFalse: [^self].
 	(self concreteClasses allSatisfy: [:each | each isVersionIn: theApp]) ifFalse: [^self].
 	(theApp isEditionIn: theApp)

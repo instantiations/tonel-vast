@@ -87,8 +87,9 @@ TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: anApp [
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
-TonelReaderAbstractClassDefinition >> loadInto: anApp [
-	self 
+TonelReaderAbstractClassDefinition >> loadInto: anApp using: aLoader [
+
+	self
 		loadMethodsInto: anApp;
 		deleteRemovedMethodsFrom: anApp;
 		updateCommentIn: anApp;
@@ -135,6 +136,17 @@ TonelReaderAbstractClassDefinition >> updateCommentIn: anApp [
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
+TonelReaderAbstractClassDefinition >> versionClass: emClass in: anApp using: aLoader [
+
+
+	((emClass isEditionIn: anApp) and: [aLoader hasVersionName]) 
+		ifTrue: 
+			[emClass versionNameIn: anApp is: aLoader versionName.
+			anApp releaseClass: emClass]
+]
+
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> versionIn: anApp as: versionName [
 	"If @versionName has not been provided, leave the open edition
 	 of the class represented by the receiver as-is and answer self.
@@ -154,17 +166,12 @@ TonelReaderAbstractClassDefinition >> versionIn: anApp as: versionName [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> versionIn: anApp for: aLoader [
-	"If @versionName has not been provided, leave the open edition
-	 of the class represented by the receiver as-is and answer self.
 
-	 If the receiver represents a class or class extension in @anApp,
-	 version the open edition of the class represented by the receiver
-	 and release it into @anApp."
-
-	aLoader hasVersionName ifFalse: [ | theClass |
-		self makeConsistentIn: anApp.
-		theClass := Smalltalk classAt: self identifier.
-		((theClass isEditionIn: anApp) and: [aLoader hasVersionName]) ifTrue: [
-			theClass versionNameIn: anApp is: aLoader versionName.
-			anApp releaseClass: theClass ] ]
+	| emClass |
+	self makeConsistentIn: anApp.
+	emClass := Smalltalk classAt: self identifier.
+	self 
+		versionClass: emClass
+		in: anApp
+		using: aLoader
 ]

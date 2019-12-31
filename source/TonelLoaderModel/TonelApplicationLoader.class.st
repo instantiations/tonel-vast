@@ -21,6 +21,13 @@ TonelApplicationLoader class >> on: aTonelApplication in: aTonelLoader [
 ]
 
 { #category : 'loading-internal' }
+TonelApplicationLoader >> allClassesWithAssociation [
+	^self tonelApplication allClassesWithAssociation 
+		tonelSingleEdgeTopologicallySortedCollection 
+			reject: [:each | each key isSharedPool]
+]
+
+{ #category : 'loading-internal' }
 TonelApplicationLoader >> autogenerateClassSideNewInitializers [
 
 	| allDefinedClasses superclasses |
@@ -119,10 +126,8 @@ TonelApplicationLoader >> createApplication [
 { #category : 'loading-internal',
   #vaVisibility : 'private' }
 TonelApplicationLoader >> createClasses [
-
-	(self tonelApplication allClassesWithAssociation tonelSingleEdgeTopologicallySortedCollection
-		reject: [:each | each key isSharedPool])
-			do: [:ea | ea key createEditionIn: ea value]
+	self allClassesWithAssociation 
+		do: [:ea | ea key createEditionIn: ea value]
 ]
 
 { #category : 'loading-internal',
@@ -233,7 +238,7 @@ TonelApplicationLoader >> load [
   #vaVisibility : 'private' }
 TonelApplicationLoader >> loadApplication [
 
-	self tonelApplication loadFor: self
+	self tonelApplication loadUsing: self
 ]
 
 { #category : 'accessing',
@@ -291,7 +296,7 @@ TonelApplicationLoader >> tonelApplication [
 TonelApplicationLoader >> updateClassDefinitions [
 
 	EmClassCreator waitForMultipleChanges.
-	self definedClasses tonelSingleEdgeTopologicallySortedCollection do: [:ea | ea updateVariables ].
+	self allClassesWithAssociation do: [:ea | ea key extension ifFalse: [ ea key updateVariables ]].
 	EmClassCreator finishedMultipleChanges
 ]
 
@@ -299,7 +304,7 @@ TonelApplicationLoader >> updateClassDefinitions [
   #vaVisibility : 'private' }
 TonelApplicationLoader >> versionApplication [
 
-	self tonelApplication versionFor: self
+	self tonelApplication versionUsing: self
 ]
 
 { #category : 'accessing' }
