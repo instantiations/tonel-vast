@@ -1,5 +1,5 @@
 Class {
-	#name : 'TonelLoaderManualVersionStrategy',
+	#name : 'TonelLoaderSpecifiedVersionStrategy',
 	#superclass : 'TonelLoaderVersionStrategy',
 	#instVars : [
 		'versionName'
@@ -11,17 +11,17 @@ Class {
 }
 
 { #category : 'accessing' }
-TonelLoaderManualVersionStrategy >> versionFor: aTonelLoaderApplication [
+TonelLoaderSpecifiedVersionStrategy >> versionFor: aTonelLoaderApplication [
 
 	^self versionName
 ]
 
 { #category : 'accessing' }
-TonelLoaderManualVersionStrategy >> versionName [
+TonelLoaderSpecifiedVersionStrategy >> versionName [
 	^versionName
 ]
 
 { #category : 'accessing' }
-TonelLoaderManualVersionStrategy >> versionName: anObject [
+TonelLoaderSpecifiedVersionStrategy >> versionName: anObject [
 	versionName := anObject
 ]

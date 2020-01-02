@@ -66,22 +66,19 @@ For [Instantiations](https://www.instantiations.com/) and VA Smalltalk, having g
 ### Programmatically
 
 ```smalltalk
-| reader |
-reader := (TonelReader new readPackagesFrom:
-            ((CfsPath named: CfsDirectoryDescriptor getcwd)
-              append: '..\TonelRepositories\tonel-demos'))).
-reader createLoader loadApplicationNamed: 'TonelExampleApp'.
+
+(TonelLoader readFromPath (CfsPath named: 'tonel-demos'))
+  loadApplicationNamed: 'TonelExampleApp'.
 
 "or you can load by Tonel package name"
-reader createLoader
+(TonelLoader readFromPath (CfsPath named: 'tonel-demos'))
   loadApplicationsForPackagesNamed: #('YourPackage-Core' 'YourPackage-Tests').
 
 "Writing back to Tonel"
 TonelWriter new
-	clearSourcesDirectory; "deletes everything in the target directory"
-	writeProjectIncluding: (Array with: TonelExampleApp)
-    into: ((CfsPath named: CfsDirectoryDescriptor getcwd)
-          append: '..\TonelRepositories\tonel-demos').
+  clearSourcesDirectory; "deletes everything in the target directory"
+  writeProjectIncluding: (Array with: TonelExampleApp)
+  into: (CfsPath named: 'tonel-demos').
  ```
 
 
@@ -175,23 +172,14 @@ So if you now write an existing _Application_ with shadow _SubApplications_ they
 
 If you want to make your code fully compatible and interoperable with other Smalltalk dialects there is a specific document with the [recommendations for compatibility](docs/compatibility.md).
 
-
-
-
-
 ## Shared Pools
 
 VAST's way of declaring and/or initializing Shared Pools is different from other Smalltalk dialects, and to explain how this work with Tonel, there is a specific document explaining [how VAST Tonel handles shared pools](docs/sharedpools.md).
 
 
+## Versioning and prerequisites
 
-## ENVY Application versions
-
-When loading an Application (from a Tonel package), the loader will ask for the desired version you want to assign. If you don't specify any version, the Application won't be versioned and will remain as an edition.
-
-### Git integration
-
-When reading from a project directory that has a git repository (in `.git` directory), the _loader_ will attempt to read the commit hash and commit timestamp, and suggest the version name of each Application built from them. E.g. `081729b (2019-11-05T15:44:06-03:00)`.
+Read the [versioning, prerequisites and base editions strategies documentation](docs/strategies.md) to learn how to configure the loader to work interactively, unattended, read the version from a git repository, etc.
 
 ## Examples and Demos
 There is a [whole Github project](https://github.com/vasmalltalk/tonel-demos/) that contains demos about Tonel integration with VASmalltalk.

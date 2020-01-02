@@ -140,10 +140,9 @@ TonelLoader >> baseEditionStrategy: anObject [
 
 { #category : 'strategies' }
 TonelLoader >> beInteractive [
-
-	self prerequistesStrategy: (TonelLoaderInteractivePrereqStrategy for: self).
-	self baseEditionStrategy: (TonelLoaderInteractiveBaseEditionStrategy for: self).
-	self versionStrategy: (TonelLoaderInteractiveVersionStrategy for: self)
+	self useInteractivePreqrequistesSelection.
+	self useInteractiveBaseEditionSelection.
+	self useInteractiveVersioning
 ]
 
 { #category : 'strategies' }
@@ -180,10 +179,10 @@ TonelLoader >> doNotCreateVersions [
 	self versionStrategy: (TonelLoaderNoVersionStrategy for: self)
 ]
 
-{ #category : 'Not categorized' }
-TonelLoader >> hasVersionName [
-	"Enter the new method definition below and click 'Resume'."
-	self halt
+{ #category : 'strategies' }
+TonelLoader >> forceCreationOfEditions [
+	
+	self versionStrategy alwaysCreateEditions: true
 ]
 
 { #category : 'initializing',
@@ -345,8 +344,30 @@ TonelLoader >> useGitVersion [
 ]
 
 { #category : 'strategies' }
+TonelLoader >> useInteractiveBaseEditionSelection [
+	self 
+		baseEditionStrategy: (TonelLoaderInteractiveBaseEditionStrategy for: self)
+]
+
+{ #category : 'strategies' }
+TonelLoader >> useInteractivePreqrequistesSelection [
+	self 
+		prerequistesStrategy: (TonelLoaderInteractivePrereqStrategy for: self)
+]
+
+{ #category : 'strategies' }
+TonelLoader >> useInteractiveVersioning [
+	self versionStrategy: (TonelLoaderInteractiveVersionStrategy for: self)
+]
+
+{ #category : 'strategies' }
 TonelLoader >> useLatestBaseEditions [
 	self baseEditionStrategy: (TonelLoaderLatestBaseEditionStrategy for: self)
+]
+
+{ #category : 'strategies' }
+TonelLoader >> useSpecifiedVersion: versionName [
+	self versionStrategy: ((TonelLoaderSpecifiedVersionStrategy for: self) versionName: versionName)
 ]
 
 { #category : 'interacting' }

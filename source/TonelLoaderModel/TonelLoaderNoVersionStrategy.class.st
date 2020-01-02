@@ -1,17 +1,11 @@
 Class {
 	#name : 'TonelLoaderNoVersionStrategy',
-	#superclass : 'TonelLoaderManualVersionStrategy',
+	#superclass : 'TonelLoaderSpecifiedVersionStrategy',
 	#pools : [
 		'TonelTextConstants'
 	],
 	#category : 'TonelLoaderModel'
 }
-
-{ #category : 'Not categorized' }
-TonelLoaderNoVersionStrategy >> alwaysCreateEditions [
-
-	^alwaysCreateEditions
-]
 
 { #category : 'Not categorized' }
 TonelLoaderNoVersionStrategy >> versionFor: aTonelLoaderApplication [

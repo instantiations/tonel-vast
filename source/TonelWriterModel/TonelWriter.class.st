@@ -75,8 +75,7 @@ TonelWriter >> clearsSourcesDirectory [
 
 { #category : 'Accessing' }
 TonelWriter >> clearsSourcesDirectory: aBoolean [
-	"Sets whether receiver will delete the sources directory before 
-	 writing Packages into it."
+	"Sets whether receiver will delete the sources directory before writing Packages into it."
 	 
 	clearsSourcesDirectory := aBoolean
 ]

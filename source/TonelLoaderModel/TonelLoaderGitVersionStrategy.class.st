@@ -1,6 +1,9 @@
 Class {
 	#name : 'TonelLoaderGitVersionStrategy',
 	#superclass : 'TonelLoaderVersionStrategy',
+	#instVars : [
+		'versionNamePattern'
+	],
 	#category : 'TonelLoaderModel'
 }
 
@@ -37,8 +40,7 @@ TonelLoaderGitVersionStrategy >> attemptVersionFromGit [
 								]
 								ifFalse: [
 									^
-										commitHash ,
-											(self versionNamePattern expandMacrosWith: commitDate)]]]
+										(self versionNamePattern expandMacrosWith: commitHash with: gitBranchPath parts last with: commitDate)]]]
 				ifFalse: [
 					TonelLoaderError signal: (
 						'There is no git repository at <1p>'
@@ -48,13 +50,25 @@ TonelLoaderGitVersionStrategy >> attemptVersionFromGit [
 			^nil
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'versioning',
+  #vaVisibility : 'private' }
+TonelLoaderGitVersionStrategy >> defaultVersionNamePattern [
+	^'<1s>-<2s> (<3p>)'
+]
+
+{ #category : 'versioning' }
 TonelLoaderGitVersionStrategy >> versionFor: aTonelApplication [
 
 	^self attemptVersionFromGit
 ]
 
-{ #category : 'versioning' }
+{ #category : 'accessing' }
 TonelLoaderGitVersionStrategy >> versionNamePattern [
-	^' (<1p>)'
+	^versionNamePattern 
+		ifNil: [versionNamePattern := self defaultVersionNamePattern]
+]
+
+{ #category : 'accessing' }
+TonelLoaderGitVersionStrategy >> versionNamePattern: aString [
+	versionNamePattern := aString
 ]

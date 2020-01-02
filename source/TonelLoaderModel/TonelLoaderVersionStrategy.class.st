@@ -17,7 +17,7 @@ TonelLoaderVersionStrategy >> alwaysCreateEditions: aBoolean [
 	alwaysCreateEditions := aBoolean
 ]
 
-{ #category : 'Not categorized',
+{ #category : 'initializing',
   #vaVisibility : 'private' }
 TonelLoaderVersionStrategy >> initialize [
 
@@ -25,7 +25,7 @@ TonelLoaderVersionStrategy >> initialize [
 	alwaysCreateEditions := false
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'versioning' }
 TonelLoaderVersionStrategy >> versionFor: aTonelApplication [
 
 	self subclassResponsibility

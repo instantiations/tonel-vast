@@ -257,18 +257,17 @@ TonelLoaderSubApplication >> createSubApplicationIn: emParentApp condition: cond
 { #category : 'loading' }
 TonelLoaderSubApplication >> createSubApplicationsFor: anAppOrSubApp withRoot: rootApp [
 
-	self loadableConditions keysAndValuesDo: 
-			[:conditionCode :subApps | 
-			subApps do: 
-					[:subApp | 
-					(subApp hasChangesFor: anAppOrSubApp inRootApp: rootApp) 
-						ifTrue: 
-							[| emSubApplication |
-							emSubApplication := subApp 
-										createFor: anAppOrSubApp
-										underCondition: conditionCode
-										withRoot: rootApp.
-							self createDescriptionFor: emSubApplication]]]
+	self loadableConditions keysAndValuesDo: [:conditionCode :subApps |
+		subApps do: [:subApp |
+			(self loader alwaysCreateEditions
+				or: [(subApp hasChangesFor: anAppOrSubApp inRootApp: rootApp)])
+					ifTrue: [| emSubApplication |
+						emSubApplication :=
+							subApp
+								createFor: anAppOrSubApp
+								underCondition: conditionCode
+								withRoot: rootApp.
+						self createDescriptionFor: emSubApplication]]]
 ]
 
 { #category : 'accessing' }
