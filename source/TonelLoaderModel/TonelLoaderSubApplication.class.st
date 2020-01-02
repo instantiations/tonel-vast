@@ -496,19 +496,20 @@ TonelLoaderSubApplication >> loadSubApplicationsOf: anApp inRootApp: rootApp usi
 
 { #category : 'loading' }
 TonelLoaderSubApplication >> loadUsing: aLoader [
-
 	"Load the real application for @aLoader."
 
-	self hasChanges 
-		ifTrue: 
-			[| theApp |
-			theApp := Smalltalk classAt: self identifier.
+	| theApp |
+
+	theApp := Smalltalk classAt: self identifier.
+	(aLoader alwaysCreateEditions or: [self hasChanges])
+		ifTrue: [
 			self
 				loadClassesIn: theApp using: aLoader;
-				loadSubApplicationsOf: theApp
-					inRootApp: theApp
-					using: aLoader;
+				loadSubApplicationsOf: theApp inRootApp: theApp using: aLoader;
 				versionClassesIn: theApp using: aLoader]
+		ifFalse: [
+			(theApp isEdition and: [aLoader hasVersionName])
+				ifTrue: [self versionClassesIn: theApp using: aLoader]]
 ]
 
 { #category : 'Initialization',

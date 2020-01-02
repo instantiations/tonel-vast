@@ -27,6 +27,12 @@ TonelApplicationLoader >> allClassesWithAssociation [
 			reject: [:each | each key isSharedPool]
 ]
 
+{ #category : 'testing' }
+TonelApplicationLoader >> alwaysCreateEditions [
+
+	^self loader alwaysCreateEditions
+]
+
 { #category : 'loading-internal' }
 TonelApplicationLoader >> autogenerateClassSideNewInitializers [
 

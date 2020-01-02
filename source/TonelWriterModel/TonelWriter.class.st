@@ -70,7 +70,7 @@ TonelWriter >> clearsSourcesDirectory [
 	"Answer whether receiver will delete the sources directory before 
 	 writing Packages into it."
 	 
-	^clearsSourcesDirectory ifNil: [clearsSourcesDirectory := true]
+	^clearsSourcesDirectory
 ]
 
 { #category : 'Accessing' }
@@ -108,7 +108,7 @@ TonelWriter >> initializeOn: aFileSystem [
 
 	fileSystem := aFileSystem.
 	lineDelimiter := self class lineDelimiter.
-	self clearSourcesDirectory.
+	clearsSourcesDirectory := true
 ]
 
 { #category : 'Accessing' }
