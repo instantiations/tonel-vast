@@ -212,22 +212,21 @@ TonelLoaderApplication >> loadPrerequisites [
 
 	self prerequisiteApps do: [:each |
 		each isLoaded
-			ifFalse: [| prereqEdition prereqShadows |
-				prereqShadows := (Application shadowsFor: each name).
-				prereqEdition :=
-					prereqShadows size = 1
-						ifTrue: [prereqShadows first]
-						ifFalse: [
-							(CwListPrompter new)
-								messageString: (TonelMsg06 bindWith: each name);
-								items: (Application shadowsFor: each name);
-								printBlock: [:ea |
-									TonelMsg07 bindWith: ea signature with: ea timeStamp];
-								prompt]. "$NLS$ Application %1 exists but is not loaded. Please choose a base version." "$NLS$ %1 %2"
-				(EmImageBuilder loadApplications:
-					(EtBrowser new findAllApplicationsToLoadWith: (Array with: prereqEdition)))
-						ifNil: [
-							TonelLoaderError signal: (TonelMsg18 bindWith: self name) "$NLS$ Could not load base edition of %1. Load aborted."]]]
+			ifFalse: [
+				(self loader prerequisitesStrategy selectPrerequisitesEditionOfApplication: each)
+					ifNil: [
+						(self loader applicationNamed: each name asString ifNone: [nil])
+							ifNil: [TonelLoaderError signal: (TonelMsg18 bindWith: self name)]
+							ifNotNil: [:tonelApplication |
+								self loader loadApplication: tonelApplication]]
+					ifNotNil: [:prereqEdition |
+						(EmImageBuilder loadApplications: (
+							EtBrowser new findAllApplicationsToLoadWith: (Array with: prereqEdition)))
+								ifNil: [
+									TonelLoaderError signal: (TonelMsg18 bindWith: self name) "$NLS$ Could not load base edition of %1. Load aborted."]]]]
+
+
+
 ]
 
 { #category : 'accessing' }

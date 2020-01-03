@@ -56,6 +56,14 @@ TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['testing'],
   #vaVisibility : 'private' }
+TonelReaderAbstractClassDefinition >> hasChangesIn: anApp comparedTo: aClass [
+
+	self subclassResponsibility
+]
+
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> hasClassMethodsRemovedFrom: aClass in: anApp [
 
 	^ aClass class methodDictionary anySatisfy: [ :compiledMethod |
@@ -130,7 +138,8 @@ TonelReaderAbstractClassDefinition >> methodChangesIn: aClass [
 ]
 
 { #category : '*TonelLoaderModel',
- #vaCategories : ['loading'] }
+ #vaCategories : ['testing'],
+  #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> shouldCreateEditionOf: baseClass in: anApp using: aTonelLoader [
 
 	^(baseClass isEditionIn: anApp) not and: 
