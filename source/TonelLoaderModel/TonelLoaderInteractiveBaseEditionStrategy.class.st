@@ -15,7 +15,7 @@ TonelLoaderInteractiveBaseEditionStrategy >> selectBaseEditionOf: aTonelSubAppli
 ]
 
 { #category : 'operations' }
-TonelLoaderInteractiveBaseEditionStrategy >> selectPrerequisitesOf: application in: prereqShadows using: browser at: cursorPosition [
+TonelLoaderInteractiveBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqShadows using: browser at: cursorPosition [
 
 
 	^CwListPrompter new

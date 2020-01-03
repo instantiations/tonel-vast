@@ -119,7 +119,10 @@ TonelApplicationLoader >> createAndLoadApplication [
 		loadApplication;
 		deleteRemovedSubApplications;
 		versionApplication;
-		initializeApplication
+		initializeApplication;
+		markAsLoaded
+	
+	
 ]
 
 { #category : 'loading-internal',
@@ -252,6 +255,13 @@ TonelApplicationLoader >> loadApplication [
 TonelApplicationLoader >> loader [
 
 	^loader
+]
+
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
+TonelApplicationLoader >> markAsLoaded [
+
+	self loader loadedApplications add: self
 ]
 
 { #category : 'loading-internal',

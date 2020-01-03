@@ -213,12 +213,12 @@ TonelLoaderApplication >> loadPrerequisites [
 	self prerequisiteApps do: [:each |
 		each isLoaded
 			ifFalse: [
-				(self loader prerequisitesStrategy selectPrerequisitesEditionOfApplication: each)
+				(self loader baseEditionStrategy selectPrerequisiteEditionOf: each)
 					ifNil: [
 						(self loader applicationNamed: each name asString ifNone: [nil])
 							ifNil: [TonelLoaderError signal: (TonelMsg18 bindWith: self name)]
 							ifNotNil: [:tonelApplication |
-								self loader loadApplication: tonelApplication]]
+								self loader basicLoadApplication: tonelApplication]]
 					ifNotNil: [:prereqEdition |
 						(EmImageBuilder loadApplications: (
 							EtBrowser new findAllApplicationsToLoadWith: (Array with: prereqEdition)))

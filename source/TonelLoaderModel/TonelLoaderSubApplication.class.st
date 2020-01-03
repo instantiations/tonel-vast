@@ -436,19 +436,7 @@ TonelLoaderSubApplication >> loadableConditions [
 TonelLoaderSubApplication >> loadBaseEdition [
 	"This method contains some voodoo."
 
-	| baseEdition loadResult |
-
-	baseEdition :=
-		(CwListPrompter new)
-			messageString: (TonelMsg06 bindWith: self name);
-			items: self availableShadows;
-			printBlock: [:ea | TonelMsg07 bindWith: ea signature with: ea timeStamp];
-			prompt. "$NLS$ Application %1 exists but is not loaded. Please choose a base version." "$NLS$ %1 %2"
-
-	baseEdition ifNil: [TonelLoaderError signal: (TonelMsg08 bindWith: self name)]. "$NLS$ You need to choose a base edition from which to create %1"
-	(EmImageBuilder loadApplications: (EtBrowser new findAllApplicationsToLoadWith: (Array with: baseEdition))) ifNil: [
-		TonelLoaderError signal: (TonelMsg18 bindWith: self name) "$NLS$ Could not load base edition of %1. Load aborted."
-	]
+	self loader loadBaseEditionFor: self
 	
 ]
 

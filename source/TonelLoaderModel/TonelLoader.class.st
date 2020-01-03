@@ -7,7 +7,8 @@ Class {
 		'subApplications',
 		'baseEditionStrategy',
 		'versionStrategy',
-		'prerequisitesStrategy'
+		'prerequisitesStrategy',
+		'loadedApplications'
 	],
 	#classVars : [
 		'CompilerWarningLevel',
@@ -144,6 +145,13 @@ TonelLoader >> baseEditionStrategy: anObject [
 	baseEditionStrategy := anObject
 ]
 
+{ #category : 'loading' }
+TonelLoader >> basicLoadApplication: each [
+
+	(self loadedApplications includes: each)
+		ifFalse: [(TonelApplicationLoader on: each in: self) load]
+]
+
 { #category : 'strategies' }
 TonelLoader >> beInteractive [
 	self useInteractivePreqrequistesSelection.
@@ -235,9 +243,9 @@ TonelLoader >> loadApplicationNamed: aStringOrSymbol [
 TonelLoader >> loadApplications: aCollection [
 
 	| confirmer |
-
 	confirmer := System image confirmer: self.
-	[aCollection do: [:each | (TonelApplicationLoader on: each in: self) load]]
+	loadedApplications := Set new.
+	[aCollection do: [:each | self basicLoadApplication: each]] 
 		ensure: [System image confirmer: confirmer]
 ]
 
@@ -263,7 +271,7 @@ TonelLoader >> loadBaseEditionFor: aTonelApplication [
 { #category : 'accessing' }
 TonelLoader >> loadedApplications [
 
-	^System loadedApplications
+	^loadedApplications
 ]
 
 { #category : 'logging' }
@@ -339,6 +347,12 @@ TonelLoader >> subApplicationsFor: aTonelLoaderSubApplication [
 			collect: [:each | self subApplicationNamed: each name]
 ]
 
+{ #category : 'accessing' }
+TonelLoader >> systemLoadedApplications [
+
+	^System loadedApplications
+]
+
 { #category : 'strategies' }
 TonelLoader >> useComputedPrerequisites [
 	self prerequisitesStrategy: (TonelLoaderComputedPrerequisitesStrategy for: self)
@@ -384,10 +398,12 @@ TonelLoader >> versionFor: aTonelApplication [
 
 { #category : 'strategies' }
 TonelLoader >> versionStrategy [
+
 	^versionStrategy
 ]
 
 { #category : 'strategies' }
 TonelLoader >> versionStrategy: anObject [
+
 	versionStrategy := anObject
 ]

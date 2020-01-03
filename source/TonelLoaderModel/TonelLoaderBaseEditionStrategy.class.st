@@ -70,7 +70,7 @@ TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: applications [
 							application := assoc key.
 							prereqs := assoc value.
 							prereq := self 
-										selectPrerequisitesOf: application
+										selectPrerequisiteEditionOf: application
 										in: prereqs
 										using: browser
 										at: cursorPosition].
@@ -122,11 +122,19 @@ TonelLoaderBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplication [
 	self subclassResponsibility
 ]
 
-{ #category : 'lookup',
-  #vaVisibility : 'private' }
-TonelLoaderBaseEditionStrategy >> selectPrerequisitesOf: application in: prereqs using: browser at: cursorPosition [
+{ #category : 'operations' }
+TonelLoaderBaseEditionStrategy >> selectPrerequisiteEditionOf: application [
+	| shadows |
+	^(shadows := Application shadowsFor: application name) isEmpty
+		ifTrue: [nil]
+		ifFalse: [
+	self selectPrerequisiteEditionOf: application in: shadows using: EtBrowser new at: System cursorPosition]
+]
 
-	^self loader prerequisitesFor: application current: prereqs
+{ #category : 'operations' }
+TonelLoaderBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqs using: browser at: cursorPosition [
+
+	 self subclassResponsibility
 ]
 
 { #category : 'errors',
