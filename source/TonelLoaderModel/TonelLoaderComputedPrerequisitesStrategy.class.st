@@ -9,3 +9,13 @@ TonelLoaderComputedPrerequisitesStrategy >> prerequisitesFor: tonelApplication c
 
 	^tonelApplication prerequisites
 ]
+
+{ #category : 'lookup' }
+TonelLoaderComputedPrerequisitesStrategy >> selectPrerequisitesEditionOfApplication: anApplication [
+
+	
+	| shadows |
+	shadows := (Application shadowsFor: anApplication name).
+	^shadows isEmpty ifFalse: [ shadows first]
+	
+]
