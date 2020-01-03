@@ -104,16 +104,14 @@ TonelReaderClassDefinition >> createDefinedIn: anApp [
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
-TonelReaderClassDefinition >> createEditionIn: anApp [
+TonelReaderClassDefinition >> createEditionIn: anApp using: aTonelLoader [
 
 	| baseClass |
-
 	(baseClass := self concreteClassIn: anApp) isNil
 		ifTrue: [self createIn: anApp]
 		ifFalse: [
-			((self hasChangesIn: anApp comparedTo: baseClass)
-				and: [(baseClass isEditionIn: anApp) not])
-					ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
+			(self shouldCreateEditionOf: baseClass in: anApp using: aTonelLoader)
+				ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
 ]
 
 { #category : '*TonelLoaderModel',
@@ -167,7 +165,7 @@ TonelReaderClassDefinition >> declarePoolDictionariesIn: anApp using: aTonelLoad
 			aTonelMethod 
 				loadFor: anApp
 				into: anApp
-				using: nil.
+				using: aTonelLoader.
 			EmInterface current rebuildNamespaceFor: anApp]
 ]
 
@@ -187,7 +185,7 @@ TonelReaderClassDefinition >> definePoolDictionariesIn: anApp using: aTonelLoade
 					methodCopy 
 						loadFor: anApp
 						into: anApp
-						using: nil.
+						using: aTonelLoader.
 					anApp perform: selector]]
 ]
 

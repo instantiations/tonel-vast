@@ -11,15 +11,16 @@ TonelReaderClassExtensionDefinition >> concreteClassIn: anApp [
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
-TonelReaderClassExtensionDefinition >> createEditionIn: anApp [
+TonelReaderClassExtensionDefinition >> createEditionIn: anApp using: aTonelLoader [
 
 	| baseClass |
-
-	(baseClass := self concreteClassIn: anApp) isNil
+	(baseClass := self concreteClassIn: anApp) isNil 
 		ifTrue: [self createIn: anApp]
-		ifFalse: [
-			((baseClass isEditionIn: anApp) not
-				and: [(self hasChangesIn: anApp comparedTo: baseClass)])
+		ifFalse: 
+			[(self 
+				shouldCreateEditionOf: baseClass
+				in: anApp
+				using: aTonelLoader) 
 					ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
 ]
 

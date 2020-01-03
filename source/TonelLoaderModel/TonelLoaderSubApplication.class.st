@@ -507,11 +507,11 @@ TonelLoaderSubApplication >> loadUsing: aLoader [
 		ifTrue: [
 			self
 				loadClassesIn: theApp using: aLoader;
-				loadSubApplicationsOf: theApp inRootApp: theApp using: aLoader;
-				versionClassesIn: theApp using: aLoader]
-		ifFalse: [
+				loadSubApplicationsOf: theApp inRootApp: theApp using: aLoader
+				"versionClassesIn: theApp using: aLoader"]
+		"ifFalse: [
 			(theApp isEdition and: [aLoader hasVersionName])
-				ifTrue: [self versionClassesIn: theApp using: aLoader]]
+				ifTrue: [self versionClassesIn: theApp using: aLoader]]"
 ]
 
 { #category : 'Initialization',
@@ -727,12 +727,6 @@ TonelLoaderSubApplication >> version: anApp as: versionName [
 ]
 
 { #category : 'versioning' }
-TonelLoaderSubApplication >> versionClassesIn: anApp for: aLoader [
-
-	(self tonelClasses reject: [:each | each isSharedPool]) do: [:each | each versionIn: anApp using: aLoader]
-]
-
-{ #category : 'versioning' }
 TonelLoaderSubApplication >> versionClassesIn: anApp using: aLoader [
 
 	(self tonelClasses reject: [:each | each isSharedPool]) do: [:aTonelClass | aTonelClass versionIn: anApp using: aLoader]
@@ -746,7 +740,8 @@ TonelLoaderSubApplication >> versionUsing: aLoader [
 	theApp := Smalltalk classAt: self identifier.
 	self subApplications do: [:aTonelSubApp | aTonelSubApp versionUsing: aLoader].
 	theApp isEdition ifFalse: [^self].
-	(self concreteClasses allSatisfy: [:each | each isVersionIn: theApp]) ifFalse: [^self].
+	
+	self versionClassesIn: theApp using: aLoader.
 	(theApp isEditionIn: theApp)
 		ifTrue: [
 			theApp versionNameIn: theApp is: aLoader versionName.

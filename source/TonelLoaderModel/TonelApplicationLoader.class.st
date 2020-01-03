@@ -133,7 +133,7 @@ TonelApplicationLoader >> createApplication [
   #vaVisibility : 'private' }
 TonelApplicationLoader >> createClasses [
 	self allClassesWithAssociation 
-		do: [:ea | ea key createEditionIn: ea value]
+		do: [:ea | ea key createEditionIn: ea value using: self]
 ]
 
 { #category : 'loading-internal',

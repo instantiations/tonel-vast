@@ -131,6 +131,15 @@ TonelReaderAbstractClassDefinition >> methodChangesIn: aClass [
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
+TonelReaderAbstractClassDefinition >> shouldCreateEditionOf: baseClass in: anApp using: aTonelLoader [
+
+	^(baseClass isEditionIn: anApp) not and: 
+			[aTonelLoader alwaysCreateEditions 
+				or: [self hasChangesIn: anApp comparedTo: baseClass]]
+]
+
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> updateCommentIn: anApp [
 	"If the receiver represents a class definition, then update the
 	 class comment if it has changed."
