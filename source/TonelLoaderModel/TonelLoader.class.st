@@ -6,8 +6,8 @@ Class {
 		'applications',
 		'subApplications',
 		'baseEditionStrategy',
-		'versionStrategy',
-		'prerequisitesStrategy'
+		'prerequistesStrategy',
+		'versionStrategy'
 	],
 	#classVars : [
 		'CompilerWarningLevel',
@@ -118,13 +118,7 @@ TonelLoader >> alwaysCreateEditions [
 TonelLoader >> applicationNamed: aString [
 	"Returns the application with name aString or raise an error if not found."
 
-	^self applicationNamed: aString ifNone: [ExCLDTObjectNotFound signal]
-]
-
-{ #category : 'lookup' }
-TonelLoader >> applicationNamed: aString ifNone: aBlock [
-
-	^self applications detect: [:one | one name = aString] ifNone: aBlock
+	^self applications detect: [:one | one name = aString]
 ]
 
 { #category : 'accessing' }
@@ -276,17 +270,17 @@ TonelLoader >> log: aString [
 TonelLoader >> prerequisitesFor: aTonelLoaderApplication current: anOrderedCollection [
 
 
-	^self prerequisitesStrategy prerequisitesFor: aTonelLoaderApplication current: anOrderedCollection 
+	^self prerequistesStrategy prerequisitesFor: aTonelLoaderApplication current: anOrderedCollection 
 ]
 
 { #category : 'strategies' }
-TonelLoader >> prerequisitesStrategy [
-	^prerequisitesStrategy
+TonelLoader >> prerequistesStrategy [
+	^prerequistesStrategy
 ]
 
 { #category : 'strategies' }
-TonelLoader >> prerequisitesStrategy: anObject [
-	prerequisitesStrategy := anObject
+TonelLoader >> prerequistesStrategy: anObject [
+	prerequistesStrategy := anObject
 ]
 
 { #category : 'interacting' }
@@ -341,7 +335,7 @@ TonelLoader >> subApplicationsFor: aTonelLoaderSubApplication [
 
 { #category : 'strategies' }
 TonelLoader >> useComputedPrerequisites [
-	self prerequisitesStrategy: (TonelLoaderComputedPrerequisitesStrategy for: self)
+	self prerequistesStrategy: (TonelLoaderComputedPrerequisitesStrategy for: self)
 ]
 
 { #category : 'strategies' }
@@ -358,7 +352,7 @@ TonelLoader >> useInteractiveBaseEditionSelection [
 { #category : 'strategies' }
 TonelLoader >> useInteractivePreqrequistesSelection [
 	self 
-		prerequisitesStrategy: (TonelLoaderInteractivePrereqStrategy for: self)
+		prerequistesStrategy: (TonelLoaderInteractivePrereqStrategy for: self)
 ]
 
 { #category : 'strategies' }

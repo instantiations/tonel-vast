@@ -90,7 +90,7 @@ TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: anApp [
 TonelReaderAbstractClassDefinition >> loadInto: anApp using: aLoader [
 
 	self
-		loadMethodsInto: anApp;
+		loadMethodsInto: anApp using: aLoader;
 		deleteRemovedMethodsFrom: anApp;
 		updateCommentIn: anApp;
 		makeConsistentIn: anApp
@@ -99,12 +99,16 @@ TonelReaderAbstractClassDefinition >> loadInto: anApp using: aLoader [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'],
   #vaVisibility : 'private' }
-TonelReaderAbstractClassDefinition >> loadMethodsInto: anApp [
+TonelReaderAbstractClassDefinition >> loadMethodsInto: anApp using: aTonelLoader [
 
 	| concreteClass |
-
 	concreteClass := self concreteClassIn: anApp.
-	self tonelMethods do: [:aTonelMethod | aTonelMethod loadFor: concreteClass into: anApp]
+	self tonelMethods do: 
+			[:aTonelMethod | 
+			aTonelMethod 
+				loadFor: concreteClass
+				into: anApp
+				using: aTonelLoader]
 ]
 
 { #category : '*TonelLoaderModel',
@@ -147,25 +151,7 @@ TonelReaderAbstractClassDefinition >> versionClass: emClass in: anApp using: aLo
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
-TonelReaderAbstractClassDefinition >> versionIn: anApp as: versionName [
-	"If @versionName has not been provided, leave the open edition
-	 of the class represented by the receiver as-is and answer self.
-
-	 If the receiver represents a class or class extension in @anApp,
-	 version the open edition of the class represented by the receiver
-	 and release it into @anApp."
-
-	versionName isEmpty ifFalse: [ | theClass |
-		self makeConsistentIn: anApp.
-		theClass := Smalltalk classAt: self identifier.
-		(theClass isEditionIn: anApp) ifTrue: [
-			theClass versionNameIn: anApp is: versionName.
-			anApp releaseClass: theClass ] ]
-]
-
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading'] }
-TonelReaderAbstractClassDefinition >> versionIn: anApp for: aLoader [
+TonelReaderAbstractClassDefinition >> versionIn: anApp using: aTonelLoader [
 
 	| emClass |
 	self makeConsistentIn: anApp.
@@ -173,5 +159,5 @@ TonelReaderAbstractClassDefinition >> versionIn: anApp for: aLoader [
 	self 
 		versionClass: emClass
 		in: anApp
-		using: aLoader
+		using: aTonelLoader 
 ]

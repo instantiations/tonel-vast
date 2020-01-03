@@ -160,17 +160,20 @@ TonelReaderClassDefinition >> createSharedPoolInitializerMethodFor: aTonelMethod
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading-pools'] }
-TonelReaderClassDefinition >> declarePoolDictionariesIn: anApp [
+TonelReaderClassDefinition >> declarePoolDictionariesIn: anApp using: aTonelLoader [
 
-	(tonelMethods select: [:each | each isDeclaration]) do: [:aTonelMethod | 
-		aTonelMethod loadFor: anApp into: anApp.
-		EmInterface current rebuildNamespaceFor: anApp
-	].
+	(tonelMethods select: [:each | each isDeclaration]) do: 
+			[:aTonelMethod | 
+			aTonelMethod 
+				loadFor: anApp
+				into: anApp
+				using: nil.
+			EmInterface current rebuildNamespaceFor: anApp]
 ]
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading-pools'] }
-TonelReaderClassDefinition >> definePoolDictionariesIn: anApp [
+TonelReaderClassDefinition >> definePoolDictionariesIn: anApp using: aTonelLoader [
 
 	self isSharedPool 
 		ifTrue: 
@@ -181,7 +184,10 @@ TonelReaderClassDefinition >> definePoolDictionariesIn: anApp [
 					methodCopy := aTonelMethod copy.
 					methodCopy selector: selector.
 					methodCopy ammendSourceSelector.
-					methodCopy loadFor: anApp into: anApp.
+					methodCopy 
+						loadFor: anApp
+						into: anApp
+						using: nil.
 					anApp perform: selector]]
 ]
 

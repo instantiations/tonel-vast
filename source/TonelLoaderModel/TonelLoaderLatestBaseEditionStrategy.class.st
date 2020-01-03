@@ -11,3 +11,9 @@ TonelLoaderLatestBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplicatio
 	
 	^aTonelSubApplication availableShadows last
 ]
+
+{ #category : 'operations' }
+TonelLoaderLatestBaseEditionStrategy >> selectPrerequisitesOf: application in: prereqs using: browser at: cursorPosition [
+
+	^prereqs isEmpty ifFalse: [(prereqs asSortedCollection: [:a :b | a timeStamp <= b timeStamp]) first ]
+]

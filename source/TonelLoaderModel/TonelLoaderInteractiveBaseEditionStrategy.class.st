@@ -4,16 +4,6 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
-{ #category : 'Not categorized',
-  #vaVisibility : 'private' }
-TonelLoaderInteractiveBaseEditionStrategy >> confirmLoadPrerequisites: prereqNames of: applicationNames using: browser [
-
-	^browser owningImage 
-		confirm: ((NlsCatEMT residentMsg: 'MxEMT24') addLineDelimiters 
-				bindWith: applicationNames
-				with: prereqNames)
-]
-
 { #category : 'operations' }
 TonelLoaderInteractiveBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplication [
 
@@ -22,6 +12,19 @@ TonelLoaderInteractiveBaseEditionStrategy >> selectBaseEditionOf: aTonelSubAppli
 		items: aTonelSubApplication availableShadows ;
 		printBlock: [:ea | TonelMsg07 bindWith: ea signature with: ea timeStamp];
 		prompt	"$NLS$ Application %1 exists but is not loaded. Please choose a base version."	"$NLS$ %1 %2"
+]
+
+{ #category : 'operations' }
+TonelLoaderInteractiveBaseEditionStrategy >> selectPrerequisitesOf: application in: prereqShadows using: browser at: cursorPosition [
+
+
+	^CwListPrompter new
+		messageString:  ( ( NlsCatEMT  residentMsg: 'MxEMT26' )  bindWith: application);
+		selectedItems: #();
+		items: prereqShadows;
+		printBlock:  [:shadow | shadow signature];
+		prompt
+
 ]
 
 { #category : 'Not categorized',

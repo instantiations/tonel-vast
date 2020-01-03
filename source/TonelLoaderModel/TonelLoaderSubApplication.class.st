@@ -294,9 +294,11 @@ TonelLoaderSubApplication >> definePoolDictionariesFor: emParentApp [
 { #category : 'loading' }
 TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 
-	self definedSharedPools do: [:aTonelClass | aTonelClass declarePoolDictionariesIn: anApp].
+	self definedSharedPools 
+		do: [:aTonelClass | aTonelClass declarePoolDictionariesIn: anApp using: self loader].
 	self updateSharedPoolsDefinitionOf: anApp.
-	self definedSharedPools do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp].
+	self definedSharedPools 
+		do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp using: self loader]
 ]
 
 { #category : 'loading' }
@@ -727,13 +729,13 @@ TonelLoaderSubApplication >> version: anApp as: versionName [
 { #category : 'versioning' }
 TonelLoaderSubApplication >> versionClassesIn: anApp for: aLoader [
 
-	(self tonelClasses reject: [:each | each isSharedPool]) do: [:each | each versionIn: anApp for: aLoader]
+	(self tonelClasses reject: [:each | each isSharedPool]) do: [:each | each versionIn: anApp using: aLoader]
 ]
 
 { #category : 'versioning' }
 TonelLoaderSubApplication >> versionClassesIn: anApp using: aLoader [
 
-	(self tonelClasses reject: [:each | each isSharedPool]) do: [:aTonelClass | aTonelClass versionIn: anApp for: aLoader]
+	(self tonelClasses reject: [:each | each isSharedPool]) do: [:aTonelClass | aTonelClass versionIn: anApp using: aLoader]
 ]
 
 { #category : 'versioning' }

@@ -85,7 +85,21 @@ TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: applications [
   #vaVisibility : 'private' }
 TonelLoaderBaseEditionStrategy >> loadBaseEditionAndPrerequisitesOf: baseEdition [
 
-	^EmImageBuilder loadApplications: (self findAllApplicationsToLoadWith: (Array with: baseEdition))
+	| baseEditionPrerequisites tonelAppsToLoad |
+
+	baseEditionPrerequisites := (self findAllApplicationsToLoadWith: (Array with: baseEdition)).
+	tonelAppsToLoad := OrderedCollection new.
+
+	baseEditionPrerequisites do: [:emApp |
+		(self loader applications anySatisfy: [:tonelApp | baseEdition name ~= tonelApp identifier and: [emApp name = tonelApp identifier]])
+			ifTrue: [tonelAppsToLoad add: emApp]].
+			
+	tonelAppsToLoad isEmpty
+		ifTrue: [EmImageBuilder loadApplications: baseEditionPrerequisites]
+		ifFalse: [
+			self loader loadApplications: (tonelAppsToLoad collect: [:emApp | self loader applicationNamed: emApp name asString]).
+			EmImageBuilder loadApplications: (baseEditionPrerequisites reject: [:emApp | tonelAppsToLoad includes: emApp]).
+		]
 ]
 
 { #category : 'operations' }
