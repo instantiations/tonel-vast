@@ -114,21 +114,32 @@ TonelReaderMethodDefinition class >> removingSource [
  #vaCategories : ['Loading-Internal'],
   #vaVisibility : 'private' }
 TonelReaderMethodDefinition >> commentedSource [
-	
-	^ String streamContents: [ :outStream | | inStream |
+
+	^String streamContents: [:outStream | | inStream |
 		inStream := ReadStream on: self source.
 		outStream
-			nextPutAll: inStream nextLine; cr; 
-			nextPutAll: TonelMsg16; cr.  "$NLS$ '""The following source failed to compile (all double quotes have been doubled):"
-		[ inStream atEnd ]  whileFalse: [
-			inStream nextLine do: [ :eachChar |
-				eachChar = $"
-					ifTrue: [ outStream nextPut: $" ].
-				outStream nextPut: eachChar ].
-			outStream cr ].
+			nextPutAll: inStream nextLine;
+			cr;
+			nextPut: Character tab;
+			nextPut: $";
+			nextPutAll: TonelMsg16; "$NLS$ 'The following source failed to compile (all double quotes have been doubled):"
+			nextPut: $";
+			cr.
+			
+		outStream nextPut: $".
+		[inStream atEnd] whileFalse: [
+			outStream cr.
+			inStream nextLine do: [:eachChar |
+				eachChar = $" ifTrue: [outStream nextPut: $"].
+				outStream nextPut: eachChar].
+			].
 		outStream
-			nextPut: $"; cr; cr; "If the method is executed, halt execution to make the problem very obvious"
-			tab; nextPutAll: TonelMsg17 ]  "$NLS$ ^ self halt: 'The source for this method failed to compile'"
+			nextPut: $";
+			cr;
+			nextPutAll: '#tonelCompilationFailure.';
+			cr;
+			cr;
+			nextPutAll: TonelMsg17] "$NLS$ ^ self halt: 'The source for this method failed to compile'"
 ]
 
 { #category : '*TonelLoaderModel',
