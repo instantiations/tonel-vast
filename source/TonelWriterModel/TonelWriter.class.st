@@ -38,6 +38,12 @@ TonelWriter class >> lineDelimiter [
 	^LineDelimiter ifNil: [LineDelimiter := self defaultLineDelimiter]
 ]
 
+{ #category : 'Accessing' }
+TonelWriter class >> lineDelimiter: aString [
+
+	LineDelimiter := aString
+]
+
 { #category : 'Instance Creation' }
 TonelWriter class >> new [
 	"Answer a new instance of receiver."
@@ -117,6 +123,30 @@ TonelWriter >> lineDelimiter: aString [
 	 Usually aString is CR, LF or CRLF."
 
 	lineDelimiter := aString
+]
+
+{ #category : 'Configuring' }
+TonelWriter >> useCrEOL [
+
+	self lineDelimiter: Character cr asString
+
+
+]
+
+{ #category : 'Configuring' }
+TonelWriter >> useCrLfEOL [
+
+	self lineDelimiter: Character cr asString, Character lf asString
+
+
+]
+
+{ #category : 'Configuring' }
+TonelWriter >> useLfEOL [
+
+	self lineDelimiter: Character lf asString
+
+
 ]
 
 { #category : 'Utility',

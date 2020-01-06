@@ -196,26 +196,24 @@ TonelReaderMethodDefinition >> loadFailedFor: aClass into: anApp [
  #vaCategories : ['Loading'] }
 TonelReaderMethodDefinition >> loadFor: aClass into: anApp using: aTonelLoader [
 
-	(aTonelLoader alwaysCreateEditions or: [(self hasChangesIn: aClass)])
-		ifTrue: 
-			["Recompile if the source has changed"
+	(self hasChangesIn: aClass)
+		ifTrue: [ "Recompile if the source has changed"
 
-			(aTonelLoader alwaysCreateEditions or: [(self hasSourceChangesIn: aClass)]) 
-				ifTrue: 
-					[((self onSideClass: aClass) 
+			(self hasSourceChangesIn: aClass)
+				ifTrue: [
+					((self onSideClass: aClass)
 						basicCompile: self source
 						notifying: Transcript
-						ifFail: [self loadFailedFor: (self onSideClass: aClass) into: anApp]) 
-							ifNotNil: 
-								[:compiledMethod | 
-								(self onSideClass: aClass) 
+						ifFail: [self loadFailedFor: (self onSideClass: aClass) into: anApp])
+							ifNotNil: [:compiledMethod |
+								(self onSideClass: aClass)
 									install: compiledMethod
 									asPrivate: self isPrivate
 									withSource: self source
 									ifNewAddTo: anApp
-									categorizeIn: self categories]	"Have it notify itself?"].
+									categorizeIn: self categories] "Have it notify itself?"].
 			"Recategorize (whether or not source has changed)"
-			(self onSideClass: aClass) 
+			(self onSideClass: aClass)
 				categorizeSelectors: (Array with: self selector)
 				in: self categories]
 ]
