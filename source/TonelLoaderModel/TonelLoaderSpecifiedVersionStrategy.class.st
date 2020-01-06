@@ -10,6 +10,12 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
+{ #category : 'Not categorized' }
+TonelLoaderSpecifiedVersionStrategy class >> description [
+
+	^'Specify one version for all loaded components'
+]
+
 { #category : 'accessing' }
 TonelLoaderSpecifiedVersionStrategy >> versionFor: aTonelLoaderApplication [
 

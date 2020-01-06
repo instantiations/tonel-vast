@@ -79,7 +79,7 @@ TonelTools class >> exportTonelTools [
 TonelTools class >> loadTonelRepository [
 	"Enter the new method definition below and click 'Resume'."
 
-	| reader loader repositoryPath selectedApps |
+	| reader loader repositoryPath selectedApps versionStrategyClass |
 
 	(EtFileNamePrompter
 		promptForFileName: TonelMsg12 "$NLS$ Select Tonel repository path"
@@ -114,7 +114,43 @@ TonelTools class >> loadTonelRepository [
 		ifTrue: [
 			self halt: TonelMsg25 "$NLS$ The selected Tonel repository is not valid or does not contain any package.'.".
 			^self].
-
+			
+	versionStrategyClass :=
+		CwListPrompter new
+			title: 'Select the versioning strategy';
+			messageString: 'Select how you want to version the Applications and classes loaded';
+			labelString: 'Available versioning strategies';
+			items: (TonelLoaderVersionStrategy allSubclasses);
+			selectedItems: (Array with: TonelLoaderInteractiveVersionStrategy);
+			selectionPolicy: CwConstants::XmSINGLESELECT;
+			printBlock: [:app | app description];
+			prompt. 
+	
+	versionStrategyClass ifNil: [	^self].
+	
+	loader versionStrategy: (versionStrategyClass for: loader).
+	loader versionStrategy isSpecific ifTrue: [
+		| versionName |
+		versionName := (CwTextPrompter
+		prompt: 'Enter the version name you want to use for the loaded components'
+		answer: ''
+		title: 'Enter version name').
+		versionName isEmpty 
+			ifTrue: [^self]
+			ifFalse: [loader versionStrategy versionName: versionName]
+	].
+	
+	((CwMessagePrompter new)
+				iconType: CwConstants::XmICONQUESTION;
+				title: 'Confirm the forced creation of editions';
+				buttonType: CwConstants::XmYESNOCANCEL;
+				messageString: 'Do you want to create editions even for Applications and classes without changes?';
+				prompt) ifNil: [^self]
+				ifNotNil: [:answer |
+					loader versionStrategy alwaysCreateEditions: answer
+				].
+	
+	
 	loader loadApplications: selectedApps
 
 

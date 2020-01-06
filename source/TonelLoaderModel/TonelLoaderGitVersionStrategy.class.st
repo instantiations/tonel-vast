@@ -7,6 +7,12 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
+{ #category : 'Not categorized' }
+TonelLoaderGitVersionStrategy class >> description [
+
+	^'Use git repository commit hash and branch name'
+]
+
 { #category : 'versioning',
   #vaVisibility : 'private' }
 TonelLoaderGitVersionStrategy >> attemptVersionFromGit [

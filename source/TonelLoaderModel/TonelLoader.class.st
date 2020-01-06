@@ -95,6 +95,12 @@ TonelLoader class >> defaultCompilerWarningLevel [
 ]
 
 { #category : 'instance creation' }
+TonelLoader class >> new [
+
+	^super new initialize
+]
+
+{ #category : 'instance creation' }
 TonelLoader class >> on: aTonelReader [
 
 	"Creates a new instance of receiver usin aTonelReader as its reader."

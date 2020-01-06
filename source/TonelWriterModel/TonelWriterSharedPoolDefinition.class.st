@@ -50,12 +50,7 @@ TonelWriterSharedPoolDefinition >> createInitializationMethod: selector [
 		TonelWriterSharedPoolInitializationMethodDefinition
 			uniquelyKnownAs: selector
 			in: self
-			categorizedAs: (
-				String streamContents: [:stream |
-					stream
-						nextPut: $';
-						nextPutAll: 'Initializing';
-						nextPut: $']).
+			categorizedAs: 'Initializing'.
 	method application: application.
 	^method
 ]

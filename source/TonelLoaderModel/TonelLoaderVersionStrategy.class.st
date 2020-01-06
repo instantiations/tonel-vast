@@ -7,6 +7,20 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
+{ #category : 'Not categorized' }
+TonelLoaderVersionStrategy class >> description [
+
+	| className |
+	className := self name asString.
+	^className copyFrom: 'TonelLoader' size + 1 to: className size - 'Strategy' size
+]
+
+{ #category : 'Not categorized' }
+TonelLoaderVersionStrategy class >> isSpecific [
+
+	^self name = #TonelLoaderSpecifiedVersionStrategy
+]
+
 { #category : 'accessing' }
 TonelLoaderVersionStrategy >> alwaysCreateEditions [
 	^alwaysCreateEditions
@@ -23,6 +37,12 @@ TonelLoaderVersionStrategy >> initialize [
 
 	super initialize.
 	alwaysCreateEditions := false
+]
+
+{ #category : 'versioning' }
+TonelLoaderVersionStrategy >> isSpecific [
+
+	^self class isSpecific
 ]
 
 { #category : 'versioning' }
