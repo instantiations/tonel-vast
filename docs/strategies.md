@@ -24,6 +24,11 @@ This strategy will display an `EtPrerequisiteCollectingPrompter` enabling the us
 
 This strategy uses the prequisites specified in the metadata plus the ones computed by the loader.
 
+```smalltalk
+"Enable it by evaluating"
+aTonelLoader useComputedPrerequisites
+```
+
 ## Version strategy
 
 The version strategy handles both the versioning, and also the creation of editions prior to versioning.
