@@ -1,5 +1,12 @@
 Package {
 	#name : 'TonelWriterTestShadowSubSubApp',
 	#vaParent : 'TonelSubapplication',
-	#vaSubApplications : [	{		#condition : 'true',		#subapps : [			'TonelWriterTestShadowSubSubSubApp'		]	}]
+	#vaSubApplications : [
+	{
+		#condition : 'true',
+		#subapps : [
+			'TonelWriterTestShadowSubSubSubApp'
+		]
+	}
+]
 }

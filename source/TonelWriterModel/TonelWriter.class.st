@@ -125,6 +125,18 @@ TonelWriter >> lineDelimiter: aString [
 	lineDelimiter := aString
 ]
 
+{ #category : 'Writing - Application',
+  #vaVisibility : 'private' }
+TonelWriter >> toSTONStringPretty: anObject [
+
+	^String streamContents: 
+			[:stream | 
+			(STONWriter on: stream) 
+				newLine: lineDelimiter;
+				prettyPrint: true;
+				nextPut: anObject]
+]
+
 { #category : 'Configuring' }
 TonelWriter >> useCrEOL [
 
@@ -283,26 +295,29 @@ TonelWriter >> writePackageVAPrerequisitesOf: anApplicationDefinition on: aStrea
 { #category : 'Writing - Application',
   #vaVisibility : 'private' }
 TonelWriter >> writePackageVASubapplicationsOf: anApplicationDefinition on: aStream [
+
 	"Private - Writes the #vaSubApplications: metadata of anApplicationDefinition on aStream."
 
 	| confExpressions application json |
-
 	confExpressions := OrderedCollection new.
 	application := anApplicationDefinition definedApplication.
-	anApplicationDefinition hasDefaultSubApps
-		ifFalse: [
-			aStream << ',' << lineDelimiter << Character tab << '#vaSubApplications : '.
-			application allConfigurationExpressions do: [:each | | dict |
-				dict := Dictionary new.
-				dict
-					at: #condition put: each;
-					at: #subapps
-						put: (
-							(application releasedSubApplicationsFor: each) keys sorted
-								collect: [:each2 | each2 asString]).
-				confExpressions add: dict].
+	anApplicationDefinition hasDefaultSubApps 
+		ifFalse: 
+			[aStream << ',' << lineDelimiter << Character tab 
+				<< '#vaSubApplications : '.
+			application allConfigurationExpressions do: 
+					[:each | 
+					| dict |
+					dict := Dictionary new.
+					dict
+						at: #condition put: each;
+						at: #subapps
+							put: ((application releasedSubApplicationsFor: each) keys sorted 
+									collect: [:each2 | each2 asString]).
+					confExpressions add: dict].
 			confExpressions := confExpressions asArray.
-			json := STON toStringPretty: confExpressions.
+	
+			json := self toSTONStringPretty: confExpressions.
 			aStream nextPutAll: json]
 ]
 
