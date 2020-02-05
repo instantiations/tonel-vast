@@ -10,8 +10,8 @@ TonelClassExtensionWriterTest >> setUp [
 	super setUp.
 	writer :=
 		TonelClassExtensionWriter
-			writingOn: fileSystem
-			into: self directoryForTestingPath
+			on: fileSystem
+			directory: self directoryForTestingPath
 			lineDelimiter: TonelWriter lineDelimiter
 ]
 

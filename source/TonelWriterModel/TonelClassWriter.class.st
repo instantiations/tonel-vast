@@ -1,27 +1,12 @@
 Class {
 	#name : 'TonelClassWriter',
-	#superclass : 'Object',
+	#superclass : 'TonelArtifactWriter',
 	#instVars : [
-		'fileSystem',
 		'packageDirectory',
-		'lineDelimiter',
 		'methodWriter'
 	],
 	#category : 'TonelWriterModel'
 }
-
-{ #category : 'Instance Creation' }
-TonelClassWriter class >> writingOn: aFileSystem into: aPackageDirectory lineDelimiter: aLineDelimiter [
-
-	^self new initializeWritingOn: aFileSystem into: aPackageDirectory lineDelimiter: aLineDelimiter
-]
-
-{ #category : 'Utility',
-  #vaVisibility : 'private' }
-TonelClassWriter >> filePathFor: aClassDefinition [
-
-	^packageDirectory append: aClassDefinition fileName
-]
 
 { #category : 'Utility',
   #vaVisibility : 'private' }
@@ -31,22 +16,16 @@ TonelClassWriter >> format: aVariablesCollection [
 		join: (aVariablesCollection collect: [:variable | self wrapBetweenSingleQuotes: variable])
 ]
 
-{ #category : 'Initialization' }
-TonelClassWriter >> initializeWritingOn: aFileSystem into: aPackageDirectory lineDelimiter: aLineDelimiter [
+{ #category : 'Accessing',
+  #vaVisibility : 'private' }
+TonelClassWriter >> methodWriter [
 
-	fileSystem := aFileSystem.
-	packageDirectory := aPackageDirectory.
-	lineDelimiter := aLineDelimiter.
-	methodWriter := TonelMethodWriter with: lineDelimiter
+	^methodWriter ifNil: [methodWriter := (TonelMethodWriter with: lineDelimiter)]
 ]
 
-{ #category : 'Utility',
-  #vaVisibility : 'private' }
-TonelClassWriter >> withStreamOn: aFilePath do: aBlock [
-
-	fileSystem
-		createWriteStreamOn: aFilePath
-		during: [:writeStream | aBlock value: (TonelUTF8StreamWriterWrapper wrapping: writeStream)]
+{ #category : 'Writing' }
+TonelClassWriter >> tonelTypeName [
+	^'Class'
 ]
 
 { #category : 'Utility',
@@ -63,19 +42,9 @@ TonelClassWriter >> wrapBetweenSingleQuotes: aVariable [
 { #category : 'Writing' }
 TonelClassWriter >> write: aClassDefinition [
 
-	packageDirectory exists ifFalse: [packageDirectory realize].
-	self
-		withStreamOn: (self filePathFor: aClassDefinition)
+	self ensureDirectory.
+	self withStreamOn: (self filePathFor: aClassDefinition)
 		do: [:writeStream | self write: aClassDefinition on: writeStream]
-]
-
-{ #category : 'Writing',
-  #vaVisibility : 'private' }
-TonelClassWriter >> write: aBlock betweenCurlyBracesOn: aWriteStream [
-
-	aWriteStream << 'Class {' << lineDelimiter.
-	aBlock value: aWriteStream.
-	aWriteStream << lineDelimiter << '}' << lineDelimiter
 ]
 
 { #category : 'Writing',
@@ -127,7 +96,7 @@ TonelClassWriter >> writeClassMethodsOf: aClassDefinition on: aWriteStream [
 
 	aClassDefinition withClassMethodDefinitionsDo: [:methodDefinition |
 		methodDefinition isRealPragma
-			ifFalse: [methodWriter write: methodDefinition on: aWriteStream]]
+			ifFalse: [self methodWriter write: methodDefinition on: aWriteStream]]
 ]
 
 { #category : 'Writing',
@@ -158,7 +127,7 @@ TonelClassWriter >> writeDefinitionOf: aClassDefinition on: aWriteStream [
 TonelClassWriter >> writeInstanceMethodsOf: aClassDefinition on: aWriteStream [
 
 	aClassDefinition withInstanceMethodDefinitionsDo: [:methodDefition |
-		methodWriter write: methodDefition on: aWriteStream]
+		self methodWriter write: methodDefition on: aWriteStream]
 ]
 
 { #category : 'Writing',

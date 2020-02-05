@@ -1,50 +1,13 @@
 Class {
 	#name : 'TonelClassExtensionWriter',
-	#superclass : 'Object',
-	#instVars : [
-		'fileSystem',
-		'filePath',
-		'lineDelimiter',
-		'methodWriter'
-	],
+	#superclass : 'TonelClassWriter',
 	#category : 'TonelWriterModel'
 }
-
-{ #category : 'Instance Creation' }
-TonelClassExtensionWriter class >> writingOn: aFileSystem into: aPackageDirectory lineDelimiter: aLineDelimiter [
-
-	^self new initializeWritingOn: aFileSystem into: aPackageDirectory lineDelimiter: aLineDelimiter
-]
-
-{ #category : 'Utility',
-  #vaVisibility : 'private' }
-TonelClassExtensionWriter >> filePathFor: aClassExtensionDefinition [
-
-	^filePath append: aClassExtensionDefinition fileName
-]
-
-{ #category : 'Initialization' }
-TonelClassExtensionWriter >> initializeWritingOn: aFileSystem into: aPackageDirectory lineDelimiter: aLineDelimiter [
-
-	fileSystem := aFileSystem.
-	filePath := aPackageDirectory.
-	lineDelimiter := aLineDelimiter.
-	methodWriter := TonelMethodWriter with: lineDelimiter
-]
-
-{ #category : 'Utility',
-  #vaVisibility : 'private' }
-TonelClassExtensionWriter >> withStreamOn: aFilePath do: aBlock [
-
-	fileSystem
-		createWriteStreamOn: aFilePath asString
-		during: [:writeStream | aBlock value: (TonelUTF8StreamWriterWrapper wrapping: writeStream)]
-]
 
 { #category : 'Writing' }
 TonelClassExtensionWriter >> write: aClassExtensionDefinition [
 
-	filePath exists ifFalse: [filePath realize].
+	self directory exists ifFalse: [self directory realize].
 	self
 		withStreamOn: (self filePathFor: aClassExtensionDefinition)
 		do: [:writeStream | self write: aClassExtensionDefinition on: writeStream]
@@ -65,7 +28,7 @@ TonelClassExtensionWriter >> write: aClassExtensionDefinition on: aWriteStream [
 TonelClassExtensionWriter >> writeClassMethodsOf: aClassExtensionDefinition on: aWriteStream [
 
 	aClassExtensionDefinition withClassMethodDefinitionsDo: [:methodDefition |
-		methodWriter write: methodDefition on: aWriteStream]
+		self methodWriter write: methodDefition on: aWriteStream]
 ]
 
 { #category : 'Writing',
@@ -82,5 +45,5 @@ TonelClassExtensionWriter >> writeDefinitionOf: aClassExtensionDefinition on: aW
 TonelClassExtensionWriter >> writeInstanceMethodsOf: aClassExtensionDefinition on: aWriteStream [
 
 	aClassExtensionDefinition withInstanceMethodDefinitionsDo: [:methodDefition |
-		methodWriter write: methodDefition on: aWriteStream]
+		self methodWriter write: methodDefition on: aWriteStream]
 ]

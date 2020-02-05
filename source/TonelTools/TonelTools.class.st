@@ -35,7 +35,9 @@ TonelTools class >> addToApplicationsMenu: aMenu browser: aBrowser [
 TonelTools class >> exportTonelApplication [
 
 	| selectedApps repositoryPath |
-	 selectedApps := CwListSelectionPrompter new
+
+	selectedApps :=
+		CwListSelectionPrompter new
 			title: TonelMsg27 "$NLS$ Select applications to export in Tonel format";
 			messageString: TonelMsg28 "$NLS$ Select which applications you want to export in Tonel format to a specific";
 			labelString: TonelMsg29 "$NLS$ Available applications";
@@ -44,34 +46,33 @@ TonelTools class >> exportTonelApplication [
 			selectedItems: #();
 			selectionPolicy: CwConstants::XmEXTENDEDSELECT;
 			printBlock: [:app | app name];
-			selectedPrintBlock: [:app |  app name];
+			selectedPrintBlock: [:app | app name];
 			prompt.
 	selectedApps isEmptyOrNil ifTrue: [^self].
-	
+
 	(EtFileNamePrompter
 		promptForFileName: TonelMsg31 "$NLS$ Select target path"
 		default: '.project' "$NON-NLS$"
 		at: System cursorPosition
 		save: true)
 			ifNil: [^self]
-			ifNotNil: [:string |
-			repositoryPath :=(CfsPath named: string) directory].
-		
-	TonelWriter new
-		writeProjectIncluding: selectedApps
-		into: repositoryPath .
-	
-	
+			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].
 
-	
+	TonelWriter new
+		applications: selectedApps;
+		writeProjectInto: repositoryPath
+
+
+
+
 ]
 
 { #category : 'operations' }
 TonelTools class >> exportTonelTools [
 
 	TonelWriter new
-		writeProjectIncluding: (#(TonelBaseApp TonelFileSystem TonelLoaderModel TonelLoaderTests TonelReaderModel TonelReaderTests TonelTools TonelWriterModel TonelWriterTests) collect: [:symbol | Smalltalk at: symbol])  
-		into: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-vast').
+		applications: (#(TonelBaseApp TonelFileSystem TonelLoaderModel TonelLoaderTests TonelReaderModel TonelReaderTests TonelTools TonelWriterModel TonelWriterTests) collect: [:symbol | Smalltalk at: symbol]);
+		writeProjectInto: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-vast').
 
 ]
 

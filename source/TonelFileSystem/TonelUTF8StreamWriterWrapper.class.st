@@ -51,6 +51,11 @@ TonelUTF8StreamWriterWrapper >> nextPutAll: aString [
 ]
 
 { #category : 'Stream API' }
+TonelUTF8StreamWriterWrapper >> space [
+	writeStream nextPut: Character space
+]
+
+{ #category : 'Stream API' }
 TonelUTF8StreamWriterWrapper >> tab [
 	writeStream nextPut: Character tab
 ]

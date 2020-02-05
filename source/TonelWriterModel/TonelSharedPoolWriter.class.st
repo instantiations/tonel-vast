@@ -8,7 +8,7 @@ Class {
 TonelSharedPoolWriter >> writeClassMethodsOf: aClassDefinition on: aWriteStream [
 
 	aClassDefinition poolInitializationMethods do: [:method |
-		methodWriter write: method on: aWriteStream.
+		self methodWriter write: method on: aWriteStream.
 	]
 ]
 

@@ -320,8 +320,8 @@ TonelWriterTest >> testWriteApplicationWithExtensionsSubappsAndShadows [
 TonelWriterTest >> testWriteProject [
 
 	self writer
-		writeProjectIncluding: (Array with: TonelWriterTests with: TonelWriterModel)
-		into: self directoryForTestingPath.
+		applications: (Array with: TonelWriterTests with: TonelWriterModel);
+		writeProjectInto: self directoryForTestingPath.
 	self assertTonelWriterModelOnPath:  '/source'.
 	self assertTonelWriterTestOnPath:  '/source'
 ]

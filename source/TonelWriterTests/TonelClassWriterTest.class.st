@@ -10,8 +10,8 @@ TonelClassWriterTest >> setUp [
 	super setUp.
 	self writer:  
 		(TonelClassWriter
-			writingOn: self fileSystem
-			into: self directoryForTestingPath
+			on: self fileSystem
+			directory: self directoryForTestingPath
 			lineDelimiter: TonelWriter lineDelimiter)
 ]
 

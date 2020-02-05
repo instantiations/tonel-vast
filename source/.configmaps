@@ -1,0 +1,27 @@
+[
+	{
+		#applications : [
+			'TonelWriterTests' : '',
+			'TonelReaderModel' : '',
+			'TonelLoaderModel' : '',
+			'TonelTools' : '',
+			'TonelBaseApp' : '',
+			'TonelFileSystem' : '',
+			'TonelLoaderTests' : '',
+			'TonelWriterModel' : '',
+			'TonelReaderTests' : ''
+		],
+		#conditions : [
+			{
+				#condition : 'true',
+				#requiredMaps : [
+					'z.ST: SUnit' : 'V 9.2.0  [453]',
+					'z.ST: STON Support' : 'V 9.2.0  [453]'
+				]
+			}
+		],
+		#name : 'Tonel',
+		#versionName : '1.38',
+		#comment : ''
+	}
+]
