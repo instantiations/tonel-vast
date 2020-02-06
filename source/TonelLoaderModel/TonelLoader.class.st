@@ -5,6 +5,7 @@ Class {
 		'reader',
 		'applications',
 		'subApplications',
+		'configurationMaps',
 		'baseEditionStrategy',
 		'versionStrategy',
 		'prerequisitesStrategy',
@@ -112,7 +113,7 @@ TonelLoader class >> on: aTonelReader [
 TonelLoader class >> readFromPath: aCfsPath [
 
 		
-	^(TonelReader new readPackagesFrom: aCfsPath) createLoader
+	^(TonelReader new readFrom: aCfsPath) createLoader
 ]
 
 { #category : 'strategies' }
@@ -179,6 +180,25 @@ TonelLoader >> checkRepositoryContents [
 			[self error: 'The selected directory does not contain any Tonel Package']
 ]
 
+{ #category : 'lookup' }
+TonelLoader >> configurationMapNamed: aString versionName: versionName [
+	
+	self configurationMaps 
+]
+
+{ #category : 'lookup' }
+TonelLoader >> configurationMapNamed: aString versionName: versionName ifNone: aBlock [
+
+	^self configurationMaps detect: [:one | one name = aString and: [one versionName = versionName]] ifNone: aBlock
+]
+
+{ #category : 'accessing' }
+TonelLoader >> configurationMaps [
+
+	configurationMaps ifNil: [self initializeConfigurationMaps].
+	^configurationMaps
+]
+
 { #category : 'interacting' }
 TonelLoader >> confirm: aString [
 
@@ -191,7 +211,7 @@ TonelLoader >> confirm: aString [
 TonelLoader >> createReaderForRepository: directoryPath [
 
 	self setReader: (TonelReader new).
-	self reader readPackagesFrom: directoryPath.
+	self reader readFrom: directoryPath.
 ]
 
 { #category : 'strategies' }
@@ -221,6 +241,14 @@ TonelLoader >> initializeApplications [
 	applications := (reader packages select: [:each | each parent isNil]) 
 				collect: [:each | TonelLoaderApplication on: each in: self].
 	applications do: [:each | each initializeSubApplicationsWithRoot: each]
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelLoader >> initializeConfigurationMaps [
+
+	configurationMaps := (reader configurationMaps
+		collect: [:each | TonelConfigurationMap from: each in: self])
 ]
 
 { #category : 'loading',

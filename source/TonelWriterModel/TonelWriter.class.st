@@ -77,6 +77,13 @@ TonelWriter >> addApplicationsFromConfigurationMaps [
 			(self applications includes: application) ifFalse: [self applications add: application]]]
 ]
 
+{ #category : 'accessing' }
+TonelWriter >> addConfigurationMap: anEmConfigurationMap [
+
+	
+	self configurationMaps add: anEmConfigurationMap
+]
+
 { #category : 'Writing-ConfigurationMaps',
   #vaVisibility : 'private' }
 TonelWriter >> addConfigurationMapData: aConfigurationMap into: aCollection [
