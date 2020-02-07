@@ -27,5 +27,5 @@ TonelReaderTest >> writeThenReadProjectIncluding: applicationNames from: aRootDi
 		applications: (applicationNames collect: [:each | Smalltalk at: each asSymbol]);
 		writeProjectInto: aRootDirPath sourceDirectoryName: 'source'.
 	self reader readPackages: applicationNames
-		from: (aRootDirPath append: 'source')
+		fromSourceDir: (aRootDirPath append: 'source')
 ]
