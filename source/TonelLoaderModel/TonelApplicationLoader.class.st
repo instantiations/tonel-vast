@@ -261,7 +261,7 @@ TonelApplicationLoader >> loader [
   #vaVisibility : 'private' }
 TonelApplicationLoader >> markAsLoaded [
 
-	self loader loadedApplications add: self
+	self loader loadedApplications add: self tonelApplication
 ]
 
 { #category : 'loading-internal',

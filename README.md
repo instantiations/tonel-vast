@@ -181,6 +181,13 @@ VAST's way of declaring and/or initializing Shared Pools is different from other
 
 Read the [versioning, prerequisites and base editions strategies documentation](docs/strategies.md) to learn how to configure the loader to work interactively, unattended, read the version from a git repository, etc.
 
+## Configuration Maps
+
+Although dependency management is outside of the scope of Tonel, VA Smalltalk's Tonel tools provide a way to write them to disk and later read and load them.
+
+Read the [Configuration Maps documentation](docs/configmaps.md) to learn how to use it.
+
+
 ## Examples and Demos
 There is a [whole Github project](https://github.com/vasmalltalk/tonel-demos/) that contains demos about Tonel integration with VASmalltalk.
 

@@ -146,7 +146,7 @@ TonelLoaderSubApplication >> checkSuperclassesExcepting: classDefinitions [
 	self definedClasses do: [ :tonelClass |
 		(self realSuperclassFor: tonelClass using: classDefinitions) ifNotNil: [ :rootClass | | emRootApp |
 			emRootApp := rootClass controller rootApplication.
-			emRootApp ~= (Smalltalk classAt: self rootTonelApplication name) ifTrue: [
+			emRootApp ~= (Smalltalk classAt: self rootTonelApplication name asSymbol) ifTrue: [
 				self addPrerequisite: emRootApp ] ] ].
 				
 	self subApplications do: [ :tonelSubApp |

@@ -5,6 +5,7 @@ Class {
 		'fileSystem',
 		'sourceProperties',
 		'packages',
+		'configurationMaps',
 		'repositoryPath'
 	],
 	#category : 'TonelReaderModel'
@@ -56,6 +57,17 @@ TonelReader >> computeSourcesDirectoryFrom: aPath [
 	^(self readSourceDirectoryNameFrom: aPath) ifNil: [aPath] ifNotNil: [:dir | aPath append: dir]
 ]
 
+{ #category : 'Reading' }
+TonelReader >> configMapsFilename [
+	^'.configmaps'
+]
+
+{ #category : 'Accessing' }
+TonelReader >> configurationMaps [
+
+	^configurationMaps ifNil: [configurationMaps := OrderedCollection new]
+]
+
 { #category : 'Accessing',
   #vaVisibility : 'private' }
 TonelReader >> includePackage: aPackageDefinition [
@@ -105,14 +117,37 @@ TonelReader >> packages [
 	^packages ifNil: [	packages := OrderedCollection new]
 ]
 
-{ #category : 'Reading-Project',
+{ #category : 'Reading',
+  #vaVisibility : 'private' }
+TonelReader >> readConfigurationMapsFrom: sourceDirPath [
+
+	configurationMaps :=
+		(sourceDirPath append: self configMapsFilename) exists
+			ifTrue: [
+				(STONReader on: (
+					CfsReadFileStream open: (sourceDirPath append: self configMapsFilename) asString))
+						next]
+			ifFalse: [OrderedCollection new]
+]
+
+{ #category : 'Reading' }
+TonelReader >> readFrom: aPath [
+
+	| sourcesPath |
+	repositoryPath := aPath.
+	sourcesPath := self computeSourcesDirectoryFrom: aPath.
+	self readPackages: nil from: sourcesPath.
+	self readConfigurationMapsFrom: sourcesPath.
+]
+
+{ #category : 'Reading',
   #vaVisibility : 'private' }
 TonelReader >> readPackageDirectories: aCollection [
 
 	aCollection do: [:each | self readPackageFrom: each]
 ]
 
-{ #category : 'Reading-Project',
+{ #category : 'Reading',
   #vaVisibility : 'private' }
 TonelReader >> readPackageFileFrom: packageDirectory [
 
@@ -129,7 +164,7 @@ TonelReader >> readPackageFileFrom: packageDirectory [
 
 ]
 
-{ #category : 'Reading-Project',
+{ #category : 'Reading',
   #vaVisibility : 'private' }
 TonelReader >> readPackageFrom: packageDirectory [
 
@@ -144,9 +179,9 @@ TonelReader >> readPackageFrom: packageDirectory [
 					self addContentFrom: filePath toPackage: package]]
 ]
 
-{ #category : 'Reading-Project',
+{ #category : 'Reading',
   #vaVisibility : 'private' }
-TonelReader >> readPackages: aCollection fromSourceDir: sourceDirPath [
+TonelReader >> readPackages: aCollection from: sourceDirPath [
 
 	| packagesDirectories |
 
@@ -158,16 +193,15 @@ TonelReader >> readPackages: aCollection fromSourceDir: sourceDirPath [
 	self readPackageDirectories: packagesDirectories
 ]
 
-{ #category : 'Reading-Project' }
+{ #category : 'Reading' }
 TonelReader >> readPackagesFrom: aPath [
 
-	| sourceDirectory |
-	repositoryPath := aPath.
-	sourceDirectory := self computeSourcesDirectoryFrom: aPath.
-	self readPackages: nil fromSourceDir: sourceDirectory
+	
+	#deprecated.
+	self readFrom: aPath
 ]
 
-{ #category : 'Reading-Project',
+{ #category : 'Reading',
   #vaVisibility : 'private' }
 TonelReader >> readSourceDirectoryNameFrom: aPath [
 	"Private - Reads the sources directory name from the project path aPath."
@@ -188,7 +222,7 @@ TonelReader >> readSourceDirectoryNameFrom: aPath [
 	^sourceDirectoryName
 ]
 
-{ #category : 'Reading-Project',
+{ #category : 'Reading',
   #vaVisibility : 'private' }
 TonelReader >> readSourcePropertiesFrom: aSourceDirPath [
 	"Private - Reads the sources properties from the sources directory aPath.

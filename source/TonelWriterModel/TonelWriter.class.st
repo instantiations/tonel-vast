@@ -77,6 +77,18 @@ TonelWriter >> addApplicationsFromConfigurationMaps [
 			(self applications includes: application) ifFalse: [self applications add: application]]]
 ]
 
+{ #category : 'accessing' }
+TonelWriter >> addConfigurationMap: anEmConfigurationMap [
+
+	(self configurationMaps anySatisfy: [:each | each name = anEmConfigurationMap name])
+		ifTrue: [
+			self error: (
+				'You can only add one Configuration Map for <1p>.'
+					expandMacrosWith: anEmConfigurationMap name)].
+
+	self configurationMaps add: anEmConfigurationMap
+]
+
 { #category : 'Writing-ConfigurationMaps',
   #vaVisibility : 'private' }
 TonelWriter >> addConfigurationMapData: aConfigurationMap into: aCollection [
@@ -88,7 +100,11 @@ TonelWriter >> addConfigurationMapData: aConfigurationMap into: aCollection [
 		at: #name put: aConfigurationMap name;
 		at: #versionName put: aConfigurationMap versionName;
 		at: #applications
-				put: (aConfigurationMap applicationEditions associations asArray collect: [:assoc | assoc key -> assoc value versionName]) .
+			put:
+				((aConfigurationMap applicationEditions associations
+					collect: [:assoc | assoc key -> assoc value versionName])
+						asSortedCollection: [:a :b | a key <= b key])
+							asArray.
 
 	(conditions := aConfigurationMap requiredMapsConfigurations) isEmpty ifTrue: [^self].
 	confExpressions := OrderedCollection new.
@@ -110,6 +126,14 @@ TonelWriter >> addConfigurationMapData: aConfigurationMap into: aCollection [
 	aDictionary at: #comment put: aConfigurationMap comment.
 
 	aCollection add: aDictionary
+]
+
+{ #category : 'accessing' }
+TonelWriter >> addConfigurationMapNamed: configMapName versionName: aString [
+
+	((EmConfigurationMap editionsFor: configMapName) detect: [:one | one versionName = aString] ifNone: [])
+		ifNil: [self error: ('Could not locate the configuration map <1s> <2s>' expandMacrosWith: configMapName with: aString)]
+		ifNotNil:[:configMap | self addConfigurationMap: configMap ]
 ]
 
 { #category : 'accessing' }

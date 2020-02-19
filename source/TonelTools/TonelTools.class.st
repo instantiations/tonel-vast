@@ -71,7 +71,8 @@ TonelTools class >> exportTonelApplication [
 TonelTools class >> exportTonelTools [
 
 	TonelWriter new
-		applications: (#(TonelBaseApp TonelFileSystem TonelLoaderModel TonelLoaderTests TonelReaderModel TonelReaderTests TonelTools TonelWriterModel TonelWriterTests) collect: [:symbol | Smalltalk at: symbol]);
+		addConfigurationMap: (EmConfigurationMap editionsFor: 'Tonel') first;
+		addApplicationsFromConfigurationMaps;
 		writeProjectInto: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-vast').
 
 ]
@@ -94,7 +95,7 @@ TonelTools class >> loadTonelRepository [
 			self halt: TonelMsg14 "$NLS$ The selected Tonel repository does not contain a valid sources directory.".
 			^self].
 
-	reader readPackagesFrom: repositoryPath.
+	reader readFrom: repositoryPath.
 	loader := TonelLoader on: reader.
 	selectedApps :=
 		CwListSelectionPrompter new

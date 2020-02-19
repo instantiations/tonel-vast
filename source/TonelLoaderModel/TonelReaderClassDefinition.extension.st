@@ -107,6 +107,7 @@ TonelReaderClassDefinition >> createDefinedIn: anApp [
 TonelReaderClassDefinition >> createEditionIn: anApp using: aTonelLoader [
 
 	| baseClass |
+	self identifier = #TFInput ifTrue: [1 halt].
 	(baseClass := self concreteClassIn: anApp) isNil
 		ifTrue: [self createIn: anApp]
 		ifFalse: [
