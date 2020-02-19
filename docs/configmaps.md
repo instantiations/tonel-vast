@@ -70,7 +70,7 @@ This will produce the a `.configmaps` file with the following STON content:
 **NOTE:** In order to write Applications to disk, such applications must be loaded in the image first. So if your writing a Configuration Map to disk, it is recommended you load the config map first.
 
 
-### Loading Configuration Maps from disk
+## Loading Configuration Maps from disk
 
 The load of configuration maps from disk is straighfoward.
 
