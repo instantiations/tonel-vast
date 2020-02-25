@@ -112,7 +112,9 @@ TonelConfigurationMap >> loader: anObject [
 { #category : 'Not categorized' }
 TonelConfigurationMap >> loadWithRequiredMaps [
 
-	self requiredMaps do: [:each | each loadWithRequiredMaps ].
+	self requiredMaps do: [:each |
+		(self loader loadedConfigurationMaps includes: each)
+			ifFalse: [each loadWithRequiredMaps]].
 	self load
 ]
 

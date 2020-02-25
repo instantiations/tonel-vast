@@ -106,7 +106,7 @@ TonelWriter >> addConfigurationMapData: aConfigurationMap into: aCollection [
 						asSortedCollection: [:a :b | a key <= b key])
 							asArray.
 
-	(conditions := aConfigurationMap requiredMapsConfigurations) isEmpty ifTrue: [^self].
+	conditions := aConfigurationMap requiredMapsConfigurations.
 	confExpressions := OrderedCollection new.
 	conditions do: [:condition | | dict |
 		dict := Dictionary new.

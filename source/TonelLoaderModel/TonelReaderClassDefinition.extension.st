@@ -52,6 +52,7 @@ TonelReaderClassDefinition >> amendSharedPoolClass [
 	isSharedPool :=
 		superclassIdentifier = #SharedPool
 			ifTrue: [
+				"self loader log: ('Ammending SharedPool <1p>' expandMacrosWith: name asSymbol)."
 				self createPragmaMethod. 
 				identifier := name asSymbol.	
 				"superclassIdentifier := #Object." 

@@ -9,7 +9,8 @@ Class {
 		'baseEditionStrategy',
 		'versionStrategy',
 		'prerequisitesStrategy',
-		'loadedApplications'
+		'loadedApplications',
+		'loadedConfigurationMaps'
 	],
 	#classVars : [
 		'CompilerWarningLevel',
@@ -116,7 +117,7 @@ TonelLoader class >> readFromPath: aCfsPath [
 	^(TonelReader new readFrom: aCfsPath) createLoader
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> alwaysCreateEditions [
 
 	^self versionStrategy alwaysCreateEditions
@@ -152,41 +153,38 @@ TonelLoader >> baseEditionStrategy: anObject [
 	baseEditionStrategy := anObject
 ]
 
-{ #category : 'loading' }
+{ #category : 'loading',
+  #vaVisibility : 'private' }
 TonelLoader >> basicLoadApplication: aTonelApplication [
 
 	aTonelApplication prerequisites do: [:prereq |
-		(self applications anySatisfy: [:any | any name asSymbol = prereq name])
-			ifTrue: [self basicLoadApplication: (self applicationNamed: prereq name)]].
+		((self applications anySatisfy: [:any | any name asSymbol = prereq name])
+			and: [self loadedApplications noneSatisfy: [:each | each name asSymbol = prereq name]])
+				ifTrue: [self basicLoadApplication: (self applicationNamed: prereq name)]].
 	(self loadedApplications includes: aTonelApplication)
 		ifFalse: [(TonelApplicationLoader on: aTonelApplication in: self) load]
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> beInteractive [
 	self useInteractivePreqrequistesSelection.
 	self useInteractiveBaseEditionSelection.
 	self useInteractiveVersioning
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> beUnattended [
 	self useComputedPrerequisites.
 	self useLatestBaseEditions.
 	self doNotCreateVersions
 ]
 
-{ #category : 'loading' }
+{ #category : 'loading',
+  #vaVisibility : 'private' }
 TonelLoader >> checkRepositoryContents [
 	self applications isEmpty 
 		ifTrue: 
 			[self error: 'The selected directory does not contain any Tonel Package']
-]
-
-{ #category : 'lookup' }
-TonelLoader >> configurationMapNamed: aString versionName: versionName [
-	
-	self configurationMaps 
 ]
 
 { #category : 'lookup' }
@@ -217,12 +215,12 @@ TonelLoader >> createReaderForRepository: directoryPath [
 	self reader readFrom: directoryPath.
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> doNotCreateVersions [
 	self versionStrategy: (TonelLoaderNoVersionStrategy for: self)
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> forceCreationOfEditions [
 	
 	self versionStrategy alwaysCreateEditions: true
@@ -287,7 +285,6 @@ TonelLoader >> loadApplications: aCollection [
 
 	| confirmer |
 	confirmer := System image confirmer: self.
-	loadedApplications := Set new.
 	[aCollection do: [:each | self basicLoadApplication: each]] 
 		ensure: [System image confirmer: confirmer]
 ]
@@ -311,10 +308,31 @@ TonelLoader >> loadBaseEditionFor: aTonelApplication [
 	^self baseEditionStrategy loadBaseEditionFor: aTonelApplication
 ]
 
+{ #category : 'loading' }
+TonelLoader >> loadConfigurationMapNamed: aString [
+	
+	self loadConfigurationMapNamed: aString withPrereqs: true
+]
+
+{ #category : 'loading' }
+TonelLoader >> loadConfigurationMapNamed: aString withPrereqs: aBoolean [
+
+	(self configurationMaps detect: [:one | one name = aString]) ifNotNil: [:configMap |
+		aBoolean ifTrue: [configMap loadWithRequiredMaps] ifFalse: [configMap load].
+		 self loadedConfigurationMaps add: configMap.
+		]
+]
+
 { #category : 'accessing' }
 TonelLoader >> loadedApplications [
 
-	^loadedApplications
+	^loadedApplications ifNil: [loadedApplications := Set new]
+]
+
+{ #category : 'accessing' }
+TonelLoader >> loadedConfigurationMaps [
+
+	^loadedConfigurationMaps ifNil: [loadedConfigurationMaps := Set new]
 ]
 
 { #category : 'logging' }
@@ -352,6 +370,12 @@ TonelLoader >> reader [
 	"Returns the TonelReader of receiver."
 	
 	^reader
+]
+
+{ #category : 'accessing' }
+TonelLoader >> reset [
+
+	loadedApplications := loadedConfigurationMaps := nil
 ]
 
 { #category : 'initializing',
@@ -401,39 +425,39 @@ TonelLoader >> useComputedPrerequisites [
 	self prerequisitesStrategy: (TonelLoaderComputedPrerequisitesStrategy for: self)
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> useGitVersion [
 	self versionStrategy: (TonelLoaderGitVersionStrategy for: self)
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> useInteractiveBaseEditionSelection [
 	self 
 		baseEditionStrategy: (TonelLoaderInteractiveBaseEditionStrategy for: self)
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> useInteractivePreqrequistesSelection [
 	self 
 		prerequisitesStrategy: (TonelLoaderInteractivePrereqStrategy for: self)
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> useInteractiveVersioning [
 	self versionStrategy: (TonelLoaderInteractiveVersionStrategy for: self)
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> useLatestBaseEditions [
 	self baseEditionStrategy: (TonelLoaderLatestBaseEditionStrategy for: self)
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> useSpecifiedVersion: versionName [
 	self versionStrategy: ((TonelLoaderSpecifiedVersionStrategy for: self) versionName: versionName)
 ]
 
-{ #category : 'interacting' }
+{ #category : 'strategies' }
 TonelLoader >> versionFor: aTonelApplication [
 
 	^self versionStrategy versionFor: aTonelApplication
