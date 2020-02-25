@@ -1,15 +1,15 @@
 [
 	{
 		#applications : [
-			'TonelWriterTests' : '',
-			'TonelReaderModel' : '',
-			'TonelLoaderModel' : '',
-			'TonelTools' : '',
 			'TonelBaseApp' : '',
 			'TonelFileSystem' : '',
+			'TonelLoaderModel' : '',
 			'TonelLoaderTests' : '',
+			'TonelReaderModel' : '',
+			'TonelReaderTests' : '',
+			'TonelTools' : '',
 			'TonelWriterModel' : '',
-			'TonelReaderTests' : ''
+			'TonelWriterTests' : ''
 		],
 		#conditions : [
 			{
@@ -21,7 +21,7 @@
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.38',
+		#versionName : '1.42',
 		#comment : ''
 	}
 ]
