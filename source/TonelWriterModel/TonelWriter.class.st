@@ -101,9 +101,9 @@ TonelWriter >> addConfigurationMapData: aConfigurationMap into: aCollection [
 		at: #versionName put: aConfigurationMap versionName;
 		at: #applications
 			put:
-				((aConfigurationMap applicationEditions associations
-					collect: [:assoc | assoc key -> assoc value versionName])
-						asSortedCollection: [:a :b | a key <= b key])
+				((aConfigurationMap shadowApplications 
+					collect: [:each | each name asString -> each versionName])
+						asSortedCollection)
 							asArray.
 
 	conditions := aConfigurationMap requiredMapsConfigurations.
@@ -115,7 +115,7 @@ TonelWriter >> addConfigurationMapData: aConfigurationMap into: aCollection [
 			at: #requiredMaps
 				put:
 					(condition value collect: [:each | | requiredMap |
-						requiredMap := (EmConfigurationMap shadowClass
+						requiredMap := (EmConfigurationMap
 							named: each key
 							timeStamp: each value).
 						requiredMap name -> requiredMap versionName])
@@ -134,6 +134,13 @@ TonelWriter >> addConfigurationMapNamed: configMapName versionName: aString [
 	((EmConfigurationMap editionsFor: configMapName) detect: [:one | one versionName = aString] ifNone: [])
 		ifNil: [self error: ('Could not locate the configuration map <1s> <2s>' expandMacrosWith: configMapName with: aString)]
 		ifNotNil:[:configMap | self addConfigurationMap: configMap ]
+]
+
+{ #category : 'accessing' }
+TonelWriter >> addLatestConfigurationMapNamed: configMapName [
+
+	self addConfigurationMap: (EmConfigurationMap editionsFor: configMapName) first
+		
 ]
 
 { #category : 'accessing' }

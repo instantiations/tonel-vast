@@ -24,6 +24,38 @@ TonelConfigurationMap class >> from: aDictionary in: aTonelLoader [
 		yourself
 ]
 
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> addApplicationsToEdition [
+	"Enter the new method definition below and click 'Resume'."
+	self halt
+]
+
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> addConfigurationExpression: expression withRequiredMaps: aCollection to: emConfigurationMap [
+
+	emConfigurationMap
+		addConfigurationExpression: expression;
+		addRequiredMapsAsLast: (
+				aCollection collect: [:mapAssoc |
+					(EmConfigurationMap editionsFor: mapAssoc key)
+						detect: [:one | one versionName = mapAssoc value]
+						ifNone: [EmConfigurationMap named: mapAssoc key timeStamp: mapAssoc value]])
+			for: expression
+]
+
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> addPrerequisitesTo: emConfigurationMap [
+
+	self conditions do: [:condition |
+		self
+			addConfigurationExpression: condition key
+			withRequiredMaps: condition value
+			to: emConfigurationMap]
+]
+
 { #category : 'accessing' }
 TonelConfigurationMap >> applicationNames [
 
@@ -60,6 +92,15 @@ TonelConfigurationMap >> conditions: anObject [
 	conditions := anObject
 ]
 
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> createNewEdition [
+	
+	^EmConfigurationMap create: self name.
+	
+
+]
+
 { #category : 'Initializing',
   #vaVisibility : 'private' }
 TonelConfigurationMap >> initializeFrom: aDictionary in: aTonelLoader [
@@ -92,10 +133,22 @@ TonelConfigurationMap >> isExpressionValid: anExpression [
 	
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'loading' }
 TonelConfigurationMap >> load [
-	
-	self loader loadApplicationsNamed: self applicationNames
+
+	| emEdition |
+	emEdition := self createNewEdition.
+	self loadApplicationsFor: emEdition.
+	self addPrerequisitesTo: emEdition.
+	self versionEdition: emEdition
+]
+
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> loadApplicationsFor: emConfigMap [
+	| emApps |
+	emApps := self loader loadApplicationsNamed: self applicationNames.
+	emApps do: [:each | emConfigMap addApplication: each].
 	
 ]
 
@@ -109,12 +162,18 @@ TonelConfigurationMap >> loader: anObject [
 	loader := anObject
 ]
 
-{ #category : 'Not categorized' }
-TonelConfigurationMap >> loadWithRequiredMaps [
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> loadRequiredMaps [
+	self requiredMaps do: 
+			[:each | 
+			(self loader loadedConfigurationMaps includes: each) 
+				ifFalse: [each loadWithRequiredMaps]]
+]
 
-	self requiredMaps do: [:each |
-		(self loader loadedConfigurationMaps includes: each)
-			ifFalse: [each loadWithRequiredMaps]].
+{ #category : 'loading' }
+TonelConfigurationMap >> loadWithRequiredMaps [
+	self loadRequiredMaps.
 	self load
 ]
 
@@ -146,6 +205,14 @@ TonelConfigurationMap >> requiredMaps [
 							versionName: each value
 							ifNone: [TonelEmConfigurationMap name: each key versionName: each value]])]].
 	^requiredMaps
+]
+
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> versionEdition: anEmConfigurationMap [
+
+	(anEmConfigurationMap shadowApplications allSatisfy: [:each | each isVersion])
+		ifTrue: [anEmConfigurationMap versionName: self versionName]
 ]
 
 { #category : 'accessing' }

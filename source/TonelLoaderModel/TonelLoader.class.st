@@ -271,13 +271,17 @@ TonelLoader >> loadAllMapsWithRequiredMaps [
 { #category : 'loading' }
 TonelLoader >> loadApplication: aTonelApplication [
 
-	self loadApplications: (Array with: aTonelApplication)
+	| emApps |
+	emApps := (self loadApplications: (Array with: aTonelApplication)).
+	^emApps isEmpty 
+		ifFalse: [ emApps first]
+	
 ]
 
 { #category : 'loading' }
 TonelLoader >> loadApplicationNamed: aStringOrSymbol [
 
-	self loadApplication: (self applicationNamed: aStringOrSymbol)
+	^self loadApplication: (self applicationNamed: aStringOrSymbol)
 ]
 
 { #category : 'loading' }
@@ -286,7 +290,8 @@ TonelLoader >> loadApplications: aCollection [
 	| confirmer |
 	confirmer := System image confirmer: self.
 	[aCollection do: [:each | self basicLoadApplication: each]] 
-		ensure: [System image confirmer: confirmer]
+		ensure: [System image confirmer: confirmer].
+	^aCollection collect: [:each | each emApplication ]
 ]
 
 { #category : 'loading' }
@@ -299,7 +304,7 @@ TonelLoader >> loadApplicationsForPackagesNamed: aCollection [
 { #category : 'loading' }
 TonelLoader >> loadApplicationsNamed: aCollection [
 
-	self loadApplications: (aCollection collect: [:each | self applicationNamed: each])
+	^self loadApplications: (aCollection collect: [:each | self applicationNamed: each])
 ]
 
 { #category : 'interacting' }
@@ -458,9 +463,9 @@ TonelLoader >> useSpecifiedVersion: versionName [
 ]
 
 { #category : 'strategies' }
-TonelLoader >> versionFor: aTonelApplication [
+TonelLoader >> versionFor: anObject [
 
-	^self versionStrategy versionFor: aTonelApplication
+	^self versionStrategy versionFor: anObject
 ]
 
 { #category : 'strategies' }

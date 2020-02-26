@@ -3,7 +3,8 @@ Class {
 	#superclass : 'TonelLoaderSubApplication',
 	#instVars : [
 		'dependents',
-		'notes'
+		'notes',
+		'emApplication'
 	],
 	#category : 'TonelLoaderModel'
 }
@@ -98,17 +99,16 @@ TonelLoaderApplication >> concretePrerequisites [
 TonelLoaderApplication >> create [
 	"Create (or modify) a real Application from the receiver."
 
-	(self loader alwaysCreateEditions or: [self hasChanges])
+	(self loader alwaysCreateEditions or: [self hasChanges]) 
 		ifTrue: 
-			[| theApp |
-			self loadPrerequisites.	
-			theApp := self createEdition.
+			[self loadPrerequisites.
+			emApplication := self createEdition.
 			"If prerequisites are not set it wont be able to load classes"
-			theApp prerequisites: self prerequisites.
+			emApplication prerequisites: self prerequisites.
 			self
-				createTonelPackageNameMethodFor: theApp;
-				createDescriptionFor: theApp;
-				createSubApplicationsFor: theApp withRoot: theApp]
+				createTonelPackageNameMethodFor: emApplication;
+				createDescriptionFor: emApplication;
+				createSubApplicationsFor: emApplication withRoot: emApplication]
 ]
 
 { #category : 'loading' }
@@ -177,6 +177,12 @@ TonelLoaderApplication >> definePoolDictionaries [
 TonelLoaderApplication >> dependentApplications [
 
 	^dependents ifNil: [dependents := OrderedCollection new]
+]
+
+{ #category : 'accessing' }
+TonelLoaderApplication >> emApplication [
+	
+	^emApplication
 ]
 
 { #category : 'testing' }
