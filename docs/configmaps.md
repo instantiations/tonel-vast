@@ -41,18 +41,18 @@ This will produce the a `.configmaps` file with the following STON content:
 [
 	{
 		#name : 'Tonel',
-		#versionName : '1.40',
+		#versionName : '1.43',
 		#comment : '',
 		#applications : [
-			'TonelBaseApp' : '',
-			'TonelFileSystem' : '',
-			'TonelLoaderModel' : '',
-			'TonelLoaderTests' : '',
-			'TonelReaderModel' : '',
-			'TonelReaderTests' : '',
-			'TonelTools' : '',
-			'TonelWriterModel' : '',
-			'TonelWriterTests' : ''
+			'TonelBaseApp' : '1.0',
+			'TonelFileSystem' : '1.23',
+			'TonelLoaderModel' : '1.48',
+			'TonelLoaderTests' : '1.5',
+			'TonelReaderModel' : '1.49',
+			'TonelReaderTests' : '1.30',
+			'TonelTools' : '1.10',
+			'TonelWriterModel' : '1.47',
+			'TonelWriterTests' : '1.31'
 		],
 		#conditions : [
 			{
@@ -86,4 +86,4 @@ loader loadAllMapsWithRequiredMaps.
 
 When loading a Configuration Map the _TonelLoader_ will first search for any matching version in the Tonel repository and if not found then it will search it up in the ENVY Library. If no version is found in neither of these, and error will be thrown.
 
-All applications of the Configuration Map read from disk are expected to be in the Tonel repository as well, so there is currently no way to load just the configuration map from disk and the version from the EM Library. Also the loading of the configuration map currently does not version it.
+All applications of the Configuration Map read from disk are expected to be in the Tonel repository as well, so there is currently no way to load just the configuration map from disk and the version from the EM Library.
