@@ -86,4 +86,4 @@ loader loadAllMapsWithRequiredMaps.
 
 When loading a Configuration Map the _TonelLoader_ will first search for any matching version in the Tonel repository and if not found then it will search it up in the ENVY Library. If no version is found in neither of these, and error will be thrown.
 
-All applications of the Configuration Map read from disk are expected to be in the Tonel repository as well, so there is currently no way to load just the configuration map from disk and the version from the EM Library. Also the loading of the configuration map currently does not version it.
+All applications of the Configuration Map read from disk are expected to be in the Tonel repository as well, so there is currently no way to load just the configuration map from disk and the version from the EM Library.
