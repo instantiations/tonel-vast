@@ -91,15 +91,17 @@ TonelLoaderBaseEditionStrategy >> loadBaseEditionAndPrerequisitesOf: baseEdition
 	tonelAppsToLoad := OrderedCollection new.
 
 	baseEditionPrerequisites do: [:emApp |
-		(self loader applications anySatisfy: [:tonelApp | baseEdition name ~= tonelApp identifier and: [emApp name = tonelApp identifier]])
-			ifTrue: [tonelAppsToLoad add: emApp]].
-			
+		self loader applications do: [:tonelApp |
+			(baseEdition name ~= tonelApp identifier and: [emApp name = tonelApp identifier])
+				ifTrue: [tonelAppsToLoad add: tonelApp]]].
+
 	tonelAppsToLoad isEmpty
-		ifTrue: [EmImageBuilder loadApplications: baseEditionPrerequisites]
+		ifTrue: [self loadEMBaseEditionAndPrerequisites: baseEditionPrerequisites]
 		ifFalse: [
-			self loader loadApplications: (tonelAppsToLoad collect: [:emApp | self loader applicationNamed: emApp name asString]).
-			EmImageBuilder loadApplications: (baseEditionPrerequisites reject: [:emApp | tonelAppsToLoad includes: emApp]).
-		]
+			self loader loadApplications: (
+				tonelAppsToLoad collect: [:emApp | self loader applicationNamed: emApp name asString]).
+			EmImageBuilder loadApplications:
+				(baseEditionPrerequisites reject: [:emApp | tonelAppsToLoad includes: emApp])]
 ]
 
 { #category : 'operations' }
@@ -113,6 +115,19 @@ TonelLoaderBaseEditionStrategy >> loadBaseEditionFor: aTonelSubApplication [
 		ifNil: [self signalNoBaseEditionErrorFor: aTonelSubApplication].	"$NLS$ You need to choose a base edition from which to create %1"
 	(self loadBaseEditionAndPrerequisitesOf: baseEdition) ifNil: 
 			[self signalLoadErrorOf: aTonelSubApplication	"$NLS$ Could not load base edition of %1. Load aborted."]
+]
+
+{ #category : 'operations',
+  #vaVisibility : 'private' }
+TonelLoaderBaseEditionStrategy >> loadEMBaseEditionAndPrerequisites: baseEditionPrerequisites [
+
+	| editionsToLoad |
+
+	editionsToLoad :=
+		baseEditionPrerequisites reject: [:emApp |
+			self loader loadedApplications anySatisfy: [:tonelApp | tonelApp identifier = emApp name]].
+
+	editionsToLoad do: [:each |	EmImageBuilder loadApplications: (Array with: each)]
 ]
 
 { #category : 'lookup',

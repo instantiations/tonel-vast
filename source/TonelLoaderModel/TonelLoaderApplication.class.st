@@ -109,6 +109,9 @@ TonelLoaderApplication >> create [
 				createTonelPackageNameMethodFor: emApplication;
 				createDescriptionFor: emApplication;
 				createSubApplicationsFor: emApplication withRoot: emApplication]
+		ifFalse: [
+			emApplication := (Smalltalk at: self identifier)
+		]
 ]
 
 { #category : 'loading' }

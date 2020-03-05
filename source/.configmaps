@@ -3,12 +3,12 @@
 		#applications : [
 			'TonelBaseApp' : '1.0',
 			'TonelFileSystem' : '1.23',
-			'TonelLoaderModel' : '1.48',
+			'TonelLoaderModel' : '1.49',
 			'TonelLoaderTests' : '1.5',
 			'TonelReaderModel' : '1.49',
 			'TonelReaderTests' : '1.30',
 			'TonelTools' : '1.10',
-			'TonelWriterModel' : '1.47',
+			'TonelWriterModel' : '1.49',
 			'TonelWriterTests' : '1.31'
 		],
 		#conditions : [
@@ -21,7 +21,7 @@
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.43',
+		#versionName : '1.44',
 		#comment : ''
 	}
 ]
