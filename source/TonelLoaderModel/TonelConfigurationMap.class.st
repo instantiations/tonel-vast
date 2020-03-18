@@ -101,6 +101,16 @@ TonelConfigurationMap >> createNewEdition [
 
 ]
 
+{ #category : 'testing' }
+TonelConfigurationMap >> hasChangesComparedWith: anEmConfigurationMap [
+
+	^(anEmConfigurationMap versionName = self versionName and: [
+		anEmConfigurationMap requiredMapsConfigurations size = self conditions size and: [
+			anEmConfigurationMap applicationNames = self applicationNames
+				and: [anEmConfigurationMap comment = self comment]]])
+					not
+]
+
 { #category : 'Initializing',
   #vaVisibility : 'private' }
 TonelConfigurationMap >> initializeFrom: aDictionary in: aTonelLoader [
@@ -135,9 +145,8 @@ TonelConfigurationMap >> isExpressionValid: anExpression [
 
 { #category : 'loading' }
 TonelConfigurationMap >> load [
-
 	| emEdition |
-	emEdition := self createNewEdition.
+	emEdition := self selectOrCreateNewEdition.
 	self loadApplicationsFor: emEdition.
 	self addPrerequisitesTo: emEdition.
 	self versionEdition: emEdition
@@ -205,6 +214,18 @@ TonelConfigurationMap >> requiredMaps [
 							versionName: each value
 							ifNone: [TonelEmConfigurationMap name: each key versionName: each value]])]].
 	^requiredMaps
+]
+
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> selectOrCreateNewEdition [
+
+	| editions |
+
+	self loader alwaysCreateEditions ifTrue: [^self createNewEdition].
+	editions := (EmConfigurationMap editionsFor: self name).
+	editions isEmpty ifTrue: [^self createNewEdition].
+	^(self hasChangesComparedWith: editions first) ifTrue: [self createNewEdition] ifFalse: [editions first]
 ]
 
 { #category : 'loading',

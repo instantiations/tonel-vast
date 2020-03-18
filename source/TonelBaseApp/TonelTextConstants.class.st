@@ -39,7 +39,7 @@ Class {
 
 { #category : 'Initializing' }
 TonelTextConstants class >> initialize [
-	TonelMsg01 := 'Import Applications from Tonel packages...'.
+	TonelMsg01 := 'Load Applications from Tonel packages...'.
 	TonelMsg02 := 'Export Applications as Tonel packages...'.
 	TonelMsg03 := '%1 extends %2, which is not defined in the image'.
 	TonelMsg04 := '%1 defines %2 as a subclass of %3, which is not defined in the image'.

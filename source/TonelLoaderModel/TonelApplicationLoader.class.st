@@ -110,7 +110,10 @@ TonelApplicationLoader >> createAndLoadApplication [
 
 	self
 		chooseVersionName;
-		createApplication;
+		createApplication.
+
+	self tonelApplication emApplication isEdition ifFalse: [^self].
+	self
 		definePoolDictionaries;
 		createClasses;
 		prepareRemovedClasses;
@@ -121,8 +124,8 @@ TonelApplicationLoader >> createAndLoadApplication [
 		versionApplication;
 		initializeApplication;
 		markAsLoaded
-	
-	
+
+
 ]
 
 { #category : 'loading-internal',

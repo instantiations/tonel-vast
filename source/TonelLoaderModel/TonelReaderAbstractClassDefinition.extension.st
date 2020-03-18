@@ -76,21 +76,21 @@ TonelReaderAbstractClassDefinition >> hasClassMethodsRemovedFrom: aClass in: anA
 { #category : '*TonelLoaderModel',
  #vaCategories : ['testing'],
   #vaVisibility : 'private' }
-TonelReaderAbstractClassDefinition >> hasInstanceMethodsRemovedFrom: aClass in: anApp [
+TonelReaderAbstractClassDefinition >> hasInstanceMethodsRemovedFrom: aClass in: emAppOrSubapp [
 
 	^ aClass methodDictionary anySatisfy: [ :compiledMethod |
-		compiledMethod application = anApp and: [
-			self tonelMethods noneSatisfy: [ :anMCMethod |
-				anMCMethod isClassSide not and: [
-					compiledMethod selector = anMCMethod selector ] ] ] ]
+		compiledMethod application = emAppOrSubapp and: [
+			self tonelMethods noneSatisfy: [ :aTonelMethod |
+				aTonelMethod isClassSide not and: [
+					compiledMethod selector = aTonelMethod selector ] ] ] ]
 ]
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['testing'],
   #vaVisibility : 'private' }
-TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: anApp [
-	^(self hasInstanceMethodsRemovedFrom: aClass in: anApp)
-		or: [self hasClassMethodsRemovedFrom: aClass in: anApp]
+TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: emAppOrSubApp [
+	^(self hasInstanceMethodsRemovedFrom: aClass in: emAppOrSubApp)
+		or: [self hasClassMethodsRemovedFrom: aClass in: emAppOrSubApp]
 ]
 
 { #category : '*TonelLoaderModel',

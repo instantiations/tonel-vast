@@ -108,7 +108,6 @@ TonelReaderClassDefinition >> createDefinedIn: anApp [
 TonelReaderClassDefinition >> createEditionIn: anApp using: aTonelLoader [
 
 	| baseClass |
-	self identifier = #TFInput ifTrue: [1 halt].
 	(baseClass := self concreteClassIn: anApp) isNil
 		ifTrue: [self createIn: anApp]
 		ifFalse: [
@@ -193,23 +192,33 @@ TonelReaderClassDefinition >> definePoolDictionariesIn: anApp using: aTonelLoade
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['testing'] }
-TonelReaderClassDefinition >> hasChangesIn: anApp [
+TonelReaderClassDefinition >> hasChangesIn: emAppOrSubApp [
 
-	^hasChanges ifNil: [| baseClass |
-		hasChanges :=
-			(baseClass := self concreteClassIn: anApp) isNil
-				or: [self hasChangesIn: anApp comparedTo: baseClass]]
+	hasChanges isNil
+		ifTrue: [| baseClass |
+			self isSharedPool
+				ifTrue: [
+					hasChanges :=
+						(tonelMethods select: [:each | each isDeclaration])
+							anySatisfy: [:tonelMethod | tonelMethod hasChangesIn: emAppOrSubApp]
+
+					]
+				ifFalse: [
+					hasChanges :=
+						(baseClass := self concreteClassIn: emAppOrSubApp) isNil
+							or: [self hasChangesIn: emAppOrSubApp comparedTo: baseClass]]].
+	^hasChanges
 ]
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['testing'],
   #vaVisibility : 'private' }
-TonelReaderClassDefinition >> hasChangesIn: anApp comparedTo: aClass [
+TonelReaderClassDefinition >> hasChangesIn: emAppOrSubApp comparedTo: aClass [
 	^ (self superclassChangeIn: aClass)
 		or: [ (self methodChangesIn: aClass) notEmpty
 			or: [ (self classCommentChangesIn: aClass)
 				or: [ (self variableChangesIn: aClass)
-					or: [ self hasMethodsRemovedFrom: aClass in: anApp ] ] ] ]
+					or: [ self hasMethodsRemovedFrom: aClass in: emAppOrSubApp ] ] ] ]
 ]
 
 { #category : '*TonelLoaderModel',

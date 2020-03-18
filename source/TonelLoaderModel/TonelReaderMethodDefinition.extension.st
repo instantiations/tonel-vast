@@ -177,10 +177,10 @@ TonelReaderMethodDefinition >> isUnchangedIn: aClass [
 			ifNone: [ ].
 	^ aMethod notNil "a method was found"
 		and: [ "the method is in the same categories"
-			(self categories asOrderedCollection = ((self onSideClass: aClass) categoriesFor: self selector) asOrderedCollection)
+			((self categories asSortedCollection = ((self onSideClass: aClass) categoriesFor: self selector) asSortedCollection ))
 				and: ["the source is the same"
 					(aMethod sourceString = self source) 
-						or: [ "the source matches the non-compiled source warning from a Monticello load"
+						or: [ "the source matches the non-compiled source warning from a Tonel load"
 							aMethod sourceString = self commentedSource ] ] ]
 ]
 

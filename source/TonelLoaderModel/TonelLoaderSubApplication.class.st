@@ -255,18 +255,26 @@ TonelLoaderSubApplication >> createSubApplicationIn: emParentApp condition: cond
 ]
 
 { #category : 'loading' }
-TonelLoaderSubApplication >> createSubApplicationsFor: anAppOrSubApp withRoot: rootApp [
+TonelLoaderSubApplication >> createSubApplicationsFor: emAppOrSubapp withRoot: emRootApp [
 
-	self loadableConditions keysAndValuesDo: [:conditionCode :subApps |
-		subApps do: [:subApp |
-			(self loader alwaysCreateEditions
-				or: [(subApp hasChangesFor: anAppOrSubApp inRootApp: rootApp)])
-					ifTrue: [| emSubApplication |
+	self loadableConditions keysAndValuesDo: [:conditionCode :tonelSubApps |
+		tonelSubApps do: [:tonelSubApp |
+			| createSubApp |
+			createSubApp := self loader alwaysCreateEditions.
+			createSubApp ifFalse: [
+					(emAppOrSubapp subApplications detect: [:one | one name = tonelSubApp identifier] ifNone: [nil])
+						ifNil: [createSubApp := true]
+						ifNotNil: [:emSubApp |
+							createSubApp := (tonelSubApp hasChangesFor: emSubApp inRootApp: emRootApp)
+						]
+			].
+			
+			createSubApp ifTrue: [| emSubApplication |
 						emSubApplication :=
-							subApp
-								createFor: anAppOrSubApp
+							tonelSubApp
+								createFor: emAppOrSubapp
 								underCondition: conditionCode
-								withRoot: rootApp.
+								withRoot: emRootApp.
 						self createDescriptionFor: emSubApplication]]]
 ]
 
@@ -315,20 +323,29 @@ TonelLoaderSubApplication >> deleteRemovedSubApplications [
 ]
 
 { #category : 'querying' }
-TonelLoaderSubApplication >> hasChangesFor: emApp inRootApp: rootApp [
+TonelLoaderSubApplication >> hasChangesFor: emAppOrSubApp inRootApp: emRootApplication [
 
 	^hasChanges ifNil: [ "poolsAccounted ifFalse: [ self accountForPoolDictionaryClasses ]."
+		(emAppOrSubApp rootApplication ~= emRootApplication) ifTrue: [
+				TonelLoaderError signal: (
+					TonelMsg05
+						bindWith: self name
+						with: emAppOrSubApp rootApplication name asString
+						with: emRootApplication name asString) "Subapp belongs to another app in the image"]. "$NLS$ The SubApplication %1 exists in the image, but is a subapplication of %2, not %3"
 		hasChanges :=
-			(emApp rootApplication = rootApp) not
-				ifTrue: [
-					TonelLoaderError signal: (
-						TonelMsg05
-							bindWith: self name
-							with: emApp rootApplication name asString
-							with: rootApp name asString) "Subapp belongs to another app in the image"]. "$NLS$ The SubApplication %1 exists in the image, but is a subapplication of %2, not %3"
-		(self tonelDefinedClasses anySatisfy: [:tonelClass | tonelClass hasChangesIn: emApp]) or: [
-			(self hasRemovedClassesFor: emApp)
-				or: [self subApplicationsHaveChangesFor: emApp inRootApp: rootApp]]]
+			(self tonelDefinedClasses anySatisfy: [:tonelClass | tonelClass hasChangesIn: emAppOrSubApp]) or: [
+				(self hasRemovedClassesFor: emAppOrSubApp)
+					or: [self subApplicationsHaveChangesFor: emAppOrSubApp inRootApp: emRootApplication]]]
+]
+
+{ #category : 'testing' }
+TonelLoaderSubApplication >> hasChangesIn: emParentApp [
+
+	"Enter the new method definition below and click 'Resume'."
+	
+	^(Smalltalk classAt: self identifier)
+		ifNil: [true]
+		ifNotNil: [:emSubApp | self hasChangesFor: emSubApp inRootApp: emParentApp]
 ]
 
 { #category : 'querying' }
@@ -339,9 +356,9 @@ TonelLoaderSubApplication >> hasRemovedClassesFor: anApp [
 
 { #category : 'testing',
   #vaVisibility : 'private' }
-TonelLoaderSubApplication >> hasRemovedDefinedClassesFor: anApp [
-	^anApp defined anySatisfy: [:definedClass |
-		(definedClass ~= anApp) and: [
+TonelLoaderSubApplication >> hasRemovedDefinedClassesFor: emAppOrSubApp [
+	^emAppOrSubApp defined anySatisfy: [:definedClass |
+		(definedClass ~= emAppOrSubApp) and: [
 			(self definedClasses anySatisfy: [:each | each name asString = definedClass name asString]) not]]
 ]
 
@@ -349,7 +366,7 @@ TonelLoaderSubApplication >> hasRemovedDefinedClassesFor: anApp [
   #vaVisibility : 'private' }
 TonelLoaderSubApplication >> hasRemovedExtendedClassesFor: anApp [
 	^anApp extended anySatisfy: [:extendedClass |
-		(self tonelExtendedClasses includesKey: extendedClass name asString) not]
+		(self tonelExtendedClasses includesKey: extendedClass name) not]
 ]
 
 { #category : 'accessing' }
@@ -639,12 +656,12 @@ TonelLoaderSubApplication >> subApplications [
 ]
 
 { #category : 'querying' }
-TonelLoaderSubApplication >> subApplicationsHaveChangesFor: theApp inRootApp: rootApp [
+TonelLoaderSubApplication >> subApplicationsHaveChangesFor: emAppOrSubApp inRootApp: emRootApp [
 
 	^(self subApplications 
-		anySatisfy: [:aTonelSubApp | aTonelSubApp hasChangesFor: theApp inRootApp: rootApp]) 
+		anySatisfy: [:aTonelSubApp | aTonelSubApp hasChangesIn: emRootApp]) 
 			or: 
-				[theApp subApplications anySatisfy: 
+				[emAppOrSubApp subApplications anySatisfy: 
 						[:definedSubApp | 
 						self subApplications 
 							noneSatisfy: [:aTonelSubApp | aTonelSubApp identifier = definedSubApp name]]]

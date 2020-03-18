@@ -16,7 +16,7 @@ TonelEmConfigurationMap class >> name: aString versionName: versionString [
 	
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'loading' }
 TonelEmConfigurationMap >> loadWithRequiredMaps [
 
 	| emConfigMap |

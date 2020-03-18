@@ -1,9 +1,9 @@
 [
 	{
 		#applications : [
-			'TonelBaseApp' : '1.0',
+			'TonelBaseApp' : '1.1',
 			'TonelFileSystem' : '1.23',
-			'TonelLoaderModel' : '1.49',
+			'TonelLoaderModel' : '1.50',
 			'TonelLoaderTests' : '1.5',
 			'TonelReaderModel' : '1.49',
 			'TonelReaderTests' : '1.30',
@@ -21,7 +21,7 @@
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.44',
+		#versionName : '1.45',
 		#comment : ''
 	}
 ]

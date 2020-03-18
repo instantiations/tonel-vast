@@ -193,17 +193,18 @@ TonelLoaderApplication >> hasChanges [
 	"Answer true if anything within the application has changed based on
 	 this import; otherwise answer false."
 
-	^hasChanges ifNil: 
-			[| theApp |
-			#toDo.
-			"self poolsAccounted ifFalse: [ self accountForPoolDictionaryClasses ]."
-			self loadBaseApplication.
-			theApp := Smalltalk classAt: self identifier.
-			hasChanges := theApp isNil or: 
-							[(self tonelDefinedClasses 
-								anySatisfy: [:class | class hasChangesIn: theApp]) or: 
-										[(self hasRemovedClassesFor: theApp) 
-											or: [self subApplicationsHaveChangesFor: theApp inRootApp: nil]]]]
+	^hasChanges ifNil: [
+		"self poolsAccounted ifFalse: [ self accountForPoolDictionaryClasses ]."
+		self loadBaseApplication.
+		emApplication := Smalltalk classAt: self identifier.
+		hasChanges :=
+			emApplication isNil or: [
+				(self tonelDefinedClasses anySatisfy: [:class | class hasChangesIn: emApplication])
+					or: [
+						(self hasRemovedClassesFor: emApplication) or: [
+							self
+								subApplicationsHaveChangesFor: emApplication
+								inRootApp: emApplication]]]]
 ]
 
 { #category : 'loading' }
