@@ -378,6 +378,12 @@ TonelLoader >> reader [
 ]
 
 { #category : 'accessing' }
+TonelLoader >> repositoryPath [
+
+	^self reader repositoryPath
+]
+
+{ #category : 'accessing' }
 TonelLoader >> reset [
 
 	loadedApplications := loadedConfigurationMaps := nil
@@ -432,7 +438,8 @@ TonelLoader >> useComputedPrerequisites [
 
 { #category : 'strategies-convenience' }
 TonelLoader >> useGitVersion [
-	self versionStrategy: (TonelLoaderGitVersionStrategy for: self)
+	self versionStrategy: (TonelLoaderGitVersionStrategy for: self).
+	self baseEditionStrategy: (TonelLoaderGitParentBaseEditionStrategy for: self)
 ]
 
 { #category : 'strategies-convenience' }

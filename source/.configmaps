@@ -3,7 +3,7 @@
 		#applications : [
 			'TonelBaseApp' : '1.1',
 			'TonelFileSystem' : '1.23',
-			'TonelLoaderModel' : '1.50',
+			'TonelLoaderModel' : '1.52',
 			'TonelLoaderTests' : '1.5',
 			'TonelReaderModel' : '1.49',
 			'TonelReaderTests' : '1.30',
@@ -21,7 +21,7 @@
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.45',
+		#versionName : '1.46',
 		#comment : ''
 	}
 ]
