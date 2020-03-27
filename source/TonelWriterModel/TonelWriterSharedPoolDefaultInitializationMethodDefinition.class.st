@@ -34,11 +34,13 @@ TonelWriterSharedPoolDefaultInitializationMethodDefinition >> poolDeclarations [
   #vaVisibility : 'private' }
 TonelWriterSharedPoolDefaultInitializationMethodDefinition >> writeDeclaration: declaration on: stream [
 
+	| value |
+	value := declaration valueExpression.
 	^stream
 		tab;
 		nextPutAll: declaration name;
 		nextPutAll: ' := ';
-		nextPutAll: declaration valueExpression;
+		nextPutAll: (value isEmptyOrNil ifTrue: ['nil'] ifFalse: [value]);
 		nextPut: $.;
 		cr
 ]

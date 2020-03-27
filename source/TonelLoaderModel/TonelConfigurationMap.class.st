@@ -26,13 +26,6 @@ TonelConfigurationMap class >> from: aDictionary in: aTonelLoader [
 
 { #category : 'loading',
   #vaVisibility : 'private' }
-TonelConfigurationMap >> addApplicationsToEdition [
-	"Enter the new method definition below and click 'Resume'."
-	self halt
-]
-
-{ #category : 'loading',
-  #vaVisibility : 'private' }
 TonelConfigurationMap >> addConfigurationExpression: expression withRequiredMaps: aCollection to: emConfigurationMap [
 
 	emConfigurationMap
@@ -82,6 +75,13 @@ TonelConfigurationMap >> comment: aString [
 	comment := aString
 ]
 
+{ #category : 'Initializing',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> computeRequiredMapsFrom: aDictionary [
+
+	^aDictionary at: #requiredMaps ifAbsent: [#()]
+]
+
 { #category : 'accessing' }
 TonelConfigurationMap >> conditions [
 	^conditions
@@ -102,13 +102,56 @@ TonelConfigurationMap >> createNewEdition [
 ]
 
 { #category : 'testing' }
-TonelConfigurationMap >> hasChangesComparedWith: anEmConfigurationMap [
+TonelConfigurationMap >> equals: anEmConfigurationMap [
 
-	^(anEmConfigurationMap versionName = self versionName and: [
-		anEmConfigurationMap requiredMapsConfigurations size = self conditions size and: [
-			anEmConfigurationMap applicationNames = self applicationNames
-				and: [anEmConfigurationMap comment = self comment]]])
-					not
+	^anEmConfigurationMap versionName = self versionName and: 
+			[(self hasSameConditionsAs: anEmConfigurationMap) and: 
+					[(self hasSameApplicationsAs: anEmConfigurationMap) and: 
+							[(self hasSameRequiredMapsAs: anEmConfigurationMap) 
+								and: [anEmConfigurationMap comment = self comment]]]]
+]
+
+{ #category : 'testing',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> hasSameApplicationsAs: anEmConfigurationMap [
+
+	| emAppVersions |
+	anEmConfigurationMap applicationNames asSortedCollection 
+		= self applicationNames asSortedCollection ifFalse: [^false].
+	emAppVersions := anEmConfigurationMap shadowApplications 
+				collect: [:each | each name -> each versionName].
+	(self applications asSortedCollection: [:a :b | a key <= b key]) 
+		with: emAppVersions
+		do: 
+			[:localApp :emApp | 
+			(localApp key asSymbol = emApp key asSymbol 
+				and: [(self loadedVersionOfAppNamed: localApp) = emApp value]) 
+					ifFalse: [^false]].
+	^true
+]
+
+{ #category : 'testing',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> hasSameConditionsAs: anEmConfigurationMap [
+
+	^anEmConfigurationMap requiredMapsConfigurations size 
+		= self conditions size
+]
+
+{ #category : 'testing' }
+TonelConfigurationMap >> hasSameRequiredMapsAs: anEmConfigurationMap [
+
+	| localPrereqs emPrereqs sortBlock |
+
+	sortBlock := [:a :b | a key <= b key].
+	localPrereqs :=
+		(self requiredMaps collect: [:each | each name -> each versionName])
+			asSortedCollection: sortBlock.
+	emPrereqs :=
+		(anEmConfigurationMap requiredMaps collect: [:each | each name -> each versionName])
+			asSortedCollection: sortBlock.
+
+	^localPrereqs = emPrereqs
 ]
 
 { #category : 'Initializing',
@@ -117,10 +160,13 @@ TonelConfigurationMap >> initializeFrom: aDictionary in: aTonelLoader [
 
 	loader := aTonelLoader.
 	name := aDictionary at: #name.
-	conditions := (aDictionary at: #conditions ifAbsent: [OrderedCollection new]) collect: [:each |
-		(each at: #condition ifAbsent: ['true']) -> (each at: #requiredMaps ifAbsent: [#()])
-	].
-	applications := aDictionary at: #applications ifAbsent: [OrderedCollection new].
+	conditions := (aDictionary at: #conditions
+				ifAbsent: [OrderedCollection new]) collect: 
+						[:each | 
+						(each at: #condition ifAbsent: ['true']) 
+							-> (self computeRequiredMapsFrom: each)].
+	applications := aDictionary at: #applications
+				ifAbsent: [OrderedCollection new].
 	versionName := aDictionary at: #versionName ifAbsent: [String new].
 	comment := aDictionary at: #comment ifAbsent: [String new]
 ]
@@ -145,20 +191,34 @@ TonelConfigurationMap >> isExpressionValid: anExpression [
 
 { #category : 'loading' }
 TonelConfigurationMap >> load [
-	| emEdition |
-	emEdition := self selectOrCreateNewEdition.
-	self loadApplicationsFor: emEdition.
-	self addPrerequisitesTo: emEdition.
-	self versionEdition: emEdition
+
+	| emConfigMapEdition emApps |
+	emApps := self loadApplicationsFor: emConfigMapEdition.	
+	emConfigMapEdition := self selectOrCreateNewEdition.
+	(emConfigMapEdition isVersion)
+		ifFalse: [
+			emApps do: [:each | emConfigMapEdition addApplication: each].
+			self addPrerequisitesTo: emConfigMapEdition.
+			self versionEdition: emConfigMapEdition].
+	
+	self loader loadedConfigurationMaps add: self.
 ]
 
 { #category : 'loading',
   #vaVisibility : 'private' }
 TonelConfigurationMap >> loadApplicationsFor: emConfigMap [
-	| emApps |
-	emApps := self loader loadApplicationsNamed: self applicationNames.
-	emApps do: [:each | emConfigMap addApplication: each].
+	^self loader loadApplicationsNamed: self applicationNames
 	
+	
+]
+
+{ #category : 'testing',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> loadedVersionOfAppNamed: localApp [
+
+	^(Smalltalk classAt: localApp key asSymbol)
+		ifNil: [localApp value]
+		ifNotNil: [:emApp | emApp versionName]
 ]
 
 { #category : 'accessing' }
@@ -196,6 +256,18 @@ TonelConfigurationMap >> name: anObject [
 	name := anObject
 ]
 
+{ #category : 'printing' }
+TonelConfigurationMap >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream
+		nextPutAll: '(''';
+		nextPutAll: self name;
+		space;
+		nextPutAll: self versionName asString;
+		nextPutAll: ''')'
+]
+
 { #category : 'accessing' }
 TonelConfigurationMap >> requiredMaps [
 
@@ -212,7 +284,9 @@ TonelConfigurationMap >> requiredMaps [
 						self loader
 							configurationMapNamed: each key
 							versionName: each value
-							ifNone: [TonelEmConfigurationMap name: each key versionName: each value]])]].
+							ifNone: [(TonelEmConfigurationMap name: each key versionName: each value)
+											loader: self loader;
+											yourself]])]].
 	^requiredMaps
 ]
 
@@ -220,12 +294,8 @@ TonelConfigurationMap >> requiredMaps [
   #vaVisibility : 'private' }
 TonelConfigurationMap >> selectOrCreateNewEdition [
 
-	| editions |
-
 	self loader alwaysCreateEditions ifTrue: [^self createNewEdition].
-	editions := (EmConfigurationMap editionsFor: self name).
-	editions isEmpty ifTrue: [^self createNewEdition].
-	^(self hasChangesComparedWith: editions first) ifTrue: [self createNewEdition] ifFalse: [editions first]
+	^(EmConfigurationMap editionsFor: self name) detect: [:one | self equals: one ] ifNone: [self createNewEdition]
 ]
 
 { #category : 'loading',

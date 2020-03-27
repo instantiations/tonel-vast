@@ -324,8 +324,7 @@ TonelLoader >> loadConfigurationMapNamed: aString withPrereqs: aBoolean [
 
 	(self configurationMaps detect: [:one | one name = aString]) ifNotNil: [:configMap |
 		aBoolean ifTrue: [configMap loadWithRequiredMaps] ifFalse: [configMap load].
-		 self loadedConfigurationMaps add: configMap.
-		]
+		self loadedConfigurationMaps add: configMap]
 ]
 
 { #category : 'accessing' }

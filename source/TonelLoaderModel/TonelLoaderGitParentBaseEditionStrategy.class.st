@@ -33,8 +33,9 @@ TonelLoaderGitParentBaseEditionStrategy >> initializeParentCommitId [
 			CfsFileStream read: (self loader repositoryPath append: self tempGitOutputPath) asString.
 		(execOkay not or: [readStream isCfsError])
 			ifTrue: [self signalParentCommitReadError]
-			ifFalse: [| parentCommitData |
-				(readStream nextLine beginsWith: 'tree') ifFalse: [self signalParentCommitReadError].
+			ifFalse: [| parentCommitData  line |
+				line  := readStream nextLine. 
+				((line copyFrom: 1 to: (4 min: line size)) = 'tree') ifFalse: [self signalParentCommitReadError].
 				parentCommitData := readStream nextLine subStrings.
 				(parentCommitData size = 2 and: [parentCommitData first = 'parent'])
 					ifFalse: [self signalParentCommitReadError].
