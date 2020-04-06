@@ -114,8 +114,13 @@ This will automatically select the latest (newest) edition as the base edition f
 aTonelLoader useLatestBaseEditions
 ```
 
+### `TonelLoaderGitParentBaseEditionStrategy` (unattended)
 
+In git repositories, each commit has one or more parent commits, this strategy will try to find a base edition whose versionName matches the parent commit hash (only its first eight characters), and if no edition is found, it will choose the latest one, as in `TonelLoaderlatestBaseEditionStrategy`.
 
+When setting `useGitVersion` in the `TonelLoader`, this base edition strategy will be set as well.
+
+So if you're loading `MyApplication` from a git repository whose commit id is `8c3fa3d` and parent commit is `b78df32`, when loading a base edition it will look for an edition of `MyApplication` in the EM Library whose `versionName` match `b78df32`.
 
 # Common cases recipes
 

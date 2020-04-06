@@ -67,7 +67,16 @@ This will produce the a `.configmaps` file with the following STON content:
 ]
 ```
 
-**NOTE:** In order to write Applications to disk, such applications must be loaded in the image first. So if your writing a Configuration Map to disk, it is recommended you load the config map first.
+### Autoloading
+
+If you attempt to write a Configuration Map that isn't loaded in the image, by default `TonelWriter` will attempt to load it first (and its required maps).
+
+If you want to disable this behavior, you can do it by evaluating:
+```smalltalk
+aTonelWriter autoLoad: false
+```
+
+With the autoloading disabled, if you attempt to write a Configuration Map, an exception will be raised.
 
 
 ## Loading Configuration Maps from disk
@@ -86,4 +95,4 @@ loader loadAllMapsWithRequiredMaps.
 
 When loading a Configuration Map the _TonelLoader_ will first search for any matching version in the Tonel repository and if not found then it will search it up in the ENVY Library. If no version is found in neither of these, and error will be thrown.
 
-All applications of the Configuration Map read from disk are expected to be in the Tonel repository as well, so there is currently no way to load just the configuration map from disk and the version from the EM Library.
+All applications of the Configuration Map read from disk are expected to be in the Tonel repository as well, so there is currently no way to load just the configuration map from disk and the applications from the EM Library.
