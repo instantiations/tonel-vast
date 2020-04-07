@@ -6,7 +6,8 @@ Class {
 		'lineDelimiter',
 		'clearsSourcesDirectory',
 		'applications',
-		'configurationMaps'
+		'configurationMaps',
+		'autoLoad'
 	],
 	#classVars : [
 		'LineDelimiter'
@@ -68,13 +69,24 @@ TonelWriter class >> packageLabel [
 ]
 
 { #category : 'Configuring' }
-TonelWriter >> addApplicationsFromConfigurationMaps [
-	"Enter the new method definition below and click 'Resume'."
+TonelWriter >> addApplication: emApplication [
 
-	self configurationMaps do: [:configMap |
-		configMap applicationNames do: [:name | | application |
-			application := (Smalltalk at: name asSymbol).
-			(self applications includes: application) ifFalse: [self applications add: application]]]
+	^self applications add: emApplication
+]
+
+{ #category : 'Configuring' }
+TonelWriter >> addApplicationsFromConfigurationMaps [
+	
+	self configurationMaps do: 
+			[:configMap | 
+			configMap applicationNames do: 
+					[:name | 
+					| emApplication |
+					emApplication := Smalltalk classAt: name asSymbol ifAbsent: [
+						self error: ('<1p> is not loaded in the image.' expandMacrosWith: name)
+					].
+					(self applications includes: emApplication) 
+						ifFalse: [self addApplication: emApplication]]]
 ]
 
 { #category : 'accessing' }
@@ -85,6 +97,15 @@ TonelWriter >> addConfigurationMap: anEmConfigurationMap [
 			self error: (
 				'You can only add one Configuration Map for <1p>.'
 					expandMacrosWith: anEmConfigurationMap name)].
+
+	anEmConfigurationMap isLoaded 
+		ifFalse: [
+			self autoLoad 
+				ifTrue: [anEmConfigurationMap loadWithRequiredMaps]
+				ifFalse: [
+				self error: ('The config map <1p> must be loaded before exporting it to Tonel.'	expandMacrosWith: anEmConfigurationMap)
+					]
+		].
 
 	self configurationMaps add: anEmConfigurationMap
 ]
@@ -153,6 +174,19 @@ TonelWriter >> applications: anObject [
 	applications := anObject
 ]
 
+{ #category : 'accessing' }
+TonelWriter >> autoLoad [
+	"Answer whether receiver will load applications or config maps that are not loaded
+	 before writing them in Tonel format."
+
+	^autoLoad
+]
+
+{ #category : 'accessing' }
+TonelWriter >> autoLoad: aBoolean [
+	autoLoad := aBoolean
+]
+
 { #category : 'Utility' }
 TonelWriter >> clearSourcesDirectory [
 
@@ -212,7 +246,8 @@ TonelWriter >> initializeOn: aFileSystem [
 
 	fileSystem := aFileSystem.
 	lineDelimiter := self class lineDelimiter.
-	clearsSourcesDirectory := true
+	clearsSourcesDirectory := true.
+	autoLoad := true
 ]
 
 { #category : 'Accessing' }

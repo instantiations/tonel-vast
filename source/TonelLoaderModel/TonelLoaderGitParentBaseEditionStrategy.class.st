@@ -27,7 +27,9 @@ TonelLoaderGitParentBaseEditionStrategy >> initializeParentCommitId [
 	| execOkay mustWait outfile readStream |
 
 	execOkay := self executeGitCommand.
-	(Delay forMilliseconds: 250) wait.
+
+	"We put a long enough delay to ensure the output file will be found."
+	(Delay forMilliseconds: 2000) wait.
 	[
 		readStream :=
 			CfsFileStream read: (self loader repositoryPath append: self tempGitOutputPath) asString.
