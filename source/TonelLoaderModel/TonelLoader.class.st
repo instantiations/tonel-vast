@@ -263,6 +263,12 @@ TonelLoader >> load [
 ]
 
 { #category : 'loading' }
+TonelLoader >> loadAllApplications [
+	
+	^self loadApplications: self applications
+]
+
+{ #category : 'loading' }
 TonelLoader >> loadAllMapsWithRequiredMaps [
 	
 	self configurationMaps do: [:each | each loadWithRequiredMaps ]
@@ -276,6 +282,13 @@ TonelLoader >> loadApplication: aTonelApplication [
 	^emApps isEmpty 
 		ifFalse: [ emApps first]
 	
+]
+
+{ #category : 'loading' }
+TonelLoader >> loadApplicationForPackageNamed: aString [
+	"Load the applications whose package name matches aString."
+
+	^self loadApplication: (self applications detect: [:one | one packageName = aString])
 ]
 
 { #category : 'loading' }
@@ -298,7 +311,7 @@ TonelLoader >> loadApplications: aCollection [
 TonelLoader >> loadApplicationsForPackagesNamed: aCollection [
 	"Loads the applications whose package name matches the names in aCollection."
 	
-	self loadApplications: (aCollection collect: [:each | self applications detect: [:one | one packageName = each]])
+	^self loadApplications: (aCollection collect: [:each | self applications detect: [:one | one packageName = each]])
 ]
 
 { #category : 'loading' }
@@ -388,6 +401,26 @@ TonelLoader >> reset [
 	loadedApplications := loadedConfigurationMaps := nil
 ]
 
+{ #category : 'accessing' }
+TonelLoader >> rootApplicationOfClass: aTonelReaderClassDefinition [
+
+	self applications do: [:tonelApp |
+		(tonelApp allDefinedClasses
+			anySatisfy: [:tonelClass | tonelClass = aTonelReaderClassDefinition])
+				ifTrue: [^tonelApp rootTonelApplication]].
+	^nil
+]
+
+{ #category : 'accessing' }
+TonelLoader >> rootApplicationOfClassExtension: aTonelReaderClassExtensionDefinition [
+
+	self applications do: [:tonelApp |
+		(tonelApp allDefinedClasses
+			anySatisfy: [:tonelClass | tonelClass identifier = aTonelReaderClassExtensionDefinition identifier])
+				ifTrue: [^tonelApp rootTonelApplication]].
+	^nil
+]
+
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelLoader >> setReader: aTonelReader [
@@ -428,6 +461,17 @@ TonelLoader >> subApplicationsFor: aTonelLoaderSubApplication [
 TonelLoader >> systemLoadedApplications [
 
 	^System loadedApplications
+]
+
+{ #category : 'accessing' }
+TonelLoader >> tonelClassNamed: aSymbol [
+
+	self applications do: [:tonelApp |
+		(tonelApp allDefinedClasses
+			detect: [:tonelClass | tonelClass identifier = aSymbol]
+			ifNone: [])
+				ifNotNil: [:foundClass | ^foundClass]].
+	^nil
 ]
 
 { #category : 'strategies' }

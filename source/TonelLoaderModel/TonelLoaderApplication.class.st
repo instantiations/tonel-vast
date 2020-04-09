@@ -60,6 +60,33 @@ TonelLoaderApplication >> allDependentApplications [
 	^ result
 ]
 
+{ #category : 'accessing' }
+TonelLoaderApplication >> allPrerequisites [
+		"Return all the TonelLoaderApplications which the receiver is dependent on,
+		 starting with its direct prerequisites. Sort them alphabetically;
+		 then add all of their prerequisites (sorted alphabetically and
+		 so on). No prereq may appear before one of its dependents."
+
+	| result new temp |
+	result := OrderedCollection new.
+	new := self prerequisites.
+	[new isEmpty] whileFalse: [
+		temp := Set new.
+		new do: [:app |
+			result remove: app ifAbsent: [].
+			app prerequisites do: [:prereq |
+				temp add: prereq]].
+		result addAll: new. "make them be at the end"
+		new := temp asSortedCollection: Class sortBlock].
+	^result
+]
+
+{ #category : 'accessing' }
+TonelLoaderApplication >> asSymbol [
+	
+	^self identifier
+]
+
 { #category : 'querying' }
 TonelLoaderApplication >> availableShadows [
 	^Application shadowsFor: self name
@@ -74,9 +101,35 @@ TonelLoaderApplication >> changeSuperGroupSettingOf: aClass [
 
 { #category : 'initializing',
   #vaVisibility : 'private' }
+TonelLoaderApplication >> computeImplicitPrerequisites [
+
+	| needed  |
+	needed := Set new.
+	self withAllSubApplications do: [:app |
+		app tonelDefinedClasses do: [:cl |
+			((cl tonelSuperclassIn: self loader)) ifNotNil: [:itsSuper  |
+				needed add: (itsSuper rootTonelApplicationIn: self loader)]].
+		app tonelExtendedClasses do: [:cl |
+			 (cl rootTonelApplicationIn: self loader) ifNotNil: [:itsSuper |	needed add: itsSuper ]].
+		(app tonelDefinedClasses, app tonelExtendedClasses) asArray do: [:cl |
+			(cl tonelMethods) do: [:cm |
+				(cm referencedTonelClasses: self loader) do: [:referencedClass |
+					needed add: (referencedClass rootTonelApplicationIn: self loader)]]]].
+
+	needed remove: self ifAbsent: [].
+	needed copy do: [:app |
+		app allPrerequisites do: [:prereq |
+			needed remove: prereq ifAbsent: []]].
+	^needed
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
 TonelLoaderApplication >> computePrerequisites [
 
-	^(self packageDefinition metadata at: #vaPrerequisites ifAbsent: [#()]) asOrderedCollection
+	^(self packageDefinition metadata at: #vaPrerequisites ifAbsent: [
+			self computeImplicitPrerequisites
+		]) asOrderedCollection
 		collect: [:each |
 			Smalltalk
 				at: each asSymbol

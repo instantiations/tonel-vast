@@ -153,16 +153,19 @@ TonelReaderMethodDefinition >> hasChangesIn: aClass [
  #vaCategories : ['Loading-Internal'],
   #vaVisibility : 'private' }
 TonelReaderMethodDefinition >> hasSourceChangesIn: aClass [
+
 	| aMethod |
 
-	aMethod := (self onSideClass: aClass) methodDictionary
-			detect: [ :ea | ea selector = self selector ]
-			ifNone: [ ].
-	^ aMethod isNil "there is no method"
-		or: ["the source is different (doesn't match the source or the commented source)"
-			((aMethod sourceString = self source) 
-				or: [
-					aMethod sourceString = self commentedSource]) not]
+	aMethod :=
+		(self onSideClass: aClass) methodDictionary
+			detect: [:ea | ea selector = self selector]
+			ifNone: [].
+	^aMethod isNil "there is no method" or: [ "the source is different (doesn't match the source or the commented source)"
+		((aMethod sourceString = self source)
+		"or: [
+					aMethod sourceString = self commentedSource]"
+		)
+			not]
 ]
 
 { #category : '*TonelLoaderModel',
@@ -209,7 +212,6 @@ TonelReaderMethodDefinition >> loadFor: aClass into: anApp using: aTonelLoader [
 
 	(self hasChangesIn: aClass)
 		ifTrue: [ "Recompile if the source has changed"
-
 			(self hasSourceChangesIn: aClass)
 				ifTrue: [
 					((self onSideClass: aClass)
@@ -236,4 +238,27 @@ TonelReaderMethodDefinition >> onSideClass: aClass [
 	^self isClassSide
 		ifTrue: [aClass class]
 		ifFalse: [aClass]
+]
+
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['Loading'] }
+TonelReaderMethodDefinition >> referencedTonelClasses: aTonelLoader [
+
+	| result classNames |
+
+	result :=
+		EsCompiler
+			parse: self source
+			environment: (EsCompiler nameEnvironmentForClass: UndefinedObject)
+			messagePattern: true
+			scanComments: false
+			errorHandler: EsSilentErrorHandler new.
+	classNames := Set new.
+	result parseTree ifNotNil: [:parseTree |
+		parseTree allNodesDo: [:node |
+			((node isKindOf: EsVariableWithBinding) and: [node contents first isUppercase])
+				ifTrue: [classNames add: node contents asSymbol]]].
+	^classNames collect: [:each | aTonelLoader tonelClassNamed: each]
+
+
 ]

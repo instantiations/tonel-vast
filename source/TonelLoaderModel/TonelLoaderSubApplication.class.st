@@ -27,6 +27,24 @@ TonelLoaderSubApplication class >> on: aPackageDefinition in: aTonelLoader [
 		yourself
 ]
 
+{ #category : 'initializing' }
+TonelLoaderSubApplication >> addAllSubApplicationsTo: collection [
+	"Private - Add all the receiver's sub-applications to collection in
+	 hierarchical order. SubApplications at the same hierarchical level
+	 are sorted alphabetically."
+
+	| subApp |
+
+	self subApplications size = 1
+		ifTrue: [
+			subApp := collection add: self subApplications first.
+			subApp subApplications notEmpty ifTrue: [subApp addAllSubApplicationsTo: collection]]
+		ifFalse: [
+			(self subApplications asSortedCollection) do: [:sub |
+				collection add: sub.
+				sub subApplications notEmpty ifTrue: [sub addAllSubApplicationsTo: collection]]]
+]
+
 { #category : 'configuring' }
 TonelLoaderSubApplication >> addPrerequisite: application [
 
@@ -77,6 +95,20 @@ TonelLoaderSubApplication >> allDefinedClasses [
 				into: [:coll :each |
 					coll
 						addAll: each allDefinedClasses;
+						yourself]);
+		yourself
+]
+
+{ #category : 'querying' }
+TonelLoaderSubApplication >> allExtendedClasses [
+	
+	^(self tonelExtendedClasses)
+		addAll: (
+			self subApplications
+				inject: Dictionary new
+				into: [:coll :each |
+					coll
+						addAll: each allExtendedClasses;
 						yourself]);
 		yourself
 ]
@@ -752,4 +784,14 @@ TonelLoaderSubApplication >> versionUsing: aLoader [
 			theApp versionNameIn: theApp is: aLoader versionName.
 			(theApp isVersionIn: theApp) ifTrue: [theApp releaseClass: theApp]].
 	self version: theApp as: aLoader versionName
+]
+
+{ #category : 'accessing' }
+TonelLoaderSubApplication >> withAllSubApplications [
+		"Return the receiver with all its sub-applications."
+
+	| answer |
+	answer := OrderedCollection with: self.
+	self addAllSubApplicationsTo: answer.
+	^answer
 ]
