@@ -1,2 +1,5 @@
 # inform linguist that files with these extensions are indeed smalltalk files
 *.st linguist-language=Smalltalk
+
+# Lets force crlf for all text files 
+* text eol=crlf
