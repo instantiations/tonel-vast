@@ -10,19 +10,19 @@ TonelWriterClassExtensionDefinition class >> of: aClass extendedIn: anApplicatio
 	^self new initializeOf: aClass extendedIn: anApplication
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterClassExtensionDefinition >> categoryFormattedAsExtensionOf: anApp [
 
 	^'*' , (anApp tonelPackageName)
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterClassExtensionDefinition >> extendedClassName [
 
 	^class name
 ]
 
-{ #category : 'Accessing',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelWriterClassExtensionDefinition >> extensionMethodDefinitionsOf: aClassOrMetaclass [
 
@@ -35,13 +35,13 @@ TonelWriterClassExtensionDefinition >> extensionMethodDefinitionsOf: aClassOrMet
 					categorizedAs: (self categoryFormattedAsExtensionOf: application)]
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterClassExtensionDefinition >> fileName [
 
 	^'<1s>.extension.st' expandMacrosWith: class asString
 ]
 
-{ #category : 'Initialization',
+{ #category : 'initializing',
   #vaVisibility : 'private' }
 TonelWriterClassExtensionDefinition >> initializeOf: aClass extendedIn: anApplication [
 
@@ -62,7 +62,7 @@ TonelWriterClassExtensionDefinition >> printOn: aStream [
 		nextPut: $]
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterClassExtensionDefinition >> withClassMethodDefinitionsDo: aBlock [
 
 	self
@@ -70,14 +70,14 @@ TonelWriterClassExtensionDefinition >> withClassMethodDefinitionsDo: aBlock [
 		do: [:methodDefinition | aBlock value: methodDefinition]
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterClassExtensionDefinition >> withExtensionMethodDefinitionsOf: aClassOrMetaclass do: aBlock [
 
 	(self extensionMethodDefinitionsOf: aClassOrMetaclass)
 		do: [:methodDefinition | aBlock value: methodDefinition]
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterClassExtensionDefinition >> withInstanceMethodDefinitionsDo: aBlock [
 
 	self

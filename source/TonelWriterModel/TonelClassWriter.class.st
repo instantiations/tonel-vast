@@ -8,7 +8,7 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{ #category : 'Utility',
+{ #category : 'utility',
   #vaVisibility : 'private' }
 TonelClassWriter >> format: aVariablesCollection [
 
@@ -16,19 +16,19 @@ TonelClassWriter >> format: aVariablesCollection [
 		join: (aVariablesCollection collect: [:variable | self wrapBetweenSingleQuotes: variable])
 ]
 
-{ #category : 'Accessing',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelClassWriter >> methodWriter [
 
-	^methodWriter ifNil: [methodWriter := (TonelMethodWriter with: lineDelimiter)]
+	^methodWriter ifNil: [methodWriter := (TonelMethodWriter in: self parent)]
 ]
 
-{ #category : 'Writing' }
+{ #category : 'writing' }
 TonelClassWriter >> tonelTypeName [
 	^'Class'
 ]
 
-{ #category : 'Utility',
+{ #category : 'utility',
   #vaVisibility : 'private' }
 TonelClassWriter >> wrapBetweenSingleQuotes: aVariable [
 
@@ -39,7 +39,7 @@ TonelClassWriter >> wrapBetweenSingleQuotes: aVariable [
 			nextPut: $']
 ]
 
-{ #category : 'Writing' }
+{ #category : 'writing' }
 TonelClassWriter >> write: aClassDefinition [
 
 	self ensureDirectory.
@@ -47,7 +47,7 @@ TonelClassWriter >> write: aClassDefinition [
 		do: [:writeStream | self write: aClassDefinition on: writeStream]
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> write: aClassDefinition on: aWriteStream [
 
@@ -57,7 +57,7 @@ TonelClassWriter >> write: aClassDefinition on: aWriteStream [
 		writeInstanceMethodsOf: aClassDefinition on: aWriteStream
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> write: aVariablesCollection on: aWriteStream under: aKey [
 
@@ -80,7 +80,7 @@ TonelClassWriter >> write: aVariablesCollection on: aWriteStream under: aKey [
 				nextPutAll: '],']
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> writeCategoryOf: aClassDefinition on: aWriteStream [
 
@@ -90,16 +90,15 @@ TonelClassWriter >> writeCategoryOf: aClassDefinition on: aWriteStream [
 		nextPutAll: ('#category : <1p>' expandMacrosWith: aClassDefinition tonelPackageName)
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> writeClassMethodsOf: aClassDefinition on: aWriteStream [
 
 	aClassDefinition withClassMethodDefinitionsDo: [:methodDefinition |
-		methodDefinition isRealPragma
-			ifFalse: [self methodWriter write: methodDefinition on: aWriteStream]]
+		methodDefinition writeUsing: self methodWriter on: aWriteStream]
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> writeCommentOf: aClassDefinition on: aWriteStream [
 
@@ -107,7 +106,7 @@ TonelClassWriter >> writeCommentOf: aClassDefinition on: aWriteStream [
 		aWriteStream << '"' << lineDelimiter << comment << lineDelimiter << '"' << lineDelimiter]
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> writeDefinitionOf: aClassDefinition on: aWriteStream [
 
@@ -122,7 +121,7 @@ TonelClassWriter >> writeDefinitionOf: aClassDefinition on: aWriteStream [
 		betweenCurlyBracesOn: aWriteStream
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> writeInstanceMethodsOf: aClassDefinition on: aWriteStream [
 
@@ -130,7 +129,7 @@ TonelClassWriter >> writeInstanceMethodsOf: aClassDefinition on: aWriteStream [
 		self methodWriter write: methodDefition on: aWriteStream]
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> writeNameAndSuperclassOf: aClassDefinition on: aWriteStream [
 
@@ -144,7 +143,7 @@ TonelClassWriter >> writeNameAndSuperclassOf: aClassDefinition on: aWriteStream 
 				expandMacrosWith: aClassDefinition definedClassSuperclassName asString)
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> writeSubclassTypeOf: aClassDefinition on: aWriteStream [
 
@@ -157,7 +156,7 @@ TonelClassWriter >> writeSubclassTypeOf: aClassDefinition on: aWriteStream [
 					('#type : <1p>,' expandMacrosWith: aClassDefinition subclassType asString)]
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassWriter >> writeVariablesOf: aClassDefinition on: aWriteStream [
 

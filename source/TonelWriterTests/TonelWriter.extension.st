@@ -3,14 +3,14 @@ Extension {
 }
 
 { #category : '*TonelWriterTests',
- #vaCategories : ['Accessing'] }
+ #vaCategories : ['accessing'] }
 TonelWriter >> anotherExtensionForTest [
 
 	^'Another method extension for testing TonelWriter'
 ]
 
 { #category : '*TonelWriterTests',
- #vaCategories : ['Accessing'] }
+ #vaCategories : ['accessing'] }
 TonelWriter >> extensionForTest [
 
 	^'Methods extension for testing TonelWriter'

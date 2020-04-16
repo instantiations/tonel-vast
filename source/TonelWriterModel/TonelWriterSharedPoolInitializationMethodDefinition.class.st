@@ -75,3 +75,10 @@ TonelWriterSharedPoolInitializationMethodDefinition >> visibilityString [
 
 	^'public'
 ]
+
+{ #category : 'writing' }
+TonelWriterSharedPoolInitializationMethodDefinition >> writeUsing: aTonelMethodWriter on: aWriteStream [
+
+	aTonelMethodWriter convertsSharedPools ifTrue: [
+		super writeUsing: aTonelMethodWriter on: aWriteStream ]
+]

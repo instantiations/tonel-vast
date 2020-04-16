@@ -34,7 +34,7 @@ TonelTools class >> addToApplicationsMenu: aMenu browser: aBrowser [
 { #category : 'operations' }
 TonelTools class >> exportTonelApplication [
 
-	| selectedApps repositoryPath |
+	| selectedApps repositoryPath convertPools |
 
 	selectedApps :=
 		CwListSelectionPrompter new
@@ -58,8 +58,11 @@ TonelTools class >> exportTonelApplication [
 			ifNil: [^self]
 			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].
 
+	convertPools := (System confirm: ('Do you want to convert SharedPool declarations?', Character cr asString, '(Select NO if you are not going to load the exported class in another Smalltalk dialect)')).
+
 	TonelWriter new
 		applications: selectedApps;
+		convertsSharedPools: convertPools;
 		writeProjectInto: repositoryPath
 
 

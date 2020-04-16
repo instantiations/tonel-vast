@@ -7,7 +7,8 @@ Class {
 		'clearsSourcesDirectory',
 		'applications',
 		'configurationMaps',
-		'autoLoad'
+		'autoLoad',
+		'convertsSharedPools'
 	],
 	#classVars : [
 		'LineDelimiter'
@@ -15,7 +16,7 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriter class >> classLabel [
 	"Answers Tonel's class type label."
 
@@ -28,20 +29,20 @@ TonelWriter class >> defaultLineDelimiter [
 	^CldtConstants::LineDelimiter
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriter class >> extensionLabel [
 	"Answers Tonel's class extension type label."
 
 	^ 'Extension'
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriter class >> lineDelimiter [
 
 	^LineDelimiter ifNil: [LineDelimiter := self defaultLineDelimiter]
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriter class >> lineDelimiter: aString [
 
 	LineDelimiter := aString
@@ -61,20 +62,20 @@ TonelWriter class >> on: aFileSystem [
 	^super new initializeOn: aFileSystem
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriter class >> packageLabel [
 	"Answers Tonel's Package type label."
 
 	^ 'Package'
 ]
 
-{ #category : 'Configuring' }
+{ #category : 'configuring' }
 TonelWriter >> addApplication: emApplication [
 
 	^self applications add: emApplication
 ]
 
-{ #category : 'Configuring' }
+{ #category : 'configuring' }
 TonelWriter >> addApplicationsFromConfigurationMaps [
 	
 	self configurationMaps do: 
@@ -110,7 +111,7 @@ TonelWriter >> addConfigurationMap: anEmConfigurationMap [
 	self configurationMaps add: anEmConfigurationMap
 ]
 
-{ #category : 'Writing-ConfigurationMaps',
+{ #category : 'writing-ConfigMaps',
   #vaVisibility : 'private' }
 TonelWriter >> addConfigurationMapData: aConfigurationMap into: aCollection [
 
@@ -187,13 +188,13 @@ TonelWriter >> autoLoad: aBoolean [
 	autoLoad := aBoolean
 ]
 
-{ #category : 'Utility' }
+{ #category : 'utility' }
 TonelWriter >> clearSourcesDirectory [
 
 	self clearsSourcesDirectory: true
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriter >> clearsSourcesDirectory [
 	"Answer whether receiver will delete the sources directory before 
 	 writing Packages into it."
@@ -201,7 +202,7 @@ TonelWriter >> clearsSourcesDirectory [
 	^clearsSourcesDirectory
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriter >> clearsSourcesDirectory: aBoolean [
 	"Sets whether receiver will delete the sources directory before writing Packages into it."
 	 
@@ -218,13 +219,29 @@ TonelWriter >> configurationMaps: anObject [
 	configurationMaps := anObject
 ]
 
-{ #category : 'Utility' }
+{ #category : 'accessing' }
+TonelWriter >> convertsSharedPools [
+	^convertsSharedPools ifNil: [convertsSharedPools := true]
+]
+
+{ #category : 'accessing' }
+TonelWriter >> convertsSharedPools: anObject [
+	convertsSharedPools := anObject
+]
+
+{ #category : 'utility' }
 TonelWriter >> dontClearSourcesDirectory [
 
 	self clearsSourcesDirectory: false
 ]
 
-{ #category : 'Utility',
+{ #category : 'configuring' }
+TonelWriter >> dontConvertSharedPools [
+
+ 	self convertsSharedPools: false
+]
+
+{ #category : 'utility',
   #vaVisibility : 'private' }
 TonelWriter >> ensureDirectory: aString inside: aPath recreate: aBoolean [
 	"Private - Ensures the existence of a directory named aString
@@ -239,7 +256,7 @@ TonelWriter >> ensureDirectory: aString inside: aPath recreate: aBoolean [
 	^path
 ]
 
-{ #category : 'Initialization',
+{ #category : 'initializing',
   #vaVisibility : 'private' }
 TonelWriter >> initializeOn: aFileSystem [
 	"Private - Initializes receiver on aFileSystem."
@@ -247,10 +264,17 @@ TonelWriter >> initializeOn: aFileSystem [
 	fileSystem := aFileSystem.
 	lineDelimiter := self class lineDelimiter.
 	clearsSourcesDirectory := true.
-	autoLoad := true
+	autoLoad := true.
+	convertsSharedPools := true
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
+TonelWriter >> lineDelimiter [
+	
+	^lineDelimiter
+]
+
+{ #category : 'accessing' }
 TonelWriter >> lineDelimiter: aString [
 	"Sets the line delimiter of receiver to be aString.
 	 Usually aString is CR, LF or CRLF."
@@ -258,7 +282,7 @@ TonelWriter >> lineDelimiter: aString [
 	lineDelimiter := aString
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> toSTONStringPretty: anObject [
 
@@ -270,7 +294,7 @@ TonelWriter >> toSTONStringPretty: anObject [
 				nextPut: anObject]
 ]
 
-{ #category : 'Configuring' }
+{ #category : 'configuring' }
 TonelWriter >> useCrEOL [
 
 	self lineDelimiter: Character cr asString
@@ -278,7 +302,7 @@ TonelWriter >> useCrEOL [
 
 ]
 
-{ #category : 'Configuring' }
+{ #category : 'configuring' }
 TonelWriter >> useCrLfEOL [
 
 	self lineDelimiter: Character cr asString, Character lf asString
@@ -286,7 +310,7 @@ TonelWriter >> useCrLfEOL [
 
 ]
 
-{ #category : 'Configuring' }
+{ #category : 'configuring' }
 TonelWriter >> useLfEOL [
 
 	self lineDelimiter: Character lf asString
@@ -294,7 +318,7 @@ TonelWriter >> useLfEOL [
 
 ]
 
-{ #category : 'Utility',
+{ #category : 'utility',
   #vaVisibility : 'private' }
 TonelWriter >> withStreamOn: aFilePath do: aBlock [
 
@@ -303,35 +327,33 @@ TonelWriter >> withStreamOn: aFilePath do: aBlock [
 		during: [:writeStream | aBlock value: (TonelUTF8StreamWriterWrapper wrapping: writeStream)]
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writeApplication: anApplication into: aPath [
-
 	"Private - Writes anApplication as package directory into aPath."
 
 	| applicationDefition packageDirectory |
+
 	applicationDefition := TonelWriterApplicationDefinition for: anApplication.
-	packageDirectory := self 
-				ensureDirectory: applicationDefition tonelPackageName
-				inside: aPath
-				recreate: true.
+	packageDirectory :=
+		self ensureDirectory: applicationDefition tonelPackageName inside: aPath recreate: true.
 	self writePackageDescriptionFor: applicationDefition into: packageDirectory.
-	self writePoolDictionariesDefinedIn: applicationDefition
-		into: packageDirectory.
+	self convertsSharedPools
+		ifTrue: [self writePoolDictionariesDefinedIn: applicationDefition into: packageDirectory].
 	self writeClassesDefinedIn: applicationDefition into: packageDirectory.
 	self writeClassesExtendedBy: applicationDefition into: packageDirectory.
-	applicationDefition allPossibleDirectSubApplications 
+	applicationDefition allPossibleDirectSubApplications
 		do: [:aDirectSubApp | self writeApplication: aDirectSubApp into: aPath]
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writeApplicationsInto: aPath [
 	
 	self applications do: [:application | self writeApplication: application into: aPath]
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writeClassesDefinedIn: anApplicationDefinition into: aPath [
 	"Private - Writes the class definition files of the classes
@@ -339,12 +361,12 @@ TonelWriter >> writeClassesDefinedIn: anApplicationDefinition into: aPath [
 
 	| classWriter |
 
-	classWriter := TonelClassWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter.
+	classWriter := TonelClassWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter in: self.
 	anApplicationDefinition
 		withDefinitionsOfDefinedClassesDo: [:classDefinition | classWriter write: classDefinition]
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writeClassesExtendedBy: anApplicationDefinition into: aPath [
 	"Private - Writes the class extensions files of the classes
@@ -353,12 +375,12 @@ TonelWriter >> writeClassesExtendedBy: anApplicationDefinition into: aPath [
 	| classExtensionWriter |
 
 	classExtensionWriter :=
-		TonelClassExtensionWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter.
+		TonelClassExtensionWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter in: self.
 	anApplicationDefinition withDefinitionsOfExtendedClassesDo: [:classDefinition |
 		classExtensionWriter write: classDefinition]
 ]
 
-{ #category : 'Writing-ConfigurationMaps',
+{ #category : 'writing-ConfigMaps',
   #vaVisibility : 'private' }
 TonelWriter >> writeConfigurationMapsInto: aPath [
 
@@ -370,20 +392,20 @@ TonelWriter >> writeConfigurationMapsInto: aPath [
 			writeStream nextPutAll: (self toSTONStringPretty: data asArray)]
 ]
 
-{ #category : 'Writing-Project' }
+{ #category : 'writing-project' }
 TonelWriter >> writeInWorkingDirectory [
 
 	^self writeProjectInto: (CfsPath named: CfsDirectoryDescriptor getcwd)
 ]
 
-{ #category : 'Writing-Project' }
+{ #category : 'writing-project' }
 TonelWriter >> writeInWorkingDirectoryProjectIncluding: anApplicationSet [
 
 	self applications: anApplicationSet.
 	^self writeProjectInto: (CfsPath named: CfsDirectoryDescriptor getcwd)
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writePackageDescriptionFor: anApplicationDefinition into: aPath [
 	"Private - Writes the package description file of anApplicationDefinition into 
@@ -403,7 +425,7 @@ TonelWriter >> writePackageDescriptionFor: anApplicationDefinition into: aPath [
 			stream << lineDelimiter << '}' << lineDelimiter]
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writePackageNameOf: anApplicationDefinition on: aStream [
 	"Private - Writes the Tonel package name of anApplicationDefinition on aStream."
@@ -414,7 +436,7 @@ TonelWriter >> writePackageNameOf: anApplicationDefinition on: aStream [
 		
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writePackageVAParentOf: anApplicationDefinition on: aStream [
 	"Private - Writes the #vaParent: application metadata on aStream."
@@ -425,7 +447,7 @@ TonelWriter >> writePackageVAParentOf: anApplicationDefinition on: aStream [
 				anApplicationDefinition definedApplication parent name asString printString]
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writePackageVAPrerequisitesOf: anApplicationDefinition on: aStream [
 	"Private - Writes the #vaPrerequisites: metadata of anApplicationDefinition on aStream."
@@ -441,7 +463,7 @@ TonelWriter >> writePackageVAPrerequisitesOf: anApplicationDefinition on: aStrea
 				aStream nextPut: $]]
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writePackageVASubapplicationsOf: anApplicationDefinition on: aStream [
 
@@ -470,7 +492,7 @@ TonelWriter >> writePackageVASubapplicationsOf: anApplicationDefinition on: aStr
 			aStream nextPutAll: json]
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writePoolDictionariesDefinedIn: applicationDefinition into: aPath [
 	"Private - Writes the pool dictionaries defined by <applicationDefinition>
@@ -478,13 +500,13 @@ TonelWriter >> writePoolDictionariesDefinedIn: applicationDefinition into: aPath
 
 	| classWriter |
 
-	classWriter := TonelSharedPoolWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter.
+	classWriter := TonelSharedPoolWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter in: self.
 
 	applicationDefinition withPoolPragmaMethodsDo: [:each |
 		self writePoolDictionaryFromMethod: each definedIn: applicationDefinition using: classWriter]
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writePoolDictionaryFromMethod: methodDefinition definedIn: applicationDefinition using: classWriter [
 	"Private - Writes the pool dictionarie of <methodDefinition> defined in <applicationDefinition>
@@ -497,7 +519,7 @@ TonelWriter >> writePoolDictionaryFromMethod: methodDefinition definedIn: applic
 	classWriter write: writerPoolDefinition
 ]
 
-{ #category : 'Writing-Project' }
+{ #category : 'writing-project' }
 TonelWriter >> writeProjectInto: aPath [
 
 	self 
@@ -505,7 +527,7 @@ TonelWriter >> writeProjectInto: aPath [
 		sourceDirectoryName: 'source'
 ]
 
-{ #category : 'Writing-Project' }
+{ #category : 'writing-project' }
 TonelWriter >> writeProjectInto: aPath sourceDirectoryName: aString [
 
 	| sourcePath |
@@ -520,7 +542,7 @@ TonelWriter >> writeProjectInto: aPath sourceDirectoryName: aString [
 	self writeConfigurationMapsInto: sourcePath
 ]
 
-{ #category : 'Writing-Project',
+{ #category : 'writing-project',
   #vaVisibility : 'private' }
 TonelWriter >> writeProjectPropertiesInto: aPath sourceDirectoryName: aString [
 	| projectPropertiesPath |
@@ -531,7 +553,7 @@ TonelWriter >> writeProjectPropertiesInto: aPath sourceDirectoryName: aString [
 		do: [:stream | stream << '{' << lineDelimiter << ('#srcDirectory : ''', aString, '''') << lineDelimiter << '}']
 ]
 
-{ #category : 'Writing-Project',
+{ #category : 'writing-project',
   #vaVisibility : 'private' }
 TonelWriter >> writeSourcePropertiesInto: sourcePath [
 

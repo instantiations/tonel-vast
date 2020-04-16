@@ -23,25 +23,25 @@ TonelWriterSharedPoolDefinition class >> of: aClass definedIn: anApplication [
 	self shouldNotImplement
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> applicationName [
 
 	^application definedApplication asString
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> classInstanceVariableNames [
 
 	^#()
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> classVariableNames [
 
 	^(self poolDeclarations reject: [:each | each name first = $! ]) collect: [:declaration | declaration name ]
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> createInitializationMethod: selector [
 
 	| method |
@@ -55,13 +55,13 @@ TonelWriterSharedPoolDefinition >> createInitializationMethod: selector [
 	^method
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> declarationMethod [
 	
 	^declarationMethod
 ]
 
-{ #category : 'Accessing',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelWriterSharedPoolDefinition >> defaultInitializationMethod [
 
@@ -77,32 +77,32 @@ TonelWriterSharedPoolDefinition >> defaultInitializationMethod [
 
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> definedClassName [
 
 	^poolName
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> definedClassSuperclassName [
 
 	^#SharedPool
 
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> fileName [
 
 	^'<1s>.class.st' expandMacrosWith: poolName asString
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> instanceVariableNames [
 
 	^#()
 ]
 
-{ #category : 'Accessing',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelWriterSharedPoolDefinition >> pool [
 	"Private - Just a wrapper to the class instance variable to have semantic meaning in senders."
@@ -110,7 +110,7 @@ TonelWriterSharedPoolDefinition >> pool [
  	^class
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> poolDeclarations [
 
 	| declarations |
@@ -119,7 +119,7 @@ TonelWriterSharedPoolDefinition >> poolDeclarations [
 	^declarations select: [: each | each isPoolVariable ]
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> poolInitializationMethods [
 	"Returns the methods used to initialize the values of the shared pool. Or create a default if needed."
 
@@ -133,13 +133,13 @@ TonelWriterSharedPoolDefinition >> poolInitializationMethods [
 	^initializationMethods
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> poolNames [
 
 	^#()
 ]
 
-{ #category : 'Accessing',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelWriterSharedPoolDefinition >> setDeclarationMethod: methodDefinition application: anApplication [
 
@@ -149,13 +149,13 @@ TonelWriterSharedPoolDefinition >> setDeclarationMethod: methodDefinition applic
 	application := anApplication.
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> subclassType [
 
 	^'variable'
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterSharedPoolDefinition >> withFormattedCommentDo: aBlock [
 
 	

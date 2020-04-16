@@ -4,10 +4,17 @@ Class {
 	#instVars : [
 		'tab',
 		'space',
-		'lineDelimiter'
+		'lineDelimiter',
+		'parent'
 	],
 	#category : 'TonelWriterModel'
 }
+
+{ #category : 'Instance Creation' }
+TonelMethodWriter class >> in: aTonelWriter [
+
+	^self new initializeIn: aTonelWriter
+]
 
 { #category : 'Instance Creation' }
 TonelMethodWriter class >> new [
@@ -15,23 +22,18 @@ TonelMethodWriter class >> new [
 	^super new initialize
 ]
 
-{ #category : 'Instance Creation' }
-TonelMethodWriter class >> with: aLineDelimiter [
-
-	^self new initializeWith: aLineDelimiter
-]
-
-{ #category : 'Initialization',
+{ #category : 'initializing',
   #vaVisibility : 'private' }
-TonelMethodWriter >> initializeWith: aLineDelimiter [
+TonelMethodWriter >> initializeIn: aTonelWriter [
 
 	super initialize.
 	tab := Character tab.
 	space := Character space.
-	lineDelimiter := aLineDelimiter
+	lineDelimiter := aTonelWriter lineDelimiter.
+	parent := aTonelWriter
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelMethodWriter >> normalizeMethodBody: aBodyString [
 
@@ -41,14 +43,21 @@ TonelMethodWriter >> normalizeMethodBody: aBodyString [
 	^normalized
 ]
 
-{ #category : 'Writing',
+{ #category : 'Not categorized' }
+TonelMethodWriter >> parent [
+	"Answer the parent TonelWriter of receiver."
+
+	^parent
+]
+
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelMethodWriter >> splitSourceOf: aMethodDefinition into: aBlock [
 
 	^aBlock value: aMethodDefinition methodDeclaration value: aMethodDefinition methodBody
 ]
 
-{ #category : 'Writing' }
+{ #category : 'writing' }
 TonelMethodWriter >> write: aMethodDefinition on: aWriteStream [
 
 	self
@@ -64,14 +73,14 @@ TonelMethodWriter >> write: aMethodDefinition on: aWriteStream [
 				lineDelimiter << ']' << lineDelimiter]
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelMethodWriter >> writeCategoryOf: aMethodDefinition on: aWriteStream [
 
 	aWriteStream << space << '#category : ' << aMethodDefinition category storeString
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelMethodWriter >> writeVACategoriesOf: aMethodDefinition on: aWriteStream [
 
@@ -90,7 +99,7 @@ TonelMethodWriter >> writeVACategoriesOf: aMethodDefinition on: aWriteStream [
 
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelMethodWriter >> writeVAVisibilityOf: aMethodDefinition on: aWriteStream [
 

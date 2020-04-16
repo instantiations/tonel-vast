@@ -12,7 +12,8 @@ TonelClassWriterTest >> setUp [
 		(TonelClassWriter
 			on: self fileSystem
 			directory: self directoryForTestingPath
-			lineDelimiter: TonelWriter lineDelimiter)
+			lineDelimiter: TonelWriter lineDelimiter
+			in: TonelWriter new)
 ]
 
 { #category : 'Tests' }

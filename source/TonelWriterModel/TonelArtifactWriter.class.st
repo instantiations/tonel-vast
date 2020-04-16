@@ -4,19 +4,27 @@ Class {
 	#instVars : [
 		'fileSystem',
 		'directory',
-		'lineDelimiter'
+		'lineDelimiter',
+		'parent'
 	],
 	#category : 'TonelWriterModel'
 }
 
 { #category : 'Not categorized' }
-TonelArtifactWriter class >> on: aFileSystem directory: aPath lineDelimiter: aLineDelimiter [
+TonelArtifactWriter class >> on: aFileSystem directory: aPath lineDelimiter: aLineDelimiter in: aTonelWriter [
  
 	^self new
 		fileSystem: aFileSystem;
 		directory: aPath;
 		lineDelimiter: aLineDelimiter;
+		parent: aTonelWriter;
 		yourself
+]
+
+{ #category : 'testing' }
+TonelArtifactWriter >> convertsSharedPools [
+
+	^self parent convertsSharedPools
 ]
 
 { #category : 'accessing' }
@@ -29,12 +37,12 @@ TonelArtifactWriter >> directory: anObject [
 	directory := anObject
 ]
 
-{ #category : 'Writing' }
+{ #category : 'writing' }
 TonelArtifactWriter >> ensureDirectory [
 	self directory exists ifFalse: [self directory realize]
 ]
 
-{ #category : 'Utility' }
+{ #category : 'utility' }
 TonelArtifactWriter >> filePathFor: anObject [
 
 	^self directory append: anObject fileName
@@ -61,11 +69,23 @@ TonelArtifactWriter >> lineDelimiter: anObject [
 ]
 
 { #category : 'accessing' }
+TonelArtifactWriter >> parent [
+	"Answer the TonelWriter parent of receiver."
+
+	^parent
+]
+
+{ #category : 'accessing' }
+TonelArtifactWriter >> parent: anObject [
+	parent := anObject
+]
+
+{ #category : 'accessing' }
 TonelArtifactWriter >> tonelTypeName [
 	self subclassResponsibility
 ]
 
-{ #category : 'Writing-Application',
+{ #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelArtifactWriter >> toSTONStringPretty: anObject [
 
@@ -77,7 +97,7 @@ TonelArtifactWriter >> toSTONStringPretty: anObject [
 				nextPut: anObject]
 ]
 
-{ #category : 'Utility' }
+{ #category : 'utility' }
 TonelArtifactWriter >> withStreamOn: aFilePath do: aBlock [
 
 	fileSystem
@@ -91,7 +111,7 @@ TonelArtifactWriter >> write: anObject [
 	self subclassResponsibility
 ]
 
-{ #category : 'Writing' }
+{ #category : 'writing' }
 TonelArtifactWriter >> write: aBlock betweenCurlyBracesOn: aWriteStream [
 
 	aWriteStream

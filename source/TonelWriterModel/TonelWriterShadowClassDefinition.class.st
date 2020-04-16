@@ -4,32 +4,32 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterShadowClassDefinition >> classInstanceVariableNames [
 
 	^self definitionRecord classInstVarNames
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterShadowClassDefinition >> classVariableNames [
 
 	^self definitionRecord classVarNames
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterShadowClassDefinition >> definedClassSuperclassName [
 
 	^self definitionRecord superclassName ifNil: [#nil]
 
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterShadowClassDefinition >> instanceVariableNames [
 
 	^self definitionRecord instVarNames
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterShadowClassDefinition >> poolNames [
 
 	^self definitionRecord sharedPoolNames

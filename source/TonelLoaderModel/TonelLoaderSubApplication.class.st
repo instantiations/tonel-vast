@@ -334,10 +334,14 @@ TonelLoaderSubApplication >> definePoolDictionariesFor: emParentApp [
 { #category : 'loading' }
 TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 
-	self definedSharedPools 
+
+	| definedSharedPools |
+	(definedSharedPools := self definedSharedPools) isEmpty ifTrue: [^self].
+
+	definedSharedPools
 		do: [:aTonelClass | aTonelClass declarePoolDictionariesIn: anApp using: self loader].
 	self updateSharedPoolsDefinitionOf: anApp.
-	self definedSharedPools 
+	definedSharedPools
 		do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp using: self loader]
 ]
 

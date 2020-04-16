@@ -15,31 +15,31 @@ TonelWriterMethodDefinition class >> uniquelyKnownAs: aSymbol in: aClass categor
 	^self new initializeUniquelyKnownAs: aSymbol in: aClass categorizedAs: aCategory
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterMethodDefinition >> allCategories [
 
 	^definitionClass categoriesFor: selector
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterMethodDefinition >> category [
 
 	^category
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterMethodDefinition >> compiledMethod [
 
 	^definitionClass >> selector
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterMethodDefinition >> definitionClass [
 
 	^definitionClass
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterMethodDefinition >> definitionClassName [
 
 	^self definitionClass name
@@ -63,7 +63,7 @@ TonelWriterMethodDefinition >> hasDefaultVAVisibility [
 	^self visibilityString = 'public'
 ]
 
-{ #category : 'Initialization',
+{ #category : 'initializing',
   #vaVisibility : 'private' }
 TonelWriterMethodDefinition >> initializeUniquelyKnownAs: aSymbol in: aClass categorizedAs: aCategory [
 
@@ -102,7 +102,7 @@ TonelWriterMethodDefinition >> isVirtualPragma [
 	^self isVirtual and: [self isPoolPragma]
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterMethodDefinition >> methodBody [
 
 	| parseTree body bodyStream messagePattern |
@@ -129,7 +129,7 @@ TonelWriterMethodDefinition >> methodBody [
 	^body
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterMethodDefinition >> methodDeclaration [
 
 	| parseTree declaration messagePattern |
@@ -146,7 +146,7 @@ TonelWriterMethodDefinition >> methodDeclaration [
 	^declaration
 ]
 
-{ #category : 'Accessing',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelWriterMethodDefinition >> pragmaPrefix [
 	| pattern |
@@ -154,15 +154,33 @@ TonelWriterMethodDefinition >> pragmaPrefix [
 	^pattern copyFrom: 1 to: pattern size - 1.
 ]
 
-{ #category : 'Accessing',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelWriterMethodDefinition >> pragmaSuffix [
 
 	^selector copyFrom: (self pragmaPrefix size + 1 min: selector size) to: selector size
 ]
 
-{ #category : 'Accessing' }
+{ #category : 'Not categorized' }
+TonelWriterMethodDefinition >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream
+		nextPutAll: '(#';
+		nextPutAll: selector asString;
+		nextPut: $)
+]
+
+{ #category : 'accessing' }
 TonelWriterMethodDefinition >> visibilityString [
 
 	^self compiledMethod isPrivate ifTrue: ['private'] ifFalse: ['public']
+]
+
+{ #category : 'writing' }
+TonelWriterMethodDefinition >> writeUsing: aTonelMethodWriter on: aWriteStream [
+
+	(self isPoolPragma not or: [self isPoolPragma and: [aTonelMethodWriter parent convertsSharedPools not]]) ifTrue: [
+		aTonelMethodWriter write: self on: aWriteStream
+	]
 ]

@@ -15,7 +15,7 @@ TonelMethodWriterTest >> newStream [
 TonelMethodWriterTest >> setUp [
 
 	super setUp.
-	writer := TonelMethodWriter with: TonelWriter lineDelimiter
+	writer := TonelMethodWriter in: TonelWriter new
 ]
 
 { #category : 'Test' }

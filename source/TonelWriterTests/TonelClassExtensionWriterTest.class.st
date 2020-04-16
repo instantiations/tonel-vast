@@ -13,6 +13,7 @@ TonelClassExtensionWriterTest >> setUp [
 			on: fileSystem
 			directory: self directoryForTestingPath
 			lineDelimiter: TonelWriter lineDelimiter
+			in: TonelWriter new
 ]
 
 { #category : 'Test' }
@@ -29,7 +30,7 @@ TonelClassExtensionWriterTest >> testWriteClassExtension [
 
 {
 	#category : ''*TonelWriterTests'',
-	#vaCategories : [''Accessing'']
+	#vaCategories : [''accessing'']
 }
 TonelWriter >> anotherExtensionForTest [
 
@@ -38,7 +39,7 @@ TonelWriter >> anotherExtensionForTest [
 
 {
 	#category : ''*TonelWriterTests'',
-	#vaCategories : [''Accessing'']
+	#vaCategories : [''accessing'']
 }
 TonelWriter >> extensionForTest [
 

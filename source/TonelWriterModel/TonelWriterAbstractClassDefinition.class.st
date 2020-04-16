@@ -8,7 +8,7 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{ #category : 'Accessing' }
+{ #category : 'accessing' }
 TonelWriterAbstractClassDefinition >> fileName [
 
 	self subclassResponsibility
@@ -21,7 +21,7 @@ TonelWriterAbstractClassDefinition >> formattedCategoryOf: selector in: aClassOr
 	^(aClassOrMetaclass categoriesFor: selector) asSortedCollection first.
 ]
 
-{ #category : 'Accessing',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelWriterAbstractClassDefinition >> isTonelSpecialSelector: aSymbol [
 	"Answer whether aSymbol matches a method used for compatibility or utility in Tonel."

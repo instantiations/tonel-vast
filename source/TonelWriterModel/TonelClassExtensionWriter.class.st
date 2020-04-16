@@ -4,7 +4,7 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{ #category : 'Writing' }
+{ #category : 'writing' }
 TonelClassExtensionWriter >> write: aClassExtensionDefinition [
 
 	self directory exists ifFalse: [self directory realize].
@@ -13,7 +13,7 @@ TonelClassExtensionWriter >> write: aClassExtensionDefinition [
 		do: [:writeStream | self write: aClassExtensionDefinition on: writeStream]
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassExtensionWriter >> write: aClassExtensionDefinition on: aWriteStream [
 
@@ -23,7 +23,7 @@ TonelClassExtensionWriter >> write: aClassExtensionDefinition on: aWriteStream [
 		writeInstanceMethodsOf: aClassExtensionDefinition on: aWriteStream
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassExtensionWriter >> writeClassMethodsOf: aClassExtensionDefinition on: aWriteStream [
 
@@ -31,7 +31,7 @@ TonelClassExtensionWriter >> writeClassMethodsOf: aClassExtensionDefinition on: 
 		self methodWriter write: methodDefition on: aWriteStream]
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassExtensionWriter >> writeDefinitionOf: aClassExtensionDefinition on: aWriteStream [
 
@@ -40,7 +40,7 @@ TonelClassExtensionWriter >> writeDefinitionOf: aClassExtensionDefinition on: aW
 		lineDelimiter
 ]
 
-{ #category : 'Writing',
+{ #category : 'writing',
   #vaVisibility : 'private' }
 TonelClassExtensionWriter >> writeInstanceMethodsOf: aClassExtensionDefinition on: aWriteStream [
 
