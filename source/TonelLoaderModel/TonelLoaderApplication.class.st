@@ -125,6 +125,12 @@ TonelLoaderApplication >> computeImplicitPrerequisites [
 
 { #category : 'initializing',
   #vaVisibility : 'private' }
+TonelLoaderApplication >> computeName [
+	^self loader namingStrategy nameForApp: self
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
 TonelLoaderApplication >> computePrerequisites [
 
 	^(self packageDefinition metadata at: #vaPrerequisites ifAbsent: [
@@ -177,13 +183,6 @@ TonelLoaderApplication >> createApplication [
 ]
 
 { #category : 'loading' }
-TonelLoaderApplication >> createDescriptionFor: aClass [
-
-	
-	super createDescriptionFor: aClass
-]
-
-{ #category : 'loading' }
 TonelLoaderApplication >> createEdition [
 	| theApp |
 	
@@ -198,25 +197,24 @@ TonelLoaderApplication >> createEdition [
 	^theApp
 ]
 
-{ #category : 'loading' }
+{ #category : 'loading',
+  #vaVisibility : 'private' }
 TonelLoaderApplication >> createTonelPackageNameMethodFor: anApp [
-
 	"Enter the new method definition below and click 'Resume'."
-	
+
 	| source |
-	source := #_TONEL_packageName, '<n><t>^<1p>' expandMacrosWith: self packageName.
-	
-	((anApp class)
-						basicCompile: source
-						notifying: Transcript "Have it notify itself?"
-						ifFail: [])
-							ifNotNil: [:compiledMethod |
-								anApp class
-									install: compiledMethod
-									asPrivate: true
-									withSource: source
-									ifNewAddTo: anApp
-									categorizeIn: #('Tonel-Metadata')].
+	(anApp respondsTo: self tonelPackageNameSelector)
+		ifTrue: [| tonelPackageName |
+			tonelPackageName := anApp perform: self tonelPackageNameSelector.
+			self packageName = tonelPackageName ifTrue: [^self]].
+	source := self tonelPackageNameMethodSource.
+	(anApp class basicCompile: source notifying: Transcript ifFail: []) ifNotNil: [:compiledMethod |
+		anApp class
+			install: compiledMethod
+			asPrivate: true
+			withSource: source
+			ifNewAddTo: anApp
+			categorizeIn: #('Tonel-Metadata')] "Have it notify itself?"
 ]
 
 { #category : 'loading' }
@@ -330,6 +328,17 @@ TonelLoaderApplication >> rootTonelApplication [
 	"The receiver is the root application."
 	
 	^self
+]
+
+{ #category : 'loading' }
+TonelLoaderApplication >> tonelPackageNameMethodSource [
+	^self tonelPackageNameSelector , '<n><t>^<1p>' 
+		expandMacrosWith: self packageName
+]
+
+{ #category : 'loading' }
+TonelLoaderApplication >> tonelPackageNameSelector [
+	^#_TONEL_packageName
 ]
 
 { #category : 'accessing' }

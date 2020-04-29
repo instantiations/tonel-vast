@@ -13,7 +13,7 @@ Class {
 { #category : 'instance creation' }
 TonelLoaderStrategy class >> for: aTonelLoader [
 
-	^self new
+	^self basicNew
 		setLoader: aTonelLoader;
 		yourself
 ]
@@ -34,5 +34,6 @@ TonelLoaderStrategy >> loader [
   #vaVisibility : 'private' }
 TonelLoaderStrategy >> setLoader: aTonelLoader [
 
-	loader := aTonelLoader
+	loader := aTonelLoader.
+	self initialize
 ]

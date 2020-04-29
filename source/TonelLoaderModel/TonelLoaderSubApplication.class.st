@@ -203,6 +203,12 @@ TonelLoaderSubApplication >> classesToRemoveIncludingExtensions: aBoolean [
 
 ]
 
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
+TonelLoaderSubApplication >> computeName [
+	^self loader namingStrategy nameForSubApp: self
+]
+
 { #category : 'Initialization',
   #vaVisibility : 'private' }
 TonelLoaderSubApplication >> computePrerequisites [
@@ -237,11 +243,11 @@ TonelLoaderSubApplication >> convertSharedPoolClasses [
 
 { #category : 'loading' }
 TonelLoaderSubApplication >> createDescriptionFor: theAppOrSubApp [
-	"If the receiver has been changed, then attempt to set the description
-	 (Notes) for the real (sub)application class. Answer false if the description
-	 could not be set; otherwise answer true." 
 
-	^ theAppOrSubApp description: self notes 
+	theAppOrSubApp description = self notes ifFalse: [
+		^theAppOrSubApp description: self notes 
+	].
+	^false
 ]
 
 { #category : 'loading',
@@ -265,10 +271,8 @@ TonelLoaderSubApplication >> createEditionIn: parentEmApp underCondition: condit
 TonelLoaderSubApplication >> createFor: parentApp underCondition: conditionCode withRoot: rootApp [
 
 	| aSubApp |
-	aSubApp := self 
-				createEditionIn: parentApp
-				underCondition: conditionCode
-				withRoot: rootApp.
+
+	aSubApp := self createEditionIn: parentApp underCondition: conditionCode withRoot: rootApp.
 	self createSubApplicationsFor: aSubApp withRoot: rootApp.
 	^aSubApp
 ]
@@ -276,38 +280,42 @@ TonelLoaderSubApplication >> createFor: parentApp underCondition: conditionCode 
 { #category : 'loading' }
 TonelLoaderSubApplication >> createSubApplicationIn: emParentApp condition: conditionCode [
 
-
 	| newSubApp defaultConfigurationExpresion |
+
 	defaultConfigurationExpresion := conditionCode = true storeString.
 	"defaultConfigurationExpresion 
 		ifFalse: [emParentApp addConfigurationExpression: conditionCode ]."
-	newSubApp := emParentApp createSubApplication: self identifier in: true storeString.
+	newSubApp := emParentApp createSubApplication: self identifier in: true storeString
 	"defaultConfigurationExpresion ifFalse: [
 		newSubApp configurationExpression: conditionCode ]"
+
 ]
 
 { #category : 'loading' }
 TonelLoaderSubApplication >> createSubApplicationsFor: emAppOrSubapp withRoot: emRootApp [
 
 	self loadableConditions keysAndValuesDo: [:conditionCode :tonelSubApps |
-		tonelSubApps do: [:tonelSubApp |
-			| createSubApp |
+		tonelSubApps do: [:tonelSubApp | | createSubApp |
 			createSubApp := self loader alwaysCreateEditions.
-			createSubApp ifFalse: [
-					(emAppOrSubapp subApplications detect: [:one | one name = tonelSubApp identifier] ifNone: [nil])
-						ifNil: [createSubApp := true]
-						ifNotNil: [:emSubApp |
-							createSubApp := (tonelSubApp hasChangesFor: emSubApp inRootApp: emRootApp)
-						]
-			].
-			
-			createSubApp ifTrue: [| emSubApplication |
-						emSubApplication :=
-							tonelSubApp
-								createFor: emAppOrSubapp
-								underCondition: conditionCode
-								withRoot: emRootApp.
-						self createDescriptionFor: emSubApplication]]]
+			createSubApp
+				ifFalse: [
+					(emAppOrSubapp subApplications
+						detect: [:one | one name = tonelSubApp identifier]
+						ifNone: [nil])
+							ifNil: [createSubApp := true]
+							ifNotNil: [:emSubApp |
+								createSubApp := (tonelSubApp
+									hasChangesFor: emSubApp
+									inRootApp: emRootApp)]].
+
+			createSubApp
+				ifTrue: [| emSubApplication |
+					emSubApplication :=
+						tonelSubApp
+							createFor: emAppOrSubapp
+							underCondition: conditionCode
+							withRoot: emRootApp.
+					self createDescriptionFor: emSubApplication]]]
 ]
 
 { #category : 'accessing' }
@@ -334,8 +342,8 @@ TonelLoaderSubApplication >> definePoolDictionariesFor: emParentApp [
 { #category : 'loading' }
 TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 
-
 	| definedSharedPools |
+
 	(definedSharedPools := self definedSharedPools) isEmpty ifTrue: [^self].
 
 	definedSharedPools
@@ -571,8 +579,7 @@ TonelLoaderSubApplication >> logIgnoredShadowSubapps: aCollection [
 
 { #category : 'accessing' }
 TonelLoaderSubApplication >> name [
-
-	^name ifNil: [name := self packageDefinition appName]
+	^name ifNil: [name := self computeName]
 ]
 
 { #category : 'accessing' }

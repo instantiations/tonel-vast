@@ -74,9 +74,10 @@ TonelTools class >> exportTonelApplication [
 TonelTools class >> exportTonelTools [
 
 	TonelWriter new
-		addConfigurationMap: (EmConfigurationMap editionsFor: 'Tonel') first;
+		addLatestConfigurationMapNamed: 'Tonel';
+		addLatestConfigurationMapNamed: 'Test Tonel';
 		addApplicationsFromConfigurationMaps;
-		writeProjectInto: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-vast').
+		writeProjectInto: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-repos\tonel-vast').
 
 ]
 

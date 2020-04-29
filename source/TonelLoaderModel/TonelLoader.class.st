@@ -9,35 +9,17 @@ Class {
 		'baseEditionStrategy',
 		'versionStrategy',
 		'prerequisitesStrategy',
+		'namingStrategy',
 		'loadedApplications',
 		'loadedConfigurationMaps'
 	],
 	#classVars : [
+		'DefaultAppNameSuffix',
 		'CompilerWarningLevel',
-		'AppSuperGroupSetting',
-		'AppNameSuffix'
+		'AppSuperGroupSetting'
 	],
 	#category : 'TonelLoaderModel'
 }
-
-{ #category : 'Accessing' }
-TonelLoader class >> appNameSuffix [
-	"Read comment of appNameSuffix:"
-
-	^ AppNameSuffix ifNil: [ AppNameSuffix := self defaultAppNameSuffix ]
-]
-
-{ #category : 'Accessing' }
-TonelLoader class >> appNameSuffix: rootAppSuffix [
-	"Allows the user to specify the suffix to be used for the created root application
-	by the MetacelloImporter. The default will be 'App'. 
-
-	Arguments:
-		rootAppSuffix - <String> The root application name suffix. 
-	 "
-	
-	AppNameSuffix := rootAppSuffix
-]
 
 { #category : 'Accessing' }
 TonelLoader class >> appSuperGroupSetting [
@@ -80,8 +62,16 @@ TonelLoader class >> compilerWarningLevel: aLevel [
 
 { #category : 'Accessing - Defaults' }
 TonelLoader class >> defaultAppNameSuffix [
+	"Answer the default AppName Suffix or nil if it is not defined."
 	
-	^ 'App'
+	^ DefaultAppNameSuffix
+]
+
+{ #category : 'Accessing - Defaults' }
+TonelLoader class >> defaultAppNameSuffix: aStringOrNil [
+	"Sets the default app name suffix used by naming strategies."
+		
+	DefaultAppNameSuffix := aStringOrNil
 ]
 
 { #category : 'Accessing - Defaults' }
@@ -229,9 +219,9 @@ TonelLoader >> forceCreationOfEditions [
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelLoader >> initialize [
-
 	super initialize.
-	self beInteractive
+	self beInteractive.
+	self useDefaultNaming
 ]
 
 { #category : 'initializing',
@@ -300,11 +290,15 @@ TonelLoader >> loadApplicationNamed: aStringOrSymbol [
 { #category : 'loading' }
 TonelLoader >> loadApplications: aCollection [
 
-	| confirmer |
+	| confirmer oldWarningLevel |
+
 	confirmer := System image confirmer: self.
-	[aCollection do: [:each | self basicLoadApplication: each]] 
-		ensure: [System image confirmer: confirmer].
-	^aCollection collect: [:each | each emApplication ]
+	oldWarningLevel := EsCompiler defaultWarningLevel.
+	EsCompiler defaultWarningLevel: self class compilerWarningLevel.
+	[aCollection do: [:each | self basicLoadApplication: each]] ensure: [
+		System image confirmer: confirmer.
+		EsCompiler defaultWarningLevel: oldWarningLevel].
+	^aCollection collect: [:each | each emApplication]
 ]
 
 { #category : 'loading' }
@@ -356,6 +350,22 @@ TonelLoader >> loadedConfigurationMaps [
 TonelLoader >> log: aString [
 
 	self class owningImage logApplicationNotice: aString.
+]
+
+{ #category : 'strategies' }
+TonelLoader >> namingStrategy [
+	^namingStrategy
+]
+
+{ #category : 'strategies' }
+TonelLoader >> namingStrategy: anObject [
+	namingStrategy := anObject
+]
+
+{ #category : 'accessing' }
+TonelLoader >> packageNames [
+	
+	^self reader packages collect: [:each | each name asString ]
 ]
 
 { #category : 'strategies' }
@@ -479,6 +489,11 @@ TonelLoader >> useComputedPrerequisites [
 	self prerequisitesStrategy: (TonelLoaderComputedPrerequisitesStrategy for: self)
 ]
 
+{ #category : 'initializing' }
+TonelLoader >> useDefaultNaming [
+	namingStrategy := TonelLoaderDefaultNamingStrategy for: self
+]
+
 { #category : 'strategies-convenience' }
 TonelLoader >> useGitVersion [
 	self versionStrategy: (TonelLoaderGitVersionStrategy for: self).
@@ -512,7 +527,7 @@ TonelLoader >> useSpecifiedVersion: versionName [
 	self versionStrategy: ((TonelLoaderSpecifiedVersionStrategy for: self) versionName: versionName)
 ]
 
-{ #category : 'strategies' }
+{ #category : 'resolving' }
 TonelLoader >> versionFor: anObject [
 
 	^self versionStrategy versionFor: anObject

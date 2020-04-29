@@ -4,7 +4,7 @@
 			'AbtShellProgramStarterApp' : '1.0',
 			'TonelBaseApp' : '1.1',
 			'TonelFileSystem' : '1.23',
-			'TonelLoaderModel' : '1.58',
+			'TonelLoaderModel' : '1.59',
 			'TonelReaderModel' : '1.49',
 			'TonelTools' : '1.11',
 			'TonelWriterModel' : '1.54'
@@ -18,7 +18,7 @@
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.52',
+		#versionName : '1.53',
 		#comment : ''
 	},
 	{
@@ -31,13 +31,13 @@
 			{
 				#condition : 'true',
 				#requiredMaps : [
-					'Tonel' : '1.52',
+					'Tonel' : '1.53',
 					'z.ST: SUnit' : 'V 9.2.1  [457]'
 				]
 			}
 		],
 		#name : 'Test Tonel',
-		#versionName : '1.3',
+		#versionName : '1.4',
 		#comment : ''
 	}
 ]
