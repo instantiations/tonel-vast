@@ -25,7 +25,7 @@ TonelLoaderDefaultNamingStrategy >> appSuffix: anObject [
 TonelLoaderDefaultNamingStrategy >> initialize [
 
 	prefix := String new.
-	appSuffix := self loader class defaultAppNameSuffix ifNil: [String new].
+	appSuffix := String new.
 	subAppSuffix := String new.
 	mappings := Dictionary new
 ]

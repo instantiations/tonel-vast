@@ -2,7 +2,8 @@ Class {
 	#name : 'TonelLoaderTest',
 	#superclass : 'TonelBaseTest',
 	#instVars : [
-		'loader'
+		'loader',
+		'previousSuffix'
 	],
 	#category : 'TonelLoaderTests'
 }
@@ -16,7 +17,8 @@ TonelLoaderTest >> setUp [
 		writeThenReadProjectIncluding: (Array with: self tonelWriterTestAppName
 				with: 'TonelWriterModel')
 		from: self directoryForTestingPath.
-	loader := TonelLoader on: reader
+	loader := TonelLoader on: reader.
+	loader namingStrategy appSuffix: String new
 ]
 
 { #category : 'Tests' }

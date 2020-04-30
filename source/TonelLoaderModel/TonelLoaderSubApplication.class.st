@@ -151,7 +151,7 @@ TonelLoaderSubApplication >> changeSuperGroupSettingOf: theApp [
 	theApp updateEdition: [:editionRecord |
 			editionRecord 
 				inheritedUserFieldAt: 'SuperGroup' 
-				put: (self loader class appSuperGroupSetting ifNil: ['none']) asString
+				put: (self loader settings appSuperGroupSetting ifNil: ['none']) asString
 	]
 ]
 

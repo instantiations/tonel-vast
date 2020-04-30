@@ -7,7 +7,7 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
-{ #category : 'Not categorized',
+{ #category : 'operations',
   #vaVisibility : 'private' }
 TonelLoaderGitParentBaseEditionStrategy >> executeGitCommand [
 	| starter execOkay |
@@ -20,7 +20,7 @@ TonelLoaderGitParentBaseEditionStrategy >> executeGitCommand [
 	^execOkay
 ]
 
-{ #category : 'Not categorized',
+{ #category : 'initializing',
   #vaVisibility : 'private' }
 TonelLoaderGitParentBaseEditionStrategy >> initializeParentCommitId [
 
@@ -48,7 +48,7 @@ TonelLoaderGitParentBaseEditionStrategy >> initializeParentCommitId [
 							ifNotNil: [:outFile | outFile exists ifTrue: [outFile delete]]]
 ]
 
-{ #category : 'Not categorized',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelLoaderGitParentBaseEditionStrategy >> parentCommitId [
 
@@ -56,20 +56,34 @@ TonelLoaderGitParentBaseEditionStrategy >> parentCommitId [
 	^parentCommitId
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelLoaderGitParentBaseEditionStrategy >> resetParentCommitId [
+	parentCommitId := nil
+]
+
+{ #category : 'operations' }
 TonelLoaderGitParentBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplication [
 
 	
 	^aTonelSubApplication availableShadows detect: [:one | one versionName includesSubstring: self parentCommitId ] ifNone: [aTonelSubApplication availableShadows last]
 ]
 
-{ #category : 'Not categorized',
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelLoaderGitParentBaseEditionStrategy >> setLoader: aTonelLoader [
+
+	super setLoader: aTonelLoader.
+	self resetParentCommitId
+]
+
+{ #category : 'errors',
   #vaVisibility : 'private' }
 TonelLoaderGitParentBaseEditionStrategy >> signalParentCommitReadError [
 	self error: 'Could not get the parent commit. Check if the path has a valid git repository or if git command is in the PATH.'
 ]
 
-{ #category : 'Not categorized',
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelLoaderGitParentBaseEditionStrategy >> tempGitOutputPath [
 	^'commit.parent'

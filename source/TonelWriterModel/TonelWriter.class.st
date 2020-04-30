@@ -219,6 +219,12 @@ TonelWriter >> configurationMaps: anObject [
 	configurationMaps := anObject
 ]
 
+{ #category : 'configuring' }
+TonelWriter >> convertSharedPools [
+
+ 	self convertsSharedPools: true
+]
+
 { #category : 'accessing' }
 TonelWriter >> convertsSharedPools [
 	^convertsSharedPools ifNil: [convertsSharedPools := true]
@@ -265,7 +271,7 @@ TonelWriter >> initializeOn: aFileSystem [
 	lineDelimiter := self class lineDelimiter.
 	clearsSourcesDirectory := true.
 	autoLoad := true.
-	convertsSharedPools := true
+	convertsSharedPools := false
 ]
 
 { #category : 'accessing' }

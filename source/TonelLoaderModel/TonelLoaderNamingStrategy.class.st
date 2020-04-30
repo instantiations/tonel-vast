@@ -7,14 +7,14 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
-{ #category : 'Not categorized' }
+{ #category : 'resolving' }
 TonelLoaderNamingStrategy >> nameForApp: aTonelLoaderApplication [
 
 	self subclassResponsibility
 
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'resolving' }
 TonelLoaderNamingStrategy >> nameForSubApp: aTonelLoaderSubApplication [
 
 	self subclassResponsibility

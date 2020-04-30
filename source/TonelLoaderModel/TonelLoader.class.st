@@ -2,14 +2,11 @@ Class {
 	#name : 'TonelLoader',
 	#superclass : 'Object',
 	#instVars : [
+		'settings',
 		'reader',
 		'applications',
 		'subApplications',
 		'configurationMaps',
-		'baseEditionStrategy',
-		'versionStrategy',
-		'prerequisitesStrategy',
-		'namingStrategy',
 		'loadedApplications',
 		'loadedConfigurationMaps'
 	],
@@ -20,71 +17,6 @@ Class {
 	],
 	#category : 'TonelLoaderModel'
 }
-
-{ #category : 'Accessing' }
-TonelLoader class >> appSuperGroupSetting [
-	"Read comment of appSuperGroupSetting:"
-	
-	^ AppSuperGroupSetting ifNil: [ AppSuperGroupSetting := self defaultAppSuperGroupSetting ]
-]
-
-{ #category : 'Accessing' }
-TonelLoader class >> appSuperGroupSetting: superGroup [
-	"Allows the user to specify the 'Super Group' setting to be used for the created applications and subapplications
-	by the MetacelloImporter. The default will be #none. 
-
-	Arguments:
-		superGroup - <Symbol> Possible values are #none, #world and #group.
-	 "
-	AppSuperGroupSetting := superGroup
-]
-
-{ #category : 'Accessing' }
-TonelLoader class >> compilerWarningLevel [
-	 "Read comment of compilerWarningLevel:"
-	 
-	^ CompilerWarningLevel ifNil: [ CompilerWarningLevel := self defaultCompilerWarningLevel ]
-]
-
-{ #category : 'Accessing' }
-TonelLoader class >> compilerWarningLevel: aLevel [
-	"Allows the user to specify the compiler warning level used while MonticelloImporter compiles 
-	 the new methods. When we are importing code, we want to get our code in VA as soon as possible.
-	 Therefore, the default is the less restrictive level (level 0) rather than the current one. Once the
-	 import finishes, the warning is rollbacked to the previous level. For mode details, read comment in
-	 EsCompiler >>#defaultWarningLevel.
-	 
-	Arguments:
-		aLevel - <Number> Possible values are from 0 to 3. 
-	 "
-	CompilerWarningLevel := aLevel
-]
-
-{ #category : 'Accessing - Defaults' }
-TonelLoader class >> defaultAppNameSuffix [
-	"Answer the default AppName Suffix or nil if it is not defined."
-	
-	^ DefaultAppNameSuffix
-]
-
-{ #category : 'Accessing - Defaults' }
-TonelLoader class >> defaultAppNameSuffix: aStringOrNil [
-	"Sets the default app name suffix used by naming strategies."
-		
-	DefaultAppNameSuffix := aStringOrNil
-]
-
-{ #category : 'Accessing - Defaults' }
-TonelLoader class >> defaultAppSuperGroupSetting [
-	
-	^ #none
-]
-
-{ #category : 'Accessing - Defaults' }
-TonelLoader class >> defaultCompilerWarningLevel [
-	
-	^ 0
-]
 
 { #category : 'instance creation' }
 TonelLoader class >> new [
@@ -105,6 +37,12 @@ TonelLoader class >> readFromPath: aCfsPath [
 
 		
 	^(TonelReader new readFrom: aCfsPath) createLoader
+]
+
+{ #category : 'Accessing' }
+TonelLoader class >> settings [
+
+	^TonelLoaderSettings default
 ]
 
 { #category : 'strategies-convenience' }
@@ -135,12 +73,12 @@ TonelLoader >> applications [
 
 { #category : 'strategies' }
 TonelLoader >> baseEditionStrategy [
-	^baseEditionStrategy
+	^self settings baseEditionStrategy
 ]
 
 { #category : 'strategies' }
 TonelLoader >> baseEditionStrategy: anObject [
-	baseEditionStrategy := anObject
+	self settings baseEditionStrategy: anObject
 ]
 
 { #category : 'loading',
@@ -294,7 +232,7 @@ TonelLoader >> loadApplications: aCollection [
 
 	confirmer := System image confirmer: self.
 	oldWarningLevel := EsCompiler defaultWarningLevel.
-	EsCompiler defaultWarningLevel: self class compilerWarningLevel.
+	EsCompiler defaultWarningLevel: self settings compilerWarningLevel.
 	[aCollection do: [:each | self basicLoadApplication: each]] ensure: [
 		System image confirmer: confirmer.
 		EsCompiler defaultWarningLevel: oldWarningLevel].
@@ -354,12 +292,12 @@ TonelLoader >> log: aString [
 
 { #category : 'strategies' }
 TonelLoader >> namingStrategy [
-	^namingStrategy
+	^self settings namingStrategy
 ]
 
 { #category : 'strategies' }
 TonelLoader >> namingStrategy: anObject [
-	namingStrategy := anObject
+	self settings namingStrategy: anObject
 ]
 
 { #category : 'accessing' }
@@ -368,7 +306,7 @@ TonelLoader >> packageNames [
 	^self reader packages collect: [:each | each name asString ]
 ]
 
-{ #category : 'strategies' }
+{ #category : 'resolving' }
 TonelLoader >> prerequisitesFor: aTonelLoaderApplication current: anOrderedCollection [
 
 
@@ -377,12 +315,12 @@ TonelLoader >> prerequisitesFor: aTonelLoaderApplication current: anOrderedColle
 
 { #category : 'strategies' }
 TonelLoader >> prerequisitesStrategy [
-	^prerequisitesStrategy
+	^self settings prerequisitesStrategy
 ]
 
 { #category : 'strategies' }
 TonelLoader >> prerequisitesStrategy: anObject [
-	prerequisitesStrategy := anObject
+	self settings prerequisitesStrategy: anObject
 ]
 
 { #category : 'interacting' }
@@ -440,6 +378,18 @@ TonelLoader >> setReader: aTonelReader [
 	reader := aTonelReader
 ]
 
+{ #category : 'accessing' }
+TonelLoader >> settings [
+	^settings ifNil: [
+		settings := self class settings copyFor: self.
+		]
+]
+
+{ #category : 'accessing' }
+TonelLoader >> settings: anObject [
+	settings := anObject
+]
+
 { #category : 'lookup' }
 TonelLoader >> subApplicationNamed: aString [
 
@@ -484,14 +434,14 @@ TonelLoader >> tonelClassNamed: aSymbol [
 	^nil
 ]
 
-{ #category : 'strategies' }
+{ #category : 'strategies-convenience' }
 TonelLoader >> useComputedPrerequisites [
 	self prerequisitesStrategy: (TonelLoaderComputedPrerequisitesStrategy for: self)
 ]
 
 { #category : 'initializing' }
 TonelLoader >> useDefaultNaming [
-	namingStrategy := TonelLoaderDefaultNamingStrategy for: self
+	self namingStrategy: (TonelLoaderDefaultNamingStrategy for: self)
 ]
 
 { #category : 'strategies-convenience' }
@@ -536,11 +486,11 @@ TonelLoader >> versionFor: anObject [
 { #category : 'strategies' }
 TonelLoader >> versionStrategy [
 
-	^versionStrategy
+	^self settings versionStrategy
 ]
 
 { #category : 'strategies' }
 TonelLoader >> versionStrategy: anObject [
 
-	versionStrategy := anObject
+	self settings versionStrategy: anObject
 ]

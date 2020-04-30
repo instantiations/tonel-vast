@@ -27,7 +27,7 @@ TonelLoaderInteractiveBaseEditionStrategy >> selectPrerequisiteEditionOf: applic
 
 ]
 
-{ #category : 'Not categorized',
+{ #category : 'errors',
   #vaVisibility : 'private' }
 TonelLoaderInteractiveBaseEditionStrategy >> signalMissingPrerequisiteOf: application [
 

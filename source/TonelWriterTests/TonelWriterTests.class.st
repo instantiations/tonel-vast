@@ -7,6 +7,20 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
+{ #category : 'Pools' }
+TonelWriterTests class >> _PRAGMA_TonelTestsConstants [
+
+
+"%%PRAGMA DECLARE
+	(name: TonelTestsConstants isPool: true)
+	(pool: TonelTestsConstants declarations: (
+		(name: Constant1 isConstant: true valueExpression: '1')
+		(name: Constant2 isConstant: true valueExpression: '2')
+	
+	))
+	"
+]
+
 { #category : 'Testing' }
 TonelWriterTests class >> exceptionsForClassesWithoutProtocol [
 

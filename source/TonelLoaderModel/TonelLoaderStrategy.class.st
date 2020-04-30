@@ -24,7 +24,16 @@ TonelLoaderStrategy class >> new [
 	^super new initialize
 ]
 
-{ #category : 'initializing' }
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelLoaderStrategy >> copyFor: aTonelLoader [
+
+	^self copy
+		setLoader: aTonelLoader;
+		yourself
+]
+
+{ #category : 'accessing' }
 TonelLoaderStrategy >> loader [
 
 	^loader

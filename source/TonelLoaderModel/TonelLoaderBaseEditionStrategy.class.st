@@ -130,8 +130,7 @@ TonelLoaderBaseEditionStrategy >> loadEMBaseEditionAndPrerequisites: baseEdition
 	editionsToLoad do: [:each |	EmImageBuilder loadApplications: (Array with: each)]
 ]
 
-{ #category : 'lookup',
-  #vaVisibility : 'private' }
+{ #category : 'lookup' }
 TonelLoaderBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplication [
 
 	self subclassResponsibility
