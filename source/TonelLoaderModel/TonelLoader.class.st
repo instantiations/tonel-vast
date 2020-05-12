@@ -279,6 +279,12 @@ TonelLoader >> loadedApplications [
 ]
 
 { #category : 'accessing' }
+TonelLoader >> loadedApplicationsIdentifiers [
+
+	^self loadedApplications collect: [:each | each name ]
+]
+
+{ #category : 'accessing' }
 TonelLoader >> loadedConfigurationMaps [
 
 	^loadedConfigurationMaps ifNil: [loadedConfigurationMaps := Set new]

@@ -189,7 +189,7 @@ TonelReaderClassDefinition >> instanceVariables [
 
 { #category : 'testing' }
 TonelReaderClassDefinition >> isSharedPool [
-	^isSharedPool ifNil: [isSharedPool := self computeWhetherSharedPool]
+	^false
 ]
 
 { #category : 'accessing' }

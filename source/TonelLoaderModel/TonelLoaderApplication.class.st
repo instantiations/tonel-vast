@@ -272,7 +272,7 @@ TonelLoaderApplication >> loadBaseApplication [
 TonelLoaderApplication >> loadPrerequisites [
 
 	self prerequisiteApps do: [:each |
-		each isLoaded
+		(self prerequisiteIsLoaded: each)
 			ifFalse: [
 				(self loader baseEditionStrategy selectPrerequisiteEditionOf: each)
 					ifNil: [
@@ -315,6 +315,13 @@ TonelLoaderApplication >> prerequisiteApps [
 		eachPrereq class = TonelLoaderApplication
 			ifTrue: [Smalltalk classAt: eachPrereq identifier]
 			ifFalse: [eachPrereq]]
+]
+
+{ #category : 'testing' }
+TonelLoaderApplication >> prerequisiteIsLoaded: emShadow [
+
+	^emShadow isLoaded
+		or: [self loader loadedApplicationsIdentifiers includes: emShadow name asString]
 ]
 
 { #category : 'accessing' }

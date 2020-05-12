@@ -229,18 +229,20 @@ TonelParser >> newClassDefinitionFrom: anArray [
 	typeName := (metadata at: #type ifAbsent: ['']) asString.
 	(#('pointers' 'bytes' 'words' 'longs') indexOf: typeName) = 0 ifTrue: [typeName := 'pointers'].
 
-	^((TonelReaderClassDefinition
-		name: (metadata at: #name)
-		superclass: (metadata at: #superclass)
-		variable: nil
-		fieldType: typeName
-		instanceVariables: (metadata at: #instVars ifAbsent: [#()])
-		classVariables: (metadata at: #classVars ifAbsent: [#()])
-		poolDictionaries: (metadata at: #pools ifAbsent: [#()]))
-			category: (metadata at: #category);
-			classInstanceVariables: (metadata at: #classInstVars ifAbsent: [#()]);
-			classComment: classComment;
-			yourself)
+	^((((metadata at: #superclass) asSymbol = #SharedPool
+		ifTrue: [TonelReaderSharedPoolDefinition]
+		ifFalse: [TonelReaderClassDefinition])
+			name: (metadata at: #name)
+			superclass: (metadata at: #superclass)
+			variable: nil
+			fieldType: typeName
+			instanceVariables: (metadata at: #instVars ifAbsent: [#()])
+			classVariables: (metadata at: #classVars ifAbsent: [#()])
+			poolDictionaries: (metadata at: #pools ifAbsent: [#()]))
+				category: (metadata at: #category);
+				classInstanceVariables: (metadata at: #classInstVars ifAbsent: [#()]);
+				classComment: classComment;
+				yourself)
 
 
 ]
