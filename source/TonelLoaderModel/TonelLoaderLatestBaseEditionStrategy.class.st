@@ -6,10 +6,13 @@ Class {
 
 { #category : 'operations',
   #vaVisibility : 'private' }
-TonelLoaderLatestBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplication [
+TonelLoaderLatestBaseEditionStrategy >> selectBaseEditionOf: aTonelApplication [
 
-	
-	^aTonelSubApplication availableShadows last
+	| shadows |
+
+	^(shadows := self filteredBaseEditions: aTonelApplication availableShadows) isEmpty
+		ifTrue: [nil]
+		ifFalse: [shadows first]
 ]
 
 { #category : 'operations' }

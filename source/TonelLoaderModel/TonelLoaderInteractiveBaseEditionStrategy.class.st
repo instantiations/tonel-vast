@@ -9,7 +9,7 @@ TonelLoaderInteractiveBaseEditionStrategy >> selectBaseEditionOf: aTonelSubAppli
 
 	^(CwListPrompter new)
 		messageString: (TonelMsg06 bindWith: aTonelSubApplication name);
-		items: aTonelSubApplication availableShadows ;
+		items: (self filteredBaseEditions: aTonelSubApplication availableShadows);
 		printBlock: [:ea | TonelMsg07 bindWith: ea signature with: ea timeStamp];
 		prompt	"$NLS$ Application %1 exists but is not loaded. Please choose a base version."	"$NLS$ %1 %2"
 ]

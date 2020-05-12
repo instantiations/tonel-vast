@@ -1,6 +1,9 @@
 Class {
 	#name : 'TonelLoaderBaseEditionStrategy',
 	#superclass : 'TonelLoaderStrategy',
+	#instVars : [
+		'versionedEditionsOnly'
+	],
 	#pools : [
 		'TonelTextConstants'
 	],
@@ -14,6 +17,15 @@ TonelLoaderBaseEditionStrategy >> confirmLoadPrerequisites: prereqNames of: appl
 	^self loader confirm: ((NlsCatEMT residentMsg: 'MxEMT24') addLineDelimiters 
 				bindWith: applicationNames
 				with: prereqNames)
+]
+
+{ #category : 'operations',
+  #vaVisibility : 'private' }
+TonelLoaderBaseEditionStrategy >> filteredBaseEditions: shadowEditions [
+
+	^self versionedEditionsOnly
+		ifTrue: [shadowEditions select: [:each | each isVersion]]
+		ifFalse: [shadowEditions]
 ]
 
 { #category : 'lookup',
@@ -171,4 +183,14 @@ TonelLoaderBaseEditionStrategy >> signalMissingPrerequisiteOf: application [
 TonelLoaderBaseEditionStrategy >> signalNoBaseEditionErrorFor: aTonelSubApplication [
 
 	^TonelLoaderError signal: (TonelMsg08 bindWith: aTonelSubApplication)
+]
+
+{ #category : 'accessing' }
+TonelLoaderBaseEditionStrategy >> versionedEditionsOnly [
+	^versionedEditionsOnly ifNil: [versionedEditionsOnly := true]
+]
+
+{ #category : 'accessing' }
+TonelLoaderBaseEditionStrategy >> versionedEditionsOnly: anObject [
+	versionedEditionsOnly := anObject
 ]
