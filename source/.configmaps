@@ -1,43 +1,99 @@
 [
 	{
-		#applications : [
-			'AbtShellProgramStarterApp' : '1.0',
-			'TonelBaseApp' : '1.1',
-			'TonelFileSystem' : '1.23',
-			'TonelLoaderModel' : '1.62',
-			'TonelReaderModel' : '1.50',
-			'TonelTools' : '1.12',
-			'TonelWriterModel' : '1.55'
-		],
 		#conditions : [
 			{
 				#condition : 'true',
 				#requiredMaps : [
-					'z.ST: STON Support' : 'V 9.2.1  [457]'
+					{
+						#name : 'z.ST: STON Support',
+						#versionName : 'V 9.2.1  [457]',
+						#ts : 3761144594
+					}
 				]
+			}
+		],
+		#ts : 3767007437,
+		#comment : '',
+		#formatVersion : '1.1',
+		#applications : OrderedCollection [
+			{
+				#name : 'AbtShellProgramStarterApp',
+				#versionName : '1.0',
+				#ts : 3762611357
+			},
+			{
+				#name : 'TonelBaseApp',
+				#versionName : '1.1',
+				#ts : 3762002743
+			},
+			{
+				#name : 'TonelFileSystem',
+				#versionName : '1.23',
+				#ts : 3758350880
+			},
+			{
+				#name : 'TonelLoaderModel',
+				#versionName : '1.64',
+				#ts : 3766994147
+			},
+			{
+				#name : 'TonelReaderModel',
+				#versionName : '1.50',
+				#ts : 3765716956
+			},
+			{
+				#name : 'TonelTools',
+				#versionName : '1.12',
+				#ts : 3765690955
+			},
+			{
+				#name : 'TonelWriterModel',
+				#versionName : '1.56',
+				#ts : 3766928667
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.56',
-		#comment : ''
+		#versionName : '1.58'
 	},
 	{
-		#applications : [
-			'TonelLoaderTests' : '1.6',
-			'TonelReaderTests' : '1.30',
-			'TonelWriterTests' : '1.32'
-		],
 		#conditions : [
 			{
 				#condition : 'true',
 				#requiredMaps : [
-					'Tonel' : '1.56',
-					'z.ST: SUnit' : 'V 9.2.1  [457]'
+					{
+						#name : 'Tonel',
+						#versionName : '1.58',
+						#ts : 3767007437
+					},
+					{
+						#name : 'z.ST: SUnit',
+						#versionName : 'V 9.2.1  [457]',
+						#ts : 3761144594
+					}
 				]
 			}
 		],
+		#ts : 3767007452,
+		#comment : '',
+		#formatVersion : '1.1',
+		#applications : OrderedCollection [
+			{
+				#name : 'TonelLoaderTests',
+				#versionName : '1.6',
+				#ts : 3765691339
+			},
+			{
+				#name : 'TonelReaderTests',
+				#versionName : '1.30',
+				#ts : 3758443008
+			},
+			{
+				#name : 'TonelWriterTests',
+				#versionName : '1.33',
+				#ts : 3766755436
+			}
+		],
 		#name : 'Test Tonel',
-		#versionName : '1.7',
-		#comment : ''
+		#versionName : '1.9'
 	}
 ]

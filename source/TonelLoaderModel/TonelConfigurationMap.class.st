@@ -8,7 +8,10 @@ Class {
 		'applications',
 		'conditions',
 		'hasChanges',
-		'comment'
+		'comment',
+		'version',
+		'timeStamp',
+		'emConfigMapEdition'
 	],
 	#pools : [
 		'TonelTextConstants'
@@ -30,11 +33,8 @@ TonelConfigurationMap >> addConfigurationExpression: expression withRequiredMaps
 
 	emConfigurationMap
 		addConfigurationExpression: expression;
-		addRequiredMapsAsLast: (
-				aCollection collect: [:mapAssoc |
-					(EmConfigurationMap editionsFor: mapAssoc key)
-						detect: [:one | one versionName = mapAssoc value]
-						ifNone: [EmConfigurationMap named: mapAssoc key timeStamp: mapAssoc value]])
+		addRequiredMapsAsLast: (aCollection 
+					collect: [:reqMap | self selectPrerequisiteEditionFor: reqMap])
 			for: expression
 ]
 
@@ -52,7 +52,7 @@ TonelConfigurationMap >> addPrerequisitesTo: emConfigurationMap [
 { #category : 'accessing' }
 TonelConfigurationMap >> applicationNames [
 
-	^self applications collect: [:each | each key ]
+	^self applications collect: [:each | each name ]
 ]
 
 { #category : 'accessing' }
@@ -77,9 +77,37 @@ TonelConfigurationMap >> comment: aString [
 
 { #category : 'Initializing',
   #vaVisibility : 'private' }
+TonelConfigurationMap >> computeApplicationsFrom: aDictionary [
+
+	^(aDictionary at: #applications ifAbsent: [OrderedCollection new]) collect: [:each | self computeReferenceFrom: each]
+]
+
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> computeReferenceFrom: anObject [
+	"Computes a reference from anObject.
+	 anObject can be either anAssociation (v1.0) or aDictionary (v1.1)."
+
+	| reference |
+
+	reference :=
+		TonelConfigurationMapReference from: (
+			anObject isDictionary
+				ifTrue: [anObject]
+				ifFalse: [
+					(Dictionary
+						with: #name -> anObject key
+						with: #versionName -> anObject value
+						with: #ts -> 0)]).
+	^reference
+]
+
+{ #category : 'Initializing',
+  #vaVisibility : 'private' }
 TonelConfigurationMap >> computeRequiredMapsFrom: aDictionary [
 
-	^aDictionary at: #requiredMaps ifAbsent: [#()]
+	^(aDictionary at: #requiredMaps ifAbsent: [Array new])
+		collect: [:each | self computeReferenceFrom: each]
 ]
 
 { #category : 'accessing' }
@@ -95,16 +123,52 @@ TonelConfigurationMap >> conditions: anObject [
 { #category : 'loading',
   #vaVisibility : 'private' }
 TonelConfigurationMap >> createNewEdition [
-	
-	^EmConfigurationMap create: self name.
-	
 
+	| editionsDict newTS aConfigMap |
+
+	aConfigMap := EmConfigurationMap named: self name timeStampWithVersionInfo: self timeStamp.
+	EmConfigurationMap configurationRecordClass relocateRootDictionaryUsing: [:diskDict |
+		diskDict
+			at: aConfigMap name
+			putPointerFrom: [:editionsFP |
+				editionsDict := EmEditionsDictionary updating: editionsFP from: diskDict library.
+				newTS :=
+					(editionsDict includesKey: self timeStamp)
+						ifTrue: [editionsDict nextTimeStamp]
+						ifFalse: [aConfigMap timeStamp].
+				editionsDict
+					at: newTS
+					putPointerFrom: [:ignored |
+						(EmConfigurationMap configurationRecordClass
+							using: (editionsDict at: aConfigMap timeStamp)
+							from: diskDict library)
+								map: aConfigMap;
+								newEditionAt: newTS using: Dictionary new ifUnable: [^nil];
+								insert]]].
+	^aConfigMap
+
+
+]
+
+{ #category : 'Initializing' }
+TonelConfigurationMap >> defaultFormatVersion [
+	^'1.0'
+]
+
+{ #category : 'accessing' }
+TonelConfigurationMap >> emConfigMapEdition [
+	^emConfigMapEdition
+]
+
+{ #category : 'accessing' }
+TonelConfigurationMap >> emConfigMapEdition: anObject [
+	emConfigMapEdition := anObject
 ]
 
 { #category : 'testing' }
 TonelConfigurationMap >> equals: anEmConfigurationMap [
 
-	^anEmConfigurationMap versionName = self versionName and: 
+	^(self hasSameVersionAs: anEmConfigurationMap) and: 
 			[(self hasSameConditionsAs: anEmConfigurationMap) and: 
 					[(self hasSameApplicationsAs: anEmConfigurationMap) and: 
 							[(self hasSameRequiredMapsAs: anEmConfigurationMap) 
@@ -115,18 +179,16 @@ TonelConfigurationMap >> equals: anEmConfigurationMap [
   #vaVisibility : 'private' }
 TonelConfigurationMap >> hasSameApplicationsAs: anEmConfigurationMap [
 
-	| emAppVersions |
 	anEmConfigurationMap applicationNames asSortedCollection 
 		= self applicationNames asSortedCollection ifFalse: [^false].
-	emAppVersions := anEmConfigurationMap shadowApplications 
-				collect: [:each | each name -> each versionName].
-	(self applications asSortedCollection: [:a :b | a key <= b key]) 
-		with: emAppVersions
+	(self applications asSortedCollection: [:a :b | a name <= b name]) asArray 
+		with: anEmConfigurationMap shadowApplications
 		do: 
-			[:localApp :emApp | 
-			(localApp key asSymbol = emApp key asSymbol 
-				and: [(self loadedVersionOfAppNamed: localApp) = emApp value]) 
-					ifFalse: [^false]].
+			[:cmApp :emApp | 
+			(cmApp name asSymbol = emApp name asSymbol and: 
+					[(self loadedTimeStampOfAppNamed: cmApp) = emApp timeStamp 
+						or: [(self loadedVersionOfAppNamed: cmApp) = emApp versionName]]) 
+				ifFalse: [^false]].
 	^true
 ]
 
@@ -138,26 +200,36 @@ TonelConfigurationMap >> hasSameConditionsAs: anEmConfigurationMap [
 		= self conditions size
 ]
 
-{ #category : 'testing' }
+{ #category : 'testing',
+  #vaVisibility : 'private' }
 TonelConfigurationMap >> hasSameRequiredMapsAs: anEmConfigurationMap [
 
 	| localPrereqs emPrereqs sortBlock |
 
 	sortBlock := [:a :b | a key <= b key].
 	localPrereqs :=
-		(self requiredMaps collect: [:each | each name -> each versionName])
+		(self requiredMaps collect: [:each | (each name) -> (each timeStamp)])
 			asSortedCollection: sortBlock.
 	emPrereqs :=
-		(anEmConfigurationMap requiredMaps collect: [:each | each name -> each versionName])
+		(anEmConfigurationMap requiredMaps collect: [:each | (each name) -> (each timeStamp)])
 			asSortedCollection: sortBlock.
 
 	^localPrereqs = emPrereqs
+]
+
+{ #category : 'testing',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> hasSameVersionAs: anEmConfigurationMap [
+
+	^anEmConfigurationMap timeStamp = self timeStamp
 ]
 
 { #category : 'Initializing',
   #vaVisibility : 'private' }
 TonelConfigurationMap >> initializeFrom: aDictionary in: aTonelLoader [
 
+	version := aDictionary at: #formatVersion
+				ifAbsent: [self defaultFormatVersion].
 	loader := aTonelLoader.
 	name := aDictionary at: #name.
 	conditions := (aDictionary at: #conditions
@@ -165,9 +237,9 @@ TonelConfigurationMap >> initializeFrom: aDictionary in: aTonelLoader [
 						[:each | 
 						(each at: #condition ifAbsent: ['true']) 
 							-> (self computeRequiredMapsFrom: each)].
-	applications := aDictionary at: #applications
-				ifAbsent: [OrderedCollection new].
+	applications := self computeApplicationsFrom: aDictionary.
 	versionName := aDictionary at: #versionName ifAbsent: [String new].
+	timeStamp := EmTimeStamp new: (aDictionary at: #ts ifAbsent: [0]).
 	comment := aDictionary at: #comment ifAbsent: [String new]
 ]
 
@@ -191,33 +263,38 @@ TonelConfigurationMap >> isExpressionValid: anExpression [
 
 { #category : 'loading' }
 TonelConfigurationMap >> load [
-
-	| emConfigMapEdition emApps |
-	emApps := self loadApplicationsFor: emConfigMapEdition.	
+	| emApps |
+	emApps := self loadApplications.
 	emConfigMapEdition := self selectOrCreateNewEdition.
-	(emConfigMapEdition isVersion)
-		ifFalse: [
-			emApps do: [:each | emConfigMapEdition addApplication: each].
+	emConfigMapEdition isVersion 
+		ifFalse: 
+			[emApps do: [:each | emConfigMapEdition addApplication: each].
 			self addPrerequisitesTo: emConfigMapEdition.
 			self versionEdition: emConfigMapEdition].
-	
-	self loader loadedConfigurationMaps add: self.
+	self loader loadedConfigurationMaps add: self
 ]
 
 { #category : 'loading',
   #vaVisibility : 'private' }
-TonelConfigurationMap >> loadApplicationsFor: emConfigMap [
+TonelConfigurationMap >> loadApplications [
 	^self loader loadApplicationsNamed: self applicationNames
-	
-	
 ]
 
 { #category : 'testing',
   #vaVisibility : 'private' }
-TonelConfigurationMap >> loadedVersionOfAppNamed: localApp [
+TonelConfigurationMap >> loadedTimeStampOfAppNamed: cmApp [
 
-	^(Smalltalk classAt: localApp key asSymbol)
-		ifNil: [localApp value]
+	^(Smalltalk classAt: cmApp name asSymbol)
+		ifNil: [cmApp timeStamp]
+		ifNotNil: [:emApp | emApp timeStamp]
+]
+
+{ #category : 'testing',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> loadedVersionOfAppNamed: cmApp [
+
+	^(Smalltalk classAt: cmApp name asSymbol)
+		ifNil: [cmApp versionName]
 		ifNotNil: [:emApp | emApp versionName]
 ]
 
@@ -274,19 +351,17 @@ TonelConfigurationMap >> requiredMaps [
 	| requiredMaps |
 
 	requiredMaps := OrderedCollection new.
-	self conditions do: [:assoc | | condition configMapsNames |
+	self conditions do: [:assoc | | condition conditionMaps |
 		condition := assoc key.
-		configMapsNames := assoc value.
+		conditionMaps := assoc value.
 		(self isExpressionValid: condition)
 			ifTrue: [
 				requiredMaps addAll: (
-					configMapsNames collect: [:each |
+					conditionMaps collect: [:each |
 						self loader
-							configurationMapNamed: each key
-							versionName: each value
-							ifNone: [(TonelEmConfigurationMap name: each key versionName: each value)
-											loader: self loader;
-											yourself]])]].
+							configurationMapNamed: each name
+							ts: each timeStamp
+							versionName: each versionName])]].
 	^requiredMaps
 ]
 
@@ -296,6 +371,35 @@ TonelConfigurationMap >> selectOrCreateNewEdition [
 
 	self loader alwaysCreateEditions ifTrue: [^self createNewEdition].
 	^(EmConfigurationMap editionsFor: self name) detect: [:one | self equals: one ] ifNone: [self createNewEdition]
+]
+
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelConfigurationMap >> selectPrerequisiteEditionFor: reqMap [
+
+	| loadedConfigMap |
+	loadedConfigMap := (self loader 
+				configurationMapNamed: reqMap name
+				ts: reqMap timeStamp
+				versionName: reqMap versionName
+				ifNone: [nil]) 
+					ifNotNil: [:tonelConfigMap | tonelConfigMap emConfigMapEdition].
+	^loadedConfigMap ifNil: 
+			[(EmConfigurationMap editionsFor: reqMap name) detect: 
+					[:one | 
+					one timeStamp = reqMap timeStamp 
+						or: [one versionName = reqMap versionName]]
+				ifNone: [EmConfigurationMap named: reqMap name timeStamp: reqMap timeStamp]]
+]
+
+{ #category : 'accessing' }
+TonelConfigurationMap >> timeStamp [
+	^timeStamp ifNil: [EmTimeStamp new: 0]
+]
+
+{ #category : 'accessing' }
+TonelConfigurationMap >> timeStamp: anObject [
+	timeStamp := anObject
 ]
 
 { #category : 'loading',

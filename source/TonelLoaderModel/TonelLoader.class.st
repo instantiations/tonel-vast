@@ -116,9 +116,26 @@ TonelLoader >> checkRepositoryContents [
 ]
 
 { #category : 'lookup' }
-TonelLoader >> configurationMapNamed: aString versionName: versionName ifNone: aBlock [
+TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: versionName [
 
-	^self configurationMaps detect: [:one | one name = aString and: [one versionName = versionName]] ifNone: aBlock
+	^self
+		configurationMapNamed: aString
+		ts: anEmTimeStamp
+		versionName: versionName
+		ifNone: [
+			(TonelEmConfigurationMap name: aString ts: anEmTimeStamp seconds versionName: versionName)
+				loader: self;
+				yourself]
+]
+
+{ #category : 'lookup',
+  #vaVisibility : 'private' }
+TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: versionName ifNone: aBlock [
+
+	^self configurationMaps
+		detect: [:one |
+			one name = aString and: [one timeStamp = anEmTimeStamp or: [one versionName = versionName]]]
+		ifNone: aBlock
 ]
 
 { #category : 'accessing' }

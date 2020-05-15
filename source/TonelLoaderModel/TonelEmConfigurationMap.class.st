@@ -5,15 +5,13 @@ Class {
 }
 
 { #category : 'Not categorized' }
-TonelEmConfigurationMap class >> name: aString versionName: versionString [
+TonelEmConfigurationMap class >> name: aString ts: seconds versionName: versionString [
 
-
-
-	^self new
+	^(self new)
 		name: aString;
+		timeStamp: (EmTimeStamp new: seconds);
 		versionName: versionString;
 		yourself
-	
 ]
 
 { #category : 'loading' }
@@ -21,7 +19,7 @@ TonelEmConfigurationMap >> loadWithRequiredMaps [
 
 	| emConfigMap |
 	emConfigMap := (EmConfigurationMap editionsFor: self name)
-		detect: [:one | one versionName = self versionName]
+		detect: [:one | self hasSameVersionAs: one]
 		ifNone: [
 			TonelLoaderError signal: (
 				'Could not find configuration map <1p> <2p>'

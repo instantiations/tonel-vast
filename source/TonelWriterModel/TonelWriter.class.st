@@ -117,36 +117,37 @@ TonelWriter >> addConfigurationMapData: aConfigurationMap into: aCollection [
 
 	| aDictionary confExpressions conditions |
 
-	aDictionary := Dictionary new.
+	aDictionary := self mapClass new.
 	aDictionary
+		at: #formatVersion put: '1.1';
 		at: #name put: aConfigurationMap name;
 		at: #versionName put: aConfigurationMap versionName;
+		at: #ts put: aConfigurationMap timeStamp seconds;
 		at: #applications
-			put:
-				((aConfigurationMap shadowApplications 
-					collect: [:each | each name asString -> each versionName])
-						asSortedCollection)
-							asArray.
-
+			put: (
+				aConfigurationMap shadowApplications asSortedCollection collect: [:each |
+					(self mapClass
+						with: #name -> each name asString
+						with: #versionName -> each versionName
+						with: #ts -> each timeStamp seconds)]).
 	conditions := aConfigurationMap requiredMapsConfigurations.
 	confExpressions := OrderedCollection new.
 	conditions do: [:condition | | dict |
-		dict := Dictionary new.
+		dict := self mapClass new.
 		dict
 			at: #condition put: condition key;
 			at: #requiredMaps
 				put:
 					(condition value collect: [:each | | requiredMap |
-						requiredMap := (EmConfigurationMap
-							named: each key
-							timeStamp: each value).
-						requiredMap name -> requiredMap versionName])
-							asArray.
+						requiredMap := EmConfigurationMap named: each key timeStamp: each value.
+						(self mapClass
+							with: #name -> requiredMap name
+							with: #versionName -> requiredMap versionName
+							with: #ts -> each value seconds)])
+								asArray.
 		confExpressions add: dict].
-
 	aDictionary at: #conditions put: confExpressions asArray.
 	aDictionary at: #comment put: aConfigurationMap comment.
-
 	aCollection add: aDictionary
 ]
 
@@ -286,6 +287,27 @@ TonelWriter >> lineDelimiter: aString [
 	 Usually aString is CR, LF or CRLF."
 
 	lineDelimiter := aString
+]
+
+{ #category : 'writing-ConfigMaps',
+  #vaVisibility : 'private' }
+TonelWriter >> mapClass [
+	"Answer the class used to write maps (aka 'hashmaps') when exporting."
+
+	^Dictionary
+]
+
+{ #category : 'writing-application',
+  #vaVisibility : 'private' }
+TonelWriter >> toJSONStringPretty: anObject [
+
+	^String streamContents: 
+			[:stream | 
+			(STONWriter on: stream) 
+				jsonMode: true;
+				newLine: lineDelimiter;
+				prettyPrint: true;
+				nextPut: anObject]
 ]
 
 { #category : 'writing-application',
