@@ -72,6 +72,7 @@ TonelLoaderDefaultNamingStrategy >> nameForSubApp: aTonelLoaderSubApplication [
 
 { #category : 'accessing' }
 TonelLoaderDefaultNamingStrategy >> prefix [
+
 	^prefix
 ]
 
