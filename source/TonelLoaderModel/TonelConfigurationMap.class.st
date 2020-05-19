@@ -138,13 +138,19 @@ TonelConfigurationMap >> createNewEdition [
 						ifFalse: [aConfigMap timeStamp].
 				editionsDict
 					at: newTS
-					putPointerFrom: [:ignored |
-						(EmConfigurationMap configurationRecordClass
+					putPointerFrom: [:ignored | | editionRecord |
+						editionRecord := (EmConfigurationMap configurationRecordClass
 							using: (editionsDict at: aConfigMap timeStamp)
-							from: diskDict library)
-								map: aConfigMap;
-								newEditionAt: newTS using: Dictionary new ifUnable: [^nil];
-								insert]]].
+							from: diskDict library).
+						editionRecord isVersion
+							ifFalse: [
+								editionRecord := (EmConfigurationMap configurationRecordClass
+									using: EmLibraryPointer void
+									from: diskDict library)].
+						editionRecord map: aConfigMap.
+						editionRecord
+							newEditionAt: newTS using: Dictionary new ifUnable: [^nil];
+							insert]]].
 	^aConfigMap
 
 

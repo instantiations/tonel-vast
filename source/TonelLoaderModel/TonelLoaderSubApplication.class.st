@@ -724,7 +724,7 @@ TonelLoaderSubApplication >> tonelDefinedClasses [
 
 	definedClasses := Dictionary new.
 	self packageDefinition classDefinitions
-		keysDo: [:key | key name = self name ifFalse: [definedClasses at: key name asSymbol put: key]].
+		keysDo: [:key | definedClasses at: key name asSymbol put: key].
 	^definedClasses
 ]
 

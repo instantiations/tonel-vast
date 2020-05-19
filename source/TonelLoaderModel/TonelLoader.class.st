@@ -85,11 +85,11 @@ TonelLoader >> baseEditionStrategy: anObject [
   #vaVisibility : 'private' }
 TonelLoader >> basicLoadApplication: aTonelApplication [
 
-	aTonelApplication prerequisites do: [:prereq |
-		((self applications anySatisfy: [:any | any name asSymbol = prereq name])
-			and: [self loadedApplications noneSatisfy: [:each | each name asSymbol = prereq name]])
+	aTonelApplication prerequisites do: 
+			[:prereq | 
+			(self shouldLoadPrerequisiteApplication: prereq) 
 				ifTrue: [self basicLoadApplication: (self applicationNamed: prereq name)]].
-	(self loadedApplications includes: aTonelApplication)
+	(self loadedApplications includes: aTonelApplication) 
 		ifFalse: [(TonelApplicationLoader on: aTonelApplication in: self) load]
 ]
 
@@ -411,6 +411,15 @@ TonelLoader >> settings [
 { #category : 'accessing' }
 TonelLoader >> settings: anObject [
 	settings := anObject
+]
+
+{ #category : 'loading' }
+TonelLoader >> shouldLoadPrerequisiteApplication: prereq [
+
+	^(self applications anySatisfy: [:any | any name asSymbol = prereq name]) 
+		and: 
+			[self loadedApplications 
+				noneSatisfy: [:each | each name asSymbol = prereq name]]
 ]
 
 { #category : 'lookup' }
