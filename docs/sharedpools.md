@@ -92,16 +92,15 @@ The `_SHAREDPOOOL_%PoolName%_initialize` is just a convention used to identify t
 
 ## Avoiding Shared Pool conversion
 
-If the purpose of exporting to Tonel is just to have a file based version of your code that is only going to be loaded back into VAST or to workaround [some issues with the handling of SharedPools](https://github.com/vasmalltalk/tonel-vast/issues/36) then you can shortcircuit the conversion of declaration methods into subclasses and export them as what they are: methods.
+If the purpose of exporting to Tonel is just to have a file based version of your code that is only going to be loaded back into VAST or to workaround [some issues with the handling of SharedPools](https://github.com/vasmalltalk/tonel-vast/issues/36) then you can export their declarations directly as what they are: methods.
 
-To avoid converting to shared pools you can say _NO_ when asked about shared pool conversion (if using an interactive export tool), or you can simply instruct the `TonelWriter` to not perform the conversion.
+
+**NOTE**: By default the `TonelWriter` doesn't convert Shared Pools, so you have to explictly set this option if you want to enable it, this can be done programmaticaly by instructing the `TonelWriter` to perform the conversion as follows.
 
 
 ```smalltalk
 TonelWriter new
 	applications: (Array with: AbtContainerExamplesApp);
-	dontConvertSharedPools; "<<-- this line"
+	convertSharedPools; "<<-- this line"
 	writeProjectInto: aCfsPath.
 ```
-
-**NOTE**: By default the `TonelWriter` converts all Shared Pools, so you have to explictly set this option if you want to avoid it.

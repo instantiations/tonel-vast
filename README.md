@@ -59,27 +59,75 @@ For [Instantiations](https://www.instantiations.com/) and VA Smalltalk, having g
 
 ### Using GUI menus
 
-- Open Application Manager and try the menu option "Import/Export" -> "Import Applications from Tonel packages..." and "Export Applications as Tonel packages..."
-<img width="500" alt="Import/Export" src="https://user-images.githubusercontent.com/1032834/64197391-621ea780-ce5c-11e9-8312-55994d01f68e.png">
+#### Applications
+
+You can load individual Tonel packages as Applications or export VAST Applications as Tonel packages via Application Manager's `Import/Export`.
+
+![Application Manager](docs/img/application-manager.png)
+
+#### Configuration Maps
+
+You can also export and load Configuration Maps together with their applications from the Configuration Maps Browser.
+
+##### Exporting
+
+Select the Configuration Maps you want to export in the names list, and then open the contextual menu and choose `Export`, and then `Export Configuration Maps to Tonel`.
+
+![Application Manager](docs/img/configmaps-export.png)
+
+This will ask you which version of the config maps you want to export (only one version per map is allowed), where do you want to store it, as well as a few other settings.
+
+##### Loading
+
+To load a Configuration Map in a Tonel repository into VAST, you have to choose the `Import` option in the names list, and then `Load Configuration Maps from Tonel...`.
+
+![Application Manager](docs/img/configmaps-load.png)
+
+Once you select the available Configuration Maps, they will be loaded together with their required maps. If a required map is within the Tonel repository, then this map version will take precedence over the version specified.
 
 
 ### Programmatically
 
-```smalltalk
+As with the GUI options, you can also export independent Applications or whole Configuration Maps to Tonel.
 
+#### Applications
+
+```smalltalk
+"Exporting to Tonel"
+TonelWriter new
+  clearSourcesDirectory; "deletes everything in the target directory"
+  writeProjectIncluding: (Array with: TonelExampleApp)
+  into: (CfsPath named: 'tonel-demos').
+ ```
+
+```smalltalk
+"Loading from Tonel"
 (TonelLoader readFromPath (CfsPath named: 'tonel-demos'))
   loadApplicationNamed: 'TonelExampleApp'.
 
 "or you can load by Tonel package name"
 (TonelLoader readFromPath (CfsPath named: 'tonel-demos'))
   loadApplicationsForPackagesNamed: #('YourPackage-Core' 'YourPackage-Tests').
+```
 
-"Writing back to Tonel"
+#### Configuration Maps
+
+```smalltalk
+"Exporting to Tonel"
 TonelWriter new
-  clearSourcesDirectory; "deletes everything in the target directory"
-  writeProjectIncluding: (Array with: TonelExampleApp)
-  into: (CfsPath named: 'tonel-demos').
- ```
+  addLatestConfigurationMapNamed: 'App';
+  addLatestConfigurationMapNamed: 'App Tests';
+  addApplicationsFromConfigurationMaps;
+  writeProjectInto: (CfsPath named: 'my-app').
+```
+```smalltalk
+"Loading from Tonel"
+(TonelLoader readFromPath: (CfsPath named: 'my-app')) loadAllMapsWithRequiredMaps.
+```
+
+#### More options
+
+You can specify other options like versioning, prerequisite resolution, and others using the different strategies for each case, read the [strategies documentation](docs/strategies.md) to learn more about them.
 
 
 ## VAST specific features
