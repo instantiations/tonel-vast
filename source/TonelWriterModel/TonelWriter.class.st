@@ -159,6 +159,12 @@ TonelWriter >> addConfigurationMapNamed: configMapName versionName: aString [
 		ifNotNil:[:configMap | self addConfigurationMap: configMap ]
 ]
 
+{ #category : 'configuring' }
+TonelWriter >> addConfigurationMaps: aCollection [
+
+	aCollection do: [:each | self addConfigurationMap: each ]
+]
+
 { #category : 'accessing' }
 TonelWriter >> addLatestConfigurationMapNamed: configMapName [
 

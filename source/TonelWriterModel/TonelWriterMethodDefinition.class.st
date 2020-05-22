@@ -105,23 +105,23 @@ TonelWriterMethodDefinition >> isVirtualPragma [
 { #category : 'accessing' }
 TonelWriterMethodDefinition >> methodBody [
 
-	| parseTree body bodyStream messagePattern |
+	| result body bodyStream messagePattern |
 
-	parseTree :=
-		EsParser
+	result :=
+		EsCompiler
 			parse: self compiledMethod sourceString
-			class: self compiledMethod methodClass
+			environment: (EsCompiler nameEnvironmentForClass: self compiledMethod methodClass)
+			messagePattern: true
 			scanComments: false
-			errorHandler: nil
-			ifFail: [nil].
+			errorHandler: EsSilentErrorHandler new.
 
-	messagePattern := parseTree messagePattern.
+	messagePattern := result parseTree messagePattern.
 	bodyStream :=
 		(self compiledMethod sourceString
 			copyFrom: (messagePattern sourceEnd + (CldtConstants::LineDelimiter size) + 1)
-			to: parseTree sourceEnd)
+			to: result parseTree sourceEnd)
 				readStream.
-				
+
 	body :=
 		bodyStream
 			skipSeparators;
@@ -132,16 +132,16 @@ TonelWriterMethodDefinition >> methodBody [
 { #category : 'accessing' }
 TonelWriterMethodDefinition >> methodDeclaration [
 
-	| parseTree declaration messagePattern |
+	| result declaration messagePattern |
 
-	parseTree :=
-		EsParser
-			parse: self compiledMethod sourceString
-			class: self compiledMethod methodClass
-			scanComments: false
-			errorHandler: nil
-			ifFail: [nil].
-	messagePattern := parseTree messagePattern.
+	result := EsCompiler
+		parse: self compiledMethod sourceString
+		environment: (EsCompiler nameEnvironmentForClass: self compiledMethod methodClass)
+		messagePattern: true
+		scanComments: false
+		errorHandler: EsSilentErrorHandler new.
+		
+	messagePattern := result parseTree messagePattern.
 	declaration := messagePattern asString trimBoth: [:char | char isSeparator].
 	^declaration
 ]

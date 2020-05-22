@@ -59,7 +59,7 @@ TonelLoaderGitVersionStrategy >> attemptVersionFromGit [
 { #category : 'versioning',
   #vaVisibility : 'private' }
 TonelLoaderGitVersionStrategy >> defaultVersionNamePattern [
-	^'<1s>-<2s> (<3p>)'
+	^'<1s>-<2s>'
 ]
 
 { #category : 'versioning' }

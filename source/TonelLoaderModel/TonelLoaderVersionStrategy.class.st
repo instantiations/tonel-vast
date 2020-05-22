@@ -16,6 +16,12 @@ TonelLoaderVersionStrategy class >> description [
 ]
 
 { #category : 'Not categorized' }
+TonelLoaderVersionStrategy class >> isGit [
+
+	^self name = #TonelLoaderGitVersionStrategy
+]
+
+{ #category : 'Not categorized' }
 TonelLoaderVersionStrategy class >> isSpecific [
 
 	^self name = #TonelLoaderSpecifiedVersionStrategy

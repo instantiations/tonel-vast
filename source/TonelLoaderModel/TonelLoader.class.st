@@ -216,7 +216,7 @@ TonelLoader >> loadAllApplications [
 { #category : 'loading' }
 TonelLoader >> loadAllMapsWithRequiredMaps [
 	
-	self configurationMaps do: [:each | each loadWithRequiredMaps ]
+	self loadConfigurationMaps: self configurationMaps
 ]
 
 { #category : 'loading' }
@@ -287,6 +287,12 @@ TonelLoader >> loadConfigurationMapNamed: aString withPrereqs: aBoolean [
 	(self configurationMaps detect: [:one | one name = aString]) ifNotNil: [:configMap |
 		aBoolean ifTrue: [configMap loadWithRequiredMaps] ifFalse: [configMap load].
 		self loadedConfigurationMaps add: configMap]
+]
+
+{ #category : 'loading' }
+TonelLoader >> loadConfigurationMaps: aCollection [
+	
+	aCollection do: [:each | each loadWithRequiredMaps ]
 ]
 
 { #category : 'accessing' }
