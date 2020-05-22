@@ -2,3 +2,4 @@
 * text eol=crlf
 *.st linguist-language=Smalltalk
 *.dat binary
+*.png binary
