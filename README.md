@@ -73,7 +73,7 @@ You can also export and load Configuration Maps together with their applications
 
 Select the Configuration Maps you want to export in the names list, and then open the contextual menu and choose `Export`, and then `Export Configuration Maps to Tonel`.
 
-![Application Manager](docs/img/configmaps-export.png)
+![Configuration Maps Export](docs/img/configmaps-export.png)
 
 This will ask you which version of the config maps you want to export (only one version per map is allowed), where do you want to store it, as well as a few other settings.
 
@@ -81,7 +81,7 @@ This will ask you which version of the config maps you want to export (only one 
 
 To load a Configuration Map in a Tonel repository into VAST, you have to choose the `Import` option in the names list, and then `Load Configuration Maps from Tonel...`.
 
-![Application Manager](docs/img/configmaps-load.png)
+![Configuration Maps Load](docs/img/configmaps-load.png)
 
 Once you select the available Configuration Maps, they will be loaded together with their required maps. If a required map is within the Tonel repository, then this map version will take precedence over the version specified.
 
