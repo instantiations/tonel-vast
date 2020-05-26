@@ -13,7 +13,6 @@ Class {
 		'classInstanceVariables',
 		'poolDictionaries',
 		'methods',
-		'hasChanges',
 		'isSharedPool',
 		'category'
 	],
@@ -185,11 +184,6 @@ TonelReaderClassDefinition >> initializeWithName: nameString superclass: superSt
 TonelReaderClassDefinition >> instanceVariables [
 	^instanceVariables
 	
-]
-
-{ #category : 'testing' }
-TonelReaderClassDefinition >> isSharedPool [
-	^false
 ]
 
 { #category : 'accessing' }

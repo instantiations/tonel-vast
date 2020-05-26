@@ -369,17 +369,19 @@ TonelLoaderSubApplication >> deleteRemovedSubApplications [
 { #category : 'querying' }
 TonelLoaderSubApplication >> hasChangesFor: emAppOrSubApp inRootApp: emRootApplication [
 
-	^hasChanges ifNil: [ "poolsAccounted ifFalse: [ self accountForPoolDictionaryClasses ]."
-		(emAppOrSubApp rootApplication ~= emRootApplication) ifTrue: [
-				TonelLoaderError signal: (
-					TonelMsg05
-						bindWith: self name
-						with: emAppOrSubApp rootApplication name asString
-						with: emRootApplication name asString) "Subapp belongs to another app in the image"]. "$NLS$ The SubApplication %1 exists in the image, but is a subapplication of %2, not %3"
-		hasChanges :=
-			(self tonelDefinedClasses anySatisfy: [:tonelClass | tonelClass hasChangesIn: emAppOrSubApp]) or: [
-				(self hasRemovedClassesFor: emAppOrSubApp)
-					or: [self subApplicationsHaveChangesFor: emAppOrSubApp inRootApp: emRootApplication]]]
+	^hasChanges ifNil: 
+			["poolsAccounted ifFalse: [ self accountForPoolDictionaryClasses ]."
+
+			emAppOrSubApp rootApplication ~= emRootApplication 
+				ifTrue: 
+					[TonelLoaderError signal: (TonelMsg05 
+								bindWith: self name
+								with: emAppOrSubApp rootApplication name asString
+								with: emRootApplication name asString)	"Subapp belongs to another app in the image"].	"$NLS$ The SubApplication %1 exists in the image, but is a subapplication of %2, not %3"
+			hasChanges := (self hasClassChangesComparedTo: emAppOrSubApp) or: 
+							[(self hasRemovedClassesFor: emAppOrSubApp) or: 
+									[self subApplicationsHaveChangesFor: emAppOrSubApp
+										inRootApp: emRootApplication]]]
 ]
 
 { #category : 'testing' }
@@ -390,6 +392,13 @@ TonelLoaderSubApplication >> hasChangesIn: emParentApp [
 	^(Smalltalk classAt: self identifier)
 		ifNil: [true]
 		ifNotNil: [:emSubApp | self hasChangesFor: emSubApp inRootApp: emParentApp]
+]
+
+{ #category : 'querying' }
+TonelLoaderSubApplication >> hasClassChangesComparedTo: emAppOrSubApp [
+
+	^self tonelDefinedClasses , self tonelExtendedClasses 
+		anySatisfy: [:tonelClass | tonelClass hasChangesIn: emAppOrSubApp]
 ]
 
 { #category : 'querying' }

@@ -250,12 +250,9 @@ TonelLoaderApplication >> hasChanges [
 		emApplication := Smalltalk classAt: self identifier.
 		hasChanges :=
 			emApplication isNil or: [
-				(self tonelDefinedClasses anySatisfy: [:class | class hasChangesIn: emApplication])
-					or: [
-						(self hasRemovedClassesFor: emApplication) or: [
-							self
-								subApplicationsHaveChangesFor: emApplication
-								inRootApp: emApplication]]]]
+				(self hasClassChangesComparedTo: emApplication) or: [
+					(self hasRemovedClassesFor: emApplication) or: [
+						self subApplicationsHaveChangesFor: emApplication inRootApp: emApplication]]]]
 ]
 
 { #category : 'loading' }

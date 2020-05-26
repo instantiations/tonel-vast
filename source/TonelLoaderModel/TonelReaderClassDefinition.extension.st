@@ -191,26 +191,6 @@ TonelReaderClassDefinition >> definePoolDictionariesIn: anApp using: aTonelLoade
 ]
 
 { #category : '*TonelLoaderModel',
- #vaCategories : ['testing'] }
-TonelReaderClassDefinition >> hasChangesIn: emAppOrSubApp [
-
-	hasChanges isNil
-		ifTrue: [| baseClass |
-			self isSharedPool
-				ifTrue: [
-					hasChanges :=
-						(tonelMethods select: [:each | each isDeclaration])
-							anySatisfy: [:tonelMethod | tonelMethod hasChangesIn: emAppOrSubApp]
-
-					]
-				ifFalse: [
-					hasChanges :=
-						(baseClass := self concreteClassIn: emAppOrSubApp) isNil
-							or: [self hasChangesIn: emAppOrSubApp comparedTo: baseClass]]].
-	^hasChanges
-]
-
-{ #category : '*TonelLoaderModel',
  #vaCategories : ['testing'],
   #vaVisibility : 'private' }
 TonelReaderClassDefinition >> hasChangesIn: emAppOrSubApp comparedTo: aClass [

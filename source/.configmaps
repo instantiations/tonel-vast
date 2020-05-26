@@ -12,7 +12,7 @@
 				]
 			}
 		],
-		#ts : 3767592545,
+		#ts : 3767952782,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -33,13 +33,13 @@
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : '1.67',
-				#ts : 3767591460
+				#versionName : '1.68',
+				#ts : 3767947668
 			},
 			{
 				#name : 'TonelReaderModel',
-				#versionName : '1.50',
-				#ts : 3765716956
+				#versionName : '1.51',
+				#ts : 3767947671
 			},
 			{
 				#name : 'TonelTools',
@@ -53,7 +53,7 @@
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.61'
+		#versionName : '1.62'
 	},
 	{
 		#conditions : [
@@ -62,8 +62,8 @@
 				#requiredMaps : [
 					{
 						#name : 'Tonel',
-						#versionName : '1.61',
-						#ts : 3767592545
+						#versionName : '1.62',
+						#ts : 3767952782
 					},
 					{
 						#name : 'z.ST: SUnit',
@@ -73,7 +73,7 @@
 				]
 			}
 		],
-		#ts : 3767592549,
+		#ts : 3767952786,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -94,6 +94,6 @@
 			}
 		],
 		#name : 'Test Tonel',
-		#versionName : '1.12'
+		#versionName : '1.13'
 	}
 ]

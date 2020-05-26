@@ -2,7 +2,8 @@ Class {
 	#name : 'TonelReaderAbstractClassDefinition',
 	#superclass : 'TonelReaderDefinition',
 	#instVars : [
-		'tonelMethods'
+		'tonelMethods',
+		'hasChanges'
 	],
 	#pools : [
 		'TonelTextConstants'
@@ -14,6 +15,11 @@ Class {
 TonelReaderAbstractClassDefinition >> identifier [
 
 	self subclassResponsibility
+]
+
+{ #category : 'testing' }
+TonelReaderAbstractClassDefinition >> isSharedPool [
+	^false
 ]
 
 { #category : 'accessing' }
