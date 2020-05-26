@@ -16,16 +16,16 @@ TonelTools class >> addToApplicationsMenu: aMenu browser: aBrowser [
 		importExportSubmenu := aMenu menuItemWithValue: #applicationsImportExportSubMenu. "StsApplicationManager"
 		importExportSubmenu ifNil: [^self]].
 	importExportSubmenu subMenu
-		add: #loadTonelRepository
+		add: #loadTonelApplications
 		label: TonelMsg01 "$NLS$ Import Applications from Tonel packages..."
 		enable: [true]
 		for: TonelTools
 		after: #importSubApplications.
 	importExportSubmenu subMenu
-		add: #exportTonelApplication
+		add: #exportTonelApplications
 		label:  TonelMsg02 "$NLS$ Export Applications as Tonel packages..."
 		enable: [true]
-		for: TonelTools
+		for: nil
 		before:  #exportApplicationVersions
 
 
@@ -87,45 +87,38 @@ TonelTools class >> exportConfigurationMapsNames: anOrderedCollection [
 ]
 
 { #category : 'operations' }
-TonelTools class >> exportTonelApplication [
+TonelTools class >> exportTonelApplications: aCollection [
 
-	| selectedApps repositoryPath convertPools |
-
-	selectedApps :=
-		CwListSelectionPrompter new
-			title: TonelMsg27 "$NLS$ Select applications to export in Tonel format";
-			messageString: TonelMsg28 "$NLS$ Select which applications you want to export in Tonel format to a specific";
-			labelString: TonelMsg29 "$NLS$ Available applications";
-			selectedLabelString: TonelMsg30 "$NLS$ Applications to be exported";
-			items: (System loadedApplications asSortedCollection: Class sortBlock);
-			selectedItems: #();
-			selectionPolicy: CwConstants::XmEXTENDEDSELECT;
-			printBlock: [:app | app name];
-			selectedPrintBlock: [:app | app name];
-			prompt.
+	| selectedApps repositoryPath convertPools clearSources |
+	selectedApps := (CwListSelectionPrompter new)
+				title: TonelMsg27;
+				messageString: TonelMsg28;
+				labelString: TonelMsg29;
+				selectedLabelString: TonelMsg30;
+				items: (System loadedApplications asSortedCollection: Class sortBlock);
+				selectedItems: aCollection;
+				selectionPolicy: CwConstants::XmEXTENDEDSELECT;
+				printBlock: [:app | app name];
+				selectedPrintBlock: [:app | app name];
+				prompt.	"$NLS$ Select applications to export in Tonel format"	"$NLS$ Select which applications you want to export in Tonel format to a specific"	"$NLS$ Available applications"	"$NLS$ Applications to be exported"
 	selectedApps isEmptyOrNil ifTrue: [^self].
-
-	(EtFileNamePrompter
-		promptForFileName: TonelMsg31 "$NLS$ Select target path"
-		default: '.project' "$NON-NLS$"
+	(EtFileNamePrompter 
+		promptForFileName: TonelMsg31
+		default: '.project'
 		at: System cursorPosition
-		save: true)
-			ifNil: [^self]
-			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].
-
-	convertPools := (System confirm: ('Do you want to convert SharedPool declarations?', Character cr asString, '(Select NO if you are not going to load the exported class in another Smalltalk dialect)')).
-
-	TonelWriter new
+		save: true) ifNil: [^self]
+			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].	"$NLS$ Select target path"	"$NON-NLS$"
+	convertPools := self promptPoolConversion.
+	clearSources := self promptClearSources.
+	(TonelWriter new)
 		applications: selectedApps;
 		convertsSharedPools: convertPools;
+		clearsSourcesDirectory: clearSources;
 		writeProjectInto: repositoryPath
-
-
-
-
 ]
 
-{ #category : 'convenience' }
+{ #category : 'convenience',
+  #vaVisibility : 'private' }
 TonelTools class >> exportTonelTools [
 
 	TonelWriter new
@@ -133,6 +126,87 @@ TonelTools class >> exportTonelTools [
 		addLatestConfigurationMapNamed: 'Test Tonel';
 		addApplicationsFromConfigurationMaps;
 		writeProjectInto: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-repos\tonel-vast').
+
+]
+
+{ #category : 'operations' }
+TonelTools class >> loadTonelApplications [
+	"Enter the new method definition below and click 'Resume'."
+
+	| reader loader repositoryPath selectedApps versionStrategyClass |
+
+	(EtFileNamePrompter
+		promptForFileName: TonelMsg12 "$NLS$ Select Tonel repository path"
+		default: '.project'
+		at: System cursorPosition)
+			ifNil: [^self]
+			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].
+	reader := TonelReader new.
+	(repositoryPath exists and: [(reader computeSourcesDirectoryFrom: repositoryPath) exists])
+		ifFalse: [
+			self halt: TonelMsg14 "$NLS$ The selected Tonel repository does not contain a valid sources directory.".
+			^self].
+
+	reader readFrom: repositoryPath.
+	loader := TonelLoader on: reader.
+	selectedApps :=
+		CwListSelectionPrompter new
+			title: TonelMsg15 "$NLS$ Select Tonel Packages to be imported as VAST Applications";
+			messageString: TonelMsg21 "$NLS$ The following Tonel Packages will be imported as VAST Applications";
+			labelString: TonelMsg22 "$NLS$ Available Tonel Packages";
+			selectedLabelString: TonelMsg23 "$NLS$ Selected Tonel Packages";
+			items: (loader applications asSortedCollection: [:a :b | a name <= b name]);
+			selectedItems: #();
+			selectionPolicy: CwConstants::XmEXTENDEDSELECT;
+			printBlock: [:app | app name];
+			selectedPrintBlock: [:app | app name];
+			prompt.
+
+	selectedApps isEmptyOrNil ifTrue: [^self].
+
+	loader applications isEmpty
+		ifTrue: [
+			self halt: TonelMsg25 "$NLS$ The selected Tonel repository is not valid or does not contain any package.'.".
+			^self].
+			
+	versionStrategyClass :=
+		CwListPrompter new
+			title: 'Select the versioning strategy';
+			messageString: 'Select how you want to version the Applications and classes loaded';
+			labelString: 'Available versioning strategies';
+			items: (TonelLoaderVersionStrategy allSubclasses);
+			selectedItems: (Array with: TonelLoaderInteractiveVersionStrategy);
+			selectionPolicy: CwConstants::XmSINGLESELECT;
+			printBlock: [:app | app description];
+			prompt. 
+	
+	versionStrategyClass ifNil: [	^self].
+	
+	loader versionStrategy: (versionStrategyClass for: loader).
+	loader versionStrategy isSpecific ifTrue: [
+		| versionName |
+		versionName := (CwTextPrompter
+		prompt: 'Enter the version name you want to use for the loaded components'
+		answer: ''
+		title: 'Enter version name').
+		versionName isEmpty 
+			ifTrue: [^self]
+			ifFalse: [loader versionStrategy versionName: versionName]
+	].
+	
+	((CwMessagePrompter new)
+				iconType: CwConstants::XmICONQUESTION;
+				title: 'Confirm the forced creation of editions';
+				buttonType: CwConstants::XmYESNOCANCEL;
+				messageString: 'Do you want to create editions even for Applications and classes without changes?';
+				prompt) ifNil: [^self]
+				ifNotNil: [:answer |
+					loader versionStrategy alwaysCreateEditions: answer
+				].
+	
+	
+	loader loadApplications: selectedApps
+
 
 ]
 
@@ -220,87 +294,6 @@ TonelTools class >> loadTonelConfigMaps [
 
 ]
 
-{ #category : 'operations' }
-TonelTools class >> loadTonelRepository [
-	"Enter the new method definition below and click 'Resume'."
-
-	| reader loader repositoryPath selectedApps versionStrategyClass |
-
-	(EtFileNamePrompter
-		promptForFileName: TonelMsg12 "$NLS$ Select Tonel repository path"
-		default: '.project'
-		at: System cursorPosition)
-			ifNil: [^self]
-			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].
-	reader := TonelReader new.
-	(repositoryPath exists and: [(reader computeSourcesDirectoryFrom: repositoryPath) exists])
-		ifFalse: [
-			self halt: TonelMsg14 "$NLS$ The selected Tonel repository does not contain a valid sources directory.".
-			^self].
-
-	reader readFrom: repositoryPath.
-	loader := TonelLoader on: reader.
-	selectedApps :=
-		CwListSelectionPrompter new
-			title: TonelMsg15 "$NLS$ Select Tonel Packages to be imported as VAST Applications";
-			messageString: TonelMsg21 "$NLS$ The following Tonel Packages will be imported as VAST Applications";
-			labelString: TonelMsg22 "$NLS$ Available Tonel Packages";
-			selectedLabelString: TonelMsg23 "$NLS$ Selected Tonel Packages";
-			items: (loader applications asSortedCollection: [:a :b | a name <= b name]);
-			selectedItems: #();
-			selectionPolicy: CwConstants::XmEXTENDEDSELECT;
-			printBlock: [:app | app name];
-			selectedPrintBlock: [:app | app name];
-			prompt.
-
-	selectedApps isEmptyOrNil ifTrue: [^self].
-
-	loader applications isEmpty
-		ifTrue: [
-			self halt: TonelMsg25 "$NLS$ The selected Tonel repository is not valid or does not contain any package.'.".
-			^self].
-			
-	versionStrategyClass :=
-		CwListPrompter new
-			title: 'Select the versioning strategy';
-			messageString: 'Select how you want to version the Applications and classes loaded';
-			labelString: 'Available versioning strategies';
-			items: (TonelLoaderVersionStrategy allSubclasses);
-			selectedItems: (Array with: TonelLoaderInteractiveVersionStrategy);
-			selectionPolicy: CwConstants::XmSINGLESELECT;
-			printBlock: [:app | app description];
-			prompt. 
-	
-	versionStrategyClass ifNil: [	^self].
-	
-	loader versionStrategy: (versionStrategyClass for: loader).
-	loader versionStrategy isSpecific ifTrue: [
-		| versionName |
-		versionName := (CwTextPrompter
-		prompt: 'Enter the version name you want to use for the loaded components'
-		answer: ''
-		title: 'Enter version name').
-		versionName isEmpty 
-			ifTrue: [^self]
-			ifFalse: [loader versionStrategy versionName: versionName]
-	].
-	
-	((CwMessagePrompter new)
-				iconType: CwConstants::XmICONQUESTION;
-				title: 'Confirm the forced creation of editions';
-				buttonType: CwConstants::XmYESNOCANCEL;
-				messageString: 'Do you want to create editions even for Applications and classes without changes?';
-				prompt) ifNil: [^self]
-				ifNotNil: [:answer |
-					loader versionStrategy alwaysCreateEditions: answer
-				].
-	
-	
-	loader loadApplications: selectedApps
-
-
-]
-
 { #category : 'prompting',
   #vaVisibility : 'private' }
 TonelTools class >> promptApplications [
@@ -315,6 +308,15 @@ TonelTools class >> promptApplications [
 		printBlock: [:app | app name];
 		selectedPrintBlock: [:app | app name];
 		prompt
+]
+
+{ #category : 'prompting',
+  #vaVisibility : 'private' }
+TonelTools class >> promptClearSources [
+	^System 
+		confirm: 'Do you want to delete the contents of the sources directory before exporting?' 
+				, Character cr asString 
+					, '(Select NO if you want to preserve other packages that might be in the same directory)'
 ]
 
 { #category : 'prompting',

@@ -599,5 +599,5 @@ TonelWriter >> writeSourcePropertiesInto: sourcePath [
 			self
 				withStreamOn: projectPropertiesPath
 				do: [:stream |
-					stream << '{' << lineDelimiter << '#format : ''tonel''' << lineDelimiter << '}']]
+					stream << '{' << lineDelimiter << '#format : ''tonel'',' << lineDelimiter << '#formatVersion: ''1.1''' << lineDelimiter << '}']]
 ]
