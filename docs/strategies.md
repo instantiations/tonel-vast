@@ -7,6 +7,7 @@ In order to support different use cases like interactive loading during developm
 * Prerequisites strategy
 * Version strategy
 * Base edition strategy
+* Application naming strategy
 
 By "interactive" whe mean involving the GUI, so, it is opening a dialog, a prompt of some sort, etc. While by "unattended" we mean that if there is a decision to be taken, it will be programmed in the strategy without requiring the display of any GUI element.
 
@@ -100,6 +101,9 @@ When you're loading an `Application` or `SubApplication` from Tonel sources into
 
 When loading the base edition, the application might need to load its prerequisites from the Library, and for that it will delegate the prerequisites loading to the prerequisites strategy defined in the _loader_.
 
+You can also specify whether the lookup of base editions will lookup only for versioned editions, to avoid selecting an edition that might be a draft or broken but that it is more recent than the latest "valid" edition (usually a versioned one).
+
+
 ### `TonelLoaderInteractiveBaseEditionStrategy` (interactive, default)
 
 This is the default strategy, that will display a list of base editions to choose, and prompt the user to select one from the list.
@@ -122,7 +126,29 @@ When setting `useGitVersion` in the `TonelLoader`, this base edition strategy wi
 
 So if you're loading `MyApplication` from a git repository whose commit id is `8c3fa3d` and parent commit is `b78df32`, when loading a base edition it will look for an edition of `MyApplication` in the EM Library whose `versionName` match `b78df32`.
 
-# Common cases recipes
+## Naming strategy
+
+### `TonelLoaderDefaultNamingStrategy` (default)
+
+You can specify a prefix for your apps, and a special suffix for applications and subapplications.
+
+E.g.
+```smalltalk
+aTonelLoader namingStrategy
+	appSuffix: 'App';
+	subAppSuffix: 'SubApp';
+	prefix: 'Et'.
+```
+
+This will convert an application otherwise named `Controller` with a subapplication named `Core` into `EtControllerApp` and `EtCoreSubApp`.
+
+**NOTE:** by default no prefix nor suffix is defined.
+
+### Creating your own naming strategy
+
+It is possible to create your own naming strategy by subclassing `TonelLoaderNamingStrategy` and redefining `nameForApp:` and `nameForSubApp:`.
+
+# Common recipes
 
 Below there is a small sample of "recipes" for the common use cases.
 
