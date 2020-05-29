@@ -18,7 +18,7 @@
 
 ## Tonel for VAST in a Nutshell
 
- Supporting the [Tonel format](https://github.com/pharo-vcs/tonel) is a work in progress in VAST 9.2. Our implementation complies with the specification of the format. But since the specification does not take into account some important VAST specific features we extended it in a non intrusive way to make it compatible with the spec and useful to VAST users as well.
+ Supporting the [Tonel format](https://github.com/pharo-vcs/tonel) is a work in progress in VAST 9.2.1. Our implementation complies with the specification of the format. But since the specification does not take into account some important VAST specific features we extended it in a non intrusive way to make it compatible with the spec and useful to VAST users as well.
 
 There are four main building blocks that work in layers to support Tonel in VA Smalltalk:
 
@@ -49,11 +49,12 @@ For [Instantiations](https://www.instantiations.com/) and VA Smalltalk, having g
 
 ## Installation
 
-- Download [VAST 9.2 or newer from Instantiations](https://www.instantiations.com/products/vasmalltalk/download.html).
+- Download [VAST 9.2.1 or newer from Instantiations](https://www.instantiations.com/products/vasmalltalk/download.html).
 - Clone this repository.
-- From the configuration map browser, import all versions of the `Tonel` map from `envy/Tonel.dat`. Then "Load With Required Maps" the latest version of it.
+- From the Configuration Map Browser, do an `Import` -> `All Most Recent Versions...` -> and select the `envy/Tonel.dat` located in the root folder of your local repository clone.
+- Select the map `Tonel` (and optionally `Test Tonel` if you want to run its SUnit tests) and do a `Load With Required Maps` the latest version of it.
+- Optionally run the SUnit tests included in the map `Test Tonel` to ensure correct installation. One easy way is to right-click on the `Test Tonel` map name in the Name pane (as opposed to version pane ) and then select `Test Loaded Applications`.
 - Explore the [documentation](docs/).
-- (optional) Run SUnit Suite for all `Tonel` map (right click on the map -> `Test Loaded Applications`). You should see around 58 unit tests and all passing.
 
 ## Quick Start
 
@@ -96,18 +97,18 @@ As with the GUI options, you can also export independent Applications or whole C
 "Exporting to Tonel"
 TonelWriter new
   clearSourcesDirectory; "deletes everything in the target directory"
-  writeProjectIncluding: (Array with: TonelExampleApp)
-  into: (CfsPath named: 'tonel-demos').
+  writeProjectIncluding: (Array with: MyAppCore)
+  into: (CfsPath named: 'my-tonel-demos').
  ```
 
 ```smalltalk
 "Loading from Tonel"
-(TonelLoader readFromPath (CfsPath named: 'tonel-demos'))
-  loadApplicationNamed: 'TonelExampleApp'.
+(TonelLoader readFromPath (CfsPath named: 'my-tonel-demos'))
+  loadApplicationNamed: 'MyAppCore'.
 
 "or you can load by Tonel package name"
-(TonelLoader readFromPath (CfsPath named: 'tonel-demos'))
-  loadApplicationsForPackagesNamed: #('YourPackage-Core' 'YourPackage-Tests').
+(TonelLoader readFromPath (CfsPath named: 'my-tonel-demos'))
+  loadApplicationsForPackagesNamed: #('MyApp-Core' 'MyApp-Tests').
 ```
 
 #### Configuration Maps
@@ -115,14 +116,14 @@ TonelWriter new
 ```smalltalk
 "Exporting to Tonel"
 TonelWriter new
-  addLatestConfigurationMapNamed: 'App';
-  addLatestConfigurationMapNamed: 'App Tests';
+  addLatestConfigurationMapNamed: 'My Tonel Demo';
+  addLatestConfigurationMapNamed: 'My Tonel Demo Tests';
   addApplicationsFromConfigurationMaps;
-  writeProjectInto: (CfsPath named: 'my-app').
+  writeProjectInto: (CfsPath named: 'my-tonel-demos').
 ```
 ```smalltalk
 "Loading from Tonel"
-(TonelLoader readFromPath: (CfsPath named: 'my-app')) loadAllMapsWithRequiredMaps.
+(TonelLoader readFromPath: (CfsPath named: 'my-tonel-demos')) loadAllMapsWithRequiredMaps.
 ```
 
 #### More options
