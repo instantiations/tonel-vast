@@ -173,14 +173,6 @@ TonelLoader >> forceCreationOfEditions [
 
 { #category : 'initializing',
   #vaVisibility : 'private' }
-TonelLoader >> initialize [
-	super initialize.
-	self beInteractive.
-	self useDefaultNaming
-]
-
-{ #category : 'initializing',
-  #vaVisibility : 'private' }
 TonelLoader >> initializeApplications [
 	"Initializes receiver applications ensuring each application initializes its subapplications deeply."
 

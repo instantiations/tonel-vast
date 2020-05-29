@@ -66,6 +66,8 @@ You can load individual Tonel packages as Applications or export VAST Applicatio
 
 ![Application Manager](docs/img/application-manager.png)
 
+When loading apps using this GUI the _loader_ will attempt to detect whether the files are in a Git repository, and if a git repository is detected it will configure itself to use [git versioning](docs/strategies.md), otherwise it will use the default settings (or leave all editions open without version).
+
 #### Configuration Maps
 
 You can also export and load Configuration Maps together with their applications from the Configuration Maps Browser.

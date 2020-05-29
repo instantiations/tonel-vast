@@ -17,11 +17,11 @@ The _loader_ will instantiate a separate `TonelApplicationLoader` (aka _applicat
 
 When loading an `Application` the _loader_ will read it's prerequisites from the `vaPrerequisites` metadata in the `.package` file, but there could be the case where you need to specify some other prerequisite at load time.
 
-### `TonelLoaderInteractivePrereqStrategy` (interactive, default)
+### `TonelLoaderInteractivePrereqStrategy` (interactive)
 
 This strategy will display an `EtPrerequisiteCollectingPrompter` enabling the user to add/remove prerequisites before loading the application
 
-### `TonelLoaderComputedPrerequisitesStrategy` (unattended)
+### `TonelLoaderComputedPrerequisitesStrategy` (unattended, default)
 
 This strategy uses the prequisites specified in the metadata plus the ones computed by the loader.
 
@@ -34,7 +34,7 @@ aTonelLoader useComputedPrerequisites
 
 The version strategy handles both the versioning, and also the creation of editions prior to versioning.
 
-### `TonelLoaderInteractiveVersionStrategy` (interactive, default)
+### `TonelLoaderInteractiveVersionStrategy` (interactive)
 
 This will prompt the user to specify a version name _for each application_ using the default version name prompter, leaving the option to not define any, and so only the edition will be created, but without versioning it.
 
@@ -43,7 +43,7 @@ This will prompt the user to specify a version name _for each application_ using
 aTonelLoader useInteractiveVersioning
 ```
 
-### `TonelLoaderNoVersionStrategy` (unattended)
+### `TonelLoaderNoVersionStrategy` (unattended, default)
 
 This strategy will create an new edition but won't version it. It is useful when you are developing and want to control manually the versioning and/or don't want to version at all.
 
@@ -104,12 +104,12 @@ When loading the base edition, the application might need to load its prerequisi
 You can also specify whether the lookup of base editions will lookup only for versioned editions, to avoid selecting an edition that might be a draft or broken but that it is more recent than the latest "valid" edition (usually a versioned one).
 
 
-### `TonelLoaderInteractiveBaseEditionStrategy` (interactive, default)
+### `TonelLoaderInteractiveBaseEditionStrategy` (interactive)
 
 This is the default strategy, that will display a list of base editions to choose, and prompt the user to select one from the list.
 
 
-### `TonelLoaderLatestBaseEditionStrategy` (unattended)
+### `TonelLoaderLatestBaseEditionStrategy` (unattended, default)
 
 This will automatically select the latest (newest) edition as the base edition for the App/Subapp being loaded.
 

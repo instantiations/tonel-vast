@@ -53,7 +53,7 @@ TonelLoaderSettings >> appSuperGroupSetting: superGroup [
 { #category : 'strategies' }
 TonelLoaderSettings >> baseEditionStrategy [
 
-	^self strategyAt: #baseEdition ifAbsentPut: [TonelLoaderInteractiveBaseEditionStrategy new]
+	^self strategyAt: #baseEdition ifAbsentPut: [TonelLoaderLatestBaseEditionStrategy new]
 ]
 
 { #category : 'strategies' }
@@ -148,7 +148,7 @@ TonelLoaderSettings >> postCopy [
 { #category : 'strategies' }
 TonelLoaderSettings >> prerequisitesStrategy [
 
-	^self strategyAt: #prerequisites ifAbsentPut: [TonelLoaderInteractivePrereqStrategy new]
+	^self strategyAt: #prerequisites ifAbsentPut: [TonelLoaderComputedPrerequisitesStrategy new]
 ]
 
 { #category : 'strategies' }
@@ -173,6 +173,13 @@ TonelLoaderSettings >> strategyAt: aSymbol [
 
 { #category : 'strategies',
   #vaVisibility : 'private' }
+TonelLoaderSettings >> strategyAt: aSymbol ifAbsent: aBlock [
+
+	^self strategies at: aSymbol ifAbsent: aBlock
+]
+
+{ #category : 'strategies',
+  #vaVisibility : 'private' }
 TonelLoaderSettings >> strategyAt: aSymbol ifAbsentPut: anObject [
 
 	^self strategies at: aSymbol ifAbsentPut: anObject
@@ -188,7 +195,7 @@ TonelLoaderSettings >> strategyAt: aSymbol put: anObject [
 { #category : 'strategies' }
 TonelLoaderSettings >> versionStrategy [
 
-	^self strategyAt: #version ifAbsentPut: [TonelLoaderInteractiveVersionStrategy new]
+	^self strategyAt: #version ifAbsentPut: [TonelLoaderNoVersionStrategy new]
 ]
 
 { #category : 'strategies' }

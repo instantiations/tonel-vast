@@ -89,7 +89,7 @@ TonelTools class >> exportConfigurationMapsNames: anOrderedCollection [
 { #category : 'operations' }
 TonelTools class >> exportTonelApplications: aCollection [
 
-	| selectedApps repositoryPath convertPools clearSources |
+	| selectedApps repositoryPath clearSources |
 	selectedApps := (CwListSelectionPrompter new)
 				title: TonelMsg27;
 				messageString: TonelMsg28;
@@ -108,11 +108,10 @@ TonelTools class >> exportTonelApplications: aCollection [
 		at: System cursorPosition
 		save: true) ifNil: [^self]
 			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].	"$NLS$ Select target path"	"$NON-NLS$"
-	convertPools := self promptPoolConversion.
+	
 	clearSources := self promptClearSources.
 	(TonelWriter new)
 		applications: selectedApps;
-		convertsSharedPools: convertPools;
 		clearsSourcesDirectory: clearSources;
 		writeProjectInto: repositoryPath
 ]
@@ -133,81 +132,42 @@ TonelTools class >> exportTonelTools [
 TonelTools class >> loadTonelApplications [
 	"Enter the new method definition below and click 'Resume'."
 
-	| reader loader repositoryPath selectedApps versionStrategyClass |
-
-	(EtFileNamePrompter
-		promptForFileName: TonelMsg12 "$NLS$ Select Tonel repository path"
+	| reader loader repositoryPath selectedApps |
+	(EtFileNamePrompter 
+		promptForFileName: TonelMsg12
 		default: '.project'
-		at: System cursorPosition)
-			ifNil: [^self]
-			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].
+		at: System cursorPosition) ifNil: [^self]
+			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].	"$NLS$ Select Tonel repository path"
 	reader := TonelReader new.
-	(repositoryPath exists and: [(reader computeSourcesDirectoryFrom: repositoryPath) exists])
-		ifFalse: [
-			self halt: TonelMsg14 "$NLS$ The selected Tonel repository does not contain a valid sources directory.".
-			^self].
-
+	(repositoryPath exists 
+		and: [(reader computeSourcesDirectoryFrom: repositoryPath) exists]) 
+			ifFalse: 
+				[self halt: TonelMsg14.	"$NLS$ The selected Tonel repository does not contain a valid sources directory."
+				^self].
 	reader readFrom: repositoryPath.
 	loader := TonelLoader on: reader.
-	selectedApps :=
-		CwListSelectionPrompter new
-			title: TonelMsg15 "$NLS$ Select Tonel Packages to be imported as VAST Applications";
-			messageString: TonelMsg21 "$NLS$ The following Tonel Packages will be imported as VAST Applications";
-			labelString: TonelMsg22 "$NLS$ Available Tonel Packages";
-			selectedLabelString: TonelMsg23 "$NLS$ Selected Tonel Packages";
-			items: (loader applications asSortedCollection: [:a :b | a name <= b name]);
-			selectedItems: #();
-			selectionPolicy: CwConstants::XmEXTENDEDSELECT;
-			printBlock: [:app | app name];
-			selectedPrintBlock: [:app | app name];
-			prompt.
-
+	selectedApps := (CwListSelectionPrompter new)
+				title: TonelMsg15;
+				messageString: TonelMsg21;
+				labelString: TonelMsg22;
+				selectedLabelString: TonelMsg23;
+				items: (loader applications asSortedCollection: [:a :b | a name <= b name]);
+				selectedItems: #();
+				selectionPolicy: CwConstants::XmEXTENDEDSELECT;
+				printBlock: [:app | app name];
+				selectedPrintBlock: [:app | app name];
+				prompt.	"$NLS$ Select Tonel Packages to be imported as VAST Applications"	"$NLS$ The following Tonel Packages will be imported as VAST Applications"	"$NLS$ Available Tonel Packages"	"$NLS$ Selected Tonel Packages"
 	selectedApps isEmptyOrNil ifTrue: [^self].
-
-	loader applications isEmpty
-		ifTrue: [
-			self halt: TonelMsg25 "$NLS$ The selected Tonel repository is not valid or does not contain any package.'.".
+	loader applications isEmpty 
+		ifTrue: 
+			[self halt: TonelMsg25.	"$NLS$ The selected Tonel repository is not valid or does not contain any package.'."
 			^self].
-			
-	versionStrategyClass :=
-		CwListPrompter new
-			title: 'Select the versioning strategy';
-			messageString: 'Select how you want to version the Applications and classes loaded';
-			labelString: 'Available versioning strategies';
-			items: (TonelLoaderVersionStrategy allSubclasses);
-			selectedItems: (Array with: TonelLoaderInteractiveVersionStrategy);
-			selectionPolicy: CwConstants::XmSINGLESELECT;
-			printBlock: [:app | app description];
-			prompt. 
-	
-	versionStrategyClass ifNil: [	^self].
-	
-	loader versionStrategy: (versionStrategyClass for: loader).
-	loader versionStrategy isSpecific ifTrue: [
-		| versionName |
-		versionName := (CwTextPrompter
-		prompt: 'Enter the version name you want to use for the loaded components'
-		answer: ''
-		title: 'Enter version name').
-		versionName isEmpty 
-			ifTrue: [^self]
-			ifFalse: [loader versionStrategy versionName: versionName]
-	].
-	
-	((CwMessagePrompter new)
-				iconType: CwConstants::XmICONQUESTION;
-				title: 'Confirm the forced creation of editions';
-				buttonType: CwConstants::XmYESNOCANCEL;
-				messageString: 'Do you want to create editions even for Applications and classes without changes?';
-				prompt) ifNil: [^self]
-				ifNotNil: [:answer |
-					loader versionStrategy alwaysCreateEditions: answer
-				].
-	
-	
-	loader loadApplications: selectedApps
 
-
+	"If the default version strategy is not git, we check whether the files are in a git repository to enable git versioning by default."
+	self setVersionStrategyOf: loader.
+	(loader loadApplications: selectedApps) notEmpty ifTrue: [
+		System image message: 'Load of Tonel Applications completed.'
+	]
 ]
 
 { #category : 'operations' }
@@ -232,63 +192,26 @@ TonelTools class >> loadTonelConfigMaps [
 	selectedMaps :=
 		CwListSelectionPrompter new
 			title: 'Select Configuration Maps to be loaded.';
-			messageString:  'The following ConfigurationMaps will be imported and loaded with all its applications and required maps';
+			messageString:
+				'The following ConfigurationMaps will be imported and loaded with all its applications and required maps';
 			labelString: 'Configuration Maps in this repository';
 			selectedLabelString: 'Selected Configuration Maps';
 			items: (loader configurationMaps asSortedCollection: [:a :b | a name <= b name]);
 			selectedItems: #();
 			selectionPolicy: CwConstants::XmEXTENDEDSELECT;
-			printBlock: [:app | app name, ' ', app versionName];
+			printBlock: [:app | app name , ' ' , app versionName];
 			selectedPrintBlock: [:app | app name];
 			prompt.
 
 	selectedMaps isEmptyOrNil ifTrue: [^self].
 
-	loader applications isEmpty
+	loader configurationMaps isEmpty
 		ifTrue: [
-			self halt: TonelMsg25 "$NLS$ The selected Tonel repository is not valid or does not contain any package.'.".
+			self halt:
+				'The selected Tonel repository is not valid or does not contain any configuration map.'.
 			^self].
-			
-	versionStrategyClass :=
-		CwListPrompter new
-			title: 'Select the versioning strategy';
-			messageString: 'Select how you want to version the Applications and classes loaded';
-			labelString: 'Available versioning strategies';
-			items: (TonelLoaderVersionStrategy allSubclasses);
-			selectedItems: (Array with: TonelLoaderInteractiveVersionStrategy);
-			selectionPolicy: CwConstants::XmSINGLESELECT;
-			printBlock: [:app | app description];
-			prompt. 
-	
-	versionStrategyClass ifNil: [	^self].
-	
-	loader versionStrategy: (versionStrategyClass for: loader).
-	loader versionStrategy isSpecific ifTrue: [
-		| versionName |
-		versionName := (CwTextPrompter
-		prompt: 'Enter the version name you want to use for the loaded components'
-		answer: ''
-		title: 'Enter version name').
-		versionName isEmpty 
-			ifTrue: [^self]
-			ifFalse: [loader versionStrategy versionName: versionName]
-	].
-	
-	loader versionStrategy class isGit ifTrue: [
-		loader baseEditionStrategy: (TonelLoaderGitParentBaseEditionStrategy for: loader)
-	].
-	
-	((CwMessagePrompter new)
-				iconType: CwConstants::XmICONQUESTION;
-				title: 'Confirm the forced creation of editions';
-				buttonType: CwConstants::XmYESNOCANCEL;
-				messageString: 'Do you want to create editions even for Applications and classes without changes?';
-				prompt) ifNil: [^self]
-				ifNotNil: [:answer |
-					loader versionStrategy alwaysCreateEditions: answer
-				].
-	
-	
+
+	self setVersionStrategyOf: loader.
 	loader loadConfigurationMaps: selectedMaps
 
 
@@ -341,6 +264,17 @@ TonelTools class >> promptConfigurationMapsVersionsFrom: anOrderedCollection [
 
 { #category : 'prompting',
   #vaVisibility : 'private' }
+TonelTools class >> promptForcedCreationOfEditions [
+	^(CwMessagePrompter new)
+		iconType: CwConstants::XmICONQUESTION;
+		title: 'Confirm the forced creation of editions';
+		buttonType: CwConstants::XmYESNOCANCEL;
+		messageString: 'Do you want to create editions even for Applications and classes without changes?';
+		prompt
+]
+
+{ #category : 'prompting',
+  #vaVisibility : 'private' }
 TonelTools class >> promptPoolConversion [
 	^System 
 		confirm: 'Do you want to convert SharedPool declarations?' 
@@ -356,4 +290,15 @@ TonelTools class >> promptRepositoryPath [
 		default: '.project'
 		at: System cursorPosition
 		save: true	"$NLS$ Select target path"	"$NON-NLS$"
+]
+
+{ #category : 'operations',
+  #vaVisibility : 'private' }
+TonelTools class >> setVersionStrategyOf: loader [
+
+	loader versionStrategy class isGit 
+		ifFalse: 
+			[([(TonelLoaderGitVersionStrategy for: loader) attemptVersionFromGit] 
+				on: TonelLoaderError
+				do: [:ex | ex return]) ifNotNil: [loader useGitVersion]]	"If the default version strategy is not git, we check whether the files are in a git repository to enable git versioning by default."
 ]
