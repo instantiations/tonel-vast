@@ -240,7 +240,7 @@ Read the [Configuration Maps documentation](docs/configmaps.md) to learn how to 
 
 
 ## Examples and Demos
-There is a [whole Github project](https://github.com/vasmalltalk/tonel-demos/) that contains demos about Tonel integration with VASmalltalk.
+There is a [whole Github project](https://github.com/vasmalltalk/tonel-demos/) that contains demos about Tonel integration with VA Smalltalk.
 
 ## Roadmap / Next steps
 
