@@ -1,7 +1,7 @@
 <p align="center">
  <h1 align="center">Tonel for VAST Platform (VA Smalltalk)</h1>
   <p align="center">
-    Providing git friendly file format support to VA Smalltalk
+    Providing a git friendly file format support to VA Smalltalk
     <!---
     <br>
     <a href="docs/"><strong>Explore the docs »</strong></a>
