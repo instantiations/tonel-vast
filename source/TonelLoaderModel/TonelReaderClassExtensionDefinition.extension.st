@@ -15,7 +15,7 @@ TonelReaderClassExtensionDefinition >> createEditionIn: anApp using: aTonelLoade
 
 	| baseClass |
 	(baseClass := self concreteClassIn: anApp) isNil 
-		ifTrue: [self createIn: anApp]
+		ifTrue: [self createIn: anApp using: aTonelLoader]
 		ifFalse: 
 			[(self 
 				shouldCreateEditionOf: baseClass
@@ -26,16 +26,18 @@ TonelReaderClassExtensionDefinition >> createEditionIn: anApp using: aTonelLoade
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
-TonelReaderClassExtensionDefinition >> createExtendedIn: anApp [
+TonelReaderClassExtensionDefinition >> createExtendedIn: anApp using: aTonelLoader [
 
-	EmInterface current extend: (Smalltalk classAt: self identifier) in: anApp
+
+	anApp createEditionOf: (Smalltalk classAt: self identifier) type: #Extended ifUnable: [^nil].
+	"EmInterface current extend:  in: (Smalltalk classAt: aTonelLoader tonelApplication identifier)"
 ]
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
-TonelReaderClassExtensionDefinition >> createIn: anApp [
+TonelReaderClassExtensionDefinition >> createIn: anApp using: aTonelLoader [
 
-	self createExtendedIn: anApp
+	self createExtendedIn: anApp using: aTonelLoader
 ]
 
 { #category : '*TonelLoaderModel',

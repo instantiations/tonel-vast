@@ -256,8 +256,7 @@ TonelLoaderSubApplication >> createEditionIn: parentEmApp underCondition: condit
 
 	| emApp |
 	(Smalltalk classAt: self identifier ifAbsent: []) ifNil: 
-			[((parentEmApp isApplication ifTrue: [Application] ifFalse: [SubApplication]) 
-				allNamesWithoutPackages includes: self identifier) 
+			[(self loader hasSelectableBaseEditionFor: self)
 				ifTrue: [self loadBaseEdition]
 				ifFalse: [self createSubApplicationIn: parentEmApp condition: conditionCode]].
 	emApp := Smalltalk classAt: self identifier.
@@ -513,8 +512,8 @@ TonelLoaderSubApplication >> loadBaseEdition [
 { #category : 'loading' }
 TonelLoaderSubApplication >> loadClassesIn: anApp using: aLoader [
 
-	(self topologicallySort: self tonelExtendedClasses in: anApp) 
-		do: [:each | each key loadInto: anApp using: aLoader].
+	"(self topologicallySort: self tonelExtendedClasses in: anApp) 
+		do: [:each | each key loadInto: anApp using: aLoader]."
 	(self 
 		topologicallySort: (self tonelClasses reject: [:each1 | each1 isSharedPool])
 		in: anApp) do: [:each | each key loadInto: anApp using: aLoader]

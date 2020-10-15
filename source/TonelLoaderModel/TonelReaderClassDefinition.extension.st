@@ -84,23 +84,25 @@ TonelReaderClassDefinition >> concreteClassIn: anApp [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'],
   #vaVisibility : 'private' }
-TonelReaderClassDefinition >> createDefinedIn: anApp [
+TonelReaderClassDefinition >> createDefinedIn: anApp using: aTonelLoader [
 
 	(Smalltalk classAt: self identifier) notNil
-		ifTrue: [ self moveDefinedInto: anApp ]
+		ifTrue: [self moveDefinedInto: anApp]
 		ifFalse: [
-			anApp becomeDefault.
-			(Smalltalk 
-				classAt: self superclassIdentifier 
-				ifAbsent: [ self halt: (TonelMsg10 bindWith: self name) ])  "$NLS$ Missing superclass for %1"
-					createClassNamed: self identifier
-					subclassOf: (Smalltalk classAt: self superclassIdentifier)
-					variable: self variableClass
-					fieldType: self fieldType			
-					classInstanceVariableString: ''  "$NON-NLS$"
-					instanceVariableString: ''  "$NON-NLS$"
-					classVariableString: ''  "$NON-NLS$"
-					sharedPoolString: '' ]  "$NON-NLS$"
+			anApp owningImage
+				defaultApplication: anApp
+				during: [
+					(Smalltalk
+						classAt: self superclassIdentifier
+						ifAbsent: [self halt: (TonelMsg10 bindWith: self name)])
+							createClassNamed: self identifier
+							subclassOf: (Smalltalk classAt: self superclassIdentifier)
+							variable: self variableClass
+							fieldType: self fieldType
+							classInstanceVariableString: ''
+							instanceVariableString: ''
+							classVariableString: ''
+							sharedPoolString: '' "$NLS$ Missing superclass for %1" "$NON-NLS$" "$NON-NLS$" "$NON-NLS$"]] "$NON-NLS$"
 ]
 
 { #category : '*TonelLoaderModel',
@@ -108,28 +110,30 @@ TonelReaderClassDefinition >> createDefinedIn: anApp [
 TonelReaderClassDefinition >> createEditionIn: anApp using: aTonelLoader [
 
 	| baseClass |
-	(baseClass := self concreteClassIn: anApp) isNil
-		ifTrue: [self createIn: anApp]
-		ifFalse: [
-			(self shouldCreateEditionOf: baseClass in: anApp using: aTonelLoader)
-				ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
+	(baseClass := self concreteClassIn: anApp) isNil 
+		ifTrue: [self createIn: anApp using: aTonelLoader]
+		ifFalse: 
+			[(self 
+				shouldCreateEditionOf: baseClass
+				in: anApp
+				using: aTonelLoader) 
+					ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
 ]
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'],
   #vaVisibility : 'private' }
-TonelReaderClassDefinition >> createExtendedIn: anApp [
-	EmInterface current
-		extend: (Smalltalk classAt: self identifier)
-		in: anApp
+TonelReaderClassDefinition >> createExtendedIn: anApp using: aTonelLoader [
+
+	EmInterface current extend: (Smalltalk classAt: self identifier) in: anApp
 ]
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'],
   #vaVisibility : 'private' }
-TonelReaderClassDefinition >> createIn: anApp [
-	
-	self createDefinedIn: anApp
+TonelReaderClassDefinition >> createIn: anApp using: aTonelLoader [
+
+	self createDefinedIn: anApp using: aTonelLoader
 ]
 
 { #category : '*TonelLoaderModel',

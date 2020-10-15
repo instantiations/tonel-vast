@@ -59,7 +59,7 @@ TonelApplicationLoader >> checkClassExtensions [
 TonelApplicationLoader >> checkForUnloadedApplication [
 
 	Smalltalk classAt: self tonelApplication identifier ifAbsent: [
-		(Application allNamesWithoutPackages includes: self tonelApplication identifier)
+		(self loader hasSelectableBaseEditionFor: self tonelApplication)
 			ifTrue: [self loader loadBaseEditionFor: self tonelApplication ] ]
 ]
 
@@ -264,7 +264,7 @@ TonelApplicationLoader >> loader [
   #vaVisibility : 'private' }
 TonelApplicationLoader >> markAsLoaded [
 
-	self loader loadedApplications add: self tonelApplication
+	self loader addLoadedApplication: self tonelApplication
 ]
 
 { #category : 'loading-internal',
@@ -294,6 +294,12 @@ TonelApplicationLoader >> prepareRemovedClasses [
 				ifTrue: [ methods add: eachMethod ] ]. 
 		EmInterface current removeMethods: methods asArray ].
 	EmClassCreator finishedMultipleChanges
+]
+
+{ #category : 'accessing' }
+TonelApplicationLoader >> rootTonelApplication [
+	"Enter the new method definition below and click 'Resume'."
+	self halt
 ]
 
 { #category : 'initializing',

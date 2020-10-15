@@ -45,6 +45,13 @@ TonelLoader class >> settings [
 	^TonelLoaderSettings default
 ]
 
+{ #category : 'accessing' }
+TonelLoader >> addLoadedApplication: aTonelApplication [
+
+	self loadedApplications add: aTonelApplication.
+	self updatePrerequisitesFrom: aTonelApplication
+]
+
 { #category : 'strategies-convenience' }
 TonelLoader >> alwaysCreateEditions [
 
@@ -115,6 +122,11 @@ TonelLoader >> checkRepositoryContents [
 			[self error: 'The selected directory does not contain any Tonel Package']
 ]
 
+{ #category : 'accessing' }
+TonelLoader >> computeSettings [
+	^self class settings copyFor: self
+]
+
 { #category : 'lookup' }
 TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: versionName [
 
@@ -169,6 +181,12 @@ TonelLoader >> doNotCreateVersions [
 TonelLoader >> forceCreationOfEditions [
 	
 	self versionStrategy alwaysCreateEditions: true
+]
+
+{ #category : 'Not categorized' }
+TonelLoader >> hasSelectableBaseEditionFor: aTonelAppOrSub [
+	
+	^self baseEditionStrategy hasSelectableBaseEditionFor: aTonelAppOrSub
 ]
 
 { #category : 'initializing',
@@ -401,9 +419,7 @@ TonelLoader >> setReader: aTonelReader [
 
 { #category : 'accessing' }
 TonelLoader >> settings [
-	^settings ifNil: [
-		settings := self class settings copyFor: self.
-		]
+	^settings ifNil: [settings := self computeSettings]
 ]
 
 { #category : 'accessing' }
@@ -462,6 +478,13 @@ TonelLoader >> tonelClassNamed: aSymbol [
 			ifNone: [])
 				ifNotNil: [:foundClass | ^foundClass]].
 	^nil
+]
+
+{ #category : 'loading' }
+TonelLoader >> updatePrerequisitesFrom: aTonelLoaderApplication [
+
+	self applications do: [:tonelApp |
+		tonelApp replacePrerequisite: aTonelLoaderApplication emApplication]
 ]
 
 { #category : 'strategies-convenience' }

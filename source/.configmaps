@@ -5,14 +5,60 @@
 				#condition : 'true',
 				#requiredMaps : [
 					{
-						#name : 'z.ST: STON Support',
-						#versionName : 'V 9.2.1  [457]',
-						#ts : 3761144594
+						#name : 'Tonel',
+						#versionName : '1.66',
+						#ts : 3780216522
+					},
+					{
+						#name : 'z.ST: SUnit',
+						#versionName : 'V 9.2.2  [002]',
+						#ts : 3768827234
 					}
 				]
 			}
 		],
-		#ts : 3768234608,
+		#ts : 3780217048,
+		#comment : '',
+		#formatVersion : '1.1',
+		#applications : OrderedCollection [
+			{
+				#name : 'EmLibraryToolsApp',
+				#versionName : '1.5',
+				#ts : 3777122976
+			},
+			{
+				#name : 'TonelLoaderTests',
+				#versionName : '1.8',
+				#ts : 3780217002
+			},
+			{
+				#name : 'TonelReaderTests',
+				#versionName : '1.30',
+				#ts : 3758443008
+			},
+			{
+				#name : 'TonelWriterTests',
+				#versionName : '1.34',
+				#ts : 3777113021
+			}
+		],
+		#name : 'Test Tonel',
+		#versionName : '1.17'
+	},
+	{
+		#conditions : [
+			{
+				#condition : 'true',
+				#requiredMaps : [
+					{
+						#name : 'z.ST: STON Support',
+						#versionName : 'V 9.2.2  [002]',
+						#ts : 3768827234
+					}
+				]
+			}
+		],
+		#ts : 3780216522,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -33,8 +79,8 @@
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : '1.69',
-				#ts : 3768231942
+				#versionName : '1.70',
+				#ts : 3777118894
 			},
 			{
 				#name : 'TonelReaderModel',
@@ -53,47 +99,6 @@
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.64'
-	},
-	{
-		#conditions : [
-			{
-				#condition : 'true',
-				#requiredMaps : [
-					{
-						#name : 'Tonel',
-						#versionName : '1.64',
-						#ts : 3768234608
-					},
-					{
-						#name : 'z.ST: SUnit',
-						#versionName : 'V 9.2.1  [457]',
-						#ts : 3761144594
-					}
-				]
-			}
-		],
-		#ts : 3768234611,
-		#comment : '',
-		#formatVersion : '1.1',
-		#applications : OrderedCollection [
-			{
-				#name : 'TonelLoaderTests',
-				#versionName : '1.6',
-				#ts : 3765691339
-			},
-			{
-				#name : 'TonelReaderTests',
-				#versionName : '1.30',
-				#ts : 3758443008
-			},
-			{
-				#name : 'TonelWriterTests',
-				#versionName : '1.33',
-				#ts : 3766755436
-			}
-		],
-		#name : 'Test Tonel',
-		#versionName : '1.15'
+		#versionName : '1.66'
 	}
 ]

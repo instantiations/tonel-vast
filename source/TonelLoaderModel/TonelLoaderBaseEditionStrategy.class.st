@@ -93,6 +93,12 @@ TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: applications [
 	^toLoad
 ]
 
+{ #category : 'testing' }
+TonelLoaderBaseEditionStrategy >> hasSelectableBaseEditionFor: tonelAppOrSub [
+
+	^(self filteredBaseEditions: (tonelAppOrSub availableShadows)) notEmpty
+]
+
 { #category : 'operations',
   #vaVisibility : 'private' }
 TonelLoaderBaseEditionStrategy >> loadBaseEditionAndPrerequisitesOf: baseEdition [
@@ -139,7 +145,7 @@ TonelLoaderBaseEditionStrategy >> loadEMBaseEditionAndPrerequisites: baseEdition
 		baseEditionPrerequisites reject: [:emApp |
 			self loader loadedApplications anySatisfy: [:tonelApp | tonelApp identifier = emApp name]].
 
-	editionsToLoad do: [:each |	EmImageBuilder loadApplications: (Array with: each)]
+	editionsToLoad do: [:each | EmImageBuilder loadApplications: (Array with: each)]
 ]
 
 { #category : 'lookup' }

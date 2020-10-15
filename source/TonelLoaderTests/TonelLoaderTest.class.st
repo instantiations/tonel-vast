@@ -3,57 +3,64 @@ Class {
 	#superclass : 'TonelBaseTest',
 	#instVars : [
 		'loader',
-		'previousSuffix'
+		'previousSuffix',
+		'monitor'
 	],
 	#category : 'TonelLoaderTests'
 }
 
-{ #category : 'Initialization' }
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
+TonelLoaderTest >> deleteDirectoryInTearDown [
+
+	^false
+]
+
+{ #category : 'Tests' }
+TonelLoaderTest >> sampleApplicationName [
+	^'TonelLoaderTestApplication'
+]
+
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
 TonelLoaderTest >> setUp [
 	super setUp.
-	self writer: (TonelWriter on: self fileSystem).
-	self reader: (TonelReader on: self fileSystem).
-	self 
-		writeThenReadProjectIncluding: (Array with: self tonelWriterTestAppName
-				with: 'TonelWriterModel')
-		from: self directoryForTestingPath.
-	loader := TonelLoader on: reader.
-	loader namingStrategy appSuffix: String new
+	loader := TonelLoader readFromPath: self directoryForTestingPath.
+	loader namingStrategy appSuffix: String new.
+	monitor := EmLibrarySnapshot take
+]
+
+{ #category : 'Initialization',
+  #vaVisibility : 'private' }
+TonelLoaderTest >> tearDown [
+
+	super tearDown.
+	monitor restore: true
 ]
 
 { #category : 'Tests' }
 TonelLoaderTest >> testApplicationHierarchy [
-
-	| rootApp |
-
+	| testApp |
 	self assert: loader applications size equals: 2.
-	rootApp := (loader applicationNamed: self tonelWriterTestAppName).
-	self assert: rootApp subApplications size equals: 1.
-	
+	testApp := loader applicationNamed: self sampleApplicationName.
+	self assert: testApp subApplications size equals: 1
 ]
 
 { #category : 'Tests' }
 TonelLoaderTest >> testConditions [
 
 	| rootApp subApp |
-	rootApp := (loader applicationNamed: self tonelWriterTestAppName).
+	rootApp := (loader applicationNamed: self sampleApplicationName).
 	self assert: rootApp subApplications size equals: 1.
 	subApp := rootApp subApplications first.
-	self assert: subApp conditions size equals: 2.
+	self assert: subApp conditions isEmpty.
 	
 	
 ]
 
-{ #category : 'Initialization' }
-TonelLoaderTest >> tonelWriterTestAppName [
-	^'TonelWriterTests'
-]
+{ #category : 'Tests' }
+TonelLoaderTest >> testLoadApplications [
 
-{ #category : 'Tests - Support' }
-TonelLoaderTest >> writeThenReadProjectIncluding: applicationNames from: aRootDirPath [
-
-	self writer
-		applications: (applicationNames collect: [:each | Smalltalk at: each asSymbol]);
-		writeProjectInto: aRootDirPath sourceDirectoryName: 'source'.
-	self reader readPackages: applicationNames from: (aRootDirPath append: 'source')
+	loader useSpecifiedVersion: AbtTimestamp now printString.
+	loader loadAllApplications
 ]

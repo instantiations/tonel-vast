@@ -87,7 +87,7 @@ TonelLoaderSettings >> compilerWarningLevel: aLevel [
 TonelLoaderSettings >> copyFor: aTonelLoader [
 
 	| copy |
-
+	self ensureStrategies.
 	copy := self copy.
 	self strategies keysAndValuesDo: [:key :strategy |
 		copy strategyAt: key put: (strategy copyFor: aTonelLoader)].
@@ -117,6 +117,16 @@ TonelLoaderSettings >> defaultAppSuperGroupSetting [
 TonelLoaderSettings >> defaultCompilerWarningLevel [
 	
 	^ 0
+]
+
+{ #category : 'accessing' }
+TonelLoaderSettings >> ensureStrategies [
+
+	self namingStrategy.
+	self baseEditionStrategy.
+	self prerequisitesStrategy.
+	self versionStrategy.
+	
 ]
 
 { #category : 'initializing',

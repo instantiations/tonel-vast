@@ -1,4 +1,4 @@
 Package {
 	#name : 'TonelLoaderTests',
-	#vaPrerequisites : ['TonelLoaderModel','TonelWriterTests']
+	#vaPrerequisites : ['EmLibraryToolsApp','TonelLoaderModel','TonelWriterTests']
 }

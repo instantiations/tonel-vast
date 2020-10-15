@@ -27,6 +27,12 @@ TonelBaseTest >> assertFileSystemIncludesFileAt: aLocation [
 ]
 
 { #category : 'accessing' }
+TonelBaseTest >> deleteDirectoryInTearDown [
+
+	^true
+]
+
+{ #category : 'accessing' }
 TonelBaseTest >> directoryForTestingPath [
 
 	^ ((CfsPath named: '.') append: self class name)
@@ -67,8 +73,11 @@ TonelBaseTest >> setUp [
 { #category : 'Initialization' }
 TonelBaseTest >> tearDown [
 
-	self directoryForTestingPath exists
-		ifTrue: [fileSystem recursivelyRemoveWithAllFiles: self directoryForTestingPath asString]
+	self deleteDirectoryInTearDown
+		ifTrue: [
+			self directoryForTestingPath exists
+				ifTrue: [
+					fileSystem recursivelyRemoveWithAllFiles: self directoryForTestingPath asString]]
 ]
 
 { #category : 'accessing' }

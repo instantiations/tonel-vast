@@ -133,14 +133,17 @@ TonelLoaderApplication >> computeName [
   #vaVisibility : 'private' }
 TonelLoaderApplication >> computePrerequisites [
 
-	^(self packageDefinition metadata at: #vaPrerequisites ifAbsent: [
-			self computeImplicitPrerequisites
-		]) asOrderedCollection
-		collect: [:each |
-			Smalltalk
-				at: each asSymbol
-				ifAbsent: [
-					Application shadowClass named: each asSymbol timeStamp: EmTimeStamp undefined]]
+	^(self packageDefinition metadata
+		at: #vaPrerequisites
+		ifAbsent: [self computeImplicitPrerequisites])
+			asOrderedCollection
+				collect: [:each |
+					Smalltalk
+						at: each asSymbol
+						ifAbsent: [
+							Application shadowClass
+								named: each asSymbol
+								timeStamp: EmTimeStamp undefined]]
 ]
 
 { #category : 'accessing' }
@@ -188,7 +191,7 @@ TonelLoaderApplication >> createEdition [
 	
 	(Smalltalk classAt: self identifier ifAbsent: []) 
 		ifNil: [
-			(Application allNamesWithoutPackages includes: self identifier)
+			(self loader hasSelectableBaseEditionFor: self)
 				ifTrue: [self loadBaseEdition]
 				ifFalse: [self createApplication]].
 	theApp := Smalltalk classAt: self identifier.
@@ -261,7 +264,7 @@ TonelLoaderApplication >> loadBaseApplication [
 	 and if it already exists, then load it."
 	 
 	Smalltalk classAt: self identifier ifAbsent: [
-		(Application allNamesWithoutPackages includes: self identifier)
+		(self loader hasSelectableBaseEditionFor: self)
 			ifTrue: [self loadBaseEdition ] ]
 ]
 
@@ -325,6 +328,18 @@ TonelLoaderApplication >> prerequisiteIsLoaded: emShadow [
 TonelLoaderApplication >> prerequisites: anOrderedCollection [
 
 	prerequisites := anOrderedCollection
+]
+
+{ #category : 'loading' }
+TonelLoaderApplication >> replacePrerequisite: anApplication [
+
+	
+	self prerequisites keysAndValuesDo: [:index :each |
+		each name = anApplication name
+			ifTrue: [
+				self prerequisites at: index put: anApplication
+			]
+	]
 ]
 
 { #category : 'accessing' }

@@ -27,7 +27,7 @@ Collection >> tonelSingleEdgeTopologicallySortedCollection [
 	
 	"Short-circuit: if the unsorted collection is empty, there were no topological relationships,
 	  so the collection is already topologically sorted. Return self."
-	unsorted isEmpty ifTrue: [^self].
+	unsorted isEmpty ifTrue: [^self asOrderedCollection].
 	
 	"Until the intermediate list is empty..."
 	[intermediate isEmpty]
