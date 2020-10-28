@@ -5,9 +5,65 @@
 				#condition : 'true',
 				#requiredMaps : [
 					{
+						#name : 'z.ST: STON Support',
+						#versionName : 'V 9.2.2  [002]',
+						#ts : 3768827234
+					}
+				]
+			}
+		],
+		#ts : 3781350130,
+		#comment : '',
+		#formatVersion : '1.1',
+		#applications : OrderedCollection [
+			{
+				#name : 'AbtShellProgramStarterApp',
+				#versionName : '1.0',
+				#ts : 3762611357
+			},
+			{
+				#name : 'TonelBaseApp',
+				#versionName : '1.1',
+				#ts : 3762002743
+			},
+			{
+				#name : 'TonelFileSystem',
+				#versionName : '1.23',
+				#ts : 3758350880
+			},
+			{
+				#name : 'TonelLoaderModel',
+				#versionName : '1.71',
+				#ts : 3781175509
+			},
+			{
+				#name : 'TonelReaderModel',
+				#versionName : '1.51',
+				#ts : 3767947671
+			},
+			{
+				#name : 'TonelTools',
+				#versionName : '1.15',
+				#ts : 3768231806
+			},
+			{
+				#name : 'TonelWriterModel',
+				#versionName : '1.58',
+				#ts : 3767953736
+			}
+		],
+		#name : 'Tonel',
+		#versionName : '1.67'
+	},
+	{
+		#conditions : [
+			{
+				#condition : 'true',
+				#requiredMaps : [
+					{
 						#name : 'Tonel',
-						#versionName : '1.66',
-						#ts : 3780216522
+						#versionName : '1.67',
+						#ts : 3781350130
 					},
 					{
 						#name : 'z.ST: SUnit',
@@ -17,7 +73,7 @@
 				]
 			}
 		],
-		#ts : 3780217048,
+		#ts : 3781350152,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -43,62 +99,6 @@
 			}
 		],
 		#name : 'Test Tonel',
-		#versionName : '1.17'
-	},
-	{
-		#conditions : [
-			{
-				#condition : 'true',
-				#requiredMaps : [
-					{
-						#name : 'z.ST: STON Support',
-						#versionName : 'V 9.2.2  [002]',
-						#ts : 3768827234
-					}
-				]
-			}
-		],
-		#ts : 3780216522,
-		#comment : '',
-		#formatVersion : '1.1',
-		#applications : OrderedCollection [
-			{
-				#name : 'AbtShellProgramStarterApp',
-				#versionName : '1.0',
-				#ts : 3762611357
-			},
-			{
-				#name : 'TonelBaseApp',
-				#versionName : '1.1',
-				#ts : 3762002743
-			},
-			{
-				#name : 'TonelFileSystem',
-				#versionName : '1.23',
-				#ts : 3758350880
-			},
-			{
-				#name : 'TonelLoaderModel',
-				#versionName : '1.70',
-				#ts : 3777118894
-			},
-			{
-				#name : 'TonelReaderModel',
-				#versionName : '1.51',
-				#ts : 3767947671
-			},
-			{
-				#name : 'TonelTools',
-				#versionName : '1.15',
-				#ts : 3768231806
-			},
-			{
-				#name : 'TonelWriterModel',
-				#versionName : '1.58',
-				#ts : 3767953736
-			}
-		],
-		#name : 'Tonel',
-		#versionName : '1.66'
+		#versionName : '1.18'
 	}
 ]

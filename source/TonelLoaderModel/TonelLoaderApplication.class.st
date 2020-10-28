@@ -92,13 +92,6 @@ TonelLoaderApplication >> availableShadows [
 	^Application shadowsFor: self name
 ]
 
-{ #category : 'configuring' }
-TonelLoaderApplication >> changeSuperGroupSettingOf: aClass [
-
-	
-	super changeSuperGroupSettingOf: aClass
-]
-
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelLoaderApplication >> computeImplicitPrerequisites [
@@ -161,19 +154,22 @@ TonelLoaderApplication >> concretePrerequisites [
 TonelLoaderApplication >> create [
 	"Create (or modify) a real Application from the receiver."
 
-	(self loader alwaysCreateEditions or: [self hasChanges]) 
-		ifTrue: 
-			[self loadPrerequisites.
+	(self loader alwaysCreateEditions or: [self hasChanges])
+		ifTrue: [
+			self loadPrerequisites.
 			emApplication := self createEdition.
 			"If prerequisites are not set it wont be able to load classes"
-			emApplication prerequisites: self prerequisites.
+
 			self
-				createTonelPackageNameMethodFor: emApplication;
-				createDescriptionFor: emApplication;
-				createSubApplicationsFor: emApplication withRoot: emApplication]
-		ifFalse: [
-			emApplication := (Smalltalk at: self identifier)
-		]
+				do: [
+					emApplication prerequisites: self prerequisites.
+					self
+						createTonelPackageNameMethodFor: emApplication;
+						createDescriptionFor: emApplication;
+						createSubApplicationsFor: emApplication withRoot: emApplication]
+				forApp: emApplication
+				withSuperUser: emApplication manager]
+		ifFalse: [emApplication := (Smalltalk at: self identifier)]
 ]
 
 { #category : 'loading' }
@@ -187,15 +183,21 @@ TonelLoaderApplication >> createApplication [
 
 { #category : 'loading' }
 TonelLoaderApplication >> createEdition [
+
 	| theApp |
-	
-	(Smalltalk classAt: self identifier ifAbsent: []) 
-		ifNil: [
-			(self loader hasSelectableBaseEditionFor: self)
-				ifTrue: [self loadBaseEdition]
-				ifFalse: [self createApplication]].
+
+	(Smalltalk classAt: self identifier ifAbsent: []) ifNil: [
+		(self loader hasSelectableBaseEditionFor: self)
+			ifTrue: [self loadBaseEdition]
+			ifFalse: [self createApplication]].
 	theApp := Smalltalk classAt: self identifier.
-	theApp isEdition ifFalse: [theApp newEdition].
+
+	self
+		do: [
+			theApp isEdition ifFalse: [(theApp newEdition)].
+			]
+		forApp: theApp
+		withSuperUser: theApp manager.
 	self changeCurrentUserAndSuperGroupSettingOf: theApp.
 	^theApp
 ]
@@ -370,7 +372,7 @@ TonelLoaderApplication >> tonelPoolDictionaries [
 TonelLoaderApplication >> verifyBaseEditionUser [
 
 	(Smalltalk classAt: self identifier) ifNotNil: [:theApp |
-		theApp manager = EmUser current
+		(theApp manager = EmUser current or: [(self loader hasSuperGroupAccessTo: theApp)])
 			ifFalse: [
 				self halt: (
 					TonelMsg09

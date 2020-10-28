@@ -15,12 +15,14 @@ TonelReaderAbstractClassDefinition >> concreteClassIn: anApp [
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> deleteRemovedClassMethodsFrom: aClass in: anApp [
 
-	aClass class methodDictionary do: [ :compiledMethod |
-		(compiledMethod application = anApp and: [
-			self tonelMethods noneSatisfy: [ :anMCMethod |
-				anMCMethod isClassSide and: [
-					compiledMethod selector = anMCMethod selector ] ] ])
-						ifTrue: [ EmInterface current removeMethods: (Array with: compiledMethod) ] ]
+	aClass class methodDictionary do: 
+			[:compiledMethod | 
+			(compiledMethod application = anApp and: 
+					[self tonelMethods noneSatisfy: 
+							[:anMCMethod | 
+							anMCMethod isClassSide 
+								and: [compiledMethod selector = anMCMethod selector]]]) 
+				ifTrue: [self removeCompiledMethod: compiledMethod from: anApp]]
 ]
 
 { #category : '*TonelLoaderModel',
@@ -28,18 +30,20 @@ TonelReaderAbstractClassDefinition >> deleteRemovedClassMethodsFrom: aClass in: 
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> deleteRemovedInstanceMethodsFrom: aClass in: anApp [
 
-	aClass methodDictionary do: [ :compiledMethod |
-		(compiledMethod application = anApp and: [
-			self tonelMethods noneSatisfy: [ :anMCMethod |
-				anMCMethod isClassSide not and: [
-					compiledMethod selector = anMCMethod selector ] ] ])
-						ifTrue: [ EmInterface current removeMethods: (Array with: compiledMethod) ] ]
+	aClass methodDictionary do: 
+			[:compiledMethod | 
+			(compiledMethod application = anApp and: 
+					[self tonelMethods noneSatisfy: 
+							[:anMCMethod | 
+							anMCMethod isClassSide not 
+								and: [compiledMethod selector = anMCMethod selector]]]) 
+				ifTrue: [self removeCompiledMethod: compiledMethod from: anApp]]
 ]
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading-changes'],
   #vaVisibility : 'private' }
-TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp [
+TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp using: aLoader [
 
 	(self concreteClassIn: anApp)
 		ifNil: [
@@ -117,11 +121,15 @@ TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: emAppOrS
  #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> loadInto: anApp using: aLoader [
 
-	self
-		loadMethodsInto: anApp using: aLoader;
-		deleteRemovedMethodsFrom: anApp;
-		updateCommentIn: anApp;
-		makeConsistentIn: anApp
+	aLoader
+		changeUserTo: anApp manager
+		for: [
+			self
+				loadMethodsInto: anApp using: aLoader;
+				deleteRemovedMethodsFrom: anApp using: aLoader;
+				updateCommentIn: anApp
+				].
+	"self makeConsistentIn: anApp"
 ]
 
 { #category : '*TonelLoaderModel',
@@ -158,6 +166,16 @@ TonelReaderAbstractClassDefinition >> methodChangesIn: aClass [
 ]
 
 { #category : '*TonelLoaderModel',
+ #vaCategories : ['loading-changes'],
+  #vaVisibility : 'private' }
+TonelReaderAbstractClassDefinition >> removeCompiledMethod: compiledMethod from: emApp [
+
+	self
+		do: [EmInterface current removeMethods: (Array with: compiledMethod)]
+		withSuperUser: emApp manager
+]
+
+{ #category : '*TonelLoaderModel',
  #vaCategories : ['testing'],
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> shouldCreateEditionOf: baseClass in: anApp using: aTonelLoader [
@@ -180,11 +198,19 @@ TonelReaderAbstractClassDefinition >> updateCommentIn: anApp [
  #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> versionClass: emClass in: anApp using: aLoader [
 
+	((emClass isEditionIn: anApp) and: [aLoader hasVersionName])
+		ifTrue: [
+			self
+				do: [emClass versionNameIn: anApp is: aLoader versionName]
+				forApp: anApp
+				withSuperUser: (emClass developerIn: anApp).
 
-	((emClass isEditionIn: anApp) and: [aLoader hasVersionName]) 
-		ifTrue: 
-			[emClass versionNameIn: anApp is: aLoader versionName.
-			anApp releaseClass: emClass]
+			self
+				do: [anApp releaseClass: emClass]
+				forApp: anApp
+				withSuperUser: (emClass ownerIn: emClass controller)
+
+			]
 ]
 
 { #category : '*TonelLoaderModel',
@@ -192,10 +218,9 @@ TonelReaderAbstractClassDefinition >> versionClass: emClass in: anApp using: aLo
 TonelReaderAbstractClassDefinition >> versionIn: anApp using: aTonelLoader [
 
 	| emClass |
-	self makeConsistentIn: anApp.
+
+	"self makeConsistentIn: anApp."
 	emClass := Smalltalk classAt: self identifier.
-	self 
-		versionClass: emClass
-		in: anApp
-		using: aTonelLoader 
+	self versionClass: emClass in: anApp using: aTonelLoader
+	
 ]

@@ -114,6 +114,18 @@ TonelLoader >> beUnattended [
 	self doNotCreateVersions
 ]
 
+{ #category : 'Not categorized' }
+TonelLoader >> changeUserTo: emUser for: aBlock [
+
+	| oldUser newUser |
+
+	oldUser := EmUser current.
+	newUser := emUser.
+	(newUser isNil or: [EmUser current = newUser]) ifTrue: [^aBlock value].
+	(EmUser classPool declareVariable: 'CurrentUser') value: newUser.
+	^[aBlock value] ensure: [(EmUser classPool declareVariable: 'CurrentUser') value: oldUser]
+]
+
 { #category : 'loading',
   #vaVisibility : 'private' }
 TonelLoader >> checkRepositoryContents [
@@ -189,6 +201,14 @@ TonelLoader >> hasSelectableBaseEditionFor: aTonelAppOrSub [
 	^self baseEditionStrategy hasSelectableBaseEditionFor: aTonelAppOrSub
 ]
 
+{ #category : 'Not categorized' }
+TonelLoader >> hasSuperGroupAccessTo: anApplication [
+
+	^(self settings appSuperGroupSetting notNil
+		and: [self settings appSuperGroupSetting = anApplication stsSuperGroupSetting])
+			or: [anApplication stsIsSuperGroup]
+]
+
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelLoader >> initializeApplications [
@@ -255,12 +275,14 @@ TonelLoader >> loadApplicationNamed: aStringOrSymbol [
 { #category : 'loading' }
 TonelLoader >> loadApplications: aCollection [
 
-	| confirmer oldWarningLevel |
+	| confirmer oldWarningLevel emUser |
 
+	emUser := EmUser current.
 	confirmer := System image confirmer: self.
 	oldWarningLevel := EsCompiler defaultWarningLevel.
 	EsCompiler defaultWarningLevel: self settings compilerWarningLevel.
 	[aCollection do: [:each | self basicLoadApplication: each]] ensure: [
+		(EmUser classPool declareVariable: 'CurrentUser') value: emUser.
 		System image confirmer: confirmer.
 		EsCompiler defaultWarningLevel: oldWarningLevel].
 	^aCollection collect: [:each | each emApplication]
@@ -326,7 +348,7 @@ TonelLoader >> loadedConfigurationMaps [
 { #category : 'logging' }
 TonelLoader >> log: aString [
 
-	self class owningImage logApplicationNotice: aString.
+	Transcript show: aString; cr.
 ]
 
 { #category : 'strategies' }

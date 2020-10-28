@@ -120,39 +120,22 @@ TonelLoaderSubApplication >> availableShadows [
 
 { #category : 'configuring' }
 TonelLoaderSubApplication >> changeCurrentUserAndSuperGroupSettingOf: theApp [
-	"Sets the Super Group setting for @theApp. Note that for doing so, we must first
-	 switch the current envy user to the manager of the @theApp.
-	 
-	Arguments:
-		theApp - <Symbol> The application to set the Super Group
-	Notes
-		This method would be simplified if we can use #changeUserTo:for:. However, that method
-		belongs to StS Power Tools and Monticello Importer should be able to load in the IBM image.
-	 "
-	
-	| oldUser newUser |
-	oldUser  := EmUser current. 
-	newUser := theApp manager.
-	(newUser isNil or: [ EmUser current = newUser ])
-		ifTrue: [ ^ self changeSuperGroupSettingOf: theApp  ].
-	(EmUser classPool declareVariable: 'CurrentUser') value: newUser .
-	[
-		self changeSuperGroupSettingOf: theApp. 
-	] ensure: [
-		(EmUser classPool declareVariable: 'CurrentUser') value: oldUser .
-	]
 
+
+	self loader changeUserTo: theApp manager for: [ self changeSuperGroupSettingOf: theApp  ]
 ]
 
 { #category : 'configuring' }
 TonelLoaderSubApplication >> changeSuperGroupSettingOf: theApp [
-	"Read comment of #changeCurrentUserAndSuperGroupSettingOf:"
+	"Updates the super group setting to that set in the loader settings, 
+	 or to the one in theApp, if defined."
 
 	theApp updateEdition: [:editionRecord |
-			editionRecord 
-				inheritedUserFieldAt: 'SuperGroup' 
-				put: (self loader settings appSuperGroupSetting ifNil: ['none']) asString
-	]
+		editionRecord
+			inheritedUserFieldAt: 'SuperGroup'
+			put: (self loader settings appSuperGroupSetting ifNil: [
+				theApp stsSuperGroupSetting
+			]) asString]
 ]
 
 { #category : 'configuring',
@@ -255,14 +238,22 @@ TonelLoaderSubApplication >> createDescriptionFor: theAppOrSubApp [
 TonelLoaderSubApplication >> createEditionIn: parentEmApp underCondition: conditionCode withRoot: emRootApp [
 
 	| emApp |
-	(Smalltalk classAt: self identifier ifAbsent: []) ifNil: 
-			[(self loader hasSelectableBaseEditionFor: self)
-				ifTrue: [self loadBaseEdition]
-				ifFalse: [self createSubApplicationIn: parentEmApp condition: conditionCode]].
+
+	(Smalltalk classAt: self identifier ifAbsent: []) ifNil: [
+		(self loader hasSelectableBaseEditionFor: self)
+			ifTrue: [self loadBaseEdition]
+			ifFalse: [self createSubApplicationIn: parentEmApp condition: conditionCode]].
 	emApp := Smalltalk classAt: self identifier.
-	emApp isEdition ifFalse: [emApp newEdition].
-	parentEmApp releaseSubApplication: emApp in: conditionCode.
-	self changeCurrentUserAndSuperGroupSettingOf: emApp.
+
+
+	self loader
+		changeUserTo: emApp manager 
+		for: [
+			emApp isEdition ifFalse: [(emApp newEdition)].
+			self changeCurrentUserAndSuperGroupSettingOf: emApp.
+			parentEmApp releaseSubApplication: emApp in: conditionCode.
+			].
+
 	^emApp
 ]
 
@@ -796,13 +787,26 @@ TonelLoaderSubApplication >> versionUsing: aLoader [
 	theApp := Smalltalk classAt: self identifier.
 	self subApplications do: [:aTonelSubApp | aTonelSubApp versionUsing: aLoader].
 	theApp isEdition ifFalse: [^self].
-	
+
 	self versionClassesIn: theApp using: aLoader.
+
 	(theApp isEditionIn: theApp)
 		ifTrue: [
 			theApp versionNameIn: theApp is: aLoader versionName.
-			(theApp isVersionIn: theApp) ifTrue: [theApp releaseClass: theApp]].
-	self version: theApp as: aLoader versionName
+			(theApp isVersionIn: theApp)
+				ifTrue: [
+					self
+						do: [theApp releaseClass: theApp]
+						forApp: theApp
+						withSuperUser: theApp manager]].
+	theApp isEdition
+		ifTrue: [
+			self
+				do: [self version: theApp as: aLoader versionName]
+				forApp: theApp
+				withSuperUser: theApp manager]
+
+
 ]
 
 { #category : 'accessing' }
