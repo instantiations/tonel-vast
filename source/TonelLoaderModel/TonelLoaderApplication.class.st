@@ -3,8 +3,7 @@ Class {
 	#superclass : 'TonelLoaderSubApplication',
 	#instVars : [
 		'dependents',
-		'notes',
-		'emApplication'
+		'notes'
 	],
 	#category : 'TonelLoaderModel'
 }
@@ -224,24 +223,20 @@ TonelLoaderApplication >> createTonelPackageNameMethodFor: anApp [
 
 { #category : 'loading' }
 TonelLoaderApplication >> definePoolDictionaries [
+
 	self hasChanges
-		ifTrue: [ | theApp |
-			theApp :=Smalltalk classAt: self identifier.
+		ifTrue: [ | anApp |
+			anApp :=Smalltalk classAt: self identifier.
+			self updateSharedPoolsDefinitionOf: anApp.
 			self 
-				definePoolDictionariesForClassesIn: theApp;
-				definePoolDictionariesInSubApplicationsFor: theApp]
+				definePoolDictionariesForClassesIn: anApp;
+				definePoolDictionariesInSubApplicationsFor: anApp]
 ]
 
 { #category : 'querying' }
 TonelLoaderApplication >> dependentApplications [
 
 	^dependents ifNil: [dependents := OrderedCollection new]
-]
-
-{ #category : 'accessing' }
-TonelLoaderApplication >> emApplication [
-	
-	^emApplication
 ]
 
 { #category : 'testing' }

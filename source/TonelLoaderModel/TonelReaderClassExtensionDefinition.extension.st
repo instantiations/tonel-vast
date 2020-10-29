@@ -48,20 +48,6 @@ TonelReaderClassExtensionDefinition >> hasChangesIn: anApp comparedTo: aClass [
 ]
 
 { #category : '*TonelLoaderModel',
- #vaCategories : ['loading'] }
-TonelReaderClassExtensionDefinition >> loadMethodsInto: anApp using: aTonelLoader [
-
-	| concreteClass |
-	concreteClass := self concreteClassIn: anApp.
-	self tonelMethods do: 
-			[:aTonelMethod | 
-			aTonelMethod 
-				loadFor: concreteClass
-				into: anApp
-				using: aTonelLoader]
-]
-
-{ #category : '*TonelLoaderModel',
  #vaCategories : ['accessing'] }
 TonelReaderClassExtensionDefinition >> rootTonelApplicationIn: aTonelLoader [
 

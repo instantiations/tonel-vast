@@ -10,7 +10,8 @@ Class {
 		'conditions',
 		'hasChanges',
 		'poolsAccounted',
-		'rootApplication'
+		'rootApplication',
+		'emApplication'
 	],
 	#pools : [
 		'TonelTextConstants'
@@ -333,14 +334,18 @@ TonelLoaderSubApplication >> definePoolDictionariesFor: emParentApp [
 TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 
 	| definedSharedPools |
-
-	(definedSharedPools := self definedSharedPools) isEmpty ifTrue: [^self].
-
+	(definedSharedPools := self definedSharedPools).
+	
+	(self definedClasses select: [:each | each identifier = self emApplication name]) collect: [:tonelClass |
+		tonelClass loadDeclarationMethodsInto: anApp using: self loader.
+		self updateSharedPoolsDefinitionOf: anApp.
+	].
+		
 	definedSharedPools
 		do: [:aTonelClass | aTonelClass declarePoolDictionariesIn: anApp using: self loader].
-	self updateSharedPoolsDefinitionOf: anApp.
 	definedSharedPools
-		do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp using: self loader]
+		do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp using: self loader].
+	self updateSharedPoolsDefinitionOf: anApp.
 ]
 
 { #category : 'loading' }
@@ -354,6 +359,12 @@ TonelLoaderSubApplication >> deleteRemovedSubApplications [
 
 	self removeDeletedSubApplicationsFor: (Smalltalk classAt: self identifier).
 	self subApplications do: [:tonelSubApp | tonelSubApp deleteRemovedSubApplications]
+]
+
+{ #category : 'accessing' }
+TonelLoaderSubApplication >> emApplication [
+	
+	^emApplication
 ]
 
 { #category : 'querying' }
@@ -505,9 +516,13 @@ TonelLoaderSubApplication >> loadClassesIn: anApp using: aLoader [
 
 	"(self topologicallySort: self tonelExtendedClasses in: anApp) 
 		do: [:each | each key loadInto: anApp using: aLoader]."
-	(self 
+	
+	| sortedClasses |
+	sortedClasses := (self 
 		topologicallySort: (self tonelClasses reject: [:each1 | each1 isSharedPool])
-		in: anApp) do: [:each | each key loadInto: anApp using: aLoader]
+		in: anApp).
+
+	sortedClasses do: [:each | each key loadInto: anApp using: aLoader]
 ]
 
 { #category : 'accessing' }
@@ -751,17 +766,18 @@ TonelLoaderSubApplication >> updateSharedPoolsDefinitionOf: anApp [
 	updatedSharedPoolsNames := Set new.
 	updatedSharedPoolsNames addAll: anApp sharedPoolNames.
 	updatedSharedPoolsNames addAll: ((self definedSharedPools) collect: [:ea | ea identifier asSymbol]).
+	EmInterface current rebuildNamespaceFor: anApp.
 	
-	anApp creatorClass
-				createClassNamed: anApp environmentKey
-				in: anApp environment
-				for: (anApp hasController ifTrue: [anApp controller] ifFalse: [nil])
-				subclassOf: anApp superclass
-				instanceShape: anApp instanceShape
-				classInstanceVariables: (anApp class instVarNames)
-				instanceVariables: (anApp instVarNames)
-				classVariables: (anApp classVarNames)
-				sharedPoolNames: updatedSharedPoolsNames asArray
+	"anApp creatorClass
+		createClassNamed: anApp environmentKey
+		in: anApp environment
+		for: (anApp hasController ifTrue: [anApp controller] ifFalse: [nil])
+		subclassOf: anApp superclass
+		instanceShape: anApp instanceShape
+		classInstanceVariables: (anApp class instVarNames)
+		instanceVariables: (anApp instVarNames)
+		classVariables: (anApp classVarNames)
+		sharedPoolNames: updatedSharedPoolsNames asArray"
 	
 ]
 

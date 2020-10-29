@@ -119,6 +119,20 @@ TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: emAppOrS
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
+TonelReaderAbstractClassDefinition >> loadDeclarationMethodsInto: anApp using: aTonelLoader [
+
+	| concreteClass |
+	concreteClass := self concreteClassIn: anApp.
+	(self tonelMethods select: [:method | method isDeclaration]) do: 
+			[:aTonelMethod | 
+			aTonelMethod 
+				loadFor: concreteClass
+				into: anApp
+				using: aTonelLoader]
+]
+
+{ #category : '*TonelLoaderModel',
+ #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> loadInto: anApp using: aLoader [
 
 	aLoader

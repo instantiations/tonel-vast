@@ -284,7 +284,9 @@ TonelLoader >> loadApplications: aCollection [
 	[aCollection do: [:each | self basicLoadApplication: each]] ensure: [
 		(EmUser classPool declareVariable: 'CurrentUser') value: emUser.
 		System image confirmer: confirmer.
-		EsCompiler defaultWarningLevel: oldWarningLevel].
+		EsCompiler defaultWarningLevel: oldWarningLevel.
+		StsPowerTools primRefreshMethodSelectors.
+		].
 	^aCollection collect: [:each | each emApplication]
 ]
 
