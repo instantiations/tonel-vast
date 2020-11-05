@@ -72,11 +72,7 @@ EmLibrarySnapshot >> findAllApplicationsToLoadWith: aCollection [
 							[| application prereqs |
 							application := assoc key.
 							prereqs := assoc value.
-							prereq := self 
-										selectPrerequisiteEditionOf: application
-										in: prereqs
-										using: browser
-										at: cursorPosition].
+							prereq := self selectPrerequisiteEditionOf: application in: prereqs].
 					prereq isNil ifTrue: [^nil].
 					others := self findAllApplicationsToLoadWith: (Array with: prereq).
 					others isNil ifTrue: [^nil].

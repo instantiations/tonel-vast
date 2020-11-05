@@ -4,7 +4,7 @@ Class {
 	#pools : [
 		'TonelTextConstants'
 	],
-	#category : 'TonelLoaderModel'
+	#category : 'TonelLoaderInteractiveApp'
 }
 
 { #category : 'Not categorized' }

@@ -1,7 +1,7 @@
 Class {
 	#name : 'TonelLoaderInteractiveBaseEditionStrategy',
 	#superclass : 'TonelLoaderBaseEditionStrategy',
-	#category : 'TonelLoaderModel'
+	#category : 'TonelLoaderInteractiveApp'
 }
 
 { #category : 'operations' }
@@ -15,16 +15,14 @@ TonelLoaderInteractiveBaseEditionStrategy >> selectBaseEditionOf: aTonelSubAppli
 ]
 
 { #category : 'operations' }
-TonelLoaderInteractiveBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqShadows using: browser at: cursorPosition [
+TonelLoaderInteractiveBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqShadows [
 
-
-	^CwListPrompter new
-		messageString:  ( ( NlsCatEMT  residentMsg: 'MxEMT26' )  bindWith: application);
+	^(CwListPrompter new)
+		messageString: ((NlsCatEMT residentMsg: 'MxEMT26') bindWith: application);
 		selectedItems: #();
 		items: prereqShadows;
-		printBlock:  [:shadow | shadow signature];
+		printBlock: [:shadow | shadow signature];
 		prompt
-
 ]
 
 { #category : 'errors',

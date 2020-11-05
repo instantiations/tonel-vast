@@ -30,7 +30,7 @@ TonelLoaderBaseEditionStrategy >> filteredBaseEditions: shadowEditions [
 
 { #category : 'lookup',
   #vaVisibility : 'private' }
-TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: applications [
+TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: aCollectionOfApplications [
 
 	"Private - Find all prerequisites of the applications which are not loaded and ask
 	 the user if they should be loaded also. If not answer nil.
@@ -38,22 +38,21 @@ TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: applications [
 	 NOTE: This is a modified version of EtBrowser's version, that delegates on receiver to use its own strategy.
 	 "
 
-	| browser required applicationNames stream prereqNames toLoad cursorPosition prereq others |
-	browser := EtBrowser new.
-	required := browser managerInterface 
-				allUnloadedPrerequisitesFor: applications.
-	required isEmpty ifTrue: [^applications].
-	applications size = 1 
-		ifTrue: [applicationNames := applications first name]
+	| required applicationNames stream prereqNames toLoad prereq others |
+	required := EmInterface current 
+				allUnloadedPrerequisitesFor: aCollectionOfApplications.
+	required isEmpty ifTrue: [^aCollectionOfApplications].
+	aCollectionOfApplications size = 1 
+		ifTrue: [applicationNames := aCollectionOfApplications first name]
 		ifFalse: 
-			[stream := WriteStream on: (browser stringClass new: 100).
-			(applications asSortedCollection: Class sortBlock) do: 
+			[stream := WriteStream on: (self stringClass new: 100).
+			(aCollectionOfApplications asSortedCollection: Class sortBlock) do: 
 					[:app | 
 					stream
 						cr;
 						nextPutAll: '      ' , app name].	"$NON-NLS$"
 			applicationNames := stream contents].
-	stream := WriteStream on: (browser stringClass new: 100).
+	stream := WriteStream on: (self stringClass new: 100).
 	required keys asSortedCollection do: 
 			[:appName | 
 			stream
@@ -63,9 +62,8 @@ TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: applications [
 	(self 
 		confirmLoadPrerequisites: prereqNames
 		of: applicationNames
-		using: browser) ifFalse: [^nil].	"$NLS$ To load %1 the following prerequisite(s) must also be loaded:\%2.\\Do you wish to load them also?"
-	toLoad := applications asOrderedCollection.
-	cursorPosition := System cursorPosition.
+		using: nil) ifFalse: [^nil].	"$NLS$ To load %1 the following prerequisite(s) must also be loaded:\%2.\\Do you wish to load them also?"
+	toLoad := aCollectionOfApplications asOrderedCollection.
 	required associationsDo: 
 			[:assoc | 
 			(toLoad detect: [:app | app symbol = assoc key] ifNone: []) isNil 
@@ -81,11 +79,7 @@ TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: applications [
 							[| application prereqs |
 							application := assoc key.
 							prereqs := assoc value.
-							prereq := self 
-										selectPrerequisiteEditionOf: application
-										in: prereqs
-										using: browser
-										at: cursorPosition].
+							prereq := self selectPrerequisiteEditionOf: application in: prereqs].
 					prereq isNil ifTrue: [^nil].
 					others := self findAllApplicationsToLoadWith: (Array with: prereq).
 					others isNil ifTrue: [^nil].
@@ -156,17 +150,17 @@ TonelLoaderBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplication [
 
 { #category : 'operations' }
 TonelLoaderBaseEditionStrategy >> selectPrerequisiteEditionOf: application [
+
 	| shadows |
-	^(shadows := Application shadowsFor: application name) isEmpty
+	^(shadows := Application shadowsFor: application name) isEmpty 
 		ifTrue: [nil]
-		ifFalse: [
-	self selectPrerequisiteEditionOf: application in: shadows using: EtBrowser new at: System cursorPosition]
+		ifFalse: [self selectPrerequisiteEditionOf: application in: shadows]
 ]
 
 { #category : 'operations' }
-TonelLoaderBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqs using: browser at: cursorPosition [
+TonelLoaderBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqs [
 
-	 self subclassResponsibility
+	self subclassResponsibility
 ]
 
 { #category : 'errors',

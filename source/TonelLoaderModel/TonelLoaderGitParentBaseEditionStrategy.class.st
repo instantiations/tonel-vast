@@ -70,16 +70,14 @@ TonelLoaderGitParentBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplica
 ]
 
 { #category : 'operations' }
-TonelLoaderGitParentBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqs using: browser at: cursorPosition [
+TonelLoaderGitParentBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqs [
 
 	| sortedPrereqs |
-
-	sortedPrereqs := (prereqs asSortedCollection: [:a :b | a timeStamp <= b timeStamp]) asArray.
-	^sortedPrereqs
+	sortedPrereqs := (prereqs 
+				asSortedCollection: [:a :b | a timeStamp <= b timeStamp]) asArray.
+	^sortedPrereqs 
 		detect: [:one | one versionName includesSubstring: self parentCommitId]
 		ifNone: [sortedPrereqs last]
-
-
 ]
 
 { #category : 'initializing',

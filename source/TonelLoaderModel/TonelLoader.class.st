@@ -101,20 +101,13 @@ TonelLoader >> basicLoadApplication: aTonelApplication [
 ]
 
 { #category : 'strategies-convenience' }
-TonelLoader >> beInteractive [
-	self useInteractivePreqrequistesSelection.
-	self useInteractiveBaseEditionSelection.
-	self useInteractiveVersioning
-]
-
-{ #category : 'strategies-convenience' }
 TonelLoader >> beUnattended [
 	self useComputedPrerequisites.
 	self useLatestBaseEditions.
 	self doNotCreateVersions
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'privileges' }
 TonelLoader >> changeUserTo: emUser for: aBlock [
 
 	| oldUser newUser |
@@ -195,13 +188,13 @@ TonelLoader >> forceCreationOfEditions [
 	self versionStrategy alwaysCreateEditions: true
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'privileges' }
 TonelLoader >> hasSelectableBaseEditionFor: aTonelAppOrSub [
 	
 	^self baseEditionStrategy hasSelectableBaseEditionFor: aTonelAppOrSub
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'privileges' }
 TonelLoader >> hasSuperGroupAccessTo: anApplication [
 
 	^(self settings appSuperGroupSetting notNil
@@ -276,17 +269,15 @@ TonelLoader >> loadApplicationNamed: aStringOrSymbol [
 TonelLoader >> loadApplications: aCollection [
 
 	| confirmer oldWarningLevel emUser |
-
 	emUser := EmUser current.
 	confirmer := System image confirmer: self.
 	oldWarningLevel := EsCompiler defaultWarningLevel.
 	EsCompiler defaultWarningLevel: self settings compilerWarningLevel.
-	[aCollection do: [:each | self basicLoadApplication: each]] ensure: [
-		(EmUser classPool declareVariable: 'CurrentUser') value: emUser.
-		System image confirmer: confirmer.
-		EsCompiler defaultWarningLevel: oldWarningLevel.
-		StsPowerTools primRefreshMethodSelectors.
-		].
+	[aCollection do: [:each | self basicLoadApplication: each]] ensure: 
+			[(EmUser classPool declareVariable: 'CurrentUser') value: emUser.
+			System image confirmer: confirmer.
+			EsCompiler defaultWarningLevel: oldWarningLevel.
+			self postLoadActions].
 	^aCollection collect: [:each | each emApplication]
 ]
 
@@ -367,6 +358,13 @@ TonelLoader >> namingStrategy: anObject [
 TonelLoader >> packageNames [
 	
 	^self reader packages collect: [:each | each name asString ]
+]
+
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelLoader >> postLoadActions [
+	^(Smalltalk classAt: #StsPowerTools) 
+		ifNotNil: [:class | class perform: #primRefreshMethodSelectors]
 ]
 
 { #category : 'resolving' }
@@ -525,23 +523,6 @@ TonelLoader >> useDefaultNaming [
 TonelLoader >> useGitVersion [
 	self versionStrategy: (TonelLoaderGitVersionStrategy for: self).
 	self baseEditionStrategy: (TonelLoaderGitParentBaseEditionStrategy for: self)
-]
-
-{ #category : 'strategies-convenience' }
-TonelLoader >> useInteractiveBaseEditionSelection [
-	self 
-		baseEditionStrategy: (TonelLoaderInteractiveBaseEditionStrategy for: self)
-]
-
-{ #category : 'strategies-convenience' }
-TonelLoader >> useInteractivePreqrequistesSelection [
-	self 
-		prerequisitesStrategy: (TonelLoaderInteractivePrereqStrategy for: self)
-]
-
-{ #category : 'strategies-convenience' }
-TonelLoader >> useInteractiveVersioning [
-	self versionStrategy: (TonelLoaderInteractiveVersionStrategy for: self)
 ]
 
 { #category : 'strategies-convenience' }

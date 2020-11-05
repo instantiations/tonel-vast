@@ -1,7 +1,7 @@
 Class {
 	#name : 'TonelLoaderInteractivePrereqStrategy',
 	#superclass : 'TonelLoaderPrereqStrategy',
-	#category : 'TonelLoaderModel'
+	#category : 'TonelLoaderInteractiveApp'
 }
 
 { #category : 'lookup' }

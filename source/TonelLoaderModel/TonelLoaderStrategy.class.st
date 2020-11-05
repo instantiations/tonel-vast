@@ -46,3 +46,10 @@ TonelLoaderStrategy >> setLoader: aTonelLoader [
 	loader := aTonelLoader.
 	self initialize
 ]
+
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
+TonelLoaderStrategy >> stringClass [
+
+	^Locale current preferredStringClass
+]

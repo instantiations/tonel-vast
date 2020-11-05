@@ -268,6 +268,7 @@ TonelLoaderApplication >> loadBaseApplication [
 { #category : 'loading' }
 TonelLoaderApplication >> loadPrerequisites [
 
+
 	self prerequisiteApps do: [:each |
 		(self prerequisiteIsLoaded: each)
 			ifFalse: [
@@ -279,9 +280,10 @@ TonelLoaderApplication >> loadPrerequisites [
 								self loader basicLoadApplication: tonelApplication]]
 					ifNotNil: [:prereqEdition |
 						(EmImageBuilder loadApplications: (
-							EtBrowser new findAllApplicationsToLoadWith: (Array with: prereqEdition)))
-								ifNil: [
-									TonelLoaderError signal: (TonelMsg18 bindWith: self name) "$NLS$ Could not load base edition of %1. Load aborted."]]]]
+							self loader baseEditionStrategy
+								findAllApplicationsToLoadWith: (Array with: prereqEdition)))
+									ifNil: [
+										TonelLoaderError signal: (TonelMsg18 bindWith: self name) "$NLS$ Could not load base edition of %1. Load aborted."]]]]
 
 
 
