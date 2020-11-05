@@ -122,7 +122,6 @@ TonelApplicationLoader >> createAndLoadApplication [
 		loadApplication;
 		deleteRemovedSubApplications;
 		versionApplication;
-		initializeApplication;
 		markAsLoaded
 
 
@@ -264,6 +263,7 @@ TonelApplicationLoader >> loader [
   #vaVisibility : 'private' }
 TonelApplicationLoader >> markAsLoaded [
 
+	self tonelApplication notifyLoad.
 	self loader addLoadedApplication: self tonelApplication
 ]
 

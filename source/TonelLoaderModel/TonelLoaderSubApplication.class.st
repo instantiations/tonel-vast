@@ -438,17 +438,6 @@ TonelLoaderSubApplication >> includesClass: className [
 
 { #category : 'Initialization',
   #vaVisibility : 'private' }
-TonelLoaderSubApplication >> initialize [
-
-	| theApp |
-
-	theApp := Smalltalk classAt: self identifier.
-	(theApp class includesSelector: #loaded) ifTrue: [theApp loaded].
-	self subApplications do: [:each | each initialize]
-]
-
-{ #category : 'Initialization',
-  #vaVisibility : 'private' }
 TonelLoaderSubApplication >> initializeConditions [
 
 	conditions := Dictionary new.
@@ -600,6 +589,23 @@ TonelLoaderSubApplication >> name [
 TonelLoaderSubApplication >> notes [
 		
 	^self rootTonelApplication notes
+]
+
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelLoaderSubApplication >> notifyLoad [
+
+	| theApp |
+	
+	theApp := Smalltalk classAt: self identifier.
+	self definedClasses do: [:each | 
+		(each concreteClassIn: theApp rootApplication)
+			ifNotNil: [:class |
+				(class includesSelector: #initializeAfterLoad) ifTrue: [class initializeAfterLoad]
+			].
+	].
+	(theApp class includesSelector: #loaded) ifTrue: [theApp loaded].
+	self subApplications do: [:each | each initialize]
 ]
 
 { #category : 'accessing' }
