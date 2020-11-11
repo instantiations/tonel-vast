@@ -6,8 +6,8 @@
 				#requiredMaps : [
 					{
 						#name : 'Tonel',
-						#versionName : '1.70',
-						#ts : 3782032379
+						#versionName : '1.71',
+						#ts : 3782565636
 					},
 					{
 						#name : 'z.ST: SUnit',
@@ -17,7 +17,7 @@
 				]
 			}
 		],
-		#ts : 3782036596,
+		#ts : 3782566168,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -43,7 +43,7 @@
 			}
 		],
 		#name : 'Test Tonel',
-		#versionName : '1.21'
+		#versionName : '1.22'
 	},
 	{
 		#conditions : [
@@ -58,14 +58,14 @@
 				]
 			}
 		],
-		#ts : 3782032379,
+		#ts : 3782565636,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
 			{
 				#name : 'AbtShellProgramStarterApp',
-				#versionName : '1.0',
-				#ts : 3762611357
+				#versionName : '1.2',
+				#ts : 3782563946
 			},
 			{
 				#name : 'TonelBaseApp',
@@ -104,6 +104,6 @@
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.70'
+		#versionName : '1.71'
 	}
 ]

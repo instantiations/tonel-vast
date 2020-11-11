@@ -4,9 +4,7 @@ Package {
 	#vaSubApplications : [
 	{
 		#condition : '\'WIN32s\'  = (System image subsystemType: \'OS\')',
-		#subapps : [
-			'AbtShellProgramStarterWinPlatformSubApp'
-		]
+		#subapps : [ ]
 	}
 ]
 }
