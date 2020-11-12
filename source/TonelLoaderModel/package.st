@@ -1,4 +1,4 @@
 Package {
 	#name : 'TonelLoaderModel',
-	#vaPrerequisites : ['AbtShellProgramStarterApp','TonelReaderModel']
+	#vaPrerequisites : ['AbtRunProgramStarterApp','TonelReaderModel']
 }
