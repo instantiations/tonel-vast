@@ -6,14 +6,39 @@ Class {
 		'previousSuffix',
 		'monitor'
 	],
+	#classInstVars : [
+		'testRepositoriesPath'
+	],
 	#category : 'TonelLoaderTests'
 }
+
+{ #category : 'Not categorized' }
+TonelLoaderTest class >> testRepositoriesPath [
+
+	^testRepositoriesPath ifNil: [CfsPath defaultPath]
+]
+
+{ #category : 'Not categorized' }
+TonelLoaderTest class >> testRepositoriesPath: aCfsPath [
+	"Sets the base directory where the repositories used for tests are located."
+	
+	"self testRepositoriesPath: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-repos\tonel-vast\tests')"
+
+	testRepositoriesPath := aCfsPath
+]
 
 { #category : 'Initialization',
   #vaVisibility : 'private' }
 TonelLoaderTest >> deleteDirectoryInTearDown [
 
 	^false
+]
+
+{ #category : 'Tests - Support',
+  #vaVisibility : 'private' }
+TonelLoaderTest >> directoryForTestingPath [
+
+	^ (self class testRepositoriesPath append: self class name)
 ]
 
 { #category : 'Tests' }

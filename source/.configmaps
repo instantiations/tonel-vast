@@ -17,7 +17,7 @@
 				]
 			}
 		],
-		#ts : 3782638170,
+		#ts : 3783090431,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -28,8 +28,8 @@
 			},
 			{
 				#name : 'TonelLoaderTests',
-				#versionName : '1.8',
-				#ts : 3780217002
+				#versionName : '1.9',
+				#ts : 3783084785
 			},
 			{
 				#name : 'TonelReaderTests',
@@ -43,7 +43,7 @@
 			}
 		],
 		#name : 'Test Tonel',
-		#versionName : '1.24'
+		#versionName : '1.25'
 	},
 	{
 		#conditions : [
