@@ -6,8 +6,8 @@
 				#requiredMaps : [
 					{
 						#name : 'Tonel',
-						#versionName : '1.73',
-						#ts : 3782638127
+						#versionName : '1.74',
+						#ts : 3784354240
 					},
 					{
 						#name : 'z.ST: SUnit',
@@ -17,14 +17,14 @@
 				]
 			}
 		],
-		#ts : 3783090431,
+		#ts : 3784354236,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
 			{
 				#name : 'EmLibraryToolsApp',
-				#versionName : '1.5',
-				#ts : 3777122976
+				#versionName : '1.6',
+				#ts : 3784354421
 			},
 			{
 				#name : 'TonelLoaderTests',
@@ -43,7 +43,7 @@
 			}
 		],
 		#name : 'Test Tonel',
-		#versionName : '1.25'
+		#versionName : '1.26'
 	},
 	{
 		#conditions : [
@@ -58,7 +58,7 @@
 				]
 			}
 		],
-		#ts : 3782638127,
+		#ts : 3784354240,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -94,11 +94,11 @@
 			},
 			{
 				#name : 'TonelWriterModel',
-				#versionName : '1.58',
-				#ts : 3767953736
+				#versionName : '1.59',
+				#ts : 3784207735
 			}
 		],
 		#name : 'Tonel',
-		#versionName : '1.73'
+		#versionName : '1.74'
 	}
 ]

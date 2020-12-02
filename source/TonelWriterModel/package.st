@@ -1,4 +1,4 @@
 Package {
 	#name : 'TonelWriterModel',
-	#vaPrerequisites : ['EmClassDevelopment','STONVASTCoreApp','TonelFileSystem']
+	#vaPrerequisites : ['EmClassDevelopment','STONCoreApp','TonelFileSystem']
 }
