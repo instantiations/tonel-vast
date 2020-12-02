@@ -334,18 +334,22 @@ TonelLoaderSubApplication >> definePoolDictionariesFor: emParentApp [
 TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 
 	| definedSharedPools |
+
 	(definedSharedPools := self definedSharedPools).
-	
-	(self definedClasses select: [:each | each identifier = self emApplication name]) collect: [:tonelClass |
+
+	(self definedClasses select: [:each | (self emApplication notNil and: [each identifier = self emApplication name]) or: [each identifier = self identifier]]) collect: [
+		:tonelClass |
 		tonelClass loadDeclarationMethodsInto: anApp using: self loader.
-		self updateSharedPoolsDefinitionOf: anApp.
-	].
-		
-	definedSharedPools
-		do: [:aTonelClass | aTonelClass declarePoolDictionariesIn: anApp using: self loader].
-	definedSharedPools
-		do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp using: self loader].
-	self updateSharedPoolsDefinitionOf: anApp.
+		EmInterface current rebuildNamespaceFor: anApp].
+
+	definedSharedPools notEmpty
+		ifTrue: [
+			definedSharedPools
+				do: [:aTonelClass | aTonelClass declarePoolDictionariesIn: anApp using: self loader].
+			self updateSharedPoolsDefinitionOf: anApp.
+			definedSharedPools
+				do: [:aTonelClass | aTonelClass definePoolDictionariesIn: anApp using: self loader].
+			self updateSharedPoolsDefinitionOf: anApp]
 ]
 
 { #category : 'loading' }
@@ -772,9 +776,8 @@ TonelLoaderSubApplication >> updateSharedPoolsDefinitionOf: anApp [
 	updatedSharedPoolsNames := Set new.
 	updatedSharedPoolsNames addAll: anApp sharedPoolNames.
 	updatedSharedPoolsNames addAll: ((self definedSharedPools) collect: [:ea | ea identifier asSymbol]).
-	EmInterface current rebuildNamespaceFor: anApp.
-	
-	"anApp creatorClass
+
+	anApp creatorClass
 		createClassNamed: anApp environmentKey
 		in: anApp environment
 		for: (anApp hasController ifTrue: [anApp controller] ifFalse: [nil])
@@ -783,7 +786,7 @@ TonelLoaderSubApplication >> updateSharedPoolsDefinitionOf: anApp [
 		classInstanceVariables: (anApp class instVarNames)
 		instanceVariables: (anApp instVarNames)
 		classVariables: (anApp classVarNames)
-		sharedPoolNames: updatedSharedPoolsNames asArray"
+		sharedPoolNames: updatedSharedPoolsNames asArray
 	
 ]
 

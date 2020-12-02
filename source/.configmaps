@@ -5,19 +5,75 @@
 				#condition : 'true',
 				#requiredMaps : [
 					{
-						#name : 'Tonel',
-						#versionName : '1.74',
-						#ts : 3784354240
-					},
-					{
-						#name : 'z.ST: SUnit',
-						#versionName : 'V 9.2.2  [002]',
-						#ts : 3768827234
+						#name : 'z.ST: STON Support',
+						#versionName : 'V 10.0.0  [470]',
+						#ts : 3783589073
 					}
 				]
 			}
 		],
-		#ts : 3784354236,
+		#ts : 3784357183,
+		#comment : '',
+		#formatVersion : '1.1',
+		#applications : OrderedCollection [
+			{
+				#name : 'TonelBaseApp',
+				#versionName : '1.1',
+				#ts : 3762002743
+			},
+			{
+				#name : 'TonelFileSystem',
+				#versionName : '1.23',
+				#ts : 3758350880
+			},
+			{
+				#name : 'TonelLoaderInteractiveApp',
+				#versionName : '1.0',
+				#ts : 3782031416
+			},
+			{
+				#name : 'TonelLoaderModel',
+				#versionName : '1.77',
+				#ts : 3784357484
+			},
+			{
+				#name : 'TonelReaderModel',
+				#versionName : '1.51',
+				#ts : 3767947671
+			},
+			{
+				#name : 'TonelTools',
+				#versionName : '1.16',
+				#ts : 3782031919
+			},
+			{
+				#name : 'TonelWriterModel',
+				#versionName : '1.59',
+				#ts : 3784207735
+			}
+		],
+		#name : 'Tonel',
+		#versionName : 'v1.3.0'
+	},
+	{
+		#conditions : [
+			{
+				#condition : 'true',
+				#requiredMaps : [
+					{
+						#name : 'Tonel',
+						#versionName : 'v1.3.0',
+						#ts : 3784357183
+					},
+					{
+						#name : 'z.ST: SUnit',
+						#versionName : 'V 10.0.0  [470]',
+						#ts : 3783589073
+					}
+				]
+			}
+		],
+		#ts : 3784357175,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -43,62 +99,6 @@
 			}
 		],
 		#name : 'Test Tonel',
-		#versionName : '1.26'
-	},
-	{
-		#conditions : [
-			{
-				#condition : 'true',
-				#requiredMaps : [
-					{
-						#name : 'z.ST: STON Support',
-						#versionName : 'V 9.2.2  [002]',
-						#ts : 3768827234
-					}
-				]
-			}
-		],
-		#ts : 3784354240,
-		#comment : '',
-		#formatVersion : '1.1',
-		#applications : OrderedCollection [
-			{
-				#name : 'TonelBaseApp',
-				#versionName : '1.1',
-				#ts : 3762002743
-			},
-			{
-				#name : 'TonelFileSystem',
-				#versionName : '1.23',
-				#ts : 3758350880
-			},
-			{
-				#name : 'TonelLoaderInteractiveApp',
-				#versionName : '1.0',
-				#ts : 3782031416
-			},
-			{
-				#name : 'TonelLoaderModel',
-				#versionName : '1.76',
-				#ts : 3782636020
-			},
-			{
-				#name : 'TonelReaderModel',
-				#versionName : '1.51',
-				#ts : 3767947671
-			},
-			{
-				#name : 'TonelTools',
-				#versionName : '1.16',
-				#ts : 3782031919
-			},
-			{
-				#name : 'TonelWriterModel',
-				#versionName : '1.59',
-				#ts : 3784207735
-			}
-		],
-		#name : 'Tonel',
-		#versionName : '1.74'
+		#versionName : 'v1.3.0'
 	}
 ]

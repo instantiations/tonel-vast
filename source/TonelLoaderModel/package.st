@@ -1,4 +1,4 @@
 Package {
 	#name : 'TonelLoaderModel',
-	#vaPrerequisites : ['AbtRunProgramStarterApp','TonelReaderModel']
+	#vaPrerequisites : ['OsProcessesApp','TonelReaderModel']
 }

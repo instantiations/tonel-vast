@@ -15,14 +15,18 @@ TonelReaderAbstractClassDefinition >> concreteClassIn: anApp [
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> deleteRemovedClassMethodsFrom: aClass in: anApp [
 
-	aClass class methodDictionary do: 
-			[:compiledMethod | 
-			(compiledMethod application = anApp and: 
-					[self tonelMethods noneSatisfy: 
-							[:anMCMethod | 
-							anMCMethod isClassSide 
-								and: [compiledMethod selector = anMCMethod selector]]]) 
-				ifTrue: [self removeCompiledMethod: compiledMethod from: anApp]]
+	| methodsToRemove |
+	methodsToRemove := aClass class methodDictionary values select: 
+					[:compiledMethod | 
+					compiledMethod application = anApp and: 
+							[self tonelMethods noneSatisfy: 
+									[:anMCMethod | 
+									anMCMethod isClassSide 
+										and: [compiledMethod selector = anMCMethod selector]]]].
+	methodsToRemove := methodsToRemove 
+				reject: [:each | self isArtificiallyCreatedMethod: each inApp: anApp].
+	methodsToRemove 
+		do: [:compiledMethod | self removeCompiledMethod: compiledMethod from: anApp]
 ]
 
 { #category : '*TonelLoaderModel',
@@ -143,7 +147,6 @@ TonelReaderAbstractClassDefinition >> loadInto: anApp using: aLoader [
 				deleteRemovedMethodsFrom: anApp using: aLoader;
 				updateCommentIn: anApp
 				].
-	"self makeConsistentIn: anApp"
 ]
 
 { #category : '*TonelLoaderModel',

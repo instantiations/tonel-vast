@@ -10,42 +10,25 @@ Class {
 { #category : 'operations',
   #vaVisibility : 'private' }
 TonelLoaderGitParentBaseEditionStrategy >> executeGitCommand [
-	| starter execOkay |
-	starter := AbtShellProgramStarter new.
-	starter currentDirectory: self loader repositoryPath asString.
-	starter programName: 'git'.
-	starter programInput: 'cat-file commit HEAD'.
-	starter stdoutPath: self tempGitOutputPath.
-	execOkay := starter startProgram.
-	^execOkay
+	| starter process |
+	starter := OsProcessStarter shell: 'git cat-file commit HEAD'.
+	starter workingDirectory: self loader repositoryPath.
+	starter redirectOutputToPipe.
+	process := starter start.
+	^process
 ]
 
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelLoaderGitParentBaseEditionStrategy >> initializeParentCommitId [
-
-	| execOkay mustWait outfile readStream |
-
-	execOkay := self executeGitCommand.
-
-	"We put a long enough delay to ensure the output file will be found."
-	(Delay forMilliseconds: 2000) wait.
-	[
-		readStream :=
-			CfsFileStream read: (self loader repositoryPath append: self tempGitOutputPath) asString.
-		(execOkay not or: [readStream isCfsError])
-			ifTrue: [self signalParentCommitReadError]
-			ifFalse: [| parentCommitData  line |
-				line  := readStream nextLine. 
-				((line copyFrom: 1 to: (4 min: line size)) = 'tree') ifFalse: [self signalParentCommitReadError].
-				parentCommitData := readStream nextLine subStrings.
-				(parentCommitData size = 2 and: [parentCommitData first = 'parent'])
-					ifFalse: [self signalParentCommitReadError].
-				parentCommitId := parentCommitData last first: 7]]
-					ensure: [
-						readStream isCfsError ifFalse: [readStream close].
-						(self loader repositoryPath append: self tempGitOutputPath)
-							ifNotNil: [:outFile | outFile exists ifTrue: [outFile delete]]]
+	| execOkay readStream process |
+	process := self executeGitCommand.
+	process waitForCompletion.
+	execOkay := process exitCode isZero.
+	readStream := process outputStream upToEnd readStream.
+	(execOkay not or: [readStream size isZero]) 
+		ifTrue: [self signalParentCommitReadError]
+		ifFalse: [self readParentCommitFrom: readStream]
 ]
 
 { #category : 'accessing',
@@ -54,6 +37,20 @@ TonelLoaderGitParentBaseEditionStrategy >> parentCommitId [
 
 	parentCommitId ifNil: [self initializeParentCommitId].
 	^parentCommitId
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelLoaderGitParentBaseEditionStrategy >> readParentCommitFrom: readStream [
+
+	| parentCommitData line |
+	line := readStream nextLine.
+	(line copyFrom: 1 to: (4 min: line size)) = 'tree' 
+		ifFalse: [self signalParentCommitReadError].
+	parentCommitData := readStream nextLine subStrings.
+	(parentCommitData size = 2 and: [parentCommitData first = 'parent']) 
+		ifFalse: [self signalParentCommitReadError].
+	parentCommitId := parentCommitData last first: 7
 ]
 
 { #category : 'initializing',
