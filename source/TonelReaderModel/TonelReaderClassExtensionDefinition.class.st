@@ -31,3 +31,9 @@ TonelReaderClassExtensionDefinition >> identifier [
 
 	^self name asSymbol
 ]
+
+{ #category : 'accessing' }
+TonelReaderClassExtensionDefinition >> superclassIdentifier [
+	
+	^nil
+]

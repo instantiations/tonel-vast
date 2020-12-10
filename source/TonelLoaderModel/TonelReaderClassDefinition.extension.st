@@ -289,8 +289,11 @@ TonelReaderClassDefinition >> rootTonelApplicationIn: aTonelLoader [
  #vaCategories : ['loading'],
   #vaVisibility : 'private' }
 TonelReaderClassDefinition >> superclassChangeIn: aClass [
-	^self extension not
-		and: [(self superclassIdentifier = aClass superclass name) not]
+
+	^self extension not and: [
+		aClass superclass isNil
+			ifTrue: [(self superclassIdentifier isNil and: [aClass superclass isNil]) not]
+			ifFalse: [(self superclassIdentifier asSymbol = aClass superclass) not]]
 ]
 
 { #category : '*TonelLoaderModel',

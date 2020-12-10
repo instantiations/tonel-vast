@@ -164,10 +164,10 @@ TonelReaderClassDefinition >> initialize: aString [
 
 { #category : 'Initialize-Release' }
 TonelReaderClassDefinition >> initializeWithName: nameString superclass: superString variable: varBoolean fieldType: fieldTypeString instanceVariables: instVarString classVariables: classVarString poolDictionaries: poolDictString [
-		
+	
 	name := nameString.
 	identifier := nameString asSymbol.
-	superclassIdentifier := superString asSymbol.
+	superclassIdentifier := superString asSymbol = #nil ifTrue: [nil] ifFalse: [superString asSymbol].
 	variableClass := varBoolean.
 	fieldType := fieldTypeString.
 	instanceVariables := instVarString.

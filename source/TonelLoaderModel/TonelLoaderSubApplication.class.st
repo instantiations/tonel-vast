@@ -657,6 +657,7 @@ TonelLoaderSubApplication >> realSuperclassFor: aTonelClassDefinition using: ton
 	| aClassDefinition |
 
 	aClassDefinition := aTonelClassDefinition.
+	aClassDefinition superclassIdentifier isNil ifTrue: [^nil].
 	[aClassDefinition ~= nil] whileTrue: [
 		(Smalltalk classAt: aClassDefinition superclassIdentifier)
 			ifNil: [
