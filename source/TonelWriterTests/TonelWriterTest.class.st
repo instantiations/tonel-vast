@@ -38,7 +38,7 @@ TonelWriterTest >> assertTonelWriterModelOnPath: aPath [
 			equals:
 			'Package {
 	#name : ''TonelWriterModel'',
-	#vaPrerequisites : [''EmClassDevelopment'',''STONVASTCoreApp'',''TonelFileSystem'']
+	#vaPrerequisites : [''EmClassDevelopment'',''STONCoreApp'',''TonelFileSystem'']
 }
 ';
 		assertFileSystemIncludesFileAt:

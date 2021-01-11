@@ -6,8 +6,8 @@
 				#requiredMaps : [
 					{
 						#name : 'Tonel',
-						#versionName : 'v1.3.1',
-						#ts : 3785059435
+						#versionName : 'v1.3.2',
+						#ts : 3787824243
 					},
 					{
 						#name : 'z.ST: SUnit',
@@ -17,7 +17,7 @@
 				]
 			}
 		],
-		#ts : 3787824237,
+		#ts : 3787835932,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -38,12 +38,12 @@
 			},
 			{
 				#name : 'TonelWriterTests',
-				#versionName : '1.34',
-				#ts : 3777113021
+				#versionName : '1.35',
+				#ts : 3787835801
 			}
 		],
 		#name : 'Test Tonel',
-		#versionName : 'v1.3.2'
+		#versionName : 'v1.3.3'
 	},
 	{
 		#conditions : [
