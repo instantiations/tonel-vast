@@ -9,6 +9,6 @@ Be able to migrate the history of an application (or set of applications) from t
 
 ## Real use testing
 
-This codebase was tested with a good suite of unit testing, the example repositories mentioned before and [VAST Tensorflow](https://github.com/vasmalltalk/tensorflow-vast/) library.
+This codebase was tested with a good suite of unit testing, the example repositories mentioned before and [VAST Tensorflow](https://github.com/vast-community-hub/tensorflow-vast) library.
 
-VAST users might have other use cases and needs that weren't considered in this codebase. If you have suggestions or issues [please report them](https://github.com/vasmalltalk/tonel-vast/issues/) so we can continue .
+VAST users might have other use cases and needs that weren't considered in this codebase. If you have suggestions or issues [please report them](https://github.com/instantiations/tonel-vast/issues/) so we can continue .

@@ -8,9 +8,9 @@
     <br>
     -->
     <br>
-    <a href="https://github.com/vasmalltalk/tonel-vast/issues/new?labels=Type%3A+Defect">Report a defect</a>
+    <a href="https://github.com/instantiations/tonel-vast/issues/new?labels=Type%3A+Defect">Report a defect</a>
     |
-    <a href="https://github.com/vasmalltalk/tonel-vast/issues/new?labels=Type%3A+Feature">Request feature</a>
+    <a href="https://github.com/instantiations/tonel-vast/issues/new?labels=Type%3A+Feature">Request feature</a>
   </p>
 </p>
 
@@ -162,6 +162,20 @@ Writes to disk, in a Tonel compatible format (plus the VAST specific features de
 
 If the Application has a class side `#tonelPackageName` selector it  will then honor it when creating the package name.
 
+
+## Testing
+
+The Reader, Parser and Writer tests can be run out of the box once loaded, but the Loader tests need a little setup in order to run.
+
+Once you clone this repository you have to configure `TonelLoaderTest` to point to the `tests` directory within the repository, since it contains the repositories used for testing the loader. 
+
+```smalltalk
+TonelLoaderTest testRepositoryPath: (CfsPath named: 'repo-path\tests')
+```
+
+### Note about side-effects
+
+The Loader tests will attempt to leave the ENVY Library (aka "the library") in the same logical state as it was before running them by means of reloading the applications that were loaded before starting and purging newly created editions, but since this can the access to the library isn't atomic (as in a single enclosing transaction) there could be leftovers if something goes wrong. So it isn't adviced to run the tests against your production library.
 
 ## Roadmap / Next steps
 
