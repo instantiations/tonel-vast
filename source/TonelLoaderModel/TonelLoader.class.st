@@ -18,6 +18,20 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
+{ #category : 'STS-Support' }
+TonelLoader class >> do: aBlock forApp: app withSuperUser: user [
+
+	^self hasSTSSupport 
+		ifTrue: [super do: aBlock forApp: app withSuperUser: user]
+		ifFalse: [aBlock value]
+]
+
+{ #category : 'STS-Support' }
+TonelLoader class >> hasSTSSupport [
+
+	^(Smalltalk includesKey: #AbtOrganizerApp)
+]
+
 { #category : 'instance creation' }
 TonelLoader class >> new [
 
@@ -197,9 +211,12 @@ TonelLoader >> hasSelectableBaseEditionFor: aTonelAppOrSub [
 { #category : 'privileges' }
 TonelLoader >> hasSuperGroupAccessTo: anApplication [
 
-	^(self settings appSuperGroupSetting notNil
-		and: [self settings appSuperGroupSetting = anApplication stsSuperGroupSetting])
-			or: [anApplication stsIsSuperGroup]
+	^TonelLoader class hasSTSSupport
+		ifTrue: [
+			(self settings appSuperGroupSetting notNil
+				and: [self settings appSuperGroupSetting = anApplication stsSuperGroupSetting])
+					or: [anApplication stsIsSuperGroup]]
+		ifFalse: [false]
 ]
 
 { #category : 'initializing',

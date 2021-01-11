@@ -206,25 +206,6 @@ TonelReaderClassDefinition >> hasChangesIn: emAppOrSubApp comparedTo: aClass [
 ]
 
 { #category : '*TonelLoaderModel',
- #vaCategories : ['testing'] }
-TonelReaderClassDefinition >> isArtificiallyCreatedMethod: aCompiledMethod inApp: emApplication [
-
-	((aCompiledMethod selector beginsWithSubCollection: '_SHAREDPOOL_')
-		or: [aCompiledMethod selector beginsWithSubCollection: '_PRAGMA_'])
-			ifTrue: [| parts poolName |
-				parts := aCompiledMethod selector subStrings: '_'.
-				parts size > 1 ifFalse: [^false].
-				poolName := (parts at: 2) asSymbol.
-				^(Smalltalk at: poolName ifAbsent: [])
-					ifNil: [false]
-					ifNotNil: [:pool |
-						(emApplication sharedPoolNames includes: poolName)
-							and: [pool isKindOf: EsPoolDictionary]]].
-	(aCompiledMethod selector beginsWithSubCollection: '_TONEL_') ifTrue: [^true].
-	^false
-]
-
-{ #category : '*TonelLoaderModel',
  #vaCategories : ['loading'],
   #vaVisibility : 'private' }
 TonelReaderClassDefinition >> moveDefinedInto: anApp [

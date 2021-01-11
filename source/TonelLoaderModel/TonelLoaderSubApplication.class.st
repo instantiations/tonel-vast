@@ -131,12 +131,15 @@ TonelLoaderSubApplication >> changeSuperGroupSettingOf: theApp [
 	"Updates the super group setting to that set in the loader settings, 
 	 or to the one in theApp, if defined."
 
-	theApp updateEdition: [:editionRecord |
-		editionRecord
-			inheritedUserFieldAt: 'SuperGroup'
-			put: (self loader settings appSuperGroupSetting ifNil: [
-				theApp stsSuperGroupSetting
-			]) asString]
+	TonelLoader hasSTSSupport
+		ifTrue: [
+			theApp updateEdition: [:editionRecord |
+				editionRecord
+					inheritedUserFieldAt: 'SuperGroup'
+					put:
+						(self loader settings appSuperGroupSetting
+							ifNil: [theApp stsSuperGroupSetting])
+								asString]]
 ]
 
 { #category : 'configuring',
@@ -363,6 +366,12 @@ TonelLoaderSubApplication >> deleteRemovedSubApplications [
 
 	self removeDeletedSubApplicationsFor: (Smalltalk classAt: self identifier).
 	self subApplications do: [:tonelSubApp | tonelSubApp deleteRemovedSubApplications]
+]
+
+{ #category : 'testing' }
+TonelLoaderSubApplication >> do: aBlock forApp: app withSuperUser: user [
+
+	^TonelLoader do: aBlock forApp: app withSuperUser: user
 ]
 
 { #category : 'accessing' }
@@ -821,7 +830,7 @@ TonelLoaderSubApplication >> versionUsing: aLoader [
 			theApp versionNameIn: theApp is: aLoader versionName.
 			(theApp isVersionIn: theApp)
 				ifTrue: [
-					self
+					TonelLoader
 						do: [theApp releaseClass: theApp]
 						forApp: theApp
 						withSuperUser: theApp manager]].

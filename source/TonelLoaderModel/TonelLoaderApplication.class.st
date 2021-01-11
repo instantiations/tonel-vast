@@ -159,7 +159,7 @@ TonelLoaderApplication >> create [
 			emApplication := self createEdition.
 			"If prerequisites are not set it wont be able to load classes"
 
-			self
+			TonelLoader
 				do: [
 					emApplication prerequisites: self prerequisites.
 					self
@@ -191,7 +191,7 @@ TonelLoaderApplication >> createEdition [
 			ifFalse: [self createApplication]].
 	theApp := Smalltalk classAt: self identifier.
 
-	self
+	TonelLoader
 		do: [
 			theApp isEdition ifFalse: [(theApp newEdition)].
 			]

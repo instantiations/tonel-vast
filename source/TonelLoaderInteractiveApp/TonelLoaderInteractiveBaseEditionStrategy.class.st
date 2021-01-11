@@ -29,6 +29,6 @@ TonelLoaderInteractiveBaseEditionStrategy >> selectPrerequisiteEditionOf: applic
   #vaVisibility : 'private' }
 TonelLoaderInteractiveBaseEditionStrategy >> signalMissingPrerequisiteOf: application [
 
-	^self owningImage 
+	^System  
 		message: ((NlsCatEMT residentMsg: 'MxEMT25') bindWith: application)
 ]

@@ -160,7 +160,7 @@ EmLibrarySnapshot >> restore: purgeEditions [
 { #category : 'loading' }
 EmLibrarySnapshot >> signalMissingPrerequisiteOf: application [
 
-	^self owningImage 
+	^System
 		message: ((NlsCatEMT residentMsg: 'MxEMT25') bindWith: application)
 ]
 

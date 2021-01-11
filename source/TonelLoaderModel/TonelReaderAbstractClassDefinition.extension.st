@@ -122,6 +122,25 @@ TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: emAppOrS
 ]
 
 { #category : '*TonelLoaderModel',
+ #vaCategories : ['testing'] }
+TonelReaderAbstractClassDefinition >> isArtificiallyCreatedMethod: aCompiledMethod inApp: emApplication [
+
+	((aCompiledMethod selector beginsWithSubCollection: '_SHAREDPOOL_')
+		or: [aCompiledMethod selector beginsWithSubCollection: '_PRAGMA_'])
+			ifTrue: [| parts poolName |
+				parts := aCompiledMethod selector subStrings: '_'.
+				parts size > 1 ifFalse: [^false].
+				poolName := (parts at: 2) asSymbol.
+				^(Smalltalk at: poolName ifAbsent: [])
+					ifNil: [false]
+					ifNotNil: [:pool |
+						(emApplication sharedPoolNames includes: poolName)
+							and: [pool isKindOf: EsPoolDictionary]]].
+	(aCompiledMethod selector beginsWithSubCollection: '_TONEL_') ifTrue: [^true].
+	^false
+]
+
+{ #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> loadDeclarationMethodsInto: anApp using: aTonelLoader [
 
@@ -187,7 +206,7 @@ TonelReaderAbstractClassDefinition >> methodChangesIn: aClass [
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> removeCompiledMethod: compiledMethod from: emApp [
 
-	self
+	TonelLoader
 		do: [EmInterface current removeMethods: (Array with: compiledMethod)]
 		withSuperUser: emApp manager
 ]
@@ -217,12 +236,12 @@ TonelReaderAbstractClassDefinition >> versionClass: emClass in: anApp using: aLo
 
 	((emClass isEditionIn: anApp) and: [aLoader hasVersionName])
 		ifTrue: [
-			self
+			TonelLoader
 				do: [emClass versionNameIn: anApp is: aLoader versionName]
 				forApp: anApp
 				withSuperUser: (emClass developerIn: anApp).
 
-			self
+			TonelLoader
 				do: [anApp releaseClass: emClass]
 				forApp: anApp
 				withSuperUser: (emClass ownerIn: emClass controller)
