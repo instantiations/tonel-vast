@@ -264,26 +264,26 @@ TonelParserTest >> testMethod [
 TonelParserTest >> testMethodBody [
 
 	self
-		assertParse: '[ method body... I will ignore what is inside ]'
+		assertParse: '[method body... I will ignore what is inside]' normalizedLineDelimiter
 		rule: #methodBody
-		equals: ' method body... I will ignore what is inside'.
+		equals: 'method body... I will ignore what is inside' normalizedLineDelimiter.
 	self
 		assertParse: '[
 method 
 	[body... [I 
 		will ignore] 
 what] is inside
-]'
+]' normalizedLineDelimiter
 		rule: #methodBody
 		equals: ('
 method 
 	[body... [I 
 		will ignore] 
-what] is inside').
+what] is inside' normalizedLineDelimiter).
 	self
-		assertParse: '[ method body with "''", ''"'', "[", '']'' ]'
+		assertParse: '[method body with "''", ''"'', "[", '']'']' normalizedLineDelimiter
 		rule: #methodBody
-		equals: ' method body with "''", ''"'', "[", '']'''
+		equals: 'method body with "''", ''"'', "[", '']''' normalizedLineDelimiter
 ]
 
 { #category : 'tests' }
@@ -340,7 +340,7 @@ TonelParserTest >> testMethodDef [
 { #category: ''accessing'' }
 Object>>name [
 	^ self printString
-]'
+]' normalizedLineDelimiter
 		rule: #methodDef
 		equals: (
 			(TonelReaderMethodDefinition
@@ -348,20 +348,20 @@ Object>>name [
 				classSide: false
 				categories: #('accessing')
 				stamp: nil)
-					source: 'name
-	^ self printString';
+					source: ('name
+	^ self printString' normalizedLineDelimiter);
 					yourself).
 
 	self
 		assertParse: '
 Object class>>name [ 
 	^ self printString
-]'
+]' normalizedLineDelimiter
 		rule: #methodDef
 		equals: (
 			(TonelReaderMethodDefinition className: 'Object' classSide: true categories: nil stamp: nil)
 				source: 'name
-	^ self printString';
+	^ self printString' normalizedLineDelimiter;
 				selector: #name;
 				yourself)
 ]
@@ -405,7 +405,7 @@ TonelParserTest >> testMethodDefPrivateCategory [
 { #category: ''private'' }
 Object>>name [
 	^ self printString
-]'
+]' normalizedLineDelimiter
 		rule: #methodDef
 		equals: (
 			(TonelReaderMethodDefinition
@@ -414,7 +414,7 @@ Object>>name [
 				categories: #('accessing')
 				stamp: nil)
 					source: 'name
-	^ self printString';
+	^ self printString' normalizedLineDelimiter;
 					visibility: false;
 					yourself)
 ]
@@ -431,7 +431,7 @@ TonelParserTest >> testMethodDefVACustomKeys [
 }
 Object>>name [
 	^ self printString
-]'
+]' normalizedLineDelimiter
 		rule: #methodDef
 		equals: (
 			(TonelReaderMethodDefinition
@@ -440,7 +440,7 @@ Object>>name [
 				categories: #('Accessing','Real Category','Another One')
 				stamp: nil)
 					source: 'name
-	^ self printString';
+	^ self printString' normalizedLineDelimiter;
 					visibility: false;
 					yourself)
 ]

@@ -16,7 +16,7 @@ TonelSourceScannerTest >> testScan [
 	| scanner |
 
 	scanner := TonelSourceScanner on: '[^'''']' readStream.
-	self assert: scanner scan equals: '^'''''.
+	self assert: scanner scan equals: '^''''' .
 	scanner :=
 		TonelSourceScanner on:
 			'[
@@ -24,7 +24,7 @@ TonelSourceScannerTest >> testScan [
 		at: Object1 put: ''one string'';
 		at: Object2 put: ''other string'';
 		yourself
-]'
+]' normalizedLineDelimiter
 				readStream.
 	self
 		assert: scanner scan
@@ -33,7 +33,7 @@ TonelSourceScannerTest >> testScan [
 	self 
 		at: Object1 put: ''one string'';
 		at: Object2 put: ''other string'';
-		yourself'
+		yourself' normalizedLineDelimiter
 ]
 
 { #category : 'tests' }
@@ -216,10 +216,10 @@ TonelSourceScannerTest >> testScanMethodWithLotsOfSpecials [
 	currentCharacter = $#
 		ifTrue: [ ^ self scanLiteral ].
 	^ self scanError: ''Expecting a literal type''
-]'
+]' normalizedLineDelimiter
 				readStream.
 	self
-		assert: scanner scan
+		assert: scanner scan normalizedLineDelimiter
 		equals:
 			'
 	"Do not allow whitespace between # and the literal."
@@ -240,7 +240,7 @@ TonelSourceScannerTest >> testScanMethodWithLotsOfSpecials [
 	"Accept multiple #."
 	currentCharacter = $#
 		ifTrue: [ ^ self scanLiteral ].
-	^ self scanError: ''Expecting a literal type'''
+	^ self scanError: ''Expecting a literal type''' normalizedLineDelimiter
 ]
 
 { #category : 'tests' }
