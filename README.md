@@ -171,7 +171,7 @@ The Reader, Parser and Writer tests can be run out of the box once loaded, but t
 Once you clone this repository you have to configure `TonelLoaderTest` to point to the `tests` directory within the repository, since it contains the repositories used for testing the loader. 
 
 ```smalltalk
-TonelLoaderTest testRepositoryPath: (CfsPath named: 'repo-path\tests')
+TonelLoaderTest testRepositoriesPath: (CfsPath named: 'repo-path\tests')
 ```
 
 ### Note about side-effects
