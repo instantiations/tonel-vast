@@ -6,8 +6,8 @@
 				#requiredMaps : [
 					{
 						#name : 'Tonel',
-						#versionName : 'v1.3.4',
-						#ts : 3788175492
+						#versionName : 'v1.3.5',
+						#ts : 3788178263
 					},
 					{
 						#name : 'z.ST: SUnit',
@@ -17,7 +17,7 @@
 				]
 			}
 		],
-		#ts : 3788175488,
+		#ts : 3788178252,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -43,7 +43,7 @@
 			}
 		],
 		#name : 'Test Tonel',
-		#versionName : 'v1.3.4'
+		#versionName : 'v1.3.5'
 	},
 	{
 		#conditions : [
@@ -58,7 +58,7 @@
 				]
 			}
 		],
-		#ts : 3788175492,
+		#ts : 3788178263,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -79,8 +79,8 @@
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : '1.79',
-				#ts : 3787819852
+				#versionName : '1.80',
+				#ts : 3788177743
 			},
 			{
 				#name : 'TonelReaderModel',
@@ -99,6 +99,6 @@
 			}
 		],
 		#name : 'Tonel',
-		#versionName : 'v1.3.4'
+		#versionName : 'v1.3.5'
 	}
 ]

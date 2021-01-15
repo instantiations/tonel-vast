@@ -156,14 +156,14 @@ TonelReaderAbstractClassDefinition >> loadDeclarationMethodsInto: anApp using: a
 
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
-TonelReaderAbstractClassDefinition >> loadInto: anApp using: aLoader [
+TonelReaderAbstractClassDefinition >> loadInto: anApp using: appLoader [
 
-	aLoader
+	appLoader loader
 		changeUserTo: anApp manager
 		for: [
 			self
-				loadMethodsInto: anApp using: aLoader;
-				deleteRemovedMethodsFrom: anApp using: aLoader;
+				loadMethodsInto: anApp using: appLoader;
+				deleteRemovedMethodsFrom: anApp using: appLoader;
 				updateCommentIn: anApp
 				].
 ]
