@@ -37,7 +37,7 @@ If you want to see real projects using Tonel for VAST you can see them at the [V
 - [Download VAST](https://www.instantiations.com/products/vasmalltalk/download.html) from Instantiations website.
   - If you're using 9.2.1 checkout the [v1.1.0 tag](https://github.com/instantiations/tonel-vast/releases/tag/v1.1.0)
   - If you're using 9.2.2 checkout the [v1.2.0 tag](https://github.com/instantiations/tonel-vast/releases/tag/v1.2.0)
-  - If you're using 10.0.0 ECAP the master branch contains the latest version
+  - If you're using 10.0.0 the master branch contains the latest version
 - From the Configuration Map Browser, do an `Import` -> `All Most Recent Versions...` -> and select the `envy/Tonel.dat` located in the root folder of your local repository clone.
 - Select the map `Tonel` (and optionally `Test Tonel` if you want to run its SUnit tests) and do a `Load With Required Maps` the latest version of it.
 - Optionally run the SUnit tests included in the map `Test Tonel` to ensure correct installation. One easy way is to right-click on the `Test Tonel` map name in the Name pane (as opposed to version pane ) and then select `Test Loaded Applications`.
