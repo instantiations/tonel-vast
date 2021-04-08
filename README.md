@@ -33,11 +33,16 @@ If you want to see real projects using Tonel for VAST you can see them at the [V
 
 ## Installation
 
+### Installing in VAST 2021
+
+Starting with VAST 2021 (10.0.0) Tonel comes as a Feature inside the product. That means it can be easily installed from the `Transcript` -> `Load/Unload Features...`. You will find two features you can install: `ST: Tonel Support` and `ST:Tonel Support, Testing`.
+
+### Installing in VAST 9.2.x
+
 - Clone this repository locally
 - [Download VAST](https://www.instantiations.com/products/vasmalltalk/download.html) from Instantiations website.
   - If you're using 9.2.1 checkout the [v1.1.0 tag](https://github.com/instantiations/tonel-vast/releases/tag/v1.1.0)
   - If you're using 9.2.2 checkout the [v1.2.0 tag](https://github.com/instantiations/tonel-vast/releases/tag/v1.2.0)
-  - If you're using 10.0.0 the master branch contains the latest version
 - From the Configuration Map Browser, do an `Import` -> `All Most Recent Versions...` -> and select the `envy/Tonel.dat` located in the root folder of your local repository clone.
 - Select the map `Tonel` (and optionally `Test Tonel` if you want to run its SUnit tests) and do a `Load With Required Maps` the latest version of it.
 - Optionally run the SUnit tests included in the map `Test Tonel` to ensure correct installation. One easy way is to right-click on the `Test Tonel` map name in the Name pane (as opposed to version pane ) and then select `Test Loaded Applications`.
@@ -168,7 +173,7 @@ If the Application has a class side `#tonelPackageName` selector it  will then h
 
 The Reader, Parser and Writer tests can be run out of the box once loaded, but the Loader tests need a little setup in order to run.
 
-Once you clone this repository you have to configure `TonelLoaderTest` to point to the `tests` directory within the repository, since it contains the repositories used for testing the loader. 
+Once you clone this repository you have to configure `TonelLoaderTest` to point to the `tests` directory within the repository, since it contains the repositories used for testing the loader.
 
 ```smalltalk
 TonelLoaderTest testRepositoriesPath: (CfsPath named: 'repo-path\tests')
