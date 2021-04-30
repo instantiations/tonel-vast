@@ -274,7 +274,7 @@ TonelReaderClassDefinition >> superclassChangeIn: aClass [
 	^self extension not and: [
 		aClass superclass isNil
 			ifTrue: [(self superclassIdentifier isNil and: [aClass superclass isNil]) not]
-			ifFalse: [(self superclassIdentifier asSymbol = aClass superclass) not]]
+			ifFalse: [((self superclassIdentifier asSymbol = aClass superclass name asSymbol)) not]]
 ]
 
 { #category : '*TonelLoaderModel',

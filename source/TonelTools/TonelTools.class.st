@@ -90,25 +90,28 @@ TonelTools class >> exportConfigurationMapsNames: anOrderedCollection [
 TonelTools class >> exportTonelApplications: aCollection [
 
 	| selectedApps repositoryPath clearSources |
-	selectedApps := (CwListSelectionPrompter new)
-				title: TonelMsg27;
-				messageString: TonelMsg28;
-				labelString: TonelMsg29;
-				selectedLabelString: TonelMsg30;
-				items: (System loadedApplications asSortedCollection: Class sortBlock);
-				selectedItems: aCollection;
-				selectionPolicy: CwConstants::XmEXTENDEDSELECT;
-				printBlock: [:app | app name];
-				selectedPrintBlock: [:app | app name];
-				prompt.	"$NLS$ Select applications to export in Tonel format"	"$NLS$ Select which applications you want to export in Tonel format to a specific"	"$NLS$ Available applications"	"$NLS$ Applications to be exported"
+
+	selectedApps :=
+		(CwListSelectionPrompter new)
+			title: TonelMsg27;
+			messageString: TonelMsg28;
+			labelString: TonelMsg29;
+			selectedLabelString: TonelMsg30;
+			items: (System loadedApplications asSortedCollection: Class sortBlock);
+			selectedItems: aCollection;
+			selectionPolicy: CwConstants::XmEXTENDEDSELECT;
+			printBlock: [:app | app name];
+			selectedPrintBlock: [:app | app name];
+			prompt.
 	selectedApps isEmptyOrNil ifTrue: [^self].
-	(EtFileNamePrompter 
+	(EtFileNamePrompter
 		promptForFileName: TonelMsg31
 		default: '.project'
 		at: System cursorPosition
-		save: true) ifNil: [^self]
-			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].	"$NLS$ Select target path"	"$NON-NLS$"
-	
+		save: true)
+			ifNil: [^self]
+			ifNotNil: [:string | repositoryPath := (CfsPath named: string) directory].
+
 	clearSources := self promptClearSources.
 	(TonelWriter new)
 		applications: selectedApps;
@@ -121,8 +124,8 @@ TonelTools class >> exportTonelApplications: aCollection [
 TonelTools class >> exportTonelTools [
 
 	TonelWriter new
-		addLatestConfigurationMapNamed: 'Tonel';
-		addLatestConfigurationMapNamed: 'Test Tonel';
+		addLatestConfigurationMapNamed: 'ENVY/Image Tonel';
+		addLatestConfigurationMapNamed: 'Test ENVY/Image Tonel';
 		addApplicationsFromConfigurationMaps;
 		writeProjectInto: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-repos\tonel-vast').
 

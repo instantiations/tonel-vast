@@ -1,104 +1,77 @@
 [
 	{
-		#conditions : [
-			{
-				#condition : 'true',
-				#requiredMaps : [
-					{
-						#name : 'Tonel',
-						#versionName : 'v1.3.5',
-						#ts : 3788178263
-					},
-					{
-						#name : 'z.ST: SUnit',
-						#versionName : 'V 10.0.0  [472]',
-						#ts : 3788075459
-					}
-				]
-			}
-		],
-		#ts : 3788178252,
-		#comment : '',
-		#formatVersion : '1.1',
-		#applications : OrderedCollection [
-			{
-				#name : 'EmLibraryToolsApp',
-				#versionName : '1.7',
-				#ts : 3787824324
-			},
-			{
-				#name : 'TonelLoaderTests',
-				#versionName : '1.9',
-				#ts : 3783084785
-			},
-			{
-				#name : 'TonelReaderTests',
-				#versionName : '1.32',
-				#ts : 3788175440
-			},
-			{
-				#name : 'TonelWriterTests',
-				#versionName : '1.35',
-				#ts : 3787835801
-			}
-		],
-		#name : 'Test Tonel',
-		#versionName : 'v1.3.5'
-	},
-	{
-		#conditions : [
-			{
-				#condition : 'true',
-				#requiredMaps : [
-					{
-						#name : 'z.ST: STON Support',
-						#versionName : 'V 10.0.0  [472]',
-						#ts : 3788075459
-					}
-				]
-			}
-		],
-		#ts : 3788178263,
+		#conditions : [ ],
+		#ts : 3797250135,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
 			{
 				#name : 'TonelBaseApp',
-				#versionName : '1.1',
+				#versionName : 'V 9.2.2  [002]',
 				#ts : 3762002743
 			},
 			{
 				#name : 'TonelFileSystem',
-				#versionName : '1.23',
+				#versionName : 'V 9.2.1  [457]',
 				#ts : 3758350880
 			},
 			{
 				#name : 'TonelLoaderInteractiveApp',
-				#versionName : '1.1',
+				#versionName : 'V 10.0.0  [480]',
 				#ts : 3787823951
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : '1.80',
-				#ts : 3788177743
+				#versionName : 'V 10.0.0  [v1.3.6]',
+				#ts : 3797249918
 			},
 			{
 				#name : 'TonelReaderModel',
-				#versionName : '1.52',
+				#versionName : 'V 10.0.0  [480]',
 				#ts : 3785059396
 			},
 			{
 				#name : 'TonelTools',
-				#versionName : '1.16',
-				#ts : 3782031919
+				#versionName : 'V 10.0.0  [v1.3.6]',
+				#ts : 3797250478
 			},
 			{
 				#name : 'TonelWriterModel',
-				#versionName : '1.59',
+				#versionName : 'V 10.0.0  [480]',
 				#ts : 3784207735
 			}
 		],
-		#name : 'Tonel',
-		#versionName : 'v1.3.5'
+		#name : 'ENVY/Image Tonel',
+		#versionName : 'V 10.0.0  [v1.3.6]'
+	},
+	{
+		#conditions : [ ],
+		#ts : 3788500635,
+		#comment : '',
+		#formatVersion : '1.1',
+		#applications : OrderedCollection [
+			{
+				#name : 'EmLibraryToolsApp',
+				#versionName : 'V 10.0.0  [480]',
+				#ts : 3787824324
+			},
+			{
+				#name : 'TonelLoaderTests',
+				#versionName : 'V 10.0.0  [480]',
+				#ts : 3783084785
+			},
+			{
+				#name : 'TonelReaderTests',
+				#versionName : 'V 10.0.0  [480]',
+				#ts : 3788175440
+			},
+			{
+				#name : 'TonelWriterTests',
+				#versionName : 'V 10.0.0  [480]',
+				#ts : 3787835801
+			}
+		],
+		#name : 'Test ENVY/Image Tonel',
+		#versionName : 'V 10.0.0  [480]'
 	}
 ]
