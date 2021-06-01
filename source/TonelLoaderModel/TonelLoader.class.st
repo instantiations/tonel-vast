@@ -361,6 +361,12 @@ TonelLoader >> log: aString [
 	Transcript show: aString; cr.
 ]
 
+{ #category : 'strategies-convenience' }
+TonelLoader >> mapTagsToSubapplications [
+
+	self subapplicationsStrategy: (TonelLoaderSubapplicationsTagMappingStrategy for: self)
+]
+
 { #category : 'strategies' }
 TonelLoader >> namingStrategy [
 	^self settings namingStrategy
@@ -500,6 +506,17 @@ TonelLoader >> subApplicationsFor: aTonelLoaderSubApplication [
 	^(self reader packages
 		select: [:each | each parent = aTonelLoaderSubApplication packageDefinition name])
 			collect: [:each | self subApplicationNamed: each name]
+]
+
+{ #category : 'strategies' }
+TonelLoader >> subapplicationsStrategy [
+	^self settings subapplicationsStrategy
+]
+
+{ #category : 'strategies' }
+TonelLoader >> subapplicationsStrategy: anObject [
+
+	self settings subapplicationsStrategy: (anObject setLoader: self)
 ]
 
 { #category : 'accessing' }

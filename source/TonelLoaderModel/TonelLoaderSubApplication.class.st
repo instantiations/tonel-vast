@@ -28,6 +28,12 @@ TonelLoaderSubApplication class >> on: aPackageDefinition in: aTonelLoader [
 		yourself
 ]
 
+{ #category : 'comparing' }
+TonelLoaderSubApplication >> <= aTonelLoaderSubapplication [
+
+	^self identifier <= aTonelLoaderSubapplication identifier
+]
+
 { #category : 'initializing' }
 TonelLoaderSubApplication >> addAllSubApplicationsTo: collection [
 	"Private - Add all the receiver's sub-applications to collection in
@@ -72,15 +78,18 @@ TonelLoaderSubApplication >> allClassesToRemoveIncludingExtensions: aBoolean [
 
 { #category : 'querying' }
 TonelLoaderSubApplication >> allClassesWithAssociation [
+
 	| theApp |
+
 	theApp := Smalltalk classAt: self identifier.
 	^(self tonelClasses asSet collect: [:class | class -> theApp])
-		addAll: (self subApplications inject: Set new
-					into: 
-						[:coll :subApp | 
-						coll
-							addAll: subApp allClassesWithAssociation;
-							yourself]);
+		addAll: (
+			self subApplications
+				inject: Set new
+				into: [:coll :subApp |
+					coll
+						addAll: subApp allClassesWithAssociation;
+						yourself]);
 		yourself
 ]
 
@@ -116,7 +125,7 @@ TonelLoaderSubApplication >> allExtendedClasses [
 
 { #category : 'querying' }
 TonelLoaderSubApplication >> availableShadows [
-	^SubApplication shadowsFor: self name
+	^self emClass shadowsFor: self name
 ]
 
 { #category : 'configuring' }
@@ -188,6 +197,15 @@ TonelLoaderSubApplication >> classesToRemoveIncludingExtensions: aBoolean [
 						ifTrue: [removeClasses add: eachClass -> theApp; yourself]
 						ifFalse: [removeClasses]]
 
+]
+
+{ #category : 'querying' }
+TonelLoaderSubApplication >> classesWithAssociation [
+
+	| theApp |
+
+	theApp := Smalltalk classAt: self identifier.
+	^(self tonelClasses asSet collect: [:class | class -> theApp])
 ]
 
 { #category : 'accessing',
@@ -288,28 +306,9 @@ TonelLoaderSubApplication >> createSubApplicationIn: emParentApp condition: cond
 { #category : 'loading' }
 TonelLoaderSubApplication >> createSubApplicationsFor: emAppOrSubapp withRoot: emRootApp [
 
-	self loadableConditions keysAndValuesDo: [:conditionCode :tonelSubApps |
-		tonelSubApps do: [:tonelSubApp | | createSubApp |
-			createSubApp := self loader alwaysCreateEditions.
-			createSubApp
-				ifFalse: [
-					(emAppOrSubapp subApplications
-						detect: [:one | one name = tonelSubApp identifier]
-						ifNone: [nil])
-							ifNil: [createSubApp := true]
-							ifNotNil: [:emSubApp |
-								createSubApp := (tonelSubApp
-									hasChangesFor: emSubApp
-									inRootApp: emRootApp)]].
+	self loader subapplicationsStrategy createSubApplicationsFor: self in: emAppOrSubapp withRoot: emRootApp
 
-			createSubApp
-				ifTrue: [| emSubApplication |
-					emSubApplication :=
-						tonelSubApp
-							createFor: emAppOrSubapp
-							underCondition: conditionCode
-							withRoot: emRootApp.
-					self createDescriptionFor: emSubApplication]]]
+	
 ]
 
 { #category : 'accessing' }
@@ -378,6 +377,11 @@ TonelLoaderSubApplication >> do: aBlock forApp: app withSuperUser: user [
 TonelLoaderSubApplication >> emApplication [
 	
 	^emApplication
+]
+
+{ #category : 'querying' }
+TonelLoaderSubApplication >> emClass [
+	^SubApplication
 ]
 
 { #category : 'querying' }
@@ -477,18 +481,7 @@ TonelLoaderSubApplication >> initializeSubApplications [
 TonelLoaderSubApplication >> initializeSubApplicationsWithRoot: rootTonelApplication [
 	"Forces the initalization and lookup of receiver sub applications."
 
-	| conditionsSubApps |
-	conditionsSubApps := Set new.
-	self conditions keysAndValuesDo: [:conditionCode :subApps |
-		(SubApplication isExpressionValid: conditionCode)
-			ifTrue: [
-					subApps do: [:each | 
-					conditionsSubApps add: each.
-					each rootTonelApplication: self rootTonelApplication]
-			]	
-			ifFalse: [ self logIgnoredShadowSubapps: subApps ]
-	].
-	subApplications := conditionsSubApps asOrderedCollection
+	subApplications := (self loader subapplicationsStrategy subApplicationsOf: self withRoot: rootTonelApplication) asOrderedCollection
 ]
 
 { #category : 'querying' }
@@ -596,6 +589,13 @@ TonelLoaderSubApplication >> logIgnoredShadowSubapps: aCollection [
 { #category : 'accessing' }
 TonelLoaderSubApplication >> name [
 	^name ifNil: [name := self computeName]
+]
+
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
+TonelLoaderSubApplication >> name: aString [
+
+	name := aString
 ]
 
 { #category : 'accessing' }

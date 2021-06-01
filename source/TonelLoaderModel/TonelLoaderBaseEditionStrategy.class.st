@@ -90,7 +90,8 @@ TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: aCollectionOfAp
 { #category : 'testing' }
 TonelLoaderBaseEditionStrategy >> hasSelectableBaseEditionFor: tonelAppOrSub [
 
-	^(self filteredBaseEditions: (tonelAppOrSub availableShadows)) notEmpty
+	^(Application allNamesWithoutPackages includes: tonelAppOrSub identifier)
+	"^(self filteredBaseEditions: (tonelAppOrSub availableShadows)) notEmpty"
 ]
 
 { #category : 'operations',

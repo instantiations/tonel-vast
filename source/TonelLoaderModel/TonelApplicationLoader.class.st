@@ -137,7 +137,7 @@ TonelApplicationLoader >> createApplication [
 { #category : 'loading-internal',
   #vaVisibility : 'private' }
 TonelApplicationLoader >> createClasses [
-	self allClassesWithAssociation 
+	self tonelApplication allClassesWithAssociation tonelSingleEdgeTopologicallySortedCollection
 		do: [:ea | ea key createEditionIn: ea value using: self]
 ]
 

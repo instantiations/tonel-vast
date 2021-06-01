@@ -203,6 +203,18 @@ TonelLoaderSettings >> strategyAt: aSymbol put: anObject [
 ]
 
 { #category : 'strategies' }
+TonelLoaderSettings >> subapplicationsStrategy [
+
+	^self strategyAt: #subapplications ifAbsentPut: [TonelLoaderSubapplicationsConditionsMappingStrategy new]
+]
+
+{ #category : 'strategies' }
+TonelLoaderSettings >> subapplicationsStrategy: aSubapplicationsMappingStrategy [
+
+	self strategyAt: #subapplications put: aSubapplicationsMappingStrategy
+]
+
+{ #category : 'strategies' }
 TonelLoaderSettings >> versionStrategy [
 
 	^self strategyAt: #version ifAbsentPut: [TonelLoaderNoVersionStrategy new]

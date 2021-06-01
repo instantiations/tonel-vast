@@ -140,6 +140,12 @@ TonelReaderClassDefinition >> fieldType [
 	^ fieldType ifNil: [ fieldType := 'pointers' ]  "$NON-NLS$"
 ]
 
+{ #category : 'testing' }
+TonelReaderClassDefinition >> hasTagForPackageNamed: packageName [
+
+	^self category beginsWithSubCollection: packageName , '-'
+]
+
 { #category : 'accessing' }
 TonelReaderClassDefinition >> identifier [
 	^identifier
@@ -184,6 +190,15 @@ TonelReaderClassDefinition >> initializeWithName: nameString superclass: superSt
 TonelReaderClassDefinition >> instanceVariables [
 	^instanceVariables
 	
+]
+
+{ #category : 'accessing' }
+TonelReaderClassDefinition >> packageTagIn: packageName [
+
+	| classCategory |
+	classCategory := self category asString.
+	^(self hasTagForPackageNamed: packageName)
+		ifTrue: [classCategory copyFrom: packageName size + 2 to: classCategory size]
 ]
 
 { #category : 'accessing' }

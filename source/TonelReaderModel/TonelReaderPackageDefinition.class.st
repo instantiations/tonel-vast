@@ -89,6 +89,13 @@ TonelReaderPackageDefinition >> metadata [
 	^metadata ifNil: [metadata := Dictionary new]
 ]
 
+{ #category : 'operations' }
+TonelReaderPackageDefinition >> moveClass: tonelClass to: aPackageDefinition [
+
+	aPackageDefinition classDefinitions at: tonelClass put: (self classDefinitions at: tonelClass).
+	self classDefinitions removeKey: tonelClass
+]
+
 { #category : 'accessing' }
 TonelReaderPackageDefinition >> parent [
 	^self metadata at: #vaParent ifAbsent: [nil]

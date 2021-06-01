@@ -86,11 +86,6 @@ TonelLoaderApplication >> asSymbol [
 	^self identifier
 ]
 
-{ #category : 'querying' }
-TonelLoaderApplication >> availableShadows [
-	^Application shadowsFor: self name
-]
-
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelLoaderApplication >> computeImplicitPrerequisites [
@@ -237,6 +232,11 @@ TonelLoaderApplication >> definePoolDictionaries [
 TonelLoaderApplication >> dependentApplications [
 
 	^dependents ifNil: [dependents := OrderedCollection new]
+]
+
+{ #category : 'accessing' }
+TonelLoaderApplication >> emClass [
+	^Application
 ]
 
 { #category : 'testing' }
