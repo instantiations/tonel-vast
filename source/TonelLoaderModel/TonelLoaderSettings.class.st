@@ -126,6 +126,7 @@ TonelLoaderSettings >> ensureStrategies [
 	self baseEditionStrategy.
 	self prerequisitesStrategy.
 	self versionStrategy.
+	self subapplicationsStrategy.
 	
 ]
 

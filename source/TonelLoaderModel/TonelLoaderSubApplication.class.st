@@ -484,6 +484,12 @@ TonelLoaderSubApplication >> initializeSubApplicationsWithRoot: rootTonelApplica
 	subApplications := (self loader subapplicationsStrategy subApplicationsOf: self withRoot: rootTonelApplication) asOrderedCollection
 ]
 
+{ #category : 'testing' }
+TonelLoaderSubApplication >> isApplication [
+
+	^false
+]
+
 { #category : 'querying' }
 TonelLoaderSubApplication >> loadableConditions [
 

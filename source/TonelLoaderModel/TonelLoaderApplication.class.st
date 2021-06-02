@@ -255,6 +255,12 @@ TonelLoaderApplication >> hasChanges [
 						self subApplicationsHaveChangesFor: emApplication inRootApp: emApplication]]]]
 ]
 
+{ #category : 'testing' }
+TonelLoaderApplication >> isApplication [
+
+	^true
+]
+
 { #category : 'loading' }
 TonelLoaderApplication >> loadBaseApplication [
 	"If the real application represented by the receiver is not currently loaded,

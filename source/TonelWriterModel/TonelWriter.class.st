@@ -8,7 +8,8 @@ Class {
 		'applications',
 		'configurationMaps',
 		'autoLoad',
-		'convertsSharedPools'
+		'convertsSharedPools',
+		'canonical'
 	],
 	#classVars : [
 		'LineDelimiter'
@@ -195,6 +196,25 @@ TonelWriter >> autoLoad: aBoolean [
 	autoLoad := aBoolean
 ]
 
+{ #category : 'accessing' }
+TonelWriter >> beCanonical [
+	self canonical: true
+]
+
+{ #category : 'accessing' }
+TonelWriter >> canonical [
+	^canonical
+]
+
+{ #category : 'accessing' }
+TonelWriter >> canonical: aBoolean [
+	"Sets whether the output will adhere to the canonical format.
+	 It is, subapps will be flattened as tags of packages, 
+	 application and subapplication subclasses won't be written in the output."
+
+	canonical := aBoolean
+]
+
 { #category : 'utility' }
 TonelWriter >> clearSourcesDirectory [
 
@@ -278,7 +298,8 @@ TonelWriter >> initializeOn: aFileSystem [
 	lineDelimiter := self class lineDelimiter.
 	clearsSourcesDirectory := true.
 	autoLoad := true.
-	convertsSharedPools := false
+	convertsSharedPools := false.
+	canonical := false
 ]
 
 { #category : 'accessing' }
@@ -366,18 +387,37 @@ TonelWriter >> withStreamOn: aFilePath do: aBlock [
 TonelWriter >> writeApplication: anApplication into: aPath [
 	"Private - Writes anApplication as package directory into aPath."
 
-	| applicationDefition packageDirectory |
+	self writeApplication: anApplication into: aPath rootApp: anApplication
+]
 
-	applicationDefition := TonelWriterApplicationDefinition for: anApplication.
+{ #category : 'writing-application',
+  #vaVisibility : 'private' }
+TonelWriter >> writeApplication: anApplication into: aPath rootApp: rootApplication [
+	"Private - Writes anApplication as package directory into aPath."
+
+	| applicationDefinition packageDirectory isRootApp |
+
+	isRootApp := anApplication = rootApplication.
+
+	applicationDefinition :=
+		(self canonical and: [anApplication isSubApplication])
+			ifTrue: [TonelWriterSubApplicationDefinition for: anApplication]
+			ifFalse: [TonelWriterApplicationDefinition for: anApplication].
+
 	packageDirectory :=
-		self ensureDirectory: applicationDefition tonelPackageName inside: aPath recreate: true.
-	self writePackageDescriptionFor: applicationDefition into: packageDirectory.
+		self
+			ensureDirectory: applicationDefinition tonelPackageName
+			inside: aPath
+			recreate: isRootApp.
+
+	(isRootApp or: [canonical not])
+		ifTrue: [self writePackageDescriptionFor: applicationDefinition into: packageDirectory].
 	self convertsSharedPools
-		ifTrue: [self writePoolDictionariesDefinedIn: applicationDefition into: packageDirectory].
-	self writeClassesDefinedIn: applicationDefition into: packageDirectory.
-	self writeClassesExtendedBy: applicationDefition into: packageDirectory.
-	applicationDefition allPossibleDirectSubApplications
-		do: [:aDirectSubApp | self writeApplication: aDirectSubApp into: aPath]
+		ifTrue: [self writePoolDictionariesDefinedIn: applicationDefinition into: packageDirectory].
+	self writeClassesDefinedIn: applicationDefinition into: packageDirectory.
+	self writeClassesExtendedBy: applicationDefinition into: packageDirectory.
+	applicationDefinition allPossibleDirectSubApplications do: [:aDirectSubApp |
+		self writeApplication: aDirectSubApp into: aPath rootApp: rootApplication]
 ]
 
 { #category : 'writing-application',
@@ -395,9 +435,12 @@ TonelWriter >> writeClassesDefinedIn: anApplicationDefinition into: aPath [
 
 	| classWriter |
 
-	classWriter := TonelClassWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter in: self.
-	anApplicationDefinition
-		withDefinitionsOfDefinedClassesDo: [:classDefinition | classWriter write: classDefinition]
+	classWriter :=
+		TonelClassWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter in: self.
+	anApplicationDefinition withDefinitionsOfDefinedClassesDo: [:classDefinition |
+		(self canonical and: [
+			#(Application SubApplication) includes: classDefinition definedClassSuperclassName])
+				ifFalse: [classWriter write: classDefinition]]
 ]
 
 { #category : 'writing-application',
@@ -453,9 +496,11 @@ TonelWriter >> writePackageDescriptionFor: anApplicationDefinition into: aPath [
 		do: [:stream |
 			stream << 'Package {' << lineDelimiter.
 			self writePackageNameOf: anApplicationDefinition on: stream.
-			self writePackageVAPrerequisitesOf: anApplicationDefinition on: stream.
-			self writePackageVAParentOf: anApplicationDefinition on: stream.
-			self writePackageVASubapplicationsOf: anApplicationDefinition on: stream.
+			self canonical
+				ifFalse: [
+					self writePackageVAPrerequisitesOf: anApplicationDefinition on: stream.
+					self writePackageVAParentOf: anApplicationDefinition on: stream.
+					self writePackageVASubapplicationsOf: anApplicationDefinition on: stream].
 			stream << lineDelimiter << '}' << lineDelimiter]
 ]
 

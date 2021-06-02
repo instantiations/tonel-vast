@@ -2,7 +2,8 @@ Class {
 	#name : 'TonelWriterApplicationDefinition',
 	#superclass : 'Object',
 	#instVars : [
-		'application'
+		'application',
+		'tonelPackageName'
 	],
 	#category : 'TonelWriterModel'
 }
@@ -44,8 +45,8 @@ TonelWriterApplicationDefinition >> allPossibleDirectSubApplications [
   #vaVisibility : 'private' }
 TonelWriterApplicationDefinition >> classDefinitionsFromClassesDefinedIn: anApplication [
 
-	^anApplication defined
-		collect: [:class | TonelWriterClassDefinition of: class definedIn: anApplication]
+	^anApplication defined 
+		collect: [:class | self createClassDefinitionFor: class definedIn: anApplication]
 ]
 
 { #category : 'accessing',
@@ -53,6 +54,23 @@ TonelWriterApplicationDefinition >> classDefinitionsFromClassesDefinedIn: anAppl
 TonelWriterApplicationDefinition >> classDefinitionsOfDefinedClasses [
 
 	^self classDefinitionsFromClassesDefinedIn: application
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelWriterApplicationDefinition >> computeTonelPackageName [
+
+	^(application respondsTo: #_TONEL_packageName)
+		ifTrue: [application _TONEL_packageName]
+		ifFalse: [application name asString]
+]
+
+{ #category : 'accessing' }
+TonelWriterApplicationDefinition >> createClassDefinitionFor: class definedIn: anApplication [
+
+	^(TonelWriterClassDefinition of: class definedIn: anApplication)
+		packageName: self tonelPackageName;
+		yourself
 ]
 
 { #category : 'accessing' }
@@ -97,9 +115,7 @@ TonelWriterApplicationDefinition >> initializeFor: anApplication [
 { #category : 'accessing' }
 TonelWriterApplicationDefinition >> tonelPackageName [
 
-	^(application respondsTo: #_TONEL_packageName)
-		ifTrue: [application _TONEL_packageName]
-		ifFalse: [application name asString]
+	^tonelPackageName ifNil: [tonelPackageName := self computeTonelPackageName]
 ]
 
 { #category : 'Enumerating' }

@@ -1,6 +1,10 @@
 Class {
 	#name : 'TonelWriterClassDefinition',
 	#superclass : 'TonelWriterAbstractClassDefinition',
+	#instVars : [
+		'packageName',
+		'tag'
+	],
 	#category : 'TonelWriterModel'
 }
 
@@ -17,6 +21,14 @@ TonelWriterClassDefinition class >> of: aClass definedIn: anApplication [
 TonelWriterClassDefinition >> applicationName [
 
 	^application asString
+]
+
+{ #category : 'accessing' }
+TonelWriterClassDefinition >> category [
+	
+	^self hasTag
+		ifTrue: [self packageName, '-', self tag]
+		ifFalse: [self packageName]
 ]
 
 { #category : 'accessing' }
@@ -61,6 +73,12 @@ TonelWriterClassDefinition >> hasDefaultSubclassType [
 	^self subclassType asString = 'pointers'
 ]
 
+{ #category : 'Testing' }
+TonelWriterClassDefinition >> hasTag [
+
+	^self tag isEmptyOrNil not
+]
+
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelWriterClassDefinition >> initializeOf: aClass definedIn: anApplication [
@@ -89,6 +107,16 @@ TonelWriterClassDefinition >> methodDefinitionsOf: aClassOrMetaclass [
 ]
 
 { #category : 'accessing' }
+TonelWriterClassDefinition >> packageName [
+	^packageName ifNil: [packageName := self tonelPackageName]
+]
+
+{ #category : 'accessing' }
+TonelWriterClassDefinition >> packageName: anObject [
+	packageName := anObject
+]
+
+{ #category : 'accessing' }
 TonelWriterClassDefinition >> poolNames [
 
 	^class = application
@@ -112,6 +140,16 @@ TonelWriterClassDefinition >> printOn: aStream [
 TonelWriterClassDefinition >> subclassType [
 
 	^self definitionRecord tonelKindOfSubclass
+]
+
+{ #category : 'accessing' }
+TonelWriterClassDefinition >> tag [
+	^tag
+]
+
+{ #category : 'accessing' }
+TonelWriterClassDefinition >> tag: anObject [
+	tag := anObject
 ]
 
 { #category : 'accessing' }

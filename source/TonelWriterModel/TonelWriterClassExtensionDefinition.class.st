@@ -11,9 +11,9 @@ TonelWriterClassExtensionDefinition class >> of: aClass extendedIn: anApplicatio
 ]
 
 { #category : 'accessing' }
-TonelWriterClassExtensionDefinition >> categoryFormattedAsExtensionOf: anApp [
+TonelWriterClassExtensionDefinition >> categoryFormattedAsExtensionOf: anApplication [
 
-	^'*' , (anApp tonelPackageName)
+	^'*' , anApplication tonelPackageName
 ]
 
 { #category : 'accessing' }

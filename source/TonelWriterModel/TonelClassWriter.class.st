@@ -87,7 +87,7 @@ TonelClassWriter >> writeCategoryOf: aClassDefinition on: aWriteStream [
 	aWriteStream
 		nextPutAll: lineDelimiter;
 		tab;
-		nextPutAll: ('#category : <1p>' expandMacrosWith: aClassDefinition tonelPackageName)
+		nextPutAll: ('#category : <1p>' expandMacrosWith: aClassDefinition category)
 ]
 
 { #category : 'writing',

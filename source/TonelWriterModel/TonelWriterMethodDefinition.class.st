@@ -54,7 +54,7 @@ TonelWriterMethodDefinition >> hasDefaultVACategories [
 	 In the case of extension methods the first in allCategories will be the real one in VA
 	 while the one of #category will be one with *X compatible with Tonel/Pharo"
 
-	^self allCategories size = 1 and: [self allCategories first  = self category]
+	^self allCategories size = 1 and: [self allCategories first  match: self category]
 ]
 
 { #category : 'Defaults' }
