@@ -58,6 +58,13 @@ TonelTools class >> addToNamesMenu: aMenu browser: aBrowser [
 	]
 ]
 
+{ #category : 'Not categorized',
+  #vaVisibility : 'private' }
+TonelTools class >> defaultToolsRepositoryPath [
+
+	^(CfsPath named: CfsDirectoryDescriptor getcwd) append: 'tonel-vast'
+]
+
 { #category : 'operations' }
 TonelTools class >> exportConfigurationMapsNames: anOrderedCollection [
 
@@ -127,12 +134,18 @@ TonelTools class >> exportTonelApplications: aCollection [
 { #category : 'convenience',
   #vaVisibility : 'private' }
 TonelTools class >> exportTonelTools [
+	self exportTonelToolsTo: self defaultToolsRepositoryPath
+]
+
+{ #category : 'convenience',
+  #vaVisibility : 'private' }
+TonelTools class >> exportTonelToolsTo: aCfsPath [
 
 	TonelWriter new
 		addLatestConfigurationMapNamed: 'ENVY/Image Tonel';
 		addLatestConfigurationMapNamed: 'Test ENVY/Image Tonel';
 		addApplicationsFromConfigurationMaps;
-		writeProjectInto: ((CfsPath named: CfsDirectoryDescriptor getcwd) append: '..\tonel-repos\tonel-vast').
+		writeProjectInto: aCfsPath
 
 ]
 

@@ -9,7 +9,9 @@ Class {
 		'configurationMaps',
 		'autoLoad',
 		'convertsSharedPools',
-		'canonical'
+		'canonical',
+		'flattenSubApplications',
+		'writeENVYApps'
 	],
 	#classVars : [
 		'LineDelimiter'
@@ -201,20 +203,6 @@ TonelWriter >> beCanonical [
 	self canonical: true
 ]
 
-{ #category : 'accessing' }
-TonelWriter >> canonical [
-	^canonical
-]
-
-{ #category : 'accessing' }
-TonelWriter >> canonical: aBoolean [
-	"Sets whether the output will adhere to the canonical format.
-	 It is, subapps will be flattened as tags of packages, 
-	 application and subapplication subclasses won't be written in the output."
-
-	canonical := aBoolean
-]
-
 { #category : 'utility' }
 TonelWriter >> clearSourcesDirectory [
 
@@ -289,6 +277,16 @@ TonelWriter >> ensureDirectory: aString inside: aPath recreate: aBoolean [
 	^path
 ]
 
+{ #category : 'accessing' }
+TonelWriter >> flattenSubApplications [
+	^flattenSubApplications
+]
+
+{ #category : 'accessing' }
+TonelWriter >> flattenSubApplications: anObject [
+	flattenSubApplications := anObject
+]
+
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelWriter >> initializeOn: aFileSystem [
@@ -299,7 +297,8 @@ TonelWriter >> initializeOn: aFileSystem [
 	clearsSourcesDirectory := true.
 	autoLoad := true.
 	convertsSharedPools := false.
-	canonical := false
+	flattenSubApplications := false.
+	writeENVYApps := true
 ]
 
 { #category : 'accessing' }
@@ -400,7 +399,7 @@ TonelWriter >> writeApplication: anApplication into: aPath rootApp: rootApplicat
 	isRootApp := anApplication = rootApplication.
 
 	applicationDefinition :=
-		(self canonical and: [anApplication isSubApplication])
+		(self flattenSubApplications and: [anApplication isSubApplication])
 			ifTrue: [TonelWriterSubApplicationDefinition for: anApplication]
 			ifFalse: [TonelWriterApplicationDefinition for: anApplication].
 
@@ -410,7 +409,7 @@ TonelWriter >> writeApplication: anApplication into: aPath rootApp: rootApplicat
 			inside: aPath
 			recreate: isRootApp.
 
-	(isRootApp or: [canonical not])
+	(isRootApp or: [self flattenSubApplications not])
 		ifTrue: [self writePackageDescriptionFor: applicationDefinition into: packageDirectory].
 	self convertsSharedPools
 		ifTrue: [self writePoolDictionariesDefinedIn: applicationDefinition into: packageDirectory].
@@ -438,7 +437,7 @@ TonelWriter >> writeClassesDefinedIn: anApplicationDefinition into: aPath [
 	classWriter :=
 		TonelClassWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter in: self.
 	anApplicationDefinition withDefinitionsOfDefinedClassesDo: [:classDefinition |
-		(self canonical and: [
+		(self writeENVYApps not and: [
 			#(Application SubApplication) includes: classDefinition definedClassSuperclassName])
 				ifFalse: [classWriter write: classDefinition]]
 ]
@@ -469,6 +468,16 @@ TonelWriter >> writeConfigurationMapsInto: aPath [
 			writeStream nextPutAll: (self toSTONStringPretty: data asArray)]
 ]
 
+{ #category : 'accessing' }
+TonelWriter >> writeENVYApps [
+	^writeENVYApps
+]
+
+{ #category : 'accessing' }
+TonelWriter >> writeENVYApps: anObject [
+	writeENVYApps := anObject
+]
+
 { #category : 'writing-project' }
 TonelWriter >> writeInWorkingDirectory [
 
@@ -496,7 +505,7 @@ TonelWriter >> writePackageDescriptionFor: anApplicationDefinition into: aPath [
 		do: [:stream |
 			stream << 'Package {' << lineDelimiter.
 			self writePackageNameOf: anApplicationDefinition on: stream.
-			self canonical
+			self flattenSubApplications
 				ifFalse: [
 					self writePackageVAPrerequisitesOf: anApplicationDefinition on: stream.
 					self writePackageVAParentOf: anApplicationDefinition on: stream.

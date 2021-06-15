@@ -148,6 +148,77 @@ This will convert an application otherwise named `Controller` with a subapplicat
 
 It is possible to create your own naming strategy by subclassing `TonelLoaderNamingStrategy` and redefining `nameForApp:` and `nameForSubApp:`.
 
+
+
+
+## Package tags and SubApplications strategy
+
+### Introduction
+When writing an Application hierarchy, the `TonelWriter` will map each application and subapplication to its own Tonel package, and add the relation between each SubApplication to its children via an [specific metadata](vastspecific.md#application-and-subapplication-hierarchy). This is a feature specific to VAST, since in the canonical version of Tonel there is no such a concept like "SubApplication" or packages hierarchy.
+
+So when reading the applications and subapplications back with `TonelLoader`, the _loader_ will rebuild such hierachy based on the above described metadata.
+
+However, there is an abstraction used in other dialects, that is not present in the Tonel specification nor its implementation: the "package tag". The package tag or just _tag_, is a way to organize classes in the class browser based on some grouping criteria based on the class category, effectively working as _"virtual sub packages"_.
+
+So the _tags_ introduce a semantic mismatch, because VAST's classes don't have a category at all. What usually is a Package/Tag relation in other dialects is defined as an Application/SubApplication relation in VAST. But VAST also supports Application/SubApplication/SubSubApplication/... organization.
+
+To overcome that, we provide a strategies to map a Package/Tag to Application/SubApplication or simply load a Package in a single Application. And also provide an option to the `TonelWriter` to map Application/SubApplication to Package/Tag when exporting, or to export each SubApplication as a separate Package.
+
+### `TonelLoaderSubapplicationsConditionsMappingStrategy` (default)
+
+This is the default strategy configured in the `TonelLoader` that honors the 1:1 relation between a Package and an Application. 
+
+If you're loading code that was written with the `TonelWriter` (it is, written by VAST to be loaded into VAST), it is the recommended option, since it will also load code based on the conditions defined in each Application/SubApplication.
+
+### `TonelLoaderSubapplicationsTagMappingStrategy`
+
+This strategy will create an Application for the package and one SubApplication for each tag found in the category of classes.
+
+This is recommended if you're loading Tonel code generated from a dialect other than VAST, one that uses Package and _tags_ to organize code.
+
+E.g. For the package `Grease-Core` all classes categorized as `Grease-Core-Utilities` will end up in the `GreaseCoreUtilities` sub application inside the `GreaseCoreApp` application.
+
+Note: This strategy will use the name of the Application (without the `App` suffix) concatenated with the name of the tag to define the name of the sub application. This is so because if used only `Utilities` as the name of the sub application it might collide with other package that also has a `Utilities` tag (i.e. `Grease-Core` / `Utilities` with `Seaside-Core` / `Utilities`).
+
+If you need a more specific naming you can subclassify this strategy.
+
+## TonelWriter options
+
+Albeit they're not implemented as first class strategies but as options to the writer, it is good to list them here for documentation purposes.
+
+### Writing sub applications as package tags
+
+If when writing you want to perform the opposite step of the `TonelLoaderSubapplicationsTagMappingStrategy`, then you can configure the _writer_ to flatten sub applications and map them as package tags.
+
+```smalltalk
+writer := TonelWriter new.
+writer flattenSubApplications: true.
+```
+
+NOTES: Since there is no "class category" in VAST classes the package tag is going to be computed based on the root application #tonelPackageName and the SubApplication name.
+
+E.g. For an Application named `GreaseCoreApp` with the `GreaseCoreUtilities` and `GreaseCoreExceptions` sub applications, it will attempt to find remove the application name from the subapplication name (with or without the `App` suffix), and the resulting string is going to be used as the package tag. In this case it will remove `GreaseCore` from `GreaseCoreExceptions` and produce `Exceptions` as the package tag.
+
+
+
+### Writing out `Application` and `SubApplications` subclasses
+
+`Applications` and `SubApplication` subclasses have a dual purpose: to work as a "package" that works as container to class definitions and extensions in ENVY, and as a regular class that manage the lifetime of the app/sub app loading, initialization, etc.
+
+So when exporting your `Application` subclass (e.g. `MyApplication`) it will export a class definition for it, with `Application` as its superclass. If your plan is to load it back into VAST, then that's totally fine, and the desired behavior, but if your intention is to export to another dialect you either have to have `Application` and `SubApplication` defined in such dialect (as some  dialect compatibility package) or to omit the writing of such classes alltogether.
+
+So if you want to omit the write of ENVY app/subapp classes you can do:
+
+```smalltalk
+writer := TonelWriter new.
+writer writeENVYApps: false.
+```
+
+By default the writer is configured to write the ENVY app/subapps, so if that's your intention you don't have to do anything special.
+
+
+
+
 # Common recipes
 
 Below there is a small sample of "recipes" for the common use cases.
@@ -182,5 +253,13 @@ Load applications unattended with a specified version name.
 (TonelLoader readFromPath: (CfsPath named: "...")) 
 	beUnattended;
 	useSpecificVersion: 'vX.Y';
+	loadApplicationsForPackagesNamed: #('Package-Core' 'Package-Tests')
+```
+
+## Map package tags to sub applications
+
+```smalltalk
+(TonelLoader readFromPath: (CfsPath named: "...")) 
+	mapTagsToSubapplications; "<-- convenience method"
 	loadApplicationsForPackagesNamed: #('Package-Core' 'Package-Tests')
 ```

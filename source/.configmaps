@@ -32,13 +32,13 @@
 			},
 			{
 				#name : 'TonelTools',
-				#versionName : 'strategies-1',
-				#ts : 3799672335
+				#versionName : 'strategies-2',
+				#ts : 3801214335
 			},
 			{
 				#name : 'TonelWriterModel',
-				#versionName : 'strategies-2',
-				#ts : 3800019021
+				#versionName : 'strategies-3',
+				#ts : 3800169522
 			}
 		],
 		#name : 'ENVY/Image Tonel',
