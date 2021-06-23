@@ -9,7 +9,7 @@ TonelReaderMethodDefinition class >> failedRemoveMethodFor: nameString [
 	^ (self 
 		className: nameString
 		classSide: true
-		categories: 'loading/removing'  "$NON-NLS$"
+		categories: #('loading/removing')  "$NON-NLS$"
 		stamp: '')  "$NON-NLS$"
 			source: self failedRemoveSource;
 			yourself
@@ -35,7 +35,7 @@ TonelReaderMethodDefinition class >> loadedMethodFor: nameString [
 	^ (self 
 		className: nameString
 		classSide: true
-		categories: 'loading/removing'  "$NON-NLS$"
+		categories: #('loading/removing')  "$NON-NLS$"
 		stamp: '')  "$NON-NLS$"
 			source: self loadedSource;
 			yourself
@@ -53,7 +53,7 @@ TonelReaderMethodDefinition class >> loadedSource [
 	"Send #initializeOnLoad to every class defined in this subapplication that implements it."
 
 	defined do: [ :aClass |
-		(aClass class includesSelector: #initializeOnLoad) ifTrue: [ aClass initializeOnLoad ] ]'	"$NON-NLS$"
+		(aClass class includesSelector: #initializeOnLoad) ifTrue: [ aClass perform: #initializeOnLoad ] ]'	"$NON-NLS$"
 ]
 
 { #category : '*TonelLoaderModel',
@@ -89,7 +89,7 @@ TonelReaderMethodDefinition class >> removingMethodFor: nameString [
 	^ (self 
 		className: nameString
 		classSide: true
-		categories: 'loading/removing'  "$NON-NLS$"
+		categories: #('loading/removing')  "$NON-NLS$"
 		stamp: '')  "$NON-NLS$"
 			source: self removingSource;
 			yourself
@@ -107,7 +107,7 @@ TonelReaderMethodDefinition class >> removingSource [
 	"Send #unload to every class defined in this subapplication that implements it."
 
 	defined do: [ :aClass |
-		(aClass class includesSelector: #unload) ifTrue: [ aClass unload ] ]'	"$NON-NLS$"
+		(aClass class includesSelector: #unload) ifTrue: [ aClass perform: #unload ] ]'	"$NON-NLS$"
 ]
 
 { #category : '*TonelLoaderModel',

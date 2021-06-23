@@ -8,10 +8,13 @@ In order to support different use cases like interactive loading during developm
 * Version strategy
 * Base edition strategy
 * Application naming strategy
+* SubApplication mapping strategy
 
 By "interactive" whe mean involving the GUI, so, it is opening a dialog, a prompt of some sort, etc. While by "unattended" we mean that if there is a decision to be taken, it will be programmed in the strategy without requiring the display of any GUI element.
 
 The _loader_ will instantiate a separate `TonelApplicationLoader` (aka _application loader_) to load each `Application`, but the strategies are shared among the all the _application loaders_ in the _loader_.
+
+There are some options in the _loader_ and the _writer_ that are not implemented as first class strategies, but are included in this document as well for the sake of reference.
 
 ## Prerequisites strategy
 
@@ -148,9 +151,6 @@ This will convert an application otherwise named `Controller` with a subapplicat
 
 It is possible to create your own naming strategy by subclassing `TonelLoaderNamingStrategy` and redefining `nameForApp:` and `nameForSubApp:`.
 
-
-
-
 ## Package tags and SubApplications strategy
 
 ### Introduction
@@ -182,9 +182,25 @@ Note: This strategy will use the name of the Application (without the `App` suff
 
 If you need a more specific naming you can subclassify this strategy.
 
-## TonelWriter options
+## TonelLoader options
 
-Albeit they're not implemented as first class strategies but as options to the writer, it is good to list them here for documentation purposes.
+### Applications "lifecycle" methods
+
+After the load or unload of an `Application` or `SubApplication` into/from the image, there are a few class side methods that are invoked by the ENVY framework to ensure proper initialization or cleanup. The most know and used method is `#loaded`.
+
+The _loader_ provides an option to create such methods for each application and subapplication loaded from source.
+
+```smalltalk
+(TonelLoader readFromPath: (CfsPath named: "...")) 
+	createsHookMethods: true;
+	"..."
+```
+
+The `createHookMethods` accessor (initialized to `true` by default) will create such methods. If you're migrating code from a dialect other than VAST you could disable this, and create them manually based on your own needs.
+
+If the code in the repository already have such methods defined, they'll be treated as regular methods, and will be loaded _after_ this hook methods are created, so it's safe to leave this option enabled, since the code from the repository will replace the definition in the image.
+
+## TonelWriter options
 
 ### Writing sub applications as package tags
 

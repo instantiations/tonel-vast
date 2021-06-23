@@ -123,6 +123,12 @@ TonelLoaderSubApplication >> allExtendedClasses [
 		yourself
 ]
 
+{ #category : 'accessing' }
+TonelLoaderSubApplication >> applicationClass [
+
+	1 halt.
+]
+
 { #category : 'querying' }
 TonelLoaderSubApplication >> availableShadows [
 	^self emClass shadowsFor: self name
@@ -515,14 +521,12 @@ TonelLoaderSubApplication >> loadBaseEdition [
 { #category : 'loading' }
 TonelLoaderSubApplication >> loadClassesIn: anApp using: aLoader [
 
-	"(self topologicallySort: self tonelExtendedClasses in: anApp) 
-		do: [:each | each key loadInto: anApp using: aLoader]."
-	
 	| sortedClasses |
-	sortedClasses := (self 
-		topologicallySort: (self tonelClasses reject: [:each1 | each1 isSharedPool])
-		in: anApp).
-
+	sortedClasses := self 
+				topologicallySort: (self tonelClasses reject: [:each1 | each1 isSharedPool])
+				in: anApp.
+	aLoader createsHookMethods 
+		ifTrue: [self loadHookMethodsFor: anApp using: aLoader].
 	sortedClasses do: [:each | each key loadInto: anApp using: aLoader]
 ]
 
@@ -547,6 +551,26 @@ TonelLoaderSubApplication >> loadFor: tonelApp inRootApp: rootApp using: aLoader
 				versionClassesIn: theApp using: aLoader
 						"version: theApp as: aLoader versionName"
 						]
+]
+
+{ #category : 'loading',
+  #vaVisibility : 'private' }
+TonelLoaderSubApplication >> loadHookMethodsFor: anApp using: aLoader [
+
+	| appClass |
+	appClass := Smalltalk at: anApp name.
+	(TonelReaderMethodDefinition loadedMethodFor: appClass name) 
+		loadFor: appClass
+		into: appClass
+		using: aLoader.
+	(TonelReaderMethodDefinition removingMethodFor: appClass name) 
+		loadFor: appClass
+		into: appClass
+		using: aLoader.
+	(TonelReaderMethodDefinition failedRemoveMethodFor: appClass name) 
+		loadFor: appClass
+		into: appClass
+		using: aLoader
 ]
 
 { #category : 'loading' }

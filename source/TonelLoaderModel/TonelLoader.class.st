@@ -8,7 +8,8 @@ Class {
 		'subApplications',
 		'configurationMaps',
 		'loadedApplications',
-		'loadedConfigurationMaps'
+		'loadedConfigurationMaps',
+		'createsHookMethods'
 	],
 	#classVars : [
 		'DefaultAppNameSuffix',
@@ -191,6 +192,16 @@ TonelLoader >> createReaderForRepository: directoryPath [
 	self reader readFrom: directoryPath.
 ]
 
+{ #category : 'accessing' }
+TonelLoader >> createsHookMethods [
+	^createsHookMethods
+]
+
+{ #category : 'accessing' }
+TonelLoader >> createsHookMethods: anObject [
+	createsHookMethods := anObject
+]
+
 { #category : 'strategies-convenience' }
 TonelLoader >> doNotCreateVersions [
 	self versionStrategy: (TonelLoaderNoVersionStrategy for: self)
@@ -221,11 +232,20 @@ TonelLoader >> hasSuperGroupAccessTo: anApplication [
 
 { #category : 'initializing',
   #vaVisibility : 'private' }
+TonelLoader >> initialize [
+
+	super initialize.
+	createsHookMethods := true
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
 TonelLoader >> initializeApplications [
 	"Initializes receiver applications ensuring each application initializes its subapplications deeply."
 
-	applications := (reader packages select: [:each | each parent isNil]) 
-				collect: [:each | TonelLoaderApplication on: each in: self].
+	applications :=
+		(reader packages select: [:each | each parent isNil])
+			collect: [:each | TonelLoaderApplication on: each in: self].
 	applications do: [:each | each initializeSubApplicationsWithRoot: each]
 ]
 

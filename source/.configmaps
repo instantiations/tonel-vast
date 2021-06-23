@@ -22,8 +22,8 @@
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : 'strategies-2',
-				#ts : 3800103448
+				#versionName : 'strategies-3',
+				#ts : 3801907029
 			},
 			{
 				#name : 'TonelReaderModel',

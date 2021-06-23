@@ -141,6 +141,12 @@ TonelApplicationLoader >> createClasses [
 		do: [:ea | ea key createEditionIn: ea value using: self]
 ]
 
+{ #category : 'testing' }
+TonelApplicationLoader >> createsHookMethods [
+	
+	^self loader createsHookMethods
+]
+
 { #category : 'loading-internal',
   #vaVisibility : 'private' }
 TonelApplicationLoader >> createTonelMetadataMethods [
