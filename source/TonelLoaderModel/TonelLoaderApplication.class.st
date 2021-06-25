@@ -338,13 +338,9 @@ TonelLoaderApplication >> prerequisites: anOrderedCollection [
 { #category : 'loading' }
 TonelLoaderApplication >> replacePrerequisite: anApplication [
 
-	
+	prerequisites isNil ifTrue: [^self].
 	self prerequisites keysAndValuesDo: [:index :each |
-		each name = anApplication name
-			ifTrue: [
-				self prerequisites at: index put: anApplication
-			]
-	]
+		each name = anApplication name ifTrue: [self prerequisites at: index put: anApplication]]
 ]
 
 { #category : 'accessing' }
