@@ -68,7 +68,7 @@ TonelLoaderApplication >> allPrerequisites [
 
 	| result new temp |
 	result := OrderedCollection new.
-	new := self prerequisites.
+	new := prerequisites ifNil: [prerequisites := OrderedCollection new].
 	[new isEmpty] whileFalse: [
 		temp := Set new.
 		new do: [:app |
