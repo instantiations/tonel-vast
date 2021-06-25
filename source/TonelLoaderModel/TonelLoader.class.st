@@ -9,7 +9,8 @@ Class {
 		'configurationMaps',
 		'loadedApplications',
 		'loadedConfigurationMaps',
-		'createsHookMethods'
+		'createsHookMethods',
+		'prerequisitesFilter'
 	],
 	#classVars : [
 		'DefaultAppNameSuffix',
@@ -205,6 +206,16 @@ TonelLoader >> createsHookMethods: anObject [
 { #category : 'strategies-convenience' }
 TonelLoader >> doNotCreateVersions [
 	self versionStrategy: (TonelLoaderNoVersionStrategy for: self)
+]
+
+{ #category : 'accessing' }
+TonelLoader >> filteredPrerequisitesApplications [
+	"Answer a collection of TonelApplications given that they fullfill the prerequisites filter 
+	 or all applications if no filter was defined."
+
+	^self prerequisitesFilter
+		ifNil: [self applications]
+		ifNotNil: [:filter | self applications select: [:each | filter value: each]]
 ]
 
 { #category : 'strategies-convenience' }
@@ -410,6 +421,19 @@ TonelLoader >> postLoadActions [
 		ifNotNil: [:class | class perform: #primRefreshMethodSelectors]
 ]
 
+{ #category : 'accessing' }
+TonelLoader >> prerequisitesFilter [
+	
+	^prerequisitesFilter 
+]
+
+{ #category : 'accessing' }
+TonelLoader >> prerequisitesFilter: monadicBlock [
+	"Sets valuable to be the receiver prerequisitesFilter."
+	
+	prerequisitesFilter := monadicBlock
+]
+
 { #category : 'resolving' }
 TonelLoader >> prerequisitesFor: aTonelLoaderApplication current: anOrderedCollection [
 
@@ -456,11 +480,15 @@ TonelLoader >> reset [
 { #category : 'accessing' }
 TonelLoader >> rootApplicationOfClass: aTonelReaderClassDefinition [
 
-	self applications do: [:tonelApp |
-		(tonelApp allDefinedClasses
-			anySatisfy: [:tonelClass | tonelClass = aTonelReaderClassDefinition])
-				ifTrue: [^tonelApp rootTonelApplication]].
-	^nil
+	| candidateApps |
+	candidateApps :=
+		(self filteredPrerequisitesApplications select: [:tonelApp |
+			(tonelApp allDefinedClasses anySatisfy: [:tonelClass |
+				tonelClass = aTonelReaderClassDefinition
+					or: [tonelClass name = aTonelReaderClassDefinition name]])])
+						flattened
+							collect: [:tonelApp | tonelApp rootTonelApplication].
+	^candidateApps isEmpty ifTrue: [nil] ifFalse: [candidateApps first]
 ]
 
 { #category : 'accessing' }

@@ -90,23 +90,22 @@ TonelLoaderApplication >> asSymbol [
   #vaVisibility : 'private' }
 TonelLoaderApplication >> computeImplicitPrerequisites [
 
-	| needed  |
+	| needed |
+
 	needed := Set new.
 	self withAllSubApplications do: [:app |
 		app tonelDefinedClasses do: [:cl |
-			((cl tonelSuperclassIn: self loader)) ifNotNil: [:itsSuper  |
-				needed add: (itsSuper rootTonelApplicationIn: self loader)]].
+			((cl tonelSuperclassIn: self loader))
+				ifNotNil: [:itsSuper | needed add: (itsSuper rootTonelApplicationIn: self loader)]].
 		app tonelExtendedClasses do: [:cl |
-			 (cl rootTonelApplicationIn: self loader) ifNotNil: [:itsSuper |	needed add: itsSuper ]].
-		(app tonelDefinedClasses, app tonelExtendedClasses) asArray do: [:cl |
+			(cl rootTonelApplicationIn: self loader) ifNotNil: [:itsSuper | needed add: itsSuper]].
+		(app tonelDefinedClasses , app tonelExtendedClasses) asArray do: [:cl |
 			(cl tonelMethods) do: [:cm |
 				(cm referencedTonelClasses: self loader) do: [:referencedClass |
 					needed add: (referencedClass rootTonelApplicationIn: self loader)]]]].
 
 	needed remove: self ifAbsent: [].
-	needed copy do: [:app |
-		app allPrerequisites do: [:prereq |
-			needed remove: prereq ifAbsent: []]].
+	needed copy do: [:app | app allPrerequisites do: [:prereq | needed remove: prereq ifAbsent: []]].
 	^needed
 ]
 
