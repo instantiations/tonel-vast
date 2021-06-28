@@ -27,8 +27,8 @@
 			},
 			{
 				#name : 'TonelReaderModel',
-				#versionName : 'strategies-2',
-				#ts : 3802344748
+				#versionName : 'strategies-3',
+				#ts : 3802346469
 			},
 			{
 				#name : 'TonelTools',

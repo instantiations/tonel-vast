@@ -25,3 +25,15 @@ CfsPath >> readUtf8StreamDo: aBlock [
 				] ensure: [stream close].
 				latin1 ifNotNil: [aBlock value: latin1 readStream]]
 ]
+
+{ #category : '*TonelReaderModel',
+ #vaCategories : ['CFS-API'] }
+CfsPath >> utf8Contents [
+	"Answer the contents of receiver asuming it was encoded using UTF-8."
+
+	| output |
+
+	output := WriteStream on: String new.
+	self readUtf8StreamDo: [:input | [input atEnd] whileFalse: [output nextPut: input next]].
+	^output contents
+]

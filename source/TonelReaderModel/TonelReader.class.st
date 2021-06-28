@@ -124,9 +124,7 @@ TonelReader >> readConfigurationMapsFrom: sourceDirPath [
 	configurationMaps :=
 		(sourceDirPath append: self configMapsFilename) exists
 			ifTrue: [
-				(STONReader on: (
-					CfsReadFileStream open: (sourceDirPath append: self configMapsFilename) asString))
-						next]
+				(STONReader on: ((sourceDirPath append: self configMapsFilename) utf8Contents readStream)) next]
 			ifFalse: [OrderedCollection new]
 ]
 
