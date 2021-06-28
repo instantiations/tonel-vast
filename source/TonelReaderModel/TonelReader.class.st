@@ -31,7 +31,7 @@ TonelReader >> addContentFrom: filePath toPackage: aPackageDefinition [
 	"Private - Adds all the Tonel contents within filePath
 	 to aPackageDefinition."
 
-	filePath readStreamDo: [:aStream | | result |
+	filePath readUtf8StreamDo: [:aStream | | result |
 		result := TonelParser parseStream: aStream.
 		result first
 			addToPackage: aPackageDefinition

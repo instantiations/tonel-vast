@@ -246,7 +246,7 @@ TonelLoader >> hasSuperGroupAccessTo: anApplication [
 TonelLoader >> initialize [
 
 	super initialize.
-	createsHookMethods := true
+	createsHookMethods := false
 ]
 
 { #category : 'initializing',
