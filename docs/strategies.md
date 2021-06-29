@@ -182,6 +182,31 @@ Note: This strategy will use the name of the Application (without the `App` suff
 
 If you need a more specific naming you can subclassify this strategy.
 
+
+## Package prerequisites strategy
+_(work in progress)_
+
+When loading several packages from a Tonel-based repository, there might be some dependency between these packages, and hence dependencies in the Applications that derive from them. Such dependency imposes a load order of the packages, and to simplify the use of the loader and not having to specify the exact load order for a lot loaded packages, the loader will determine which package depends on each other (for the packages within a repository), and attempt to load the dependencies before the actual package.
+
+
+NOTE: If the Package was written using the _Tonel Writer_ from VAST, it will include the necessary metadata (it is. `vaPrerequisites:` attribute) to load them.
+
+
+### `TonelLoaderComputedPackagePrereqsStrategy` (default)
+
+This is the default strategy, the _loader_ will walk all the defined classes, extensions and defined methods to determine whether such package depends on another one in the same repository.
+
+### `TonelLoaderPackageTablePrereqsStrategy`
+
+If the `TonelLoaderComputedPackagePrereqsStrategy` doesn't work for your needs or if the depency graph is wrong, e.g. because the original packages have cyclic dependencies, you can manually specify the prerequisites for each package name.
+
+```smalltalk
+"Enable it by evaluating"
+aTonelLoader usePackagePrerequisitesTable
+	at: 'Grease-Tests-Core' add: 'Grease-Core'; "adding one"
+	at: 'Grease-Core' put: #('Grease-VAST-Core'); "defining all at once".
+```
+
 ## TonelLoader options
 
 ### Applications "lifecycle" methods

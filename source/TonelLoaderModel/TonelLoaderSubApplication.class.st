@@ -223,6 +223,7 @@ TonelLoaderSubApplication >> computeName [
 { #category : 'Initialization',
   #vaVisibility : 'private' }
 TonelLoaderSubApplication >> computePrerequisites [
+	"SubApplications don't have prerequisites."
 	
 	^OrderedCollection new
 ]

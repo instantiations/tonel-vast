@@ -9,8 +9,7 @@ Class {
 		'configurationMaps',
 		'loadedApplications',
 		'loadedConfigurationMaps',
-		'createsHookMethods',
-		'prerequisitesFilter'
+		'createsHookMethods'
 	],
 	#classVars : [
 		'DefaultAppNameSuffix',
@@ -72,6 +71,12 @@ TonelLoader >> addLoadedApplication: aTonelApplication [
 TonelLoader >> alwaysCreateEditions [
 
 	^self versionStrategy alwaysCreateEditions
+]
+
+{ #category : 'loading' }
+TonelLoader >> applicationForPackageNamed: aString [
+
+	^self applications detect: [:one | one packageName = aString]
 ]
 
 { #category : 'lookup' }
@@ -143,7 +148,8 @@ TonelLoader >> checkRepositoryContents [
 			[self error: 'The selected directory does not contain any Tonel Package']
 ]
 
-{ #category : 'accessing' }
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
 TonelLoader >> computeSettings [
 	^self class settings copyFor: self
 ]
@@ -206,16 +212,6 @@ TonelLoader >> createsHookMethods: anObject [
 { #category : 'strategies-convenience' }
 TonelLoader >> doNotCreateVersions [
 	self versionStrategy: (TonelLoaderNoVersionStrategy for: self)
-]
-
-{ #category : 'accessing' }
-TonelLoader >> filteredPrerequisitesApplications [
-	"Answer a collection of TonelApplications given that they fullfill the prerequisites filter 
-	 or all applications if no filter was defined."
-
-	^self prerequisitesFilter
-		ifNil: [self applications]
-		ifNotNil: [:filter | self applications select: [:each | filter value: each]]
 ]
 
 { #category : 'strategies-convenience' }
@@ -302,9 +298,10 @@ TonelLoader >> loadApplication: aTonelApplication [
 
 { #category : 'loading' }
 TonelLoader >> loadApplicationForPackageNamed: aString [
+
 	"Load the applications whose package name matches aString."
 
-	^self loadApplication: (self applications detect: [:one | one packageName = aString])
+	^self loadApplication: (self applicationForPackageNamed: aString)
 ]
 
 { #category : 'loading' }
@@ -414,24 +411,21 @@ TonelLoader >> packageNames [
 	^self reader packages collect: [:each | each name asString ]
 ]
 
+{ #category : 'strategies' }
+TonelLoader >> packagePrerequisitesStrategy [
+	^self settings packagePrerequisitesStrategy
+]
+
+{ #category : 'strategies' }
+TonelLoader >> packagePrerequisitesStrategy: aTonelLoaderPackagePrereqsStrategy [
+	self settings packagePrerequisitesStrategy: aTonelLoaderPackagePrereqsStrategy
+]
+
 { #category : 'loading',
   #vaVisibility : 'private' }
 TonelLoader >> postLoadActions [
 	^(Smalltalk classAt: #StsPowerTools) 
 		ifNotNil: [:class | class perform: #primRefreshMethodSelectors]
-]
-
-{ #category : 'accessing' }
-TonelLoader >> prerequisitesFilter [
-	
-	^prerequisitesFilter 
-]
-
-{ #category : 'accessing' }
-TonelLoader >> prerequisitesFilter: monadicBlock [
-	"Sets valuable to be the receiver prerequisitesFilter."
-	
-	prerequisitesFilter := monadicBlock
 ]
 
 { #category : 'resolving' }
@@ -481,8 +475,9 @@ TonelLoader >> reset [
 TonelLoader >> rootApplicationOfClass: aTonelReaderClassDefinition [
 
 	| candidateApps |
+
 	candidateApps :=
-		(self filteredPrerequisitesApplications select: [:tonelApp |
+		(self applications select: [:tonelApp |
 			(tonelApp allDefinedClasses anySatisfy: [:tonelClass |
 				tonelClass = aTonelReaderClassDefinition
 					or: [tonelClass name = aTonelReaderClassDefinition name]])])
@@ -610,6 +605,13 @@ TonelLoader >> useGitVersion [
 { #category : 'strategies-convenience' }
 TonelLoader >> useLatestBaseEditions [
 	self baseEditionStrategy: (TonelLoaderLatestBaseEditionStrategy for: self)
+]
+
+{ #category : 'strategies-convenience' }
+TonelLoader >> usePackagePrerequisitesTable [
+
+	self packagePrerequisitesStrategy: (TonelLoaderPackageTablePrereqsStrategy for: self).
+	^self packagePrerequisitesStrategy
 ]
 
 { #category : 'strategies-convenience' }

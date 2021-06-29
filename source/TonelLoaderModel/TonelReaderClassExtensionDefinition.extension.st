@@ -48,14 +48,6 @@ TonelReaderClassExtensionDefinition >> hasChangesIn: anApp comparedTo: aClass [
 ]
 
 { #category : '*TonelLoaderModel',
- #vaCategories : ['accessing'] }
-TonelReaderClassExtensionDefinition >> rootTonelApplicationIn: aTonelLoader [
-
-
-	^aTonelLoader rootApplicationOfClassExtension: self
-]
-
-{ #category : '*TonelLoaderModel',
  #vaCategories : ['comparing'] }
 TonelReaderClassExtensionDefinition >> tonelTopologicalSubordinateOf: aTonelLoaderClass [
 	"This method will return true if the receiver is a extension of aTonelLoaderClass."

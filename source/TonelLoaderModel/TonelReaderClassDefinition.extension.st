@@ -259,14 +259,6 @@ TonelReaderClassDefinition >> pragmaSourceFromClassVariables [
 ]
 
 { #category : '*TonelLoaderModel',
- #vaCategories : ['accessing'] }
-TonelReaderClassDefinition >> rootTonelApplicationIn: aTonelLoader [
-
-
-	^aTonelLoader rootApplicationOfClass: self
-]
-
-{ #category : '*TonelLoaderModel',
  #vaCategories : ['loading'],
   #vaVisibility : 'private' }
 TonelReaderClassDefinition >> superclassChangeIn: aClass [
@@ -275,14 +267,6 @@ TonelReaderClassDefinition >> superclassChangeIn: aClass [
 		aClass superclass isNil
 			ifTrue: [(self superclassIdentifier isNil and: [aClass superclass isNil]) not]
 			ifFalse: [((self superclassIdentifier asSymbol = aClass superclass name asSymbol)) not]]
-]
-
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['accessing'] }
-TonelReaderClassDefinition >> tonelSuperclassIn: aTonelLoader [
-
-	
-	^aTonelLoader tonelClassNamed: self superclassIdentifier
 ]
 
 { #category : '*TonelLoaderModel',

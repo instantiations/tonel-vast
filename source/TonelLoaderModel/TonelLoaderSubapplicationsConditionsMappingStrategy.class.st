@@ -4,7 +4,7 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
-{ #category : 'Not categorized' }
+{ #category : 'api' }
 TonelLoaderSubapplicationsConditionsMappingStrategy >> createSubApplicationsFor: tonelApplication in: emAppOrSubapp withRoot: emRootApp [
 
 	tonelApplication loadableConditions keysAndValuesDo: [:conditionCode :tonelSubApps |
@@ -31,7 +31,7 @@ TonelLoaderSubapplicationsConditionsMappingStrategy >> createSubApplicationsFor:
 					tonelApplication createDescriptionFor: emSubApplication]]]
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'api' }
 TonelLoaderSubapplicationsConditionsMappingStrategy >> subApplicationsOf: tonelApplication withRoot: rootTonelApplication [
 
 	| conditionsSubApps |

@@ -4,7 +4,7 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
-{ #category : 'Not categorized',
+{ #category : 'operations',
   #vaVisibility : 'private' }
 TonelLoaderSubapplicationsTagMappingStrategy >> createSubApplicationOf: aTonelLoaderApplication named: aSymbol [
 
@@ -16,7 +16,7 @@ TonelLoaderSubapplicationsTagMappingStrategy >> createSubApplicationOf: aTonelLo
 		yourself
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'api' }
 TonelLoaderSubapplicationsTagMappingStrategy >> createSubApplicationsFor: tonelApplication in: emAppOrSubapp withRoot: emRootApp [
 
 	tonelApplication subApplications do: [:tonelSubApp | | createSubApp |
@@ -37,20 +37,21 @@ TonelLoaderSubapplicationsTagMappingStrategy >> createSubApplicationsFor: tonelA
 				tonelApplication createDescriptionFor: emSubApplication]]
 ]
 
-{ #category : 'Not categorized',
+{ #category : 'operations',
   #vaVisibility : 'private' }
 TonelLoaderSubapplicationsTagMappingStrategy >> moveClass: tonelClass from: tonelApplication to: subApplication [
 
 	tonelApplication packageDefinition moveClass: tonelClass to: subApplication packageDefinition
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'internal',
+  #vaVisibility : 'private' }
 TonelLoaderSubapplicationsTagMappingStrategy >> subApplicationNameForTag: aSymbol in: aTonelLoaderApplication [
 
 	^aTonelLoaderApplication name , aSymbol asString
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'api' }
 TonelLoaderSubapplicationsTagMappingStrategy >> subApplicationsOf: tonelApplication withRoot: rootTonelApplication [
 
 	| tagMap |
