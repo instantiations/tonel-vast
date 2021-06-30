@@ -42,10 +42,8 @@ TonelLoaderApplicationPrereqsTableStrategy >> prerequisitesFor: aTonelApplicatio
 	"Answer a collection of EmShadowApplication that are the prerequistes application of aTonelApplication.
 	 E.g. 'Seaside-Core' -> #('GreaseCoreApp')."
 
-	^(self at: aTonelApplication packageName) collect: [:applicationName |
-		aCollection
-			detect: [:one | one name = applicationName asSymbol]
-			ifNone: [self applicationNamed: applicationName]]
+	^((self at: aTonelApplication packageName)
+		collect: [:applicationName | self applicationNamed: applicationName]) , aCollection
 ]
 
 { #category : 'accessing' }

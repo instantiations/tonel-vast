@@ -17,13 +17,13 @@ TonelLoaderSubapplicationsTagMappingStrategy >> createSubApplicationOf: aTonelLo
 ]
 
 { #category : 'api' }
-TonelLoaderSubapplicationsTagMappingStrategy >> createSubApplicationsFor: tonelApplication in: emAppOrSubapp withRoot: emRootApp [
+TonelLoaderSubapplicationsTagMappingStrategy >> createSubApplicationsFor: tonelApplication in: emApp withRoot: emRootApp [
 
 	tonelApplication subApplications do: [:tonelSubApp | | createSubApp |
 		createSubApp := self loader alwaysCreateEditions.
 		createSubApp
 			ifFalse: [
-				(emAppOrSubapp subApplications
+				(emApp subApplications
 					detect: [:one | one name = tonelSubApp identifier]
 					ifNone: [nil])
 						ifNil: [createSubApp := true]
@@ -33,7 +33,7 @@ TonelLoaderSubapplicationsTagMappingStrategy >> createSubApplicationsFor: tonelA
 		createSubApp
 			ifTrue: [| emSubApplication |
 				emSubApplication :=
-					tonelSubApp createFor: emAppOrSubapp underCondition: 'true' withRoot: emRootApp.
+					tonelSubApp createFor: emApp underCondition: 'true' withRoot: emRootApp.
 				tonelApplication createDescriptionFor: emSubApplication]]
 ]
 
@@ -44,11 +44,12 @@ TonelLoaderSubapplicationsTagMappingStrategy >> moveClass: tonelClass from: tone
 	tonelApplication packageDefinition moveClass: tonelClass to: subApplication packageDefinition
 ]
 
-{ #category : 'internal',
-  #vaVisibility : 'private' }
+{ #category : 'internal' }
 TonelLoaderSubapplicationsTagMappingStrategy >> subApplicationNameForTag: aSymbol in: aTonelLoaderApplication [
 
-	^aTonelLoaderApplication name , aSymbol asString
+
+	
+	^(self loader namingStrategy appNameWithoutSuffix: aTonelLoaderApplication), aSymbol asString
 ]
 
 { #category : 'api' }

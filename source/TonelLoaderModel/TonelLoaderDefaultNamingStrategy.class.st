@@ -11,6 +11,17 @@ Class {
 }
 
 { #category : 'accessing' }
+TonelLoaderDefaultNamingStrategy >> appNameWithoutSuffix: aTonelLoaderApplication [
+
+	| appName |
+
+	appName := aTonelLoaderApplication name.
+	^self appSuffix isEmpty
+		ifTrue: [appName]
+		ifFalse: [appName copyFrom: 1 to: appName size - self appSuffix size]
+]
+
+{ #category : 'accessing' }
 TonelLoaderDefaultNamingStrategy >> appSuffix [
 	^appSuffix
 ]

@@ -22,8 +22,8 @@
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : 'strategies-12',
-				#ts : 3802519439
+				#versionName : 'strategies-13',
+				#ts : 3802525560
 			},
 			{
 				#name : 'TonelReaderModel',
@@ -42,7 +42,7 @@
 			}
 		],
 		#name : 'ENVY/Image Tonel',
-		#versionName : ''
+		#versionName : '2021/06/30 A'
 	},
 	{
 		#conditions : [ ],
