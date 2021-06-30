@@ -233,9 +233,21 @@ TonelLoaderApplication >> hasChanges [
 		emApplication := Smalltalk classAt: self identifier.
 		hasChanges :=
 			emApplication isNil or: [
-				(self hasClassChangesComparedTo: emApplication) or: [
-					(self hasRemovedClassesFor: emApplication) or: [
-						self subApplicationsHaveChangesFor: emApplication inRootApp: emApplication]]]]
+				(self hasSamePrerequisitesAs: emApplication) not or: [
+					(self hasClassChangesComparedTo: emApplication) or: [
+						(self hasRemovedClassesFor: emApplication) or: [
+							self
+								subApplicationsHaveChangesFor: emApplication
+								inRootApp: emApplication]]]]]
+]
+
+{ #category : 'testing' }
+TonelLoaderApplication >> hasSamePrerequisitesAs: anApplication [
+
+	^(anApplication prerequisites collect: [:each | each name asSymbol]) 
+		asSortedCollection 
+			= (self prerequisites collect: [:each | each name asSymbol])
+			asSortedCollection
 ]
 
 { #category : 'testing' }
