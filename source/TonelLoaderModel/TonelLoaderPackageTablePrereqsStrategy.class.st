@@ -10,7 +10,7 @@ Class {
 { #category : 'accessing-table' }
 TonelLoaderPackageTablePrereqsStrategy >> at: packageName [
 
-	^self table at: packageName ifAbsentPut: [Set new]
+	^self table at: packageName ifAbsentPut: [OrderedCollection new]
 ]
 
 { #category : 'accessing-table' }

@@ -1,6 +1,6 @@
 Class {
 	#name : 'TonelLoaderInteractivePrereqStrategy',
-	#superclass : 'TonelLoaderPrereqStrategy',
+	#superclass : 'TonelLoaderApplicationPrereqStrategy',
 	#category : 'TonelLoaderInteractiveApp'
 }
 

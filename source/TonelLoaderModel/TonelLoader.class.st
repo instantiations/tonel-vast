@@ -105,8 +105,8 @@ TonelLoader >> baseEditionStrategy [
 ]
 
 { #category : 'strategies' }
-TonelLoader >> baseEditionStrategy: anObject [
-	self settings baseEditionStrategy: anObject
+TonelLoader >> baseEditionStrategy: aTonelLoaderBaseEditionStrategy [
+	self settings baseEditionStrategy: (aTonelLoaderBaseEditionStrategy setLoader: self)
 ]
 
 { #category : 'loading',
@@ -401,8 +401,8 @@ TonelLoader >> namingStrategy [
 ]
 
 { #category : 'strategies' }
-TonelLoader >> namingStrategy: anObject [
-	self settings namingStrategy: anObject
+TonelLoader >> namingStrategy: aTonelLoaderNamingStrategy [
+	self settings namingStrategy: (aTonelLoaderNamingStrategy setLoader: self)
 ]
 
 { #category : 'accessing' }
@@ -418,7 +418,7 @@ TonelLoader >> packagePrerequisitesStrategy [
 
 { #category : 'strategies' }
 TonelLoader >> packagePrerequisitesStrategy: aTonelLoaderPackagePrereqsStrategy [
-	self settings packagePrerequisitesStrategy: aTonelLoaderPackagePrereqsStrategy
+	self settings packagePrerequisitesStrategy: (aTonelLoaderPackagePrereqsStrategy setLoader: self)
 ]
 
 { #category : 'loading',
@@ -441,8 +441,8 @@ TonelLoader >> prerequisitesStrategy [
 ]
 
 { #category : 'strategies' }
-TonelLoader >> prerequisitesStrategy: anObject [
-	self settings prerequisitesStrategy: anObject
+TonelLoader >> prerequisitesStrategy: aTonelLoaderApplicationPrereqStrategy [
+	self settings prerequisitesStrategy: (aTonelLoaderApplicationPrereqStrategy setLoader: self)
 ]
 
 { #category : 'interacting' }
@@ -557,9 +557,9 @@ TonelLoader >> subapplicationsStrategy [
 ]
 
 { #category : 'strategies' }
-TonelLoader >> subapplicationsStrategy: anObject [
+TonelLoader >> subapplicationsStrategy: aTonelLoaderSubapplicationsMappingStrategy [
 
-	self settings subapplicationsStrategy: (anObject setLoader: self)
+	self settings subapplicationsStrategy: (aTonelLoaderSubapplicationsMappingStrategy setLoader: self)
 ]
 
 { #category : 'accessing' }
@@ -584,6 +584,13 @@ TonelLoader >> updatePrerequisitesFrom: aTonelLoaderApplication [
 
 	self applications do: [:tonelApp |
 		tonelApp replacePrerequisite: aTonelLoaderApplication emApplication]
+]
+
+{ #category : 'strategies-convenience' }
+TonelLoader >> useApplicationPrerequisitesTable [
+
+	self prerequisitesStrategy: (TonelLoaderApplicationPrereqsTableStrategy for: self).
+	^self prerequisitesStrategy
 ]
 
 { #category : 'strategies-convenience' }
@@ -632,7 +639,7 @@ TonelLoader >> versionStrategy [
 ]
 
 { #category : 'strategies' }
-TonelLoader >> versionStrategy: anObject [
+TonelLoader >> versionStrategy: aTonelLoaderVersionStrategy [
 
-	self settings versionStrategy: anObject
+	self settings versionStrategy: (aTonelLoaderVersionStrategy setLoader: self)
 ]
