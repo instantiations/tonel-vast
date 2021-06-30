@@ -22,7 +22,7 @@ TonelLoaderPackageTablePrereqsStrategy >> at: packageName add: dependedPackageNa
 { #category : 'accessing-table' }
 TonelLoaderPackageTablePrereqsStrategy >> at: packageName put: aCollection [
 
-	^self at: packageName put: aCollection
+	^self table at: packageName put: aCollection
 ]
 
 { #category : 'initializing',

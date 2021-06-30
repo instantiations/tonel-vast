@@ -5,7 +5,7 @@ Extension {
 { #category : '*TonelLoaderInteractiveApp',
  #vaCategories : ['strategies-convenience'] }
 TonelLoader >> beInteractive [
-	self useInteractivePreqrequistesSelection.
+	self useInteractivePrerequisitesSelection.
 	self useInteractiveBaseEditionSelection.
 	self useInteractiveVersioning
 ]
@@ -19,7 +19,7 @@ TonelLoader >> useInteractiveBaseEditionSelection [
 
 { #category : '*TonelLoaderInteractiveApp',
  #vaCategories : ['strategies-convenience'] }
-TonelLoader >> useInteractivePreqrequistesSelection [
+TonelLoader >> useInteractivePrerequisitesSelection [
 	self 
 		prerequisitesStrategy: (TonelLoaderInteractivePrereqStrategy for: self)
 ]

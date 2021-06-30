@@ -17,13 +17,13 @@
 			},
 			{
 				#name : 'TonelLoaderInteractiveApp',
-				#versionName : '92e3c95-master',
-				#ts : 3798358103
+				#versionName : 'strategies-10',
+				#ts : 3802500271
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : 'strategies-9',
-				#ts : 3802442193
+				#versionName : 'strategies-10',
+				#ts : 3802498953
 			},
 			{
 				#name : 'TonelReaderModel',
