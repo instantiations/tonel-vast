@@ -255,6 +255,7 @@ TonelApplicationLoader >> load [
   #vaVisibility : 'private' }
 TonelApplicationLoader >> loadApplication [
 
+	self loader autogenerateInstanceInitializers ifTrue: [self autogenerateClassSideNewInitializers].
 	self tonelApplication loadUsing: self
 ]
 

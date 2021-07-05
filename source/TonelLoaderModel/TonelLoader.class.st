@@ -9,7 +9,8 @@ Class {
 		'configurationMaps',
 		'loadedApplications',
 		'loadedConfigurationMaps',
-		'createsHookMethods'
+		'createsHookMethods',
+		'autogenerateInstanceInitializers'
 	],
 	#classVars : [
 		'DefaultAppNameSuffix',
@@ -97,6 +98,19 @@ TonelLoader >> applications [
 
 	applications ifNil: [self initializeApplications].
 	^applications
+]
+
+{ #category : 'accessing' }
+TonelLoader >> autogenerateInstanceInitializers [
+	"Answer whether receiver will create class side instance creation methods that send #initialize to
+	 its newly created instances."
+
+	^autogenerateInstanceInitializers
+]
+
+{ #category : 'accessing' }
+TonelLoader >> autogenerateInstanceInitializers: aBoolean [
+	autogenerateInstanceInitializers := aBoolean
 ]
 
 { #category : 'strategies' }
@@ -242,7 +256,8 @@ TonelLoader >> hasSuperGroupAccessTo: anApplication [
 TonelLoader >> initialize [
 
 	super initialize.
-	createsHookMethods := false
+	createsHookMethods := false.
+	autogenerateInstanceInitializers := false
 ]
 
 { #category : 'initializing',

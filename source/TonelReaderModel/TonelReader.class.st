@@ -6,7 +6,8 @@ Class {
 		'sourceProperties',
 		'packages',
 		'configurationMaps',
-		'repositoryPath'
+		'repositoryPath',
+		'packageFilter'
 	],
 	#category : 'TonelReaderModel'
 }
@@ -110,6 +111,16 @@ TonelReader >> lookupPackageNamed: aString ifNone: aBlock [
 	^self packages detect: [:each | each name = aString] ifNone: aBlock
 ]
 
+{ #category : 'accessing' }
+TonelReader >> packageFilter [
+	^packageFilter
+]
+
+{ #category : 'accessing' }
+TonelReader >> packageFilter: aBlock [
+	packageFilter := aBlock
+]
+
 { #category : 'Accessing',
   #vaVisibility : 'private' }
 TonelReader >> packages [
@@ -131,8 +142,15 @@ TonelReader >> readConfigurationMapsFrom: sourceDirPath [
 { #category : 'Reading' }
 TonelReader >> readFrom: aPath [
 
+	self readFrom: aPath filtering: nil
+]
+
+{ #category : 'Reading' }
+TonelReader >> readFrom: aPath filtering: aBlockOrNil [
+
 	| sourcesPath |
 	repositoryPath := aPath.
+	packageFilter := aBlockOrNil.
 	sourcesPath := self computeSourcesDirectoryFrom: aPath.
 	self readPackages: nil from: sourcesPath.
 	self readConfigurationMapsFrom: sourcesPath.
@@ -142,7 +160,9 @@ TonelReader >> readFrom: aPath [
   #vaVisibility : 'private' }
 TonelReader >> readPackageDirectories: aCollection [
 
-	aCollection do: [:each | self readPackageFrom: each]
+	aCollection do: [:packageDir |
+		(self packageFilter isNil or: [self packageFilter value: packageDir fileName])
+			ifTrue: [self readPackageFrom: packageDir]]
 ]
 
 { #category : 'Reading',
@@ -191,7 +211,8 @@ TonelReader >> readPackages: aCollection from: sourceDirPath [
 	self readPackageDirectories: packagesDirectories
 ]
 
-{ #category : 'Reading' }
+{ #category : 'Reading',
+  #vaVisibility : 'private' }
 TonelReader >> readPackagesFrom: aPath [
 
 	

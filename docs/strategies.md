@@ -207,6 +207,21 @@ aTonelLoader usePackagePrerequisitesTable
 	at: 'Grease-Core' put: #('Grease-VAST-Core'); "defining all at once".
 ```
 
+## TonelReader options
+### Package filtering
+
+Sometimes you simply want to pick a few packages from a repository containing lots of them, so it doesn't make sense to parse the contents of all the package directories just to use a few of them.
+
+To make this process more effective, mostly in terms of speed, you can specify a filtering block that will receive the package name as argument.
+
+```smalltalk
+reader := TonelReader new 
+            readFrom: aCfsPath
+			filtering: [:packageName | 
+			  ('*-Core-*') match: packageName ]
+			].
+```
+
 ## TonelLoader options
 
 ### Applications "lifecycle" methods
@@ -224,6 +239,21 @@ The _loader_ provides an option to create such methods for each application and 
 The `createHookMethods` accessor (initialized to `true` by default) will create such methods. If you're migrating code from a dialect other than VAST you could disable this, and create them manually based on your own needs.
 
 If the code in the repository already have such methods defined, they'll be treated as regular methods, and will be loaded _after_ this hook methods are created, so it's safe to leave this option enabled, since the code from the repository will replace the definition in the image.
+
+
+### Initialized instances
+The default implementation of `new` in VAST doesn't send the `initialize` message to the newly created instance, but in other dialects it does send `initialize`.
+
+So if you need to rely on importing classes and be sure that the instances will be initialized after being created you can set the _loader_ to create a "class-side" `new` that has this behavior.
+
+To enable this feature, you can do:
+
+```smalltalk
+(TonelLoader readFromPath: (CfsPath named: "...")) 
+   autogenerateInstanceInitializers: true
+```
+
+This option is `false` by default.
 
 ## TonelWriter options
 

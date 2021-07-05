@@ -50,10 +50,10 @@ TonelReaderMethodDefinition class >> loadedMethodFor: nameString [
 TonelReaderMethodDefinition class >> loadedSource [
 
 	^ 'loaded
-	"Send #initializeOnLoad to every class defined in this subapplication that implements it."
+	"Send #initialize to every class defined in this subapplication that implements it."
 
 	defined do: [ :aClass |
-		(aClass class includesSelector: #initializeOnLoad) ifTrue: [ aClass perform: #initializeOnLoad ] ]'	"$NON-NLS$"
+		(aClass class includesSelector: #initialize) ifTrue: [ aClass perform: #initialize ] ]'	"$NON-NLS$"
 ]
 
 { #category : '*TonelLoaderModel',

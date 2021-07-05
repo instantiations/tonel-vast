@@ -290,6 +290,20 @@ TonelLoaderApplication >> loadPrerequisites [
 
 ]
 
+{ #category : 'loading' }
+TonelLoaderApplication >> loadUsing: aLoader [
+	"Load the real application for @aLoader."
+
+	| theApp |
+
+	theApp := Smalltalk classAt: self identifier.
+	(aLoader alwaysCreateEditions or: [self hasChanges])
+		ifTrue: [
+			self
+				loadClassesIn: theApp using: aLoader;
+				loadSubApplicationsOf: theApp inRootApp: theApp using: aLoader]
+]
+
 { #category : 'accessing' }
 TonelLoaderApplication >> notes [
 	^notes ifNil: [notes := String new]

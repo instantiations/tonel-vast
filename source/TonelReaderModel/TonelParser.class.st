@@ -272,7 +272,7 @@ TonelParser >> newMethodDefinitionFrom: anArray [
 			s nextPutAll: anArray fourth second.
 			(anArray at: 5) isEmpty ifFalse: [s nextPutAll: (anArray at: 5)]].
 	categories :=
-		metadata at: #vaCategories ifAbsent: [Array with: (metadata at: #category ifAbsent: [''])].
+		(metadata at: #vaCategories ifAbsent: [Array with: (metadata at: #category ifAbsent: [''])]) collect: [:category | category asString].
 	visibility := metadata at: #vaVisibility ifAbsent: [nil].
 	visibility :=
 		visibility ifNil: [(categories includes: 'private') not] ifNotNil: [visibility = 'public'].
