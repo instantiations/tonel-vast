@@ -229,6 +229,11 @@ TonelLoader >> doNotCreateVersions [
 ]
 
 { #category : 'strategies-convenience' }
+TonelLoader >> doNotUseBaseEditions [
+	self baseEditionStrategy: (TonelLoaderNoBaseEditionStrategy for: self)
+]
+
+{ #category : 'strategies-convenience' }
 TonelLoader >> forceCreationOfEditions [
 	
 	self versionStrategy alwaysCreateEditions: true

@@ -111,7 +111,6 @@ You can also specify whether the lookup of base editions will lookup only for ve
 
 This is the default strategy, that will display a list of base editions to choose, and prompt the user to select one from the list.
 
-
 ### `TonelLoaderLatestBaseEditionStrategy` (unattended, default)
 
 This will automatically select the latest (newest) edition as the base edition for the App/Subapp being loaded.
@@ -128,6 +127,16 @@ In git repositories, each commit has one or more parent commits, this strategy w
 When setting `useGitVersion` in the `TonelLoader`, this base edition strategy will be set as well.
 
 So if you're loading `MyApplication` from a git repository whose commit id is `8c3fa3d` and parent commit is `b78df32`, when loading a base edition it will look for an edition of `MyApplication` in the EM Library whose `versionName` match `b78df32`.
+
+
+### `TonelLoaderNoBaseEditionStrategy` (unattended)
+
+This strategy skips choosing an existing edition as base and creates all applications and subapplications from scratch. If you want to avoid loading anything from the library, this is the right strategy to use.
+
+```smalltalk
+"Enable it by evaluating"
+aTonelLoader doNotUseBaseEditions
+```
 
 ## Naming strategy
 
