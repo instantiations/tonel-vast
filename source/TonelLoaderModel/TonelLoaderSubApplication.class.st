@@ -645,11 +645,12 @@ TonelLoaderSubApplication >> notifyLoadedApps [
 TonelLoaderSubApplication >> notifyLoadedClasses [
 
 	| theApp |
+
+	self subApplications do: [:each | each notifyLoadedClasses].
 	theApp := Smalltalk classAt: self identifier.
 	self definedClasses do: [:each |
 		(each concreteClassIn: theApp rootApplication) ifNotNil: [:class |
-			(class includesSelector: #initializeAfterLoad) ifTrue: [class initializeAfterLoad]]].
-	self subApplications do: [:each | each notifyLoadedClasses]
+			(class includesSelector: #initializeAfterLoad) ifTrue: [class initializeAfterLoad]]]
 ]
 
 { #category : 'accessing' }
