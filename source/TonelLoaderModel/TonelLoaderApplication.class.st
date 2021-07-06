@@ -121,10 +121,7 @@ TonelLoaderApplication >> concretePrerequisites [
 	"Reduce the collection of prerequisite Applications to only
 	 those that are immediate prerequisites of the receiver."
 
-	^ self prerequisiteApps reject: [ :eachApp |
-		self prerequisiteApps anySatisfy: [ :checkApp |
-			(eachApp = checkApp) not and: [
-				checkApp withAllPrerequisites includes: eachApp ] ] ]
+	^ self loader prerequisitesStrategy concretePrerequisitesOf: self 
 ]
 
 { #category : 'loading' }

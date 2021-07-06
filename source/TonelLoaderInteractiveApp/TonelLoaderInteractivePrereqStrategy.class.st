@@ -4,7 +4,14 @@ Class {
 	#category : 'TonelLoaderInteractiveApp'
 }
 
-{ #category : 'lookup' }
+{ #category : 'api' }
+TonelLoaderInteractivePrereqStrategy >> concretePrerequisitesOf: aTonelApplication [
+
+ 
+	^self prerequisitesFor: aTonelApplication current: aTonelApplication prerequisiteApps
+]
+
+{ #category : 'api' }
 TonelLoaderInteractivePrereqStrategy >> prerequisitesFor: tonelApplication current: aCollection [
 
 	^EtPrerequisiteCollectingPrompter 

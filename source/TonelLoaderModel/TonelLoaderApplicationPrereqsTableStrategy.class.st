@@ -29,6 +29,13 @@ TonelLoaderApplicationPrereqsTableStrategy >> at: packageName put: aCollection [
 	^self table at: packageName put: aCollection
 ]
 
+{ #category : 'api' }
+TonelLoaderApplicationPrereqsTableStrategy >> concretePrerequisitesOf: aTonelApplication [
+
+ 
+	^self prerequisitesFor: aTonelApplication current: aTonelApplication prerequisiteApps
+]
+
 { #category : 'accessing-table',
   #vaVisibility : 'private' }
 TonelLoaderApplicationPrereqsTableStrategy >> initialize [
@@ -39,8 +46,8 @@ TonelLoaderApplicationPrereqsTableStrategy >> initialize [
 
 { #category : 'api' }
 TonelLoaderApplicationPrereqsTableStrategy >> prerequisitesFor: aTonelApplication current: aCollection [
-	"Answer a collection of EmShadowApplication that are the prerequistes application of aTonelApplication.
-	 E.g. 'Seaside-Core' -> #('GreaseCoreApp')."
+	"Answer a collection of EmShadowApplication that are the prerequistes application of aTonelApplication together
+	 with aCollection of Applications."
 
 	^((self at: aTonelApplication packageName)
 		collect: [:applicationName | self applicationNamed: applicationName]) , aCollection
