@@ -270,7 +270,7 @@ TonelApplicationLoader >> loader [
   #vaVisibility : 'private' }
 TonelApplicationLoader >> markAsLoaded [
 
-	self tonelApplication notifyLoad.
+	self tonelApplication notifyLoaded.
 	self loader addLoadedApplication: self tonelApplication
 ]
 
