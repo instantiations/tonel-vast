@@ -121,6 +121,7 @@ TonelApplicationLoader >> createAndLoadApplication [
 		deleteRemovedClasses;
 		loadApplication;
 		deleteRemovedSubApplications;
+		fixPrerequisitesMismatch;
 		versionApplication;
 		markAsLoaded
 
@@ -210,6 +211,12 @@ TonelApplicationLoader >> detectAllRootSuperclassesWithinApp [
 				ifFalse: [aClass name]].
 		superclasses add: (superclassBlock value: tonelClass)].
 	^superclasses
+]
+
+{ #category : 'loading-internal' }
+TonelApplicationLoader >> fixPrerequisitesMismatch [
+
+	self loader prerequisitesStrategy fixPrerequisitesMismatchOf: self tonelApplication
 ]
 
 { #category : 'testing' }

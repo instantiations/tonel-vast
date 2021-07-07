@@ -1,6 +1,9 @@
 Class {
 	#name : 'TonelLoaderApplicationPrereqStrategy',
 	#superclass : 'TonelLoaderStrategy',
+	#instVars : [
+		'fixesMismatchs'
+	],
 	#category : 'TonelLoaderModel'
 }
 
@@ -18,10 +21,37 @@ TonelLoaderApplicationPrereqStrategy >> concretePrerequisitesOf: aTonelApplicati
 	self subclassResponsibility
 ]
 
-{ #category : 'testing' }
+{ #category : 'accessing' }
 TonelLoaderApplicationPrereqStrategy >> fixesMismatchs [
+	^fixesMismatchs
+]
 
-	^false
+{ #category : 'accessing' }
+TonelLoaderApplicationPrereqStrategy >> fixesMismatchs: aBoolean [
+	fixesMismatchs := aBoolean
+]
+
+{ #category : 'configuring' }
+TonelLoaderApplicationPrereqStrategy >> fixMismatchs [
+
+	self fixesMismatchs: true
+]
+
+{ #category : 'api' }
+TonelLoaderApplicationPrereqStrategy >> fixPrerequisitesMismatchOf: tonelApplication [
+
+	self fixesMismatchs
+		ifTrue: [
+			tonelApplication emApplication
+				prerequisites: (self reducedPrerequisitesOf: tonelApplication)]
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelLoaderApplicationPrereqStrategy >> initialize [
+
+	super initialize.
+	fixesMismatchs := false
 ]
 
 { #category : 'api' }
@@ -30,25 +60,13 @@ TonelLoaderApplicationPrereqStrategy >> prerequisitesFor: tonelApplication curre
 	self subclassResponsibility
 ]
 
-{ #category : 'api' }
-TonelLoaderApplicationPrereqStrategy >> reducePrerequisitesOf: tonelApplication current: currentPrereqs [
+{ #category : 'api',
+  #vaVisibility : 'private' }
+TonelLoaderApplicationPrereqStrategy >> reducedPrerequisitesOf: tonelApplication [
 
-	| requiredPrereqs allRequired anApp |
-
-	anApp := tonelApplication emApplication.
-	requiredPrereqs := EmInterface current requiredDependentApplicationsIncludingReferencesFor: anApp.
-	allRequired := Set new.
-	currentPrereqs do: [:each | allRequired addAll: each withAllPrerequisites].
-	requiredPrereqs do: [:each |
-		((allRequired includes: each) not and: [self fixesMismatchs])
-			ifTrue: [
-				allRequired addAll: (
-					self
-						requiredDependentApplicationsIncludingReferencesFor: anApp
-						reportInApps: (Array with: each))]].
-
-	currentPrereqs do: [:r | (requiredPrereqs includes: r) ifFalse: [allRequired remove: r]].
-	^allRequired
+	^(EmInterface current
+		requiredDependentApplicationsIncludingReferencesFor: tonelApplication emApplication)
+			asOrderedCollection
 ]
 
 { #category : 'lookup',

@@ -35,6 +35,33 @@ This strategy uses the prequisites specified in the metadata plus the ones compu
 aTonelLoader useComputedPrerequisites
 ```
 
+
+### `TonelLoaderApplicationPrereqsTableStrategy`
+
+This strategy allows to specify mappings between a Tonel package name and ENVY applications that will be set as application prerequisites.
+
+```smalltalk
+"Enable it by evaluating"
+aTonelLoader useApplicationPrerequisitesTable
+  at: 'Seaside-Core' put: #('Kernel' 'GreaseCoreApp')
+```
+
+### Common prerequisites strategy options
+
+#### Prerequisites mismatch
+There might be the case where the computed prerequisites or the specified prequisites are redundant after all the classes and application editions have been created, for that, there is the option to fix any mismatch at the end of the load of the application.
+
+
+```smalltalk
+aTonelLoader useApplicationPrerequisitesTable
+  at: 'Seaside-Core' put: #('Kernel' 'GreaseCoreApp' 'SUnit');
+  fixMismatchs
+```
+
+In the example above, `Seaside-Core` should  only depend on `GreaseCoreApp` since this one already depends on `Kernel`, and should not depend on `SUnit` because there is no real dependency to it. So enabling this options will remove redundant or unnecessary  dependencies.
+
+
+
 ## Version strategy
 
 The version strategy handles both the versioning, and also the creation of editions prior to versioning.
