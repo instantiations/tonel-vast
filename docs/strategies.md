@@ -28,7 +28,7 @@ This strategy will display an `EtPrerequisiteCollectingPrompter` enabling the us
 
 ### `TonelLoaderComputedPrerequisitesStrategy` (unattended, default)
 
-This strategy uses the prequisites specified in the metadata plus the ones computed by the loader.
+This strategy uses the prerequisites specified in the metadata plus the ones computed by the loader.
 
 ```smalltalk
 "Enable it by evaluating"
@@ -49,7 +49,7 @@ aTonelLoader useApplicationPrerequisitesTable
 ### Common prerequisites strategy options
 
 #### Prerequisites mismatch
-There might be the case where the computed prerequisites or the specified prequisites are redundant after all the classes and application editions have been created, for that, there is the option to fix any mismatch at the end of the load of the application.
+There might be the case where the computed prerequisites or the specified prerequisites are redundant after all the classes and application editions have been created, for that, there is the option to fix any mismatch at the end of the load of the application.
 
 
 ```smalltalk
@@ -104,7 +104,7 @@ This strategy can be used only if the folder containing the Tonel files is manag
 aTonelLoader useGitVersion
 ```
 
-By default the version name will be something like `e022f87-master (2019-12-30T14:30:00-03:00)`, but you can change the pattern specifing any other `String` that can be expanded using macros (`expandMacrosWith:with:with:`) where the first argument will be the commit hash string, the second the branch name and the third one the branch name.
+By default the version name will be something like `e022f87-master (2019-12-30T14:30:00-03:00)`, but you can change the pattern specifying any other `String` that can be expanded using macros (`expandMacrosWith:with:with:`) where the first argument will be the commit hash string, the second the branch name and the third one the branch name.
 
 ```smalltalk
 "Change the pattern to just the commit hash evaluating"
@@ -151,7 +151,7 @@ aTonelLoader useLatestBaseEditions
 
 ### `TonelLoaderGitParentBaseEditionStrategy` (unattended)
 
-In git repositories, each commit has one or more parent commits, this strategy will try to find a base edition whose versionName matches the parent commit hash (only its first eight characters), and if no edition is found, it will choose the latest one, as in `TonelLoaderlatestBaseEditionStrategy`.
+In git repositories, each commit has one or more parent commits, this strategy will try to find a base edition whose `versionName` matches the parent commit hash (only its first eight characters), and if no edition is found, it will choose the latest one, as in `TonelLoaderlatestBaseEditionStrategy`.
 
 When setting `useGitVersion` in the `TonelLoader`, this base edition strategy will be set as well.
 
@@ -194,7 +194,7 @@ It is possible to create your own naming strategy by subclassing `TonelLoaderNam
 ### Introduction
 When writing an Application hierarchy, the `TonelWriter` will map each application and subapplication to its own Tonel package, and add the relation between each SubApplication to its children via an [specific metadata](vastspecific.md#application-and-subapplication-hierarchy). This is a feature specific to VAST, since in the canonical version of Tonel there is no such a concept like "SubApplication" or packages hierarchy.
 
-So when reading the applications and subapplications back with `TonelLoader`, the _loader_ will rebuild such hierachy based on the above described metadata.
+So when reading the applications and subapplications back with `TonelLoader`, the _loader_ will rebuild such hierarchy based on the above described metadata.
 
 However, there is an abstraction used in other dialects, that is not present in the Tonel specification nor its implementation: the "package tag". The package tag or just _tag_, is a way to organize classes in the class browser based on some grouping criteria based on the class category, effectively working as _"virtual sub packages"_.
 
@@ -236,7 +236,7 @@ This is the default strategy, the _loader_ will walk all the defined classes, ex
 
 ### `TonelLoaderPackageDependencyTableStrategy`
 
-If the _computed_ dependency resolver doesn't work for your needs or if the depency graph is wrong, e.g. because the original packages have cyclic dependencies, you can manually specify the dependencies for each package name.
+If the _computed_ dependency resolver doesn't work for your needs or if the dependency graph is wrong, e.g. because the original packages have cyclic dependencies, you can manually specify the dependencies for each package name.
 
 ```smalltalk
 "Enable it by evaluating"
@@ -314,7 +314,7 @@ E.g. For an Application named `GreaseCoreApp` with the `GreaseCoreUtilities` and
 
 `Applications` and `SubApplication` subclasses have a dual purpose: to work as a "package" that works as container to class definitions and extensions in ENVY, and as a regular class that manage the lifetime of the app/sub app loading, initialization, etc.
 
-So when exporting your `Application` subclass (e.g. `MyApplication`) it will export a class definition for it, with `Application` as its superclass. If your plan is to load it back into VAST, then that's totally fine, and the desired behavior, but if your intention is to export to another dialect you either have to have `Application` and `SubApplication` defined in such dialect (as some  dialect compatibility package) or to omit the writing of such classes alltogether.
+So when exporting your `Application` subclass (e.g. `MyApplication`) it will export a class definition for it, with `Application` as its superclass. If your plan is to load it back into VAST, then that's totally fine, and the desired behavior, but if your intention is to export to another dialect you either have to have `Application` and `SubApplication` defined in such dialect (as some  dialect compatibility package) or to omit the writing of such classes altogether.
 
 So if you want to omit the write of ENVY app/subapp classes you can do:
 
