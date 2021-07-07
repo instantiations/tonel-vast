@@ -4,11 +4,13 @@
 
 In order to support different use cases like interactive loading during development, unattended loading for a continuous integration build, using a specific version name or getting it from the git repository the applications are saved, etc, the _loader_ (a `TonelLoader`) will delegate some actions to, currently, three different strategies, all inheriting from the `TonelLoaderStrategy` class, each of them with an "interactive" and an "unattended" subclass.
 
-* Prerequisites strategy
-* Version strategy
-* Base edition strategy
-* Application naming strategy
-* SubApplication mapping strategy
+There are strategies for the following:
+* Package dependency
+* Prerequisites
+* Base edition selection
+* Application naming
+* SubApplication mapping
+* Versioning
 
 By "interactive" whe mean involving the GUI, so, it is opening a dialog, a prompt of some sort, etc. While by "unattended" we mean that if there is a decision to be taken, it will be programmed in the strategy without requiring the display of any GUI element.
 
@@ -192,26 +194,26 @@ Note: This strategy will use the name of the Application (without the `App` suff
 If you need a more specific naming you can subclassify this strategy.
 
 
-## Package prerequisites strategy
-_(work in progress)_
+## Package dependencies strategy
 
 When loading several packages from a Tonel-based repository, there might be some dependency between these packages, and hence dependencies in the Applications that derive from them. Such dependency imposes a load order of the packages, and to simplify the use of the loader and not having to specify the exact load order for a lot loaded packages, the loader will determine which package depends on each other (for the packages within a repository), and attempt to load the dependencies before the actual package.
 
+All the resolved packages dependencies will end up as application prerequisites of the application created from the Tonel package.
 
 NOTE: If the Package was written using the _Tonel Writer_ from VAST, it will include the necessary metadata (it is. `vaPrerequisites:` attribute) to load them.
 
 
-### `TonelLoaderComputedPackagePrereqsStrategy` (default)
+### `TonelLoaderComputedPackageDependencyStrategy` (default)
 
 This is the default strategy, the _loader_ will walk all the defined classes, extensions and defined methods to determine whether such package depends on another one in the same repository.
 
-### `TonelLoaderPackageTablePrereqsStrategy`
+### `TonelLoaderPackageDependencyTableStrategy`
 
-If the `TonelLoaderComputedPackagePrereqsStrategy` doesn't work for your needs or if the depency graph is wrong, e.g. because the original packages have cyclic dependencies, you can manually specify the prerequisites for each package name.
+If the _computed_ dependency resolver doesn't work for your needs or if the depency graph is wrong, e.g. because the original packages have cyclic dependencies, you can manually specify the dependencies for each package name.
 
 ```smalltalk
 "Enable it by evaluating"
-aTonelLoader usePackagePrerequisitesTable
+aTonelLoader usePackageDependenciesTable
 	at: 'Grease-Tests-Core' add: 'Grease-Core'; "adding one"
 	at: 'Grease-Core' put: #('Grease-VAST-Core'); "defining all at once".
 ```

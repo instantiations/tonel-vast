@@ -68,6 +68,12 @@ TonelLoader >> addLoadedApplication: aTonelApplication [
 	self updatePrerequisitesFrom: aTonelApplication
 ]
 
+{ #category : 'resolving' }
+TonelLoader >> addPrerequisite: emApplication to: tonelApplication [
+
+	self prerequisitesStrategy addPrerequisite: emApplication to: tonelApplication
+]
+
 { #category : 'strategies-convenience' }
 TonelLoader >> alwaysCreateEditions [
 
@@ -425,20 +431,20 @@ TonelLoader >> namingStrategy: aTonelLoaderNamingStrategy [
 	self settings namingStrategy: (aTonelLoaderNamingStrategy setLoader: self)
 ]
 
+{ #category : 'strategies' }
+TonelLoader >> packageDependencyStrategy [
+	^self settings packageDependencyStrategy
+]
+
+{ #category : 'strategies' }
+TonelLoader >> packageDependencyStrategy: aTonelLoaderPackageDependencyStrategy [
+	self settings packageDependencyStrategy: (aTonelLoaderPackageDependencyStrategy setLoader: self)
+]
+
 { #category : 'accessing' }
 TonelLoader >> packageNames [
 	
 	^self reader packages collect: [:each | each name asString ]
-]
-
-{ #category : 'strategies' }
-TonelLoader >> packagePrerequisitesStrategy [
-	^self settings packagePrerequisitesStrategy
-]
-
-{ #category : 'strategies' }
-TonelLoader >> packagePrerequisitesStrategy: aTonelLoaderPackagePrereqsStrategy [
-	self settings packagePrerequisitesStrategy: (aTonelLoaderPackagePrereqsStrategy setLoader: self)
 ]
 
 { #category : 'loading',
@@ -635,10 +641,10 @@ TonelLoader >> useLatestBaseEditions [
 ]
 
 { #category : 'strategies-convenience' }
-TonelLoader >> usePackagePrerequisitesTable [
+TonelLoader >> usePackageDependencyTable [
 
-	self packagePrerequisitesStrategy: (TonelLoaderPackageTablePrereqsStrategy for: self).
-	^self packagePrerequisitesStrategy
+	self packageDependencyStrategy: (TonelLoaderPackageDependencyTableStrategy for: self).
+	^self packageDependencyStrategy
 ]
 
 { #category : 'strategies-convenience' }

@@ -124,7 +124,7 @@ TonelLoaderSettings >> ensureStrategies [
 
 	self namingStrategy.
 	self baseEditionStrategy.
-	self packagePrerequisitesStrategy.
+	self packageDependencyStrategy.
 	self prerequisitesStrategy.
 	self versionStrategy.
 	self subapplicationsStrategy.
@@ -153,15 +153,15 @@ TonelLoaderSettings >> namingStrategy: aTonelLoaderStrategy [
 ]
 
 { #category : 'strategies' }
-TonelLoaderSettings >> packagePrerequisitesStrategy [
+TonelLoaderSettings >> packageDependencyStrategy [
 
-	^self strategyAt: #packagePrerequisites ifAbsentPut: [TonelLoaderComputedPackagePrereqsStrategy new]
+	^self strategyAt: #packageDependency ifAbsentPut: [TonelLoaderComputedPackageDependencyStrategy new]
 ]
 
 { #category : 'strategies' }
-TonelLoaderSettings >> packagePrerequisitesStrategy: aTonelLoaderPackagePrereqsStrategy [
+TonelLoaderSettings >> packageDependencyStrategy: aTonelLoaderPackageDependencyStrategy [
 
-	^self strategyAt: #packagePrerequisites put: aTonelLoaderPackagePrereqsStrategy
+	^self strategyAt: #packageDependency put: aTonelLoaderPackageDependencyStrategy
 ]
 
 { #category : 'copying' }

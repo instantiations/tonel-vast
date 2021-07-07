@@ -1,5 +1,5 @@
 Class {
-	#name : 'TonelLoaderPackagePrereqsStrategy',
+	#name : 'TonelLoaderPackageDependencyStrategy',
 	#superclass : 'TonelLoaderStrategy',
 	#instVars : [
 		'filter'
@@ -8,20 +8,20 @@ Class {
 }
 
 { #category : 'accessing' }
-TonelLoaderPackagePrereqsStrategy >> filter [
+TonelLoaderPackageDependencyStrategy >> filter [
 	
 	^filter 
 ]
 
 { #category : 'accessing' }
-TonelLoaderPackagePrereqsStrategy >> filter: aValuableBlock [
+TonelLoaderPackageDependencyStrategy >> filter: aValuableBlock [
 
 	filter := aValuableBlock
 ]
 
 { #category : 'filtering',
   #vaVisibility : 'private' }
-TonelLoaderPackagePrereqsStrategy >> filterPrerequisites: aCollection [
+TonelLoaderPackageDependencyStrategy >> filterPrerequisites: aCollection [
 	"Answer a collection of TonelApplications given that they fullfill the prerequisites filter 
 	 or return aCollection as is if no filter was defined."
 

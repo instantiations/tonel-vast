@@ -7,6 +7,13 @@ Class {
 	#category : 'TonelLoaderModel'
 }
 
+{ #category : 'api' }
+TonelLoaderApplicationPrereqsTableStrategy >> addPrerequisite: emApplication to: tonelApplication [
+	"Add emApplication as a prerequisite to tonelApplication.
+	 NOTE: Since we base prerequisites on a table, we only won't add anything that is not in the table."
+	
+]
+
 { #category : 'api',
   #vaVisibility : 'private' }
 TonelLoaderApplicationPrereqsTableStrategy >> applicationNamed: applicationName [

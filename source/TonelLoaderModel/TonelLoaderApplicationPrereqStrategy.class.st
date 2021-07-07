@@ -5,6 +5,13 @@ Class {
 }
 
 { #category : 'api' }
+TonelLoaderApplicationPrereqStrategy >> addPrerequisite: emApplication to: tonelApplication [
+	"Add emApplication as a prerequisite to tonelApplication."
+
+	tonelApplication addPrerequisite: emApplication
+]
+
+{ #category : 'api' }
 TonelLoaderApplicationPrereqStrategy >> concretePrerequisitesOf: aTonelApplication [
 
  

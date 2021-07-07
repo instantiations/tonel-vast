@@ -23,13 +23,6 @@ TonelLoaderApplication >> accountForPoolDictionaryClasses [
 
 ]
 
-{ #category : 'configuring' }
-TonelLoaderApplication >> addPrerequisite: aClass [
-
-
-	super addPrerequisite: aClass 
-]
-
 { #category : 'querying' }
 TonelLoaderApplication >> allDefinedClassNames [
 	
@@ -90,7 +83,7 @@ TonelLoaderApplication >> asSymbol [
   #vaVisibility : 'private' }
 TonelLoaderApplication >> computeImplicitPrerequisites [
 
-	^self loader packagePrerequisitesStrategy prerequisitesFor: self
+	^self loader packageDependencyStrategy prerequisitesFor: self
 ]
 
 { #category : 'initializing',

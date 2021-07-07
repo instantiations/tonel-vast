@@ -1,6 +1,6 @@
 Class {
-	#name : 'TonelLoaderPackageTablePrereqsStrategy',
-	#superclass : 'TonelLoaderPackagePrereqsStrategy',
+	#name : 'TonelLoaderPackageDependencyTableStrategy',
+	#superclass : 'TonelLoaderPackageDependencyStrategy',
 	#instVars : [
 		'table'
 	],
@@ -8,33 +8,33 @@ Class {
 }
 
 { #category : 'accessing-table' }
-TonelLoaderPackageTablePrereqsStrategy >> at: packageName [
+TonelLoaderPackageDependencyTableStrategy >> at: packageName [
 
 	^self table at: packageName ifAbsentPut: [OrderedCollection new]
 ]
 
 { #category : 'accessing-table' }
-TonelLoaderPackageTablePrereqsStrategy >> at: packageName add: dependedPackageName [
+TonelLoaderPackageDependencyTableStrategy >> at: packageName add: dependedPackageName [
 
 	^(self at: packageName) add: dependedPackageName
 ]
 
 { #category : 'accessing-table' }
-TonelLoaderPackageTablePrereqsStrategy >> at: packageName put: aCollection [
+TonelLoaderPackageDependencyTableStrategy >> at: packageName put: aCollection [
 
 	^self table at: packageName put: aCollection
 ]
 
 { #category : 'initializing',
   #vaVisibility : 'private' }
-TonelLoaderPackageTablePrereqsStrategy >> initialize [
+TonelLoaderPackageDependencyTableStrategy >> initialize [
 
 	super initialize.
 	table := Dictionary new
 ]
 
 { #category : 'api' }
-TonelLoaderPackageTablePrereqsStrategy >> prerequisitesFor: aTonelApplication [
+TonelLoaderPackageDependencyTableStrategy >> prerequisitesFor: aTonelApplication [
 	"Answer a collection of TonelApplications that are the prerequistes of aTonelApplication
 	 based on a table between a package name and its collection of package prerequisites.
 	 
@@ -46,13 +46,13 @@ TonelLoaderPackageTablePrereqsStrategy >> prerequisitesFor: aTonelApplication [
 ]
 
 { #category : 'accessing' }
-TonelLoaderPackageTablePrereqsStrategy >> table [
+TonelLoaderPackageDependencyTableStrategy >> table [
 
 	^table
 ]
 
 { #category : 'accessing' }
-TonelLoaderPackageTablePrereqsStrategy >> table: aDictionary [
+TonelLoaderPackageDependencyTableStrategy >> table: aDictionary [
 
 	table := aDictionary
 ]

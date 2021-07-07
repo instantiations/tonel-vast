@@ -1,11 +1,11 @@
 Class {
-	#name : 'TonelLoaderComputedPackagePrereqsStrategy',
-	#superclass : 'TonelLoaderPackagePrereqsStrategy',
+	#name : 'TonelLoaderComputedPackageDependencyStrategy',
+	#superclass : 'TonelLoaderPackageDependencyStrategy',
 	#category : 'TonelLoaderModel'
 }
 
 { #category : 'api' }
-TonelLoaderComputedPackagePrereqsStrategy >> prerequisitesFor: aTonelApplication [
+TonelLoaderComputedPackageDependencyStrategy >> prerequisitesFor: aTonelApplication [
 	"Answer a collection of TonelApplications that are the prerequistes of aTonelApplication
 	 based on the computation of dependencies of classes and methods that reference classes 
 	 defined in other TonelApplications."
