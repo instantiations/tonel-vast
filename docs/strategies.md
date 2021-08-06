@@ -325,7 +325,15 @@ writer writeENVYApps: false.
 
 By default the writer is configured to write the ENVY app/subapps, so if that's your intention you don't have to do anything special.
 
+### Identifiers
+Tonel, the file format, has a loose specification, and in some dialects it uses Symbols for its identifiers and in others it uses Strings because in not all the dialects aString = aSymbol.
 
+So to avoid having file differences when working on code that share a common repository you can configure the `TonelWriter` to use Symbols or Strings for its identifiers.
+
+```smalltalk
+writer := TonelWriter new.
+writer identifiersClass: Symbol.
+```
 
 
 # Common recipes

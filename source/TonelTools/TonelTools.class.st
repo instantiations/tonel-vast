@@ -95,7 +95,6 @@ TonelTools class >> exportConfigurationMapsNames: anOrderedCollection [
 
 { #category : 'operations' }
 TonelTools class >> exportTonelApplications: aCollection [
-	"The following source failed to compile (all double quotes have been doubled):"
 
 	| selectedApps repositoryPath clearSources |
 

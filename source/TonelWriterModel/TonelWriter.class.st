@@ -11,7 +11,8 @@ Class {
 		'convertsSharedPools',
 		'canonical',
 		'flattenSubApplications',
-		'writeENVYApps'
+		'writeENVYApps',
+		'identifiersClass'
 	],
 	#classVars : [
 		'LineDelimiter'
@@ -234,6 +235,19 @@ TonelWriter >> configurationMaps: anObject [
 	configurationMaps := anObject
 ]
 
+{ #category : 'utility' }
+TonelWriter >> convertIdentifier: identifier [
+	"Converts identifier <Symbol|String> according to receiver configuration."
+
+	^self identifiersClass = Symbol 
+			ifTrue: [
+				(identifier allSatisfy: [:char | char isAlphaNumeric])
+					ifTrue: [identifier asSymbol printString]
+					ifFalse: ['#', identifier asString printString]] 
+			ifFalse: [identifier asString printString]
+		
+]
+
 { #category : 'configuring' }
 TonelWriter >> convertSharedPools [
 
@@ -285,6 +299,16 @@ TonelWriter >> flattenSubApplications [
 { #category : 'accessing' }
 TonelWriter >> flattenSubApplications: anObject [
 	flattenSubApplications := anObject
+]
+
+{ #category : 'accessing' }
+TonelWriter >> identifiersClass [
+	^identifiersClass ifNil: [String]
+]
+
+{ #category : 'accessing' }
+TonelWriter >> identifiersClass: aClass [
+	identifiersClass := aClass
 ]
 
 { #category : 'initializing',
@@ -372,6 +396,12 @@ TonelWriter >> useLfEOL [
 
 ]
 
+{ #category : 'configuring' }
+TonelWriter >> useSymbolIdentifiers [
+
+	self identifiersClass: Symbol
+]
+
 { #category : 'utility',
   #vaVisibility : 'private' }
 TonelWriter >> withStreamOn: aFilePath do: aBlock [
@@ -429,31 +459,40 @@ TonelWriter >> writeApplicationsInto: aPath [
 { #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writeClassesDefinedIn: anApplicationDefinition into: aPath [
+
 	"Private - Writes the class definition files of the classes
 	defined by anApplicationDefinition into the the package directory <aPath>."
 
 	| classWriter |
-
-	classWriter :=
-		TonelClassWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter in: self.
-	anApplicationDefinition withDefinitionsOfDefinedClassesDo: [:classDefinition |
-		(self writeENVYApps not and: [
-			#(Application SubApplication) includes: classDefinition definedClassSuperclassName])
+	classWriter := TonelClassWriter 
+				on: fileSystem
+				directory: aPath
+				lineDelimiter: lineDelimiter
+				in: self.
+	anApplicationDefinition withDefinitionsOfDefinedClassesDo: 
+			[:classDefinition | 
+			(self writeENVYApps not and: 
+					[#(#Application #SubApplication) 
+						includes: classDefinition definedClassSuperclassName]) 
 				ifFalse: [classWriter write: classDefinition]]
 ]
 
 { #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writeClassesExtendedBy: anApplicationDefinition into: aPath [
+
 	"Private - Writes the class extensions files of the classes
 	 extended by anApplicationDefinition into the the package directory <aPath>."
 
 	| classExtensionWriter |
-
-	classExtensionWriter :=
-		TonelClassExtensionWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter in: self.
-	anApplicationDefinition withDefinitionsOfExtendedClassesDo: [:classDefinition |
-		classExtensionWriter write: classDefinition]
+	classExtensionWriter := TonelClassExtensionWriter 
+				on: fileSystem
+				directory: aPath
+				lineDelimiter: lineDelimiter
+				in: self.
+	anApplicationDefinition withDefinitionsOfExtendedClassesDo: 
+			[:classDefinition | 
+			classExtensionWriter write: classDefinition]
 ]
 
 { #category : 'writing-ConfigMaps',
@@ -518,7 +557,7 @@ TonelWriter >> writePackageDescriptionFor: anApplicationDefinition into: aPath [
 TonelWriter >> writePackageNameOf: anApplicationDefinition on: aStream [
 	"Private - Writes the Tonel package name of anApplicationDefinition on aStream."
 
-	aStream << Character tab << '#name : ' << anApplicationDefinition tonelPackageName storeString 
+	aStream << Character tab << '#name : ' << (self convertIdentifier: anApplicationDefinition tonelPackageName)
 		
 		
 		
@@ -583,15 +622,22 @@ TonelWriter >> writePackageVASubapplicationsOf: anApplicationDefinition on: aStr
 { #category : 'writing-application',
   #vaVisibility : 'private' }
 TonelWriter >> writePoolDictionariesDefinedIn: applicationDefinition into: aPath [
+
 	"Private - Writes the pool dictionaries defined by <applicationDefinition>
 	 into aPath where the package contents are."
 
 	| classWriter |
-
-	classWriter := TonelSharedPoolWriter on: fileSystem directory: aPath lineDelimiter: lineDelimiter in: self.
-
-	applicationDefinition withPoolPragmaMethodsDo: [:each |
-		self writePoolDictionaryFromMethod: each definedIn: applicationDefinition using: classWriter]
+	classWriter := TonelSharedPoolWriter 
+				on: fileSystem
+				directory: aPath
+				lineDelimiter: lineDelimiter
+				in: self.
+	applicationDefinition withPoolPragmaMethodsDo: 
+			[:each | 
+			self 
+				writePoolDictionaryFromMethod: each
+				definedIn: applicationDefinition
+				using: classWriter]
 ]
 
 { #category : 'writing-application',

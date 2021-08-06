@@ -22,6 +22,13 @@ TonelMethodWriter class >> new [
 	^super new initialize
 ]
 
+{ #category : 'utility',
+  #vaVisibility : 'private' }
+TonelMethodWriter >> convertIdentifier: aString [
+
+	^self parent convertIdentifier: aString
+]
+
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelMethodWriter >> initializeIn: aTonelWriter [
@@ -43,7 +50,7 @@ TonelMethodWriter >> normalizeMethodBody: aBodyString [
 	^normalized
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'public' }
 TonelMethodWriter >> parent [
 	"Answer the parent TonelWriter of receiver."
 
@@ -77,7 +84,7 @@ TonelMethodWriter >> write: aMethodDefinition on: aWriteStream [
   #vaVisibility : 'private' }
 TonelMethodWriter >> writeCategoryOf: aMethodDefinition on: aWriteStream [
 
-	aWriteStream << space << '#category : ' << aMethodDefinition category storeString
+	aWriteStream << space << '#category : ' << (self convertIdentifier: aMethodDefinition category)
 ]
 
 { #category : 'writing',
@@ -92,7 +99,7 @@ TonelMethodWriter >> writeVACategoriesOf: aMethodDefinition on: aWriteStream [
 			categories := aMethodDefinition allCategories asSortedCollection.
 			aWriteStream nextPut: $[.
 			categories
-				do: [:each | aWriteStream nextPutAll: each printString]
+				do: [:each | aWriteStream nextPutAll: (self convertIdentifier: each)]
 				separatedBy: [aWriteStream nextPut: $,].
 			aWriteStream nextPut: $]]
 

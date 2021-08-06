@@ -36,7 +36,7 @@ TonelClassExtensionWriter >> writeClassMethodsOf: aClassExtensionDefinition on: 
 TonelClassExtensionWriter >> writeDefinitionOf: aClassExtensionDefinition on: aWriteStream [
 
 	aWriteStream << 'Extension {' << lineDelimiter << Character tab << '#name : ' <<
-		aClassExtensionDefinition extendedClassName asString printString << lineDelimiter << '}' <<
+		(self convertIdentifier: aClassExtensionDefinition extendedClassName) << lineDelimiter << '}' <<
 		lineDelimiter
 ]
 

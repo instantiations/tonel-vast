@@ -87,7 +87,7 @@ TonelClassWriter >> writeCategoryOf: aClassDefinition on: aWriteStream [
 	aWriteStream
 		nextPutAll: lineDelimiter;
 		tab;
-		nextPutAll: ('#category : <1p>' expandMacrosWith: aClassDefinition category)
+		nextPutAll: ('#category : <1s>' expandMacrosWith: (aClassDefinition category storeString))
 ]
 
 { #category : 'writing',
@@ -135,12 +135,14 @@ TonelClassWriter >> writeNameAndSuperclassOf: aClassDefinition on: aWriteStream 
 
 	aWriteStream
 		tab;
-		nextPutAll: ('#name : <1p>,' expandMacrosWith: aClassDefinition definedClassName asString);
+		nextPutAll: (
+			'#name : <1s>,'
+				expandMacrosWith: (self convertIdentifier: aClassDefinition definedClassName));
 		nextPutAll: lineDelimiter;
 		tab;
 		nextPutAll: (
-			'#superclass : <1p>,'
-				expandMacrosWith: aClassDefinition definedClassSuperclassName asString)
+			'#superclass : <1s>,' expandMacrosWith:
+				(self convertIdentifier: aClassDefinition definedClassSuperclassName))
 ]
 
 { #category : 'writing',
@@ -152,8 +154,9 @@ TonelClassWriter >> writeSubclassTypeOf: aClassDefinition on: aWriteStream [
 			aWriteStream
 				nextPutAll: lineDelimiter;
 				tab;
-				nextPutAll:
-					('#type : <1p>,' expandMacrosWith: aClassDefinition subclassType asString)]
+				nextPutAll: (
+					'#type : <1s>,'
+						expandMacrosWith: (self convertIdentifier: aClassDefinition subclassType))]
 ]
 
 { #category : 'writing',

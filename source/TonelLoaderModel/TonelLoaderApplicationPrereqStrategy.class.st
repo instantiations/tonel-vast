@@ -23,7 +23,7 @@ TonelLoaderApplicationPrereqStrategy >> concretePrerequisitesOf: aTonelApplicati
 
 { #category : 'accessing' }
 TonelLoaderApplicationPrereqStrategy >> fixesMismatchs [
-	^fixesMismatchs
+	^fixesMismatchs ifNil: [false]
 ]
 
 { #category : 'accessing' }

@@ -111,7 +111,7 @@ TonelLoader >> autogenerateInstanceInitializers [
 	"Answer whether receiver will create class side instance creation methods that send #initialize to
 	 its newly created instances."
 
-	^autogenerateInstanceInitializers
+	^autogenerateInstanceInitializers ifNil: [false]
 ]
 
 { #category : 'accessing' }
@@ -168,8 +168,7 @@ TonelLoader >> checkRepositoryContents [
 			[self error: 'The selected directory does not contain any Tonel Package']
 ]
 
-{ #category : 'accessing',
-  #vaVisibility : 'private' }
+{ #category : 'accessing' }
 TonelLoader >> computeSettings [
 	^self class settings copyFor: self
 ]
@@ -221,7 +220,7 @@ TonelLoader >> createReaderForRepository: directoryPath [
 
 { #category : 'accessing' }
 TonelLoader >> createsHookMethods [
-	^createsHookMethods
+	^createsHookMethods ifNil: [false]
 ]
 
 { #category : 'accessing' }

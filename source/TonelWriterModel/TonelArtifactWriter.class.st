@@ -10,15 +10,22 @@ Class {
 	#category : 'TonelWriterModel'
 }
 
-{ #category : 'Not categorized' }
+{ #category : 'instance-creation' }
 TonelArtifactWriter class >> on: aFileSystem directory: aPath lineDelimiter: aLineDelimiter in: aTonelWriter [
- 
-	^self new
+
+	^(self new)
 		fileSystem: aFileSystem;
 		directory: aPath;
 		lineDelimiter: aLineDelimiter;
 		parent: aTonelWriter;
 		yourself
+]
+
+{ #category : 'utility',
+  #vaVisibility : 'private' }
+TonelArtifactWriter >> convertIdentifier: className [
+
+	^self parent convertIdentifier: className
 ]
 
 { #category : 'testing' }
