@@ -42,7 +42,7 @@
 			}
 		],
 		#name : 'ENVY/Image Tonel',
-		#versionName : ''
+		#versionName : '1.4.2'
 	},
 	{
 		#conditions : [ ],
