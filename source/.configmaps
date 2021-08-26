@@ -1,14 +1,14 @@
 [
 	{
 		#conditions : [ ],
-		#ts : 3805717748,
+		#ts : 3806665055,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
 			{
 				#name : 'TonelBaseApp',
-				#versionName : '1.4.1',
-				#ts : 3805719868
+				#versionName : '1.4.2',
+				#ts : 3806665054
 			},
 			{
 				#name : 'TonelFileSystem',
@@ -22,13 +22,13 @@
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : '1.4.1',
-				#ts : 3805718485
+				#versionName : '1.4.2',
+				#ts : 3806664905
 			},
 			{
 				#name : 'TonelReaderModel',
-				#versionName : '1.4.1',
-				#ts : 3805719868
+				#versionName : '1.4.2',
+				#ts : 3806665054
 			},
 			{
 				#name : 'TonelTools',
@@ -37,16 +37,16 @@
 			},
 			{
 				#name : 'TonelWriterModel',
-				#versionName : '1.4.1',
-				#ts : 3805719868
+				#versionName : '1.4.2',
+				#ts : 3806665054
 			}
 		],
 		#name : 'ENVY/Image Tonel',
-		#versionName : '1.4.1'
+		#versionName : ''
 	},
 	{
 		#conditions : [ ],
-		#ts : 3805719946,
+		#ts : 3788500635,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -72,6 +72,6 @@
 			}
 		],
 		#name : 'Test ENVY/Image Tonel',
-		#versionName : ''
+		#versionName : 'V 10.0.0  [480]'
 	}
 ]

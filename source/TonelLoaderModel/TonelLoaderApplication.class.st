@@ -179,6 +179,7 @@ TonelLoaderApplication >> createTonelPackageNameMethodFor: anApp [
 		ifTrue: [| tonelPackageName |
 			tonelPackageName := anApp perform: self tonelPackageNameSelector.
 			self packageName = tonelPackageName ifTrue: [^self]].
+	self packageName = self name ifTrue: [^self].
 	source := self tonelPackageNameMethodSource.
 	(anApp class basicCompile: source notifying: Transcript ifFail: []) ifNotNil: [:compiledMethod |
 		anApp class
@@ -195,7 +196,7 @@ TonelLoaderApplication >> definePoolDictionaries [
 	self hasChanges
 		ifTrue: [ | anApp |
 			anApp :=Smalltalk classAt: self identifier.
-			self updateSharedPoolsDefinitionOf: anApp.
+			"self updateSharedPoolsDefinitionOf: anApp."
 			self 
 				definePoolDictionariesForClassesIn: anApp;
 				definePoolDictionariesInSubApplicationsFor: anApp]

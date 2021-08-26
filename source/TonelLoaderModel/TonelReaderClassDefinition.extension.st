@@ -165,13 +165,15 @@ TonelReaderClassDefinition >> createSharedPoolInitializerMethodFor: aTonelMethod
  #vaCategories : ['loading-pools'] }
 TonelReaderClassDefinition >> declarePoolDictionariesIn: anApp using: aTonelLoader [
 
-	(tonelMethods select: [:each | each isDeclaration]) do: 
-			[:aTonelMethod | 
-			aTonelMethod 
-				loadFor: anApp
-				into: anApp
-				using: aTonelLoader.
-			EmInterface current rebuildNamespaceFor: anApp]
+	| previousCancelDeclaration |
+
+	previousCancelDeclaration := EmImageBuilder cancelIfDeclarationErrors.
+	[
+		EmImageBuilder cancelIfDeclarationErrors: false.
+		(tonelMethods select: [:each | each isDeclaration]) do: [:aTonelMethod |
+			aTonelMethod loadFor: anApp into: anApp using: aTonelLoader.
+			EmInterface current rebuildNamespaceFor: anApp]]
+				ensure: [EmImageBuilder cancelIfDeclarationErrors: previousCancelDeclaration]
 ]
 
 { #category : '*TonelLoaderModel',

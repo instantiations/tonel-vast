@@ -47,9 +47,7 @@ TonelLoaderSubapplicationsTagMappingStrategy >> moveClass: tonelClass from: tone
 { #category : 'internal' }
 TonelLoaderSubapplicationsTagMappingStrategy >> subApplicationNameForTag: aSymbol in: aTonelLoaderApplication [
 
-
-	
-	^(self loader namingStrategy appNameWithoutSuffix: aTonelLoaderApplication), aSymbol asString
+	^(self loader namingStrategy appNameWithoutSuffix: aTonelLoaderApplication) , aSymbol asString
 ]
 
 { #category : 'api' }

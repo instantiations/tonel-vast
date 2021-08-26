@@ -144,7 +144,7 @@ TonelWriterSharedPoolDefinition >> poolNames [
 TonelWriterSharedPoolDefinition >> setDeclarationMethod: methodDefinition application: anApplication [
 
 	declarationMethod := methodDefinition.
-	class := Smalltalk at: methodDefinition pragmaSuffix asSymbol.
+	class := methodDefinition pragmaSuffix asSymbol.
 	poolName := methodDefinition pragmaSuffix asSymbol.
 	application := anApplication.
 ]

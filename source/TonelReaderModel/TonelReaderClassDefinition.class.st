@@ -196,9 +196,14 @@ TonelReaderClassDefinition >> instanceVariables [
 TonelReaderClassDefinition >> packageTagIn: packageName [
 
 	| classCategory |
+
 	classCategory := self category asString.
 	^(self hasTagForPackageNamed: packageName)
-		ifTrue: [classCategory copyFrom: packageName size + 2 to: classCategory size]
+		ifTrue: [
+			(packageName endsWithSubCollection: 'App')
+				ifTrue: [packageName size + 3 + 2]
+				ifFalse: [packageName size + 2].
+			classCategory copyFrom: packageName size + 2 to: classCategory size]
 ]
 
 { #category : 'accessing' }

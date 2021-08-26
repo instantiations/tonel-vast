@@ -5,7 +5,8 @@ Class {
 		'appSuffix',
 		'subAppSuffix',
 		'prefix',
-		'mappings'
+		'mappings',
+		'guessAppSuffix'
 	],
 	#category : 'TonelLoaderModel'
 }
@@ -13,12 +14,21 @@ Class {
 { #category : 'accessing' }
 TonelLoaderDefaultNamingStrategy >> appNameWithoutSuffix: aTonelLoaderApplication [
 
-	| appName |
+	| appName suffixToRemove |
 
 	appName := aTonelLoaderApplication name.
-	^self appSuffix isEmpty
+	suffixToRemove := (self appSuffix isEmpty and: [self guessAppSuffix])
+			ifTrue: [ 
+				(appName endsWithSubCollection: 'App')
+					ifTrue: ['App']
+					ifFalse: [String new]
+			]
+			ifFalse: [
+				self appSuffix
+			].
+	^suffixToRemove isEmpty
 		ifTrue: [appName]
-		ifFalse: [appName copyFrom: 1 to: appName size - self appSuffix size]
+		ifFalse: [appName copyFrom: 1 to: appName size - suffixToRemove size]
 ]
 
 { #category : 'accessing' }
@@ -29,6 +39,20 @@ TonelLoaderDefaultNamingStrategy >> appSuffix [
 { #category : 'accessing' }
 TonelLoaderDefaultNamingStrategy >> appSuffix: anObject [
 	appSuffix := anObject
+]
+
+{ #category : 'Not categorized' }
+TonelLoaderDefaultNamingStrategy >> guessAppSuffix [
+	"Answer whether we will guess the app suffix when trying to know the base name of a parent app.
+	 E.g. to guess MyApplication from MyApplicationApp."
+	 
+	^guessAppSuffix ifNil: [guessAppSuffix := false]
+]
+
+{ #category : 'accessing' }
+TonelLoaderDefaultNamingStrategy >> guessAppSuffix: aBoolean [
+
+	guessAppSuffix := aBoolean
 ]
 
 { #category : 'accessing',

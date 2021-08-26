@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : 'Not categorized' }
+TonelReaderSharedPoolDefinition >> createEditionIn: anApp using: aTonelLoader [
+
+]
+
+{ #category : 'Not categorized' }
 TonelReaderSharedPoolDefinition >> isSharedPool [
 	^true
 ]

@@ -306,6 +306,14 @@ TonelLoader >> loadAllApplications [
 ]
 
 { #category : 'loading' }
+TonelLoader >> loadAllConfigurationMaps [
+
+	self loadConfigurationMaps: self configurationMaps
+	
+	
+]
+
+{ #category : 'loading' }
 TonelLoader >> loadAllMapsWithRequiredMaps [
 	
 	self loadConfigurationMaps: self configurationMaps
