@@ -23,7 +23,7 @@ TonelLoaderApplicationPrereqStrategy >> concretePrerequisitesOf: aTonelApplicati
 
 { #category : 'accessing' }
 TonelLoaderApplicationPrereqStrategy >> fixesMismatchs [
-	^fixesMismatchs ifNil: [false]
+	^fixesMismatchs ifNil: [true]
 ]
 
 { #category : 'accessing' }
@@ -51,7 +51,7 @@ TonelLoaderApplicationPrereqStrategy >> fixPrerequisitesMismatchOf: tonelApplica
 TonelLoaderApplicationPrereqStrategy >> initialize [
 
 	super initialize.
-	fixesMismatchs := false
+	fixesMismatchs := true
 ]
 
 { #category : 'api' }
