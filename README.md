@@ -24,7 +24,7 @@ For [Instantiations](https://www.instantiations.com/) and VA Smalltalk, having g
 
 With that present we implemented support for the [Tonel format](https://github.com/pharo-vcs/tonel) in VAST 9.2.x. Our implementation complies with the specification of the format. But since the specification does not take into account some important VAST specific features we extended it in a non intrusive way to make it compatible with the spec and useful to VAST users as well.
 
-If you want to see real projects using Tonel for VAST you can see them at the [VAST Community Hub](/vast-community-hub) or in the [Instantiations](/instantiations) repositories.
+If you want to see real projects using Tonel for VAST you can see them at the [VAST Community Hub](https://github.com/vast-community-hub) or in the [Instantiations](https://github.com/instantiations) repositories.
 
 ## License
 - The code is licensed under [MIT](LICENSE).
