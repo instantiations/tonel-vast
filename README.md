@@ -211,7 +211,7 @@ Guidelines:
 * Once a new Github release is published, the `v1.3.6` part above will likely be re-published as `v1.4.0` (the version of the release).
 * When there is a VAST release that integrates one of the Github releases as a built-in _feature_, it will rename `v 10.0.1  [v1.4.0]` to something like `v 10.0.2  [543]` (being the `543` the VAST build number), but both versions will likely share the same internal timestamp.
 
-## See also
+## Additional Resources
 
 * The webinar ["Getting Started with Tonel Tools In VAST"](https://www.youtube.com/watch?v=qnunJ1y3x70), which discussed how to use the new Tonel Tools features with step-by-step instructions and practical examples. 
 
