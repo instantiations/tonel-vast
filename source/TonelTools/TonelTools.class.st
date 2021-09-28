@@ -21,41 +21,67 @@ TonelTools class >> addToApplicationsMenu: aMenu browser: aBrowser [
 		enable: [true]
 		for: TonelTools
 		after: #importSubApplications.
-	importExportSubmenu subMenu
-		add: #exportTonelApplications
-		label:  TonelMsg02 "$NLS$ Export Applications as Tonel packages..."
-		enable: [true]
-		for: nil
-		before:  #exportApplicationVersions
 
-
+	(aMenu menuItemWithValue: #applicationsImportExportSubMenu)
+		ifNil: [
+			aMenu
+				add: #exportTonelApplications
+				label: TonelMsg02 "$NLS$ Export Applications as Tonel packages..."
+				enable: [true]
+				for: nil
+				after: #exportApplicationVersions]
+		ifNotNil: [:submenu |
+			importExportSubmenu subMenu
+				add: #exportTonelApplications
+				label: TonelMsg02 "$NLS$ Export Applications as Tonel packages..."
+				enable: [true]
+				for: nil
+				before: #exportApplicationVersions]
 ]
 
 { #category : 'ENVY Menu Extensions' }
 TonelTools class >> addToNamesMenu: aMenu browser: aBrowser [
 
 
-	(aMenu menuItemWithValue: #importSubMenu) ifNotNil: [:menu |
-		menu subMenu
-			add: #loadTonelConfigMaps
-			label: 'Load Configuration Maps from Tonel repository...'
-			enable: [true]
-			for: TonelTools
-			after: #importMostRecentConfigMaps.
+	(aMenu menuItemWithValue: #importSubMenu)
+		ifNil: [
+			"STS not available."
+			aMenu
+				add: #loadTonelConfigMaps
+				label: TonelMsg32
+				enable: [true]
+				for: TonelTools
+				before: #createConfigurationMap]
+		ifNotNil: [:menu |
+			menu subMenu
+				add: #loadTonelConfigMaps
+				label: TonelMsg32
+				enable: [true]
+				for: TonelTools
+				after: #importMostRecentConfigMaps.
 
-		menu subMenu addLineBefore: #stsToggleImportSource.
-		
-		].
-		
-		(aMenu menuItemWithValue: #exportSubMenu) ifNotNil: [:menu |
-		menu subMenu
-			add: #exportTonelConfigMaps
-			label: 'Export Configuration Maps to Tonel '
-			enable: [true]
-			for: nil
-			after: #exportMostRecentConfigMaps.
-		menu subMenu addLineAfter: #exportTonelConfigMaps
-	]
+			menu subMenu addLineBefore: #stsToggleImportSource
+
+			].
+
+	(aMenu menuItemWithValue: #exportSubMenu)
+		ifNil: [
+			"STS not available."
+			aMenu
+				add: #exportTonelConfigMaps
+				label: TonelMsg33
+				enable: [true]
+				for: nil
+				before: #createConfigurationMap.
+			aMenu addLineAfter: #exportTonelConfigMaps]
+		ifNotNil: [:menu |
+			menu subMenu
+				add: #exportTonelConfigMaps
+				label: TonelMsg33
+				enable: [true]
+				for: nil
+				after: #exportMostRecentConfigMaps.
+			menu subMenu addLineAfter: #exportTonelConfigMaps]
 ]
 
 { #category : 'Not categorized',

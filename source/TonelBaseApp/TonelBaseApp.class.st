@@ -43,8 +43,8 @@ TonelBaseApp class >> _PRAGMA_TonelTextConstants [
 		(name: TonelMsg29 isConstant: true valueExpression: '''Available applications''')			
 		(name: TonelMsg30 isConstant: true valueExpression: '''Applications to be exported''')			
 		(name: TonelMsg31 isConstant: true valueExpression: '''Select a target path''')			
-		
-		
+		(name: TonelMsg32 isConstant: true valueExpression: '''Load Configuration Maps from Tonel repository...''')
+		(name: TonelMsg33 isConstant: true valueExpression: '''Export Configuration Maps to Tonel repository...''')
 	))"
 
 ]
