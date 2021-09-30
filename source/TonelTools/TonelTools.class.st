@@ -1,6 +1,10 @@
 Class {
 	#name : 'TonelTools',
 	#superclass : 'Application',
+	#pools : [
+		'TonelTextConstants',
+		'CwConstants'
+	],
 	#category : 'TonelTools'
 }
 
