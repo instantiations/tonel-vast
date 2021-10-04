@@ -1,7 +1,7 @@
 <p align="center">
  <h1 align="center">Tonel for VAST Platform (VA Smalltalk)</h1>
   <p align="center">
-    Providing a git friendly file format support to VA Smalltalk
+    Providing git-friendly file format support to VAST
     <!---
     <br>
     <a href="docs/"><strong>Explore the docs »</strong></a>
@@ -18,13 +18,12 @@
 
 ## Introduction
 
-For [Instantiations](https://www.instantiations.com/) and VA Smalltalk, having git support is a priority. The first step is to have a plain text file-based output and input for the sources of its Applications.
+[Tonel](https://github.com/pharo-vcs/tonel) is a text-based file format used to store Smalltalk source code on disk, and was designed from scratch to be version control system (VCS) friendly. It is widely accepted by the Smalltalk community at this point, so Instantiations saw an opportunity to enhance ENVY (the standard VCS in VAST) by adding Tonel support for greater functionality and flexibility.
 
-[Tonel](https://github.com/pharo-vcs/tonel) is the current file format widely accepted by the Smalltalk community to store source code on disk with a VCS-friendly format.
+Development on Tonel Tools for VAST began in September 2019, and official support started when it shipped as a feature within VAST Platform 2021 (10.0.0) in March 2021.
 
-With that present we implemented support for the [Tonel format](https://github.com/pharo-vcs/tonel) in VAST 9.2.x. Our implementation complies with the specification of the format. But since the specification does not take into account some important VAST specific features we extended it in a non intrusive way to make it compatible with the spec and useful to VAST users as well.
+Open source projects using Tonel for VAST can be found in the [VAST Community Hub](https://github.com/vast-community-hub) or in [Instantiations' GitHub respositories](https://github.com/instantiations).
 
-If you want to see real projects using Tonel for VAST you can see them at the [VAST Community Hub](https://github.com/vast-community-hub) or in the [Instantiations](https://github.com/instantiations) repositories.
 
 ## License
 - The code is licensed under [MIT](LICENSE).
