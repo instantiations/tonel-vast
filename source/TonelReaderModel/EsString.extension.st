@@ -3,7 +3,7 @@ Extension {
 }
 
 { #category : '*TonelReaderModel',
- #vaCategories : ['Not categorized'] }
+ #vaCategories : ['Tonel-Iterating'] }
 EsString >> lineIndicesDo: aBlock [
 	"execute aBlock with 3 arguments for each line:
 	- start index of line
@@ -40,8 +40,8 @@ EsString >> lineIndicesDo: aBlock [
 ]
 
 { #category : '*TonelReaderModel',
- #vaCategories : ['Not categorized'] }
-EsString >> withLineEndings: lineEndingString [
+ #vaCategories : ['Tonel-Iterating'] }
+EsString >> tonelWithLineEndings: lineEndingString [
 
 	| stream |
 	

@@ -499,12 +499,15 @@ TonelWriter >> writeClassesExtendedBy: anApplicationDefinition into: aPath [
   #vaVisibility : 'private' }
 TonelWriter >> writeConfigurationMapsInto: aPath [
 
-	self
-		withStreamOn: (aPath append: '.configmaps')
-		do: [:writeStream | | data |
-			data := OrderedCollection new.
-			self configurationMaps do: [:each | self addConfigurationMapData: each into: data].
-			writeStream nextPutAll: (self toSTONStringPretty: data asArray)]
+	self configurationMaps notEmpty
+		ifTrue: [
+			self
+				withStreamOn: (aPath append: '.configmaps')
+				do: [:writeStream | | data |
+					data := OrderedCollection new.
+					self configurationMaps
+						do: [:each | self addConfigurationMapData: each into: data].
+					writeStream nextPutAll: (self toSTONStringPretty: data asArray)]]
 ]
 
 { #category : 'accessing' }

@@ -24,7 +24,7 @@ TonelScannerTest >> testRemoveFromEnclosingStartEnd [
 			(scanner
 				removeFrom:
 					('[ 
-	^ self ]' withLineEndings: nl)
+	^ self ]' tonelWithLineEndings: nl)
 				enclosingStart: $[
 				end: $])
 		equals: Character tab asString , '^ self'.
@@ -34,7 +34,7 @@ TonelScannerTest >> testRemoveFromEnclosingStartEnd [
 				removeFrom:
 					('[ 
 	^ self
-	]' withLineEndings: nl)
+	]' tonelWithLineEndings: nl)
 				enclosingStart: $[
 				end: $])
 		equals: Character tab asString , '^ self'.
@@ -46,11 +46,11 @@ TonelScannerTest >> testRemoveFromEnclosingStartEnd [
 
 	^ self
 
-]' withLineEndings: nl)
+]' tonelWithLineEndings: nl)
 				enclosingStart: $[
 				end: $])
 		equals:
 			('
 	^ self
-' withLineEndings: nl)
+' tonelWithLineEndings: nl)
 ]

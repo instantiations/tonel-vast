@@ -53,7 +53,7 @@ TonelScanner >> removeFrom: aString enclosingStart: startChar end: endChar clean
 
 	| nl result stop ch start end |
 	nl := CldtConstants::LineDelimiter.
-	result := ((aString trimBoth: [ :char | char isSeparator ]) withLineEndings: nl) readStream.
+	result := ((aString trimBoth: [ :char | char isSeparator ]) tonelWithLineEndings: nl) readStream.
 	result peek = startChar
 		ifFalse: [ TonelParseError signal: 'I cannot remove enclosing start' ].
 	result skip: 1.

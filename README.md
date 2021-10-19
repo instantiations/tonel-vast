@@ -37,9 +37,9 @@ Open source projects using Tonel for VAST can be found in the [VAST Community Hu
 Starting with VAST 2021 (10.0.0) Tonel comes as a Feature inside the product. That means it can be easily installed from the `Transcript` -> `Load/Unload Features...`. You will find two features you can install: `ST: Tonel Support` and `ST:Tonel Support, Testing`.
 
 
-### Installing the development version in VAST 2021
+### Installing in VAST 2021
 
-We continue to improve the Tonel support by fixing bugs and adding new features to it, if you want to use the lastest version you can do it by downloading the latest version in this repository into the latest version of VAST 2021 (currently 10.0.1).
+We continue to improve the Tonel support by fixing bugs and adding new features to it, if you want to use the lastest version you can do it by downloading the latest version in this repository into the latest version of VAST 2021 (currently 10.0.2).
 
 - Load Tonel VAST Features using `Transcript` -> `Load/Unload Features...`. There you will find two features you can install: `ST: Tonel Support` and `ST:Tonel Support, Testing`.
 - Open Configurations Maps Browser
@@ -198,13 +198,13 @@ The Loader tests will attempt to leave the ENVY Library (aka "the library") in t
 
 ## Versioning of this very project
 
-The versioning of this particular project is a little tricky because there are serveral versions going on in parallel: the version that comes with the VAST release, the config map version of each commit, and release version of Github releases. Because of that, the versioning strategy has been changing since the beginning of the project, looking for the optimal one. 
+The versioning of this particular project is somewhat special because there are several versions going on in parallel: the version that comes with the VAST release, the config map version of each commit and and release version of Github releases. Because of that, the versioning strategy has been changing since the beginning of the project, looking for the optimal one. 
 
 Starting with VAST 10.0.0 we decided to adopt a versioning strategy that might eliminate the multiple version naming, and help in mapping the different versions together.
 
 Guidelines:
 * The `Tonel Support` feature (and/or its Test variant)  must be loaded before loading this project into a VAST image
-* The `ENVY/Image Tonel` version that comes as a feature in a VAST release (currently v 10.0.0 [480]) is considered the "trunk"
+* The `ENVY/Image Tonel` version that comes as a feature in a VAST release (currently v 10.0.2) is considered the "trunk"
 * The code from this repository is loaded on top of the configurations maps loaded in the previous points
 * When versioning configuration maps both the "trunk" version identifier and a sequential version will be used as the version name, e.g. `v 10.0.0  [v1.3.6]`.
 * Once a new Github release is published, the `v1.3.6` part above will likely be re-published as `v1.4.0` (the version of the release).
