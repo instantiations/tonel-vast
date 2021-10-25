@@ -2,8 +2,8 @@ Class {
 	#name : 'TonelTools',
 	#superclass : 'Application',
 	#pools : [
-		'CwConstants',
-		'TonelTextConstants'
+		'TonelTextConstants',
+		'CwConstants'
 	],
 	#category : 'TonelTools'
 }
@@ -125,6 +125,8 @@ TonelTools class >> exportConfigurationMapsNames: anOrderedCollection [
 
 { #category : 'operations' }
 TonelTools class >> exportTonelApplications: aCollection [
+	"The following source failed to compile (all double quotes have been doubled):"
+"
 
 	| selectedApps repositoryPath clearSources |
 
@@ -153,7 +155,10 @@ TonelTools class >> exportTonelApplications: aCollection [
 	(TonelWriter new)
 		applications: selectedApps;
 		clearsSourcesDirectory: clearSources;
-		writeProjectInto: repositoryPath
+		writeProjectInto: repositoryPath"
+#tonelCompilationFailure.
+
+^ self halt: 'The source for this method failed to compile' 
 ]
 
 { #category : 'convenience',

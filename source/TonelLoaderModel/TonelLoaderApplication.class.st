@@ -237,7 +237,7 @@ TonelLoaderApplication >> hasSamePrerequisitesAs: anApplication [
 
 	^(anApplication prerequisites collect: [:each | each name asSymbol]) 
 		asSortedCollection 
-			= (self prerequisites collect: [:each | each name asSymbol])
+			= (self computePrerequisites collect: [:each | each name asSymbol])
 			asSortedCollection
 ]
 

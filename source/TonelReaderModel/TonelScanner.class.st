@@ -47,7 +47,8 @@ TonelScanner >> removeFrom: aString enclosingStart: startChar end: endChar [
 		clean: #both
 ]
 
-{ #category : 'private' }
+{ #category : 'private',
+  #vaVisibility : 'private' }
 TonelScanner >> removeFrom: aString enclosingStart: startChar end: endChar clean: cleanSymbol [
 	"cleanSymbol can be #left, #right and #both"
 
