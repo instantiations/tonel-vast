@@ -253,7 +253,7 @@ TonelLoader >> hasSelectableBaseEditionFor: aTonelAppOrSub [
 { #category : 'privileges' }
 TonelLoader >> hasSuperGroupAccessTo: anApplication [
 
-	^TonelLoader class hasSTSSupport
+	^self class hasSTSSupport
 		ifTrue: [
 			(self settings appSuperGroupSetting notNil
 				and: [self settings appSuperGroupSetting = anApplication stsSuperGroupSetting])
