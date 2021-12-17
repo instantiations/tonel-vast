@@ -1,5 +1,5 @@
 <p align="center">
- <h1 align="center">Tonel for VAST Platform (VA Smalltalk)</h1>
+ <h1 align="center">Tonel Tools for VAST Platform (VA Smalltalk)</h1>
   <p align="center">
     Providing git-friendly file format support to VAST
     <!---
