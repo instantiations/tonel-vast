@@ -109,11 +109,11 @@ TonelWriter new
 
 ```smalltalk
 "Loading from Tonel"
-(TonelLoader readFromPath (CfsPath named: 'my-tonel-demos'))
+(TonelLoader readFromPath: (CfsPath named: 'my-tonel-demos'))
   loadApplicationNamed: 'MyAppCore'.
 
 "or you can load by Tonel package name"
-(TonelLoader readFromPath (CfsPath named: 'my-tonel-demos'))
+(TonelLoader readFromPath: (CfsPath named: 'my-tonel-demos'))
   loadApplicationsForPackagesNamed: #('MyApp-Core' 'MyApp-Tests').
 ```
 
