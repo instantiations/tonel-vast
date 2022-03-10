@@ -53,6 +53,7 @@ TonelLoaderVersionStrategy >> isSpecific [
 
 { #category : 'versioning' }
 TonelLoaderVersionStrategy >> versionFor: aTonelApplication [
-
+	"Answer the version for anAppOrSubapp."
+	
 	self subclassResponsibility
 ]

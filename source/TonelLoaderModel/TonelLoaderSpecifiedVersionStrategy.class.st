@@ -18,7 +18,9 @@ TonelLoaderSpecifiedVersionStrategy class >> description [
 
 { #category : 'accessing' }
 TonelLoaderSpecifiedVersionStrategy >> versionFor: aTonelLoaderApplication [
-
+	"Answer the version for anAppOrSubapp, 
+	 based on receiver's versionName."
+	
 	^self versionName
 ]
 

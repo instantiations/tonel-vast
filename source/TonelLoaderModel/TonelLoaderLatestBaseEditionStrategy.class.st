@@ -7,6 +7,7 @@ Class {
 { #category : 'operations',
   #vaVisibility : 'private' }
 TonelLoaderLatestBaseEditionStrategy >> selectBaseEditionOf: aTonelApplication [
+	"Answers the base edition of aTonelApplication."
 
 	| shadows |
 

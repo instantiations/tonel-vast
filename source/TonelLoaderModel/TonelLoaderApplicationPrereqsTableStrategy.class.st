@@ -38,8 +38,8 @@ TonelLoaderApplicationPrereqsTableStrategy >> at: packageName put: aCollection [
 
 { #category : 'api' }
 TonelLoaderApplicationPrereqsTableStrategy >> concretePrerequisitesOf: aTonelApplication [
+	"Answer the immediate prerequisite application of aTonelApplication."
 
- 
 	^self prerequisitesFor: aTonelApplication current: aTonelApplication prerequisiteApps
 ]
 
@@ -53,8 +53,13 @@ TonelLoaderApplicationPrereqsTableStrategy >> initialize [
 
 { #category : 'api' }
 TonelLoaderApplicationPrereqsTableStrategy >> prerequisitesFor: aTonelApplication current: aCollection [
-	"Answer a collection of EmShadowApplication that are the prerequistes application of aTonelApplication together
-	 with aCollection of Applications."
+	"Answer a collection of EmShadowApplication that are the prerequistes applications 
+	 of aTonelApplication based on the table defined by receiver, combined with
+	 aCollection of the current prerequisites.
+	 
+	 Answers:
+		<EmShadowApplication>
+	 "
 
 	^((self at: aTonelApplication packageName)
 		collect: [:applicationName | self applicationNamed: applicationName]) , aCollection

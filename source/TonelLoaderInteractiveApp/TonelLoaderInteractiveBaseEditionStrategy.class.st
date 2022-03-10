@@ -6,6 +6,8 @@ Class {
 
 { #category : 'operations' }
 TonelLoaderInteractiveBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplication [
+	"Answers the base edition of aTonelApplication,
+	 prompting the user to select it interactively from a dialog."
 
 	^(CwListPrompter new)
 		messageString: (TonelMsg06 bindWith: aTonelSubApplication name);

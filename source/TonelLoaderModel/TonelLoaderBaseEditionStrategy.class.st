@@ -89,6 +89,8 @@ TonelLoaderBaseEditionStrategy >> findAllApplicationsToLoadWith: aCollectionOfAp
 
 { #category : 'testing' }
 TonelLoaderBaseEditionStrategy >> hasSelectableBaseEditionFor: tonelAppOrSub [
+	"Answer whether there is an edition for aTonelAppOrSubApp
+	 that can be used its base edition."
 
 	^tonelAppOrSub isApplication
 		ifTrue: [(self filteredBaseEditions: (tonelAppOrSub availableShadows)) notEmpty]
@@ -119,16 +121,15 @@ TonelLoaderBaseEditionStrategy >> loadBaseEditionAndPrerequisitesOf: baseEdition
 ]
 
 { #category : 'operations' }
-TonelLoaderBaseEditionStrategy >> loadBaseEditionFor: aTonelSubApplication [
-
-	"This method contains some voodoo."
+TonelLoaderBaseEditionStrategy >> loadBaseEditionFor: tonelAppOrSubApp [
+	"Loads the base edition for tonelAppOrSubApp."
 
 	| baseEdition |
-	baseEdition := self selectBaseEditionOf: aTonelSubApplication.	"$NLS$ Application %1 exists but is not loaded. Please choose a base version."	"$NLS$ %1 %2"
+	baseEdition := self selectBaseEditionOf: tonelAppOrSubApp.	"$NLS$ Application %1 exists but is not loaded. Please choose a base version."	"$NLS$ %1 %2"
 	baseEdition 
-		ifNil: [self signalNoBaseEditionErrorFor: aTonelSubApplication].	"$NLS$ You need to choose a base edition from which to create %1"
+		ifNil: [self signalNoBaseEditionErrorFor: tonelAppOrSubApp].	"$NLS$ You need to choose a base edition from which to create %1"
 	(self loadBaseEditionAndPrerequisitesOf: baseEdition) ifNil: 
-			[self signalLoadErrorOf: aTonelSubApplication	"$NLS$ Could not load base edition of %1. Load aborted."]
+			[self signalLoadErrorOf: tonelAppOrSubApp	"$NLS$ Could not load base edition of %1. Load aborted."]
 ]
 
 { #category : 'operations',
@@ -146,22 +147,27 @@ TonelLoaderBaseEditionStrategy >> loadEMBaseEditionAndPrerequisites: baseEdition
 
 { #category : 'lookup' }
 TonelLoaderBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplication [
+	"Answers the base edition of aTonelApplication."
 
 	self subclassResponsibility
 ]
 
 { #category : 'operations' }
-TonelLoaderBaseEditionStrategy >> selectPrerequisiteEditionOf: application [
+TonelLoaderBaseEditionStrategy >> selectPrerequisiteEditionOf: anApplication [
+	"Select the edition of the prerequisite application anApplication."
 
 	| shadows |
-	^(shadows := Application shadowsFor: application name) isEmpty 
+
+	^(shadows := Application shadowsFor: anApplication name) isEmpty
 		ifTrue: [nil]
-		ifFalse: [self selectPrerequisiteEditionOf: application in: shadows]
+		ifFalse: [self selectPrerequisiteEditionOf: anApplication in: shadows]
 ]
 
 { #category : 'operations' }
-TonelLoaderBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqs [
-
+TonelLoaderBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: aCollection [
+	"Select the edition of the prerequisite application anApplication
+	 in aCollection of prerequisites."
+	
 	self subclassResponsibility
 ]
 

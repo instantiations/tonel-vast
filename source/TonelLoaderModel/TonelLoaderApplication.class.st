@@ -54,20 +54,20 @@ TonelLoaderApplication >> allDependentApplications [
 
 { #category : 'accessing' }
 TonelLoaderApplication >> allPrerequisites [
-		"Return all the TonelLoaderApplications which the receiver is dependent on,
+	"Return all the TonelLoaderApplications which the receiver is dependent on,
 		 starting with its direct prerequisites. Sort them alphabetically;
 		 then add all of their prerequisites (sorted alphabetically and
 		 so on). No prereq may appear before one of its dependents."
 
 	| result new temp |
+
 	result := OrderedCollection new.
 	new := prerequisites ifNil: [prerequisites := OrderedCollection new].
 	[new isEmpty] whileFalse: [
 		temp := Set new.
 		new do: [:app |
 			result remove: app ifAbsent: [].
-			app prerequisites do: [:prereq |
-				temp add: prereq]].
+			app prerequisites do: [:prereq | temp add: prereq]].
 		result addAll: new. "make them be at the end"
 		new := temp asSortedCollection: Class sortBlock].
 	^result
@@ -75,7 +75,13 @@ TonelLoaderApplication >> allPrerequisites [
 
 { #category : 'accessing' }
 TonelLoaderApplication >> asSymbol [
-	
+	"Converts receiver to a Symbol.
+	 NOTE: There is no conversion, we just return its identifier.
+	 
+	 Answers:
+		<Symbol>	 
+	 "
+
 	^self identifier
 ]
 
@@ -114,7 +120,7 @@ TonelLoaderApplication >> concretePrerequisites [
 	"Reduce the collection of prerequisite Applications to only
 	 those that are immediate prerequisites of the receiver."
 
-	^ self loader prerequisitesStrategy concretePrerequisitesOf: self 
+	^self loader prerequisitesStrategy concretePrerequisitesOf: self
 ]
 
 { #category : 'loading' }
@@ -139,7 +145,8 @@ TonelLoaderApplication >> create [
 		ifFalse: [emApplication := (Smalltalk at: self identifier)]
 ]
 
-{ #category : 'loading' }
+{ #category : 'loading',
+  #vaVisibility : 'private' }
 TonelLoaderApplication >> createApplication [
 	"Create a real Application based on the receiver."
 	
@@ -150,6 +157,7 @@ TonelLoaderApplication >> createApplication [
 
 { #category : 'loading' }
 TonelLoaderApplication >> createEdition [
+	"Creates an edition for receiver, if there is none loaded."
 
 	| theApp |
 
@@ -192,6 +200,7 @@ TonelLoaderApplication >> createTonelPackageNameMethodFor: anApp [
 
 { #category : 'loading' }
 TonelLoaderApplication >> definePoolDictionaries [
+	"Define the pool dictionaries declared in the receiver."
 
 	self hasChanges
 		ifTrue: [ | anApp |
@@ -210,6 +219,8 @@ TonelLoaderApplication >> dependentApplications [
 
 { #category : 'accessing' }
 TonelLoaderApplication >> emClass [
+	"Answers the ENVY/Manager class for receiver."
+
 	^Application
 ]
 
@@ -234,15 +245,16 @@ TonelLoaderApplication >> hasChanges [
 
 { #category : 'testing' }
 TonelLoaderApplication >> hasSamePrerequisitesAs: anApplication [
+	"Answer whether receiver has the same prerequisites as anApplication.
+	 NOTE: Comparison is based only on the names of prerequisites."
 
-	^(anApplication prerequisites collect: [:each | each name asSymbol]) 
-		asSortedCollection 
-			= (self computePrerequisites collect: [:each | each name asSymbol])
-			asSortedCollection
+	^(anApplication prerequisites collect: [:each | each name asSymbol]) asSortedCollection =
+		(self computePrerequisites collect: [:each | each name asSymbol]) asSortedCollection
 ]
 
 { #category : 'testing' }
 TonelLoaderApplication >> isApplication [
+	"Answer whether receiver is anApplication."
 
 	^true
 ]
@@ -259,7 +271,7 @@ TonelLoaderApplication >> loadBaseApplication [
 
 { #category : 'loading' }
 TonelLoaderApplication >> loadPrerequisites [
-
+	"Load the prerequisite apps of receiver."
 
 	self prerequisiteApps do: [:each |
 		(self prerequisiteIsLoaded: each)
@@ -282,17 +294,17 @@ TonelLoaderApplication >> loadPrerequisites [
 ]
 
 { #category : 'loading' }
-TonelLoaderApplication >> loadUsing: aLoader [
-	"Load the real application for @aLoader."
+TonelLoaderApplication >> loadUsing: aTonelApplicationLoader [
+	"Load the the receiver using aTonelApplicationLoader."
 
 	| theApp |
 
 	theApp := Smalltalk classAt: self identifier.
-	(aLoader alwaysCreateEditions or: [self hasChanges])
+	(aTonelApplicationLoader alwaysCreateEditions or: [self hasChanges])
 		ifTrue: [
 			self
-				loadClassesIn: theApp using: aLoader;
-				loadSubApplicationsOf: theApp inRootApp: theApp using: aLoader]
+				loadClassesIn: theApp using: aTonelApplicationLoader;
+				loadSubApplicationsOf: theApp inRootApp: theApp using: aTonelApplicationLoader]
 ]
 
 { #category : 'accessing' }
@@ -303,12 +315,6 @@ TonelLoaderApplication >> notes [
 { #category : 'accessing' }
 TonelLoaderApplication >> notes: anObject [
 	notes := anObject
-]
-
-{ #category : 'accessing' }
-TonelLoaderApplication >> poolsAccounted [
-
-	^poolsAccounted ifNil: [poolsAccounted := false]
 ]
 
 { #category : 'accessing' }
@@ -323,24 +329,28 @@ TonelLoaderApplication >> prerequisiteApps [
 ]
 
 { #category : 'testing' }
-TonelLoaderApplication >> prerequisiteIsLoaded: emShadow [
+TonelLoaderApplication >> prerequisiteIsLoaded: anApplication [
+	"Answer whether anApplication is loaded."
 
-	^emShadow isLoaded
-		or: [self loader loadedApplicationsIdentifiers includes: emShadow name asString]
+	^anApplication isLoaded
+		or: [self loader loadedApplicationsIdentifiers includes: anApplication name asString]
 ]
 
 { #category : 'accessing' }
 TonelLoaderApplication >> prerequisites: anOrderedCollection [
+	"Sets the prerequisites of receiver to be anOrderedCollection."
 
 	prerequisites := anOrderedCollection
 ]
 
 { #category : 'loading' }
-TonelLoaderApplication >> replacePrerequisite: anApplication [
-
+TonelLoaderApplication >> replacePrerequisite: anEmApplication [
+	"Put anEmApplication as the prerequisite of receiver, 
+	 replacing aTonelApplication with the same name."
+	
 	prerequisites isNil ifTrue: [^self].
 	self prerequisites keysAndValuesDo: [:index :each |
-		each name = anApplication name ifTrue: [self prerequisites at: index put: anApplication]]
+		each name = anEmApplication name ifTrue: [self prerequisites at: index put: anEmApplication]]
 ]
 
 { #category : 'accessing' }
@@ -350,25 +360,35 @@ TonelLoaderApplication >> rootTonelApplication [
 	^self
 ]
 
-{ #category : 'loading' }
+{ #category : 'loading',
+  #vaVisibility : 'private' }
 TonelLoaderApplication >> tonelPackageNameMethodSource [
+	"Answer the method source, including selector, to create a method
+	 returning the Tonel package name."
+
 	^self tonelPackageNameSelector , '<n><t>^<1p>' 
 		expandMacrosWith: self packageName
 ]
 
-{ #category : 'loading' }
+{ #category : 'loading',
+  #vaVisibility : 'private' }
 TonelLoaderApplication >> tonelPackageNameSelector [
+	"Answer the selector used to obtain the package name of receiver."
+
 	^#_TONEL_packageName
 ]
 
 { #category : 'accessing' }
 TonelLoaderApplication >> tonelPoolDictionaries [
+	"Answer aCollection of the classes defined by receiver's application
+	 that are shared pools."
 	
 	^self tonelDefinedClasses select: [:each | each isSharedPool ]
 ]
 
 { #category : 'validating' }
 TonelLoaderApplication >> verifyBaseEditionUser [
+	"Answer whether receiver has enough privileges to manage its base edition." 
 
 	(Smalltalk classAt: self identifier) ifNotNil: [:theApp |
 		(theApp manager = EmUser current or: [(self loader hasSuperGroupAccessTo: theApp)])

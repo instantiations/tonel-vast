@@ -15,7 +15,9 @@ TonelLoaderNoVersionStrategy class >> description [
 
 { #category : 'resolving' }
 TonelLoaderNoVersionStrategy >> versionFor: aTonelLoaderApplication [
-	"Always returns nil as the version, so all applications and subapplications will remain open editions."
+	"Answer the version for anAppOrSubapp.
+	 Always returns nil as the version, 
+	 so all applications and subapplications will remain open editions."
 
 	^nil
 ]

@@ -1,48 +1,48 @@
 [
 	{
 		#conditions : [ ],
-		#ts : 3813497911,
+		#ts : 3824386360,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
 			{
 				#name : 'TonelBaseApp',
-				#versionName : '1.4.10',
-				#ts : 3813497911
+				#versionName : '1.4.7',
+				#ts : 3812608735
 			},
 			{
 				#name : 'TonelFileSystem',
-				#versionName : '1.4.10',
-				#ts : 3813497911
+				#versionName : '1.4.7',
+				#ts : 3812609203
 			},
 			{
 				#name : 'TonelLoaderInteractiveApp',
-				#versionName : '1.4.10',
-				#ts : 3813497973
+				#versionName : '',
+				#ts : 3824381840
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : '1.4.10',
-				#ts : 3813497911
+				#versionName : '',
+				#ts : 3824364126
 			},
 			{
 				#name : 'TonelReaderModel',
-				#versionName : '1.4.10',
-				#ts : 3813497911
+				#versionName : 'b496 + 68399 a',
+				#ts : 3813221906
 			},
 			{
 				#name : 'TonelTools',
-				#versionName : 'V 11.0.0  [495]',
-				#ts : 3810536888
+				#versionName : '',
+				#ts : 3824386303
 			},
 			{
 				#name : 'TonelWriterModel',
-				#versionName : '1.4.10',
-				#ts : 3813497911
+				#versionName : '1.4.7',
+				#ts : 3812609203
 			}
 		],
 		#name : 'ENVY/Image Tonel',
-		#versionName : '1.4.10'
+		#versionName : ''
 	},
 	{
 		#conditions : [ ],
@@ -52,23 +52,23 @@
 		#applications : OrderedCollection [
 			{
 				#name : 'EmLibraryToolsApp',
-				#versionName : '390d2a1-master',
-				#ts : 3812608417
+				#versionName : 'b495 + 68281 b',
+				#ts : 3812609757
 			},
 			{
 				#name : 'TonelLoaderTests',
-				#versionName : '1.4.7',
-				#ts : 3812609204
+				#versionName : 'b495 + 68281 b',
+				#ts : 3812609758
 			},
 			{
 				#name : 'TonelReaderTests',
-				#versionName : '1.4.7',
-				#ts : 3812609204
+				#versionName : 'b495 + 68281 b',
+				#ts : 3812609758
 			},
 			{
 				#name : 'TonelWriterTests',
-				#versionName : '1.4.7',
-				#ts : 3812609204
+				#versionName : 'b495 + 68281 b',
+				#ts : 3812609757
 			}
 		],
 		#name : 'Test ENVY/Image Tonel',

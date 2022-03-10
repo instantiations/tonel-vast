@@ -3,13 +3,6 @@ Extension {
 }
 
 { #category : '*TonelLoaderInteractiveApp',
- #vaCategories : ['STS-Support'] }
-TonelLoader class >> loaded [
-
-	EsImageStartUp debuggerClass: (#StsDebugger asClass ifNil: [#DbgDebugger class])
-]
-
-{ #category : '*TonelLoaderInteractiveApp',
  #vaCategories : ['strategies-convenience'] }
 TonelLoader >> beInteractive [
 	self useInteractivePrerequisitesSelection.

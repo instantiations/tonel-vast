@@ -16,8 +16,8 @@ TonelLoaderApplicationPrereqStrategy >> addPrerequisite: emApplication to: tonel
 
 { #category : 'api' }
 TonelLoaderApplicationPrereqStrategy >> concretePrerequisitesOf: aTonelApplication [
+	"Answer the immediate prerequisite application of aTonelApplication."
 
- 
 	self subclassResponsibility
 ]
 
@@ -56,7 +56,13 @@ TonelLoaderApplicationPrereqStrategy >> initialize [
 
 { #category : 'api' }
 TonelLoaderApplicationPrereqStrategy >> prerequisitesFor: tonelApplication current: aCollection [
-
+	"Answer a collection of EmShadowApplication that are the prerequistes applications 
+	 considering aCollection as the current specified prerequisites.
+	 
+	 Answers:
+		<EmShadowApplication>
+	 "
+	
 	self subclassResponsibility
 ]
 

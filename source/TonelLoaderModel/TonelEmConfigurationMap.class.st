@@ -1,3 +1,12 @@
+"
+
+DESCRIPTION:
+An instance of the EmTonelConfigurationMap class provides an object 
+that represents a reference to an ENVY Library Configuration Map.
+
+RESPONSIBILITY:
+- Load the proper EmConfigurationMap from the ENVY Library
+"
 Class {
 	#name : 'TonelEmConfigurationMap',
 	#superclass : 'TonelConfigurationMap',
@@ -15,9 +24,12 @@ TonelEmConfigurationMap class >> name: aString ts: seconds versionName: versionS
 ]
 
 { #category : 'loading' }
-TonelEmConfigurationMap >> loadWithRequiredMaps [
+TonelEmConfigurationMap >> loadWithRequiredMaps: aBoolean [
+	"Load the receiver. And all its required maps first if aBoolean is true.
+	Loading a required map may in turn load other required maps."
 
 	| emConfigMap |
+	aBoolean ifFalse: [^self].
 	emConfigMap := (EmConfigurationMap editionsFor: self name)
 		detect: [:one | self hasSameVersionAs: one]
 		ifNone: [
@@ -25,5 +37,5 @@ TonelEmConfigurationMap >> loadWithRequiredMaps [
 				'Could not find configuration map <1p> <2p>'
 					expandMacrosWith: self name
 					with: self versionName)].
-	emConfigMap loadWithRequiredMaps
+	emConfigMap loadWithRequiredMaps.
 ]

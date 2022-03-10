@@ -64,6 +64,8 @@ TonelLoaderGitVersionStrategy >> defaultVersionNamePattern [
 
 { #category : 'versioning' }
 TonelLoaderGitVersionStrategy >> versionFor: aTonelApplication [
+	"Answer the version for anAppOrSubapp, 
+	 based on the commit id of the source repository."
 
 	^self attemptVersionFromGit
 ]

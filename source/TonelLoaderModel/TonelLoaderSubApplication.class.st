@@ -9,7 +9,6 @@ Class {
 		'subApplications',
 		'conditions',
 		'hasChanges',
-		'poolsAccounted',
 		'rootApplication',
 		'emApplication'
 	],
@@ -123,12 +122,6 @@ TonelLoaderSubApplication >> allExtendedClasses [
 		yourself
 ]
 
-{ #category : 'accessing' }
-TonelLoaderSubApplication >> applicationClass [
-
-	1 halt.
-]
-
 { #category : 'querying' }
 TonelLoaderSubApplication >> availableShadows [
 	^self emClass shadowsFor: self name
@@ -200,7 +193,7 @@ TonelLoaderSubApplication >> classesToRemoveIncludingExtensions: aBoolean [
 		into: 
 			 [:removeClasses :eachClass | 
 				(eachClass ~= theApp 
-					and: [(self includesClass: eachClass name asString) not])
+					and: [(self includesClassNamed: eachClass name asSymbol) not])
 						ifTrue: [removeClasses add: eachClass -> theApp; yourself]
 						ifFalse: [removeClasses]]
 
@@ -258,6 +251,7 @@ TonelLoaderSubApplication >> concreteClasses [
 
 { #category : 'accessing' }
 TonelLoaderSubApplication >> conditions [
+	"Answer the load conditions of receiver."
 
 	conditions ifNil: [self initializeConditions].
 	^conditions
@@ -337,11 +331,15 @@ TonelLoaderSubApplication >> createSubApplicationsFor: emAppOrSubapp withRoot: e
 
 { #category : 'accessing' }
 TonelLoaderSubApplication >> definedClasses [
+	"Answer the collection classes defined in the receiver that are not shared pools."
+
 	^self packageDefinedClasses reject: [:each | each isSharedPool]
 ]
 
 { #category : 'accessing' }
 TonelLoaderSubApplication >> definedSharedPools [
+	"Answer the collection of shared pools defined by the receiver."
+
 	^self packageDefinedClasses select: [:each | each isSharedPool]
 ]
 
@@ -399,17 +397,22 @@ TonelLoaderSubApplication >> do: aBlock forApp: app withSuperUser: user [
 
 { #category : 'accessing' }
 TonelLoaderSubApplication >> emApplication [
-	
+	"Answer the actual Application/SubApplication instance of receiver, or nil if there is none."
+
 	^emApplication
 ]
 
 { #category : 'querying' }
 TonelLoaderSubApplication >> emClass [
+	"Answers the ENVY/Manager class for receiver."
+
 	^SubApplication
 ]
 
 { #category : 'querying' }
 TonelLoaderSubApplication >> hasChangesFor: emAppOrSubApp inRootApp: emRootApplication [
+	"Answer whether receiver has changes for anAppOrSubApp 
+	 in the three of emRootApplication <Application>."
 
 	^hasChanges
 		ifNil: [hasChanges := self computeHasChangesFor: emAppOrSubApp inRootApp: emRootApplication]
@@ -417,9 +420,9 @@ TonelLoaderSubApplication >> hasChangesFor: emAppOrSubApp inRootApp: emRootAppli
 
 { #category : 'testing' }
 TonelLoaderSubApplication >> hasChangesIn: emParentApp [
+	"Answer whether receiver has changes for anAppOrSubApp,
+	 as a subApplication of emParentApp (<Application> or <SubApplication)."
 
-	"Enter the new method definition below and click 'Resume'."
-	
 	^(Smalltalk classAt: self identifier)
 		ifNil: [true]
 		ifNotNil: [:emSubApp | self hasChangesFor: emSubApp inRootApp: emParentApp]
@@ -427,15 +430,19 @@ TonelLoaderSubApplication >> hasChangesIn: emParentApp [
 
 { #category : 'querying' }
 TonelLoaderSubApplication >> hasClassChangesComparedTo: emAppOrSubApp [
+	"Answer whether receiver has changes compared 
+	 to emAppOrSubApp (<Application> or <SubApplication>)."
 
-	^self tonelDefinedClasses , self tonelExtendedClasses 
+	^self tonelDefinedClasses , self tonelExtendedClasses
 		anySatisfy: [:tonelClass | tonelClass hasChangesIn: emAppOrSubApp]
 ]
 
 { #category : 'querying' }
-TonelLoaderSubApplication >> hasRemovedClassesFor: anApp [
-	^(self hasRemovedDefinedClassesFor: anApp)
-		or: [self hasRemovedExtendedClassesFor: anApp]
+TonelLoaderSubApplication >> hasRemovedClassesFor: anAppOrSubApp [
+	"Answer whether receiver removes any class from anAppOrSubApp."
+
+	^(self hasRemovedDefinedClassesFor: anAppOrSubApp)
+		or: [self hasRemovedExtendedClassesFor: anAppOrSubApp]
 ]
 
 { #category : 'testing',
@@ -455,15 +462,17 @@ TonelLoaderSubApplication >> hasRemovedExtendedClassesFor: anApp [
 
 { #category : 'accessing' }
 TonelLoaderSubApplication >> identifier [
+	"Answer the symbol identifer of receiver."
 
 	^self name asSymbol
 ]
 
-{ #category : 'querying' }
-TonelLoaderSubApplication >> includesClass: className [
+{ #category : 'testing' }
+TonelLoaderSubApplication >> includesClassNamed: aSymbol [
+	"Answer whether receiver includes a class, either defined or extended, 
+	 named aSymbol."
 
-	(self tonelClasses keys allSatisfy: [:each | each isSymbol]) ifFalse: [self halt].
-	^self tonelClasses includesKey: className asSymbol
+	^self tonelClasses includesKey: aSymbol
 ]
 
 { #category : 'Initialization',
@@ -485,6 +494,7 @@ TonelLoaderSubApplication >> initializeConditions [
 
 { #category : 'accessing' }
 TonelLoaderSubApplication >> initializeSubApplications [
+	"Initializes the subapplications of receiver."
 
 	self initializeSubApplicationsWithRoot: self rootTonelApplication
 ]
@@ -499,12 +509,14 @@ TonelLoaderSubApplication >> initializeSubApplicationsWithRoot: rootTonelApplica
 
 { #category : 'testing' }
 TonelLoaderSubApplication >> isApplication [
+	"Answer whether receiver is anApplication."
 
 	^false
 ]
 
 { #category : 'querying' }
 TonelLoaderSubApplication >> loadableConditions [
+	"Answer the load conditions of receiver that evaluate to true."
 
 	| loadableConditions |
 	loadableConditions := Dictionary  new.
@@ -519,7 +531,7 @@ TonelLoaderSubApplication >> loadableConditions [
 
 { #category : 'loading' }
 TonelLoaderSubApplication >> loadBaseEdition [
-	"This method contains some voodoo."
+	"Loads the base edition of receiver."
 
 	self loader loadBaseEditionFor: self
 	

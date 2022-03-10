@@ -88,7 +88,7 @@ TonelTools class >> addToNamesMenu: aMenu browser: aBrowser [
 			menu subMenu addLineAfter: #exportTonelConfigMaps]
 ]
 
-{ #category : 'initializing',
+{ #category : 'Not categorized',
   #vaVisibility : 'private' }
 TonelTools class >> defaultToolsRepositoryPath [
 

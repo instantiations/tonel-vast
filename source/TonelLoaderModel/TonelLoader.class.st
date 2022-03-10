@@ -10,7 +10,8 @@ Class {
 		'loadedApplications',
 		'loadedConfigurationMaps',
 		'createsHookMethods',
-		'autogenerateInstanceInitializers'
+		'autogenerateInstanceInitializers',
+		'loadRequiredMaps'
 	],
 	#classVars : [
 		'DefaultAppNameSuffix',
@@ -70,6 +71,7 @@ TonelLoader >> addLoadedApplication: aTonelApplication [
 
 { #category : 'resolving' }
 TonelLoader >> addPrerequisite: emApplication to: tonelApplication [
+	"Adds emApplication as a prerequisite of tonelApplication."
 
 	self prerequisitesStrategy addPrerequisite: emApplication to: tonelApplication
 ]
@@ -88,13 +90,22 @@ TonelLoader >> applicationForPackageNamed: aString [
 
 { #category : 'lookup' }
 TonelLoader >> applicationNamed: aString [
-	"Returns the application with name aString or raise an error if not found."
+	"Returns the application with name aString or raise an error if not found.
+	 
+	 Answers:
+		<TonelLoaderApplication>
+	 "
 
 	^self applications detect: [:one | one name asSymbol = aString asSymbol]
 ]
 
 { #category : 'lookup' }
 TonelLoader >> applicationNamed: aString ifNone: aBlock [
+	"Returns the application with name aString or evaluate aBlock if none is found.
+	 
+	 Answers:
+		<TonelLoaderApplication>
+	 "
 
 	^self applications detect: [:one | one name = aString] ifNone: aBlock
 ]
@@ -150,6 +161,8 @@ TonelLoader >> beUnattended [
 
 { #category : 'privileges' }
 TonelLoader >> changeUserTo: emUser for: aBlock [
+	"Change the current ENVY Library user to be emUser during the execution of aBlock,
+	 restoring the original user after it."
 
 	| oldUser newUser |
 
@@ -175,7 +188,15 @@ TonelLoader >> computeSettings [
 
 { #category : 'lookup' }
 TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: versionName [
-
+	"Looks into the Configuration Maps of receiver for a configuration map
+	 that matches name, timestamp and version name.
+	 Answer a TonelConfigurationMap if found or a new TonelEmConfigurationMap 
+	 with the searched name, timestamp and version name.
+	 
+	 Answers:
+		<TonelConfigurationMap>
+	 "
+	 
 	^self
 		configurationMapNamed: aString
 		ts: anEmTimeStamp
@@ -189,6 +210,8 @@ TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: ver
 { #category : 'lookup',
   #vaVisibility : 'private' }
 TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: versionName ifNone: aBlock [
+	"Looks into the Configuration Maps of receiver for a configuration map
+	 that matches name, timestamp and version name, evaluate aBlock if there is none." 
 
 	^self configurationMaps
 		detect: [:one |
@@ -246,12 +269,16 @@ TonelLoader >> forceCreationOfEditions [
 
 { #category : 'privileges' }
 TonelLoader >> hasSelectableBaseEditionFor: aTonelAppOrSub [
+	"Answer whether there is an edition for aTonelAppOrSubApp
+	 that can be used its base edition, delegating it to receivers base edition strategy."
 	
 	^self baseEditionStrategy hasSelectableBaseEditionFor: aTonelAppOrSub
 ]
 
 { #category : 'privileges' }
 TonelLoader >> hasSuperGroupAccessTo: anApplication [
+	"Answer whether the super user mode is enabled to access anApplication.
+	 A super user, or super group, can bypass all the security checkpoints of ENVY."
 
 	^self class hasSTSSupport
 		ifTrue: [
@@ -301,12 +328,14 @@ TonelLoader >> load [
 
 { #category : 'loading' }
 TonelLoader >> loadAllApplications [
+	"Loads all the applications read from the receiver reader's repository."
 	
 	^self loadApplications: self applications
 ]
 
 { #category : 'loading' }
 TonelLoader >> loadAllConfigurationMaps [
+	"Loads all the configuration maps read from the receiver reader's repository."
 
 	self loadConfigurationMaps: self configurationMaps
 	
@@ -315,18 +344,20 @@ TonelLoader >> loadAllConfigurationMaps [
 
 { #category : 'loading' }
 TonelLoader >> loadAllMapsWithRequiredMaps [
-	
+	"Loads all the configuration maps read from the receiver reader's repository
+	 together with the required maps of each of them."
+
 	self loadConfigurationMaps: self configurationMaps
 ]
 
 { #category : 'loading' }
 TonelLoader >> loadApplication: aTonelApplication [
+	"Loads aTonelApplication."
 
 	| emApps |
+
 	emApps := (self loadApplications: (Array with: aTonelApplication)).
-	^emApps isEmpty 
-		ifFalse: [ emApps first]
-	
+	^emApps isEmpty ifFalse: [emApps first]
 ]
 
 { #category : 'loading' }
@@ -339,23 +370,26 @@ TonelLoader >> loadApplicationForPackageNamed: aString [
 
 { #category : 'loading' }
 TonelLoader >> loadApplicationNamed: aStringOrSymbol [
-
+	"Loads a TonelApplication with a name matching aStringOrSymbol."
+	
 	^self loadApplication: (self applicationNamed: aStringOrSymbol)
 ]
 
 { #category : 'loading' }
 TonelLoader >> loadApplications: aCollection [
+	"Loads aCollection of <TonelApplication>."
 
 	| confirmer oldWarningLevel emUser |
+
 	emUser := EmUser current.
 	confirmer := System image confirmer: self.
 	oldWarningLevel := EsCompiler defaultWarningLevel.
 	EsCompiler defaultWarningLevel: self settings compilerWarningLevel.
-	[aCollection do: [:each | self basicLoadApplication: each]] ensure: 
-			[(EmUser classPool declareVariable: 'CurrentUser') value: emUser.
-			System image confirmer: confirmer.
-			EsCompiler defaultWarningLevel: oldWarningLevel.
-			self postLoadActions].
+	[aCollection do: [:each | self basicLoadApplication: each]] ensure: [
+		(EmUser classPool declareVariable: 'CurrentUser') value: emUser.
+		System image confirmer: confirmer.
+		EsCompiler defaultWarningLevel: oldWarningLevel.
+		self postLoadActions].
 	^aCollection collect: [:each | each emApplication]
 ]
 
@@ -368,6 +402,7 @@ TonelLoader >> loadApplicationsForPackagesNamed: aCollection [
 
 { #category : 'loading' }
 TonelLoader >> loadApplicationsNamed: aCollection [
+	"Loads a TonelApplication with a name matching aStringOrSymbol."
 
 	^self loadApplications: (aCollection collect: [:each | self applicationNamed: each])
 ]
@@ -379,21 +414,35 @@ TonelLoader >> loadBaseEditionFor: aTonelApplication [
 ]
 
 { #category : 'loading' }
+TonelLoader >> loadConfigurationMap: aTonelConfigurationMap withPrereqs: aBoolean [
+	"Loads aTonelConfigurationMap with a name matching aString,
+	 also loading its prerequisites if aBoolean is true."
+
+	aBoolean
+		ifTrue: [aTonelConfigurationMap loadWithRequiredMaps]
+		ifFalse: [aTonelConfigurationMap load].
+	^self loadedConfigurationMaps add: aTonelConfigurationMap
+]
+
+{ #category : 'loading' }
 TonelLoader >> loadConfigurationMapNamed: aString [
 	
-	self loadConfigurationMapNamed: aString withPrereqs: true
+	self loadConfigurationMapNamed: aString withPrereqs: self loadRequiredMaps
 ]
 
 { #category : 'loading' }
 TonelLoader >> loadConfigurationMapNamed: aString withPrereqs: aBoolean [
 
-	(self configurationMaps detect: [:one | one name = aString]) ifNotNil: [:configMap |
-		aBoolean ifTrue: [configMap loadWithRequiredMaps] ifFalse: [configMap load].
-		self loadedConfigurationMaps add: configMap]
+	"Loads a TonelConfigurationMap with a name matching aString,
+	 also loading its prerequisites if aBoolean is true."
+
+	(self configurationMaps detect: [:one | one name = aString]) 
+		ifNotNil: [:configMap | self loadConfigurationMap: configMap withPrereqs: aBoolean]
 ]
 
 { #category : 'loading' }
 TonelLoader >> loadConfigurationMaps: aCollection [
+	"Loads aCollection of TonelConfigurationMaps."
 	
 	aCollection do: [:each | each loadWithRequiredMaps ]
 ]
@@ -416,14 +465,32 @@ TonelLoader >> loadedConfigurationMaps [
 	^loadedConfigurationMaps ifNil: [loadedConfigurationMaps := Set new]
 ]
 
+{ #category : 'accessing' }
+TonelLoader >> loadRequiredMaps [
+	"Answer whether receiver will load the required maps of each Configuration Map when loading them."
+
+	^loadRequiredMaps ifNil: [loadRequiredMaps := true]
+]
+
+{ #category : 'accessing' }
+TonelLoader >> loadRequiredMaps: aBoolean [
+	"Sets whether receiver will load the required maps of each Configuration Map when loading them."
+
+	loadRequiredMaps := aBoolean
+]
+
 { #category : 'logging' }
 TonelLoader >> log: aString [
+	"Logs aString to the Transcript."
 
 	Transcript show: aString; cr.
 ]
 
 { #category : 'strategies-convenience' }
 TonelLoader >> mapTagsToSubapplications [
+	"Configures receiver to map Package tags to subapplications when loading.
+	 Read more: <https://github.com/instantiations/tonel-vast/blob/master/docs/strategies.md#tonelloadersubapplicationstagmappingstrategy>"
+	 
 
 	self subapplicationsStrategy: (TonelLoaderSubapplicationsTagMappingStrategy for: self)
 ]
@@ -463,7 +530,12 @@ TonelLoader >> postLoadActions [
 
 { #category : 'resolving' }
 TonelLoader >> prerequisitesFor: aTonelLoaderApplication current: anOrderedCollection [
-
+	"Answer a collection of EmShadowApplication that are the prerequistes application of aTonelApplication together
+	 with aCollection of Applications.
+	 
+	 Answers:
+		<EmShadowApplication>
+	 "
 
 	^self prerequisitesStrategy prerequisitesFor: aTonelLoaderApplication current: anOrderedCollection 
 ]
@@ -549,12 +621,13 @@ TonelLoader >> settings: anObject [
 ]
 
 { #category : 'loading' }
-TonelLoader >> shouldLoadPrerequisiteApplication: prereq [
+TonelLoader >> shouldLoadPrerequisiteApplication: anApplication [
+	"Answer whether receiver should load the prerequisite application anApplication."
 
-	^(self applications anySatisfy: [:any | any name asSymbol = prereq name]) 
+	^(self applications anySatisfy: [:any | any name asSymbol = anApplication name]) 
 		and: 
 			[self loadedApplications 
-				noneSatisfy: [:each | each name asSymbol = prereq name]]
+				noneSatisfy: [:each | each name asSymbol = anApplication name]]
 ]
 
 { #category : 'lookup' }
@@ -614,9 +687,12 @@ TonelLoader >> tonelClassNamed: aSymbol [
 
 { #category : 'loading' }
 TonelLoader >> updatePrerequisitesFrom: aTonelLoaderApplication [
+	"Updates the prerequisites of receiver applications, 
+	 replacing prerequisites defined as instances of TonelLoaderApplication 
+	 by their correspondent EmApplication."
 
-	self applications do: [:tonelApp |
-		tonelApp replacePrerequisite: aTonelLoaderApplication emApplication]
+	self applications
+		do: [:tonelApp | tonelApp replacePrerequisite: aTonelLoaderApplication emApplication]
 ]
 
 { #category : 'strategies-convenience' }
@@ -660,9 +736,11 @@ TonelLoader >> useSpecifiedVersion: versionName [
 ]
 
 { #category : 'resolving' }
-TonelLoader >> versionFor: anObject [
+TonelLoader >> versionFor: anAppOrSubapp [
+	"Answer the version for anAppOrSubapp, 
+	 delegating the decision to receiver's version strategy."
 
-	^self versionStrategy versionFor: anObject
+	^self versionStrategy versionFor: anAppOrSubapp
 ]
 
 { #category : 'strategies' }

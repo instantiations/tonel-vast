@@ -1,3 +1,17 @@
+"
+
+DESCRIPTION:
+An instance of the TonelConfigurationMap class provides an object 
+that represents an ENVY Library Configuration Map (EmConfigurationMap)
+within a Tonel formatted source.
+
+When instances of receiver specify its required maps, they could be other 
+instances of TonelConfigurationMap or instances of TonelEmConfigurationMap.
+
+RESPONSIBILITY:
+- Reify the serialized config map in a Tonel formatted repository.
+- Load itself and its required maps
+"
 Class {
 	#name : 'TonelConfigurationMap',
 	#superclass : 'Object',
@@ -325,6 +339,17 @@ TonelConfigurationMap >> loadRequiredMaps [
 
 { #category : 'loading' }
 TonelConfigurationMap >> loadWithRequiredMaps [
+	"Load the receiver and all its required maps first.
+	Loading a required map may in turn load other required maps."
+
+	self loadWithRequiredMaps: true
+]
+
+{ #category : 'loading' }
+TonelConfigurationMap >> loadWithRequiredMaps: aBoolean [
+	"Load the receiver. And all its required maps first if aBoolean is true.
+	Loading a required map may in turn load other required maps."
+
 	self loadRequiredMaps.
 	self load
 ]

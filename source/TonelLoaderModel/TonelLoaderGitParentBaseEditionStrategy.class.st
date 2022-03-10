@@ -61,16 +61,21 @@ TonelLoaderGitParentBaseEditionStrategy >> resetParentCommitId [
 
 { #category : 'operations' }
 TonelLoaderGitParentBaseEditionStrategy >> selectBaseEditionOf: aTonelSubApplication [
-
+	"Answers the base edition of aTonelApplication,
+	trying to match the versionName of aTonelSubApplication
+	with that of the parent commit id of receiver's repository."
 	
 	^aTonelSubApplication availableShadows detect: [:one | one versionName includesSubstring: self parentCommitId ] ifNone: [aTonelSubApplication availableShadows first]
 ]
 
 { #category : 'operations' }
-TonelLoaderGitParentBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: prereqs [
-
+TonelLoaderGitParentBaseEditionStrategy >> selectPrerequisiteEditionOf: application in: aCollection [
+	"Select the edition of the prerequisite application anApplication
+	 in aCollection of prerequisites, trying to match the versionName
+	 of the prerequisite with that of the parent commit id of receiver's repository."
+	
 	| sortedPrereqs |
-	sortedPrereqs := (prereqs 
+	sortedPrereqs := (aCollection 
 				asSortedCollection: [:a :b | a timeStamp <= b timeStamp]) asArray.
 	^sortedPrereqs 
 		detect: [:one | one versionName includesSubstring: self parentCommitId]
