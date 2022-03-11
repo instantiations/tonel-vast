@@ -5,7 +5,9 @@ Extension {
 { #category : '*TonelLoaderModel',
  #vaCategories : ['Static Methods'] }
 TonelReaderMethodDefinition class >> failedRemoveMethodFor: nameString [
-
+	"Answer a new instance of receiver containing the source code
+	 for the #failedRemove ENVY method hook."
+	
 	^ (self 
 		className: nameString
 		classSide: true
@@ -31,6 +33,8 @@ TonelReaderMethodDefinition class >> failedRemoveSource [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['Static Methods'] }
 TonelReaderMethodDefinition class >> loadedMethodFor: nameString [
+	"Answer a new instance of receiver containing the source code
+	 required to initialize receiver in the #loaded ENVY hook."
 
 	^ (self 
 		className: nameString
@@ -59,6 +63,8 @@ TonelReaderMethodDefinition class >> loadedSource [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['Static Methods'] }
 TonelReaderMethodDefinition class >> newInitializeMethodFor: nameString [
+	"Answer a new instance of receiver containing the source code
+	 for an #initialize method."
 
 	^ (self 
 		className: nameString
@@ -85,6 +91,8 @@ TonelReaderMethodDefinition class >> newInitializeSource [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['Static Methods'] }
 TonelReaderMethodDefinition class >> removingMethodFor: nameString [
+	"Answer a new instance of receiver containing the source code
+	 for the #removing ENVY method hook."
 
 	^ (self 
 		className: nameString
@@ -243,6 +251,8 @@ TonelReaderMethodDefinition >> onSideClass: aClass [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['Loading'] }
 TonelReaderMethodDefinition >> referencedTonelClasses: aTonelLoader [
+	"Answer a collection of the TonelReaderClassDefinitions 
+	 referenced by receiver source code."
 
 	| result classNames |
 

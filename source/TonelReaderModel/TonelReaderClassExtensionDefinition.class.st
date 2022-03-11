@@ -6,7 +6,8 @@ Class {
 
 { #category : 'constants' }
 TonelReaderClassExtensionDefinition class >> definitionType [
-
+	"Answer the definition type of receiver instances."
+	
 	^'Extension'
 ]
 

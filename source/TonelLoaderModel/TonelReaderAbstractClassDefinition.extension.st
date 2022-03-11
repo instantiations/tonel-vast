@@ -64,6 +64,8 @@ TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp using: aLo
 { #category : '*TonelLoaderModel',
  #vaCategories : ['testing'] }
 TonelReaderAbstractClassDefinition >> hasChangesIn: emAppOrSubApp [
+	"Answer whether receiver has changes considering it was 
+	 defined in emAppOrSubApp."
 
 	hasChanges isNil
 		ifTrue: [| baseClass |
@@ -93,6 +95,8 @@ TonelReaderAbstractClassDefinition >> hasChangesIn: anApp comparedTo: aClass [
  #vaCategories : ['testing'],
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> hasClassMethodsRemovedFrom: aClass in: anApp [
+	"Answer whether receiver has class methods removed from aClass
+	 as defined in anApp."
 
 	^ aClass class methodDictionary anySatisfy: [ :compiledMethod |
 		compiledMethod application = anApp and: [
@@ -124,6 +128,11 @@ TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: emAppOrS
 { #category : '*TonelLoaderModel',
  #vaCategories : ['testing'] }
 TonelReaderAbstractClassDefinition >> isArtificiallyCreatedMethod: aCompiledMethod inApp: emApplication [
+	"Answer whether aCompiledMethod was artificially created for emApplication.
+	 
+	 We call artificial to a method that was not in the original source code,
+	 but was created to represent some metadata or helper."
+	 
 
 	((aCompiledMethod selector beginsWithSubCollection: '_SHAREDPOOL_')
 		or: [aCompiledMethod selector beginsWithSubCollection: '_PRAGMA_'])
@@ -143,6 +152,8 @@ TonelReaderAbstractClassDefinition >> isArtificiallyCreatedMethod: aCompiledMeth
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> loadDeclarationMethodsInto: anApp using: aTonelLoader [
+	"Load declaration methods (as in pragma declarations) into an App
+	 using aTonelLoader."
 
 	| concreteClass |
 	concreteClass := self concreteClassIn: anApp.
@@ -157,6 +168,7 @@ TonelReaderAbstractClassDefinition >> loadDeclarationMethodsInto: anApp using: a
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> loadInto: anApp using: appLoader [
+	"Loads receiver into anApp using an appLoader <TonelApplicationLoader>."
 
 	appLoader loader
 		changeUserTo: anApp manager
@@ -233,6 +245,7 @@ TonelReaderAbstractClassDefinition >> updateCommentIn: anApp [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> versionClass: emClass in: anApp using: aLoader [
+	"Versions the edition of emClass in anApp (or subapp) using aLoader."
 
 	((emClass isEditionIn: anApp) and: [aLoader hasVersionName])
 		ifTrue: [
@@ -252,6 +265,7 @@ TonelReaderAbstractClassDefinition >> versionClass: emClass in: anApp using: aLo
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
 TonelReaderAbstractClassDefinition >> versionIn: anApp using: aTonelLoader [
+	"Versions the edition of anApp using aTonelLoader."
 
 	| emClass |
 

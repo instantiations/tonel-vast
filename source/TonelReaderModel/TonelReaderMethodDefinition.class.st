@@ -1,3 +1,6 @@
+"
+TonelReaderMethodDefinition represents a method definition.
+"
 Class {
 	#name : 'TonelReaderMethodDefinition',
 	#superclass : 'TonelReaderDefinition',
@@ -114,6 +117,7 @@ TonelReaderMethodDefinition >> isClassSide [
 
 { #category : 'testing' }
 TonelReaderMethodDefinition >> isDeclaration [
+	"Answer whether receiver is a declaration method."
 
 	^self declaration or: [self selector beginsWithSubCollection: #_PRAGMA_]
 ]

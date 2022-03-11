@@ -1,3 +1,6 @@
+"
+TonelReaderDefinition is the most abstract class representing a definition in a Tonel-based repository
+"
 Class {
 	#name : 'TonelReaderDefinition',
 	#superclass : 'Object',
@@ -9,12 +12,15 @@ Class {
 
 { #category : 'constants' }
 TonelReaderDefinition class >> definitionType [
+	"Answer the definition type of receiver instances."
 
 	self subclassResponsibility
 ]
 
 { #category : 'Instance Creation' }
 TonelReaderDefinition class >> fromMetadata: aDictionary [
+	"Creates a new instance of receiver initialized from the metadata
+	 contained in aDictionary."
 
 	^self new
 		initializeFromMetadata: aDictionary;
@@ -23,6 +29,7 @@ TonelReaderDefinition class >> fromMetadata: aDictionary [
 
 { #category : 'Instance Creation' }
 TonelReaderDefinition class >> name: aString [
+	"Answer a new instance of receiver with aString as its name."
 
 	^self new
 		initializeWith: aString;

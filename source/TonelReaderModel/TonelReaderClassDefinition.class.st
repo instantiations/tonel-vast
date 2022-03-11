@@ -21,13 +21,15 @@ Class {
 
 { #category : 'constants' }
 TonelReaderClassDefinition class >> definitionType [
+	"Answer the definition type of receiver instances."
 
 	^'Class' "$NON-NLS$"
 ]
 
 { #category : 'Initialize-Release' }
 TonelReaderClassDefinition class >> name: aString [
-
+	"Answer a new instance of receiver with aString as its name."
+	
 	^self new
 		initialize: aString;
 		yourself
@@ -35,6 +37,8 @@ TonelReaderClassDefinition class >> name: aString [
 
 { #category : 'Initialize-Release' }
 TonelReaderClassDefinition class >> name: nameString superclass: superString variable: varBoolean fieldType: fieldTypeString instanceVariables: instVarString classVariables: classVarString poolDictionaries: poolDictString [
+	"Answer a new instance of receiver with all the parameters 
+	 specified as arguments."
 
 	^self new
 		initializeWithName: nameString 

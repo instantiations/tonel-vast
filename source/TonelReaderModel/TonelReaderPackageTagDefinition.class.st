@@ -1,3 +1,10 @@
+"
+TonelReaderPackageTagDefinition works as a ""virtual"" package that we create 
+to map classes defined in a Package tag to VAST Subapplications.
+
+Read more about how the mapping works at:
+<https://github.com/instantiations/tonel-vast/blob/master/docs/strategies.md#package-tags-and-subapplications-strategy>
+"
 Class {
 	#name : 'TonelReaderPackageTagDefinition',
 	#superclass : 'TonelReaderPackageDefinition',
@@ -8,8 +15,10 @@ Class {
 	#category : 'TonelReaderModel'
 }
 
-{ #category : 'Not categorized' }
+{ #category : 'Instance creation' }
 TonelReaderPackageTagDefinition class >> package: aTonelPackageDefinition tag: aSymbol [
+	"Answer a new instance of receiver belonging to aTonelPackageDefinition
+	 with aSymbol as its tag."
 
 	^self new
 		package: aTonelPackageDefinition;

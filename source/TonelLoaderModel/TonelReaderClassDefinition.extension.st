@@ -108,16 +108,15 @@ TonelReaderClassDefinition >> createDefinedIn: anApp using: aTonelLoader [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
 TonelReaderClassDefinition >> createEditionIn: anApp using: aTonelLoader [
+	"Creates an edition for receiver in anApp (or Subapp) using aTonelLoader."
 
 	| baseClass |
-	(baseClass := self concreteClassIn: anApp) isNil 
+
+	(baseClass := self concreteClassIn: anApp) isNil
 		ifTrue: [self createIn: anApp using: aTonelLoader]
-		ifFalse: 
-			[(self 
-				shouldCreateEditionOf: baseClass
-				in: anApp
-				using: aTonelLoader) 
-					ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
+		ifFalse: [
+			(self shouldCreateEditionOf: baseClass in: anApp using: aTonelLoader)
+				ifTrue: [anApp newClassEditionFor: baseClass ifUnable: []]]
 ]
 
 { #category : '*TonelLoaderModel',
@@ -164,6 +163,8 @@ TonelReaderClassDefinition >> createSharedPoolInitializerMethodFor: aTonelMethod
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading-pools'] }
 TonelReaderClassDefinition >> declarePoolDictionariesIn: anApp using: aTonelLoader [
+	"Loads the pool declaration methods in anApp
+	 and rebuilds the namespaces after doing so."
 
 	| previousCancelDeclaration |
 
@@ -179,7 +180,9 @@ TonelReaderClassDefinition >> declarePoolDictionariesIn: anApp using: aTonelLoad
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading-pools'] }
 TonelReaderClassDefinition >> definePoolDictionariesIn: anApp using: aTonelLoader [
-
+	"Defines the methods used to initialize the values of shared pools
+	 in anApp and invokes them afterwards."
+	
 	self isSharedPool 
 		ifTrue: 
 			[self poolInitializationMethods do: 
@@ -299,6 +302,8 @@ TonelReaderClassDefinition >> updateCommentIn: anApp [
 { #category : '*TonelLoaderModel',
  #vaCategories : ['loading'] }
 TonelReaderClassDefinition >> updateVariables [
+	"Updates the variables of the class defined by receiver,
+	 to match the same variables as receiver."
 
 	| aClass |
 
