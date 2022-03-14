@@ -17,22 +17,22 @@
 			},
 			{
 				#name : 'TonelLoaderInteractiveApp',
-				#versionName : '',
+				#versionName : '1.4.9',
 				#ts : 3824381840
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : '',
+				#versionName : '1.4.9',
 				#ts : 3824364126
 			},
 			{
 				#name : 'TonelReaderModel',
-				#versionName : '',
+				#versionName : '1.4.9',
 				#ts : 3824469084
 			},
 			{
 				#name : 'TonelTools',
-				#versionName : '',
+				#versionName : '1.4.9',
 				#ts : 3824386303
 			},
 			{
@@ -42,11 +42,11 @@
 			}
 		],
 		#name : 'ENVY/Image Tonel',
-		#versionName : ''
+		#versionName : '1.4.9'
 	},
 	{
 		#conditions : [ ],
-		#ts : 3813497912,
+		#ts : 3812608505,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -72,6 +72,6 @@
 			}
 		],
 		#name : 'Test ENVY/Image Tonel',
-		#versionName : ''
+		#versionName : 'V 11.0.0  [496]'
 	}
 ]

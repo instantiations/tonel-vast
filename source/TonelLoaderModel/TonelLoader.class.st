@@ -11,7 +11,7 @@ Class {
 		'loadedConfigurationMaps',
 		'createsHookMethods',
 		'autogenerateInstanceInitializers',
-		'loadRequiredMaps'
+		'loadsRequiredMaps'
 	],
 	#classVars : [
 		'DefaultAppNameSuffix',
@@ -202,7 +202,7 @@ TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: ver
 		ts: anEmTimeStamp
 		versionName: versionName
 		ifNone: [
-			(TonelEmConfigurationMap name: aString ts: anEmTimeStamp seconds versionName: versionName)
+			(TonelEmConfigurationMapReference name: aString ts: anEmTimeStamp seconds versionName: versionName)
 				loader: self;
 				yourself]
 ]
@@ -343,6 +343,18 @@ TonelLoader >> loadAllConfigurationMaps [
 ]
 
 { #category : 'loading' }
+TonelLoader >> loadAllMapsWithoutRequiredMaps [
+	"Loads all the configuration maps read from the receiver reader's repository
+	 together without the required maps of each of them that are not 
+	 in the list of required maps.
+	 
+	 It means that if a Tonel configuration map requires another 
+	 Tonel configuration map, it will be loaded."
+
+	self loadConfigurationMaps: self configurationMaps
+]
+
+{ #category : 'loading' }
 TonelLoader >> loadAllMapsWithRequiredMaps [
 	"Loads all the configuration maps read from the receiver reader's repository
 	 together with the required maps of each of them."
@@ -427,7 +439,7 @@ TonelLoader >> loadConfigurationMap: aTonelConfigurationMap withPrereqs: aBoolea
 { #category : 'loading' }
 TonelLoader >> loadConfigurationMapNamed: aString [
 	
-	self loadConfigurationMapNamed: aString withPrereqs: self loadRequiredMaps
+	self loadConfigurationMapNamed: aString withPrereqs: self loadsRequiredMaps
 ]
 
 { #category : 'loading' }
@@ -444,7 +456,7 @@ TonelLoader >> loadConfigurationMapNamed: aString withPrereqs: aBoolean [
 TonelLoader >> loadConfigurationMaps: aCollection [
 	"Loads aCollection of TonelConfigurationMaps."
 	
-	aCollection do: [:each | each loadWithRequiredMaps ]
+	aCollection do: [:each | each loadWithRequiredMaps: self loadsRequiredMaps ]
 ]
 
 { #category : 'accessing' }
@@ -466,17 +478,17 @@ TonelLoader >> loadedConfigurationMaps [
 ]
 
 { #category : 'accessing' }
-TonelLoader >> loadRequiredMaps [
+TonelLoader >> loadsRequiredMaps [
 	"Answer whether receiver will load the required maps of each Configuration Map when loading them."
 
-	^loadRequiredMaps ifNil: [loadRequiredMaps := true]
+	^loadsRequiredMaps ifNil: [loadsRequiredMaps := true]
 ]
 
 { #category : 'accessing' }
-TonelLoader >> loadRequiredMaps: aBoolean [
+TonelLoader >> loadsRequiredMaps: aBoolean [
 	"Sets whether receiver will load the required maps of each Configuration Map when loading them."
 
-	loadRequiredMaps := aBoolean
+	loadsRequiredMaps := aBoolean
 ]
 
 { #category : 'logging' }

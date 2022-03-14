@@ -281,6 +281,14 @@ TonelConfigurationMap >> isExpressionValid: anExpression [
 	
 ]
 
+{ #category : 'testing' }
+TonelConfigurationMap >> isReference [
+	"Answer whether receiver represents a reference to an actual EmConfigurationMap.
+	 Receiver is a Tonel config map, not a reference, so always return false."
+
+	^false
+]
+
 { #category : 'loading' }
 TonelConfigurationMap >> load [
 	| emApps |
@@ -330,11 +338,16 @@ TonelConfigurationMap >> loader: anObject [
 
 { #category : 'loading',
   #vaVisibility : 'private' }
-TonelConfigurationMap >> loadRequiredMaps [
-	self requiredMaps do: 
-			[:each | 
-			(self loader loadedConfigurationMaps includes: each) 
-				ifFalse: [each loadWithRequiredMaps]]
+TonelConfigurationMap >> loadRequiredMaps: aBoolean [
+	"Load the required maps of receiver if aBoolean is true, if it was not
+	 loaded yet.
+	 If the required map is another TonelConfigurationMap, load it
+	 regardless of whether aBoolean is true."
+
+	self requiredMaps do: [:each |
+		((self loader loadedConfigurationMaps includes: each) not
+			and: [each isReference not or: [aBoolean & each isReference]])
+				ifTrue: [each loadWithRequiredMaps]]
 ]
 
 { #category : 'loading' }
@@ -347,10 +360,11 @@ TonelConfigurationMap >> loadWithRequiredMaps [
 
 { #category : 'loading' }
 TonelConfigurationMap >> loadWithRequiredMaps: aBoolean [
+
 	"Load the receiver. And all its required maps first if aBoolean is true.
 	Loading a required map may in turn load other required maps."
 
-	self loadRequiredMaps.
+	self loadRequiredMaps: aBoolean.
 	self load
 ]
 
@@ -366,14 +380,19 @@ TonelConfigurationMap >> name: anObject [
 
 { #category : 'printing' }
 TonelConfigurationMap >> printOn: aStream [
+	"Prints a textual representation of receiver on aStream."
 
 	super printOn: aStream.
 	aStream
 		nextPutAll: '(''';
-		nextPutAll: self name;
-		space;
-		nextPutAll: self versionName asString;
-		nextPutAll: ''')'
+		nextPutAll: self name.
+
+	self versionName notEmpty
+		ifTrue: [
+			aStream
+				space;
+				nextPutAll: self versionName asString].
+	aStream nextPutAll: ''')'
 ]
 
 { #category : 'accessing' }

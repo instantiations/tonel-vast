@@ -8,13 +8,13 @@ RESPONSIBILITY:
 - Load the proper EmConfigurationMap from the ENVY Library
 "
 Class {
-	#name : 'TonelEmConfigurationMap',
+	#name : 'TonelEmConfigurationMapReference',
 	#superclass : 'TonelConfigurationMap',
 	#category : 'TonelLoaderModel'
 }
 
 { #category : 'Not categorized' }
-TonelEmConfigurationMap class >> name: aString ts: seconds versionName: versionString [
+TonelEmConfigurationMapReference class >> name: aString ts: seconds versionName: versionString [
 
 	^(self new)
 		name: aString;
@@ -23,8 +23,16 @@ TonelEmConfigurationMap class >> name: aString ts: seconds versionName: versionS
 		yourself
 ]
 
+{ #category : 'testing' }
+TonelEmConfigurationMapReference >> isReference [
+	"Answer whether receiver represents a reference to an actual EmConfigurationMap.
+	 Receiver is a representation of a reference, so always return true."
+	
+	^true
+]
+
 { #category : 'loading' }
-TonelEmConfigurationMap >> loadWithRequiredMaps: aBoolean [
+TonelEmConfigurationMapReference >> loadWithRequiredMaps: aBoolean [
 	"Load the receiver. And all its required maps first if aBoolean is true.
 	Loading a required map may in turn load other required maps."
 

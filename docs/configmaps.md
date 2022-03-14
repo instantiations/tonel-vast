@@ -135,3 +135,42 @@ All applications of the Configuration Map read from disk are expected to be in t
 
 **NOTE**: On its binary format (within the ENVY Library or when exported as `.dat` file) the configuration maps refer to appplications and prerequisites using their internal timestamp, and Tonel will use that first to lookup their prerequisites or an existing map with the same timestamp in the repository.
 
+### Loading required maps
+
+When loading required maps for maps defined in a Tonel repository, there are going to be two kinds of required maps: those that are defined in the repository (e.g. from Test to the core), and those that are external configuration maps, that are expected to be available in the ENVY Library. We call the later, "references" (represented by the class `TonelEmConfigurationMapReference`).
+
+As in the UI of the Configuration Maps Browser, sometimes you want to load the map together with its required maps, and 
+in some other cases you just want to load the map without the required maps, because you already have them (or its Applications) in the image.
+
+To mimic that UI behavior, the `TonelLoader` has a boolean property called `loadsRequiredMaps` which, as you might guess
+will instruct the loader to load the map and the required maps. This property is set to `true` by default.
+
+
+```smalltalk
+loader := TonelLoader readFromPath: (CfsPath named: '...').
+loader
+	loadsRequiredMaps: true;
+	loadAllConfigurationMaps.
+
+"Or its equivalent version"
+loader := TonelLoader readFromPath: (CfsPath named: '...').
+loader loadAllMapsWithRequiredMaps.
+```
+
+Or the option to NOT LOAD the required maps:
+```smalltalk
+loader := TonelLoader readFromPath: (CfsPath named: '...').
+loader
+	loadsRequiredMaps: false;
+	loadAllConfigurationMaps.
+
+"Or its equivalent version"
+loader := TonelLoader readFromPath: (CfsPath named: '...').
+loader loadAllMapsWithoutRequiredMaps.
+```
+
+This setting will be honored only for those configuration maps that are "references", it is, those that are not defined within the Tonel Repository.
+
+E.g. If you have `Config Map A` and `Config Map B` in the repository, and `Config Map B` has `Config Map A` and `Config Map C` as prerequisites, if you setup the loader to not load maps prerequisites, when loading `Config Map B` it still will load `Config Map A`, because it is defined in the same repository.
+
+
