@@ -11,6 +11,15 @@ TonelReaderClassExtensionDefinition class >> definitionType [
 	^'Extension'
 ]
 
+{ #category : 'testing' }
+TonelReaderClassExtensionDefinition >> = classDefinition [
+	"Answer whether receiver is equal to classDefinition."
+
+	^(self class = classDefinition class) and: [
+			(name = classDefinition name) and: [
+				self superclassIdentifier = classDefinition superclassIdentifier]]
+]
+
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelReaderClassExtensionDefinition >> addToPackage: packageDefinition withAll: anArray [
@@ -25,6 +34,19 @@ TonelReaderClassExtensionDefinition >> extension [
 	"Answer whether receiver represents a class extension."
 	
 	^true
+]
+
+{ #category : 'comparing' }
+TonelReaderClassExtensionDefinition >> hash [
+	"Answer a positive SmallInteger that represents the
+	 receiver. Objects that are equivalent (=) must answer
+	 the same value for the message #hash.
+	 
+	 Answers:
+		<Integer>
+	 "
+
+	^self identifier hash bitXor:  self superclassIdentifier hash
 ]
 
 { #category : 'accessing' }

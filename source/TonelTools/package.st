@@ -1,4 +1,4 @@
 Package {
 	#name : 'TonelTools',
-	#vaPrerequisites : ['EtTools','TonelLoaderModel']
+	#vaPrerequisites : ['EtTools','TonelBaseApp','TonelLoaderModel']
 }

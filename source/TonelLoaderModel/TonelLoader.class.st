@@ -444,7 +444,6 @@ TonelLoader >> loadConfigurationMapNamed: aString [
 
 { #category : 'loading' }
 TonelLoader >> loadConfigurationMapNamed: aString withPrereqs: aBoolean [
-
 	"Loads a TonelConfigurationMap with a name matching aString,
 	 also loading its prerequisites if aBoolean is true."
 

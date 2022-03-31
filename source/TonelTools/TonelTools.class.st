@@ -167,6 +167,7 @@ TonelTools class >> exportTonelTools [
 TonelTools class >> exportTonelToolsTo: aCfsPath [
 
 	TonelWriter new
+		autoLoad: false;
 		addLatestConfigurationMapNamed: 'ENVY/Image Tonel';
 		addLatestConfigurationMapNamed: 'Test ENVY/Image Tonel';
 		addApplicationsFromConfigurationMaps;

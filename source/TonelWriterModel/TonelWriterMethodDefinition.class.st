@@ -105,7 +105,7 @@ TonelWriterMethodDefinition >> isVirtualPragma [
 { #category : 'accessing' }
 TonelWriterMethodDefinition >> methodBody [
 
-	| result body bodyStream messagePattern |
+	| result body bodyStream messagePattern foundFirstChar |
 
 	result :=
 		EsCompiler
@@ -118,14 +118,15 @@ TonelWriterMethodDefinition >> methodBody [
 	messagePattern := result parseTree messagePattern.
 	bodyStream :=
 		(self compiledMethod sourceString
-			copyFrom: (messagePattern sourceEnd + (CldtConstants::LineDelimiter size) + 1)
+			copyFrom: (messagePattern sourceEnd + 1)
 			to: result parseTree sourceEnd)
 				readStream.
 
-	body :=
-		bodyStream
-			skipSeparators;
-			contents.
+
+	[{ Character space. Character tab } includes: bodyStream peek] whileTrue: [bodyStream next].
+	((CldtConstants::LineDelimiter) includes: bodyStream peek) ifTrue: [bodyStream next].
+	bodyStream peek isSeparator ifTrue: [bodyStream next].
+	body := bodyStream upToEnd.
 	^body
 ]
 

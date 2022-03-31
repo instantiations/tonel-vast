@@ -124,6 +124,56 @@ TonelMockA >> withComment [
 ]
 
 { #category : 'Test' }
+TonelMethodWriterTest >> testWriteMethodDefinitionWithCommmentInSelectorLine [
+
+	| definition stream |
+
+	definition :=
+		TonelWriterMethodDefinition
+			uniquelyKnownAs: #withCommentOnSelectorLine
+			in: TonelMockA
+			categorizedAs: 'Accessing'.
+	stream := self newStream.
+	writer write: definition on: stream.
+	self
+		assert: stream contents
+		equals:
+			'
+{ #category : ''Accessing'' }
+TonelMockA >> withCommentOnSelectorLine [
+"This is a mock method being used within the tests of Tonel"
+
+	^''Method with comment on the same line as selector''
+]
+'
+]
+
+{ #category : 'Test' }
+TonelMethodWriterTest >> testWriteMethodDefinitionWithCommmentWithoutExtraLine [
+
+	| definition stream |
+
+	definition :=
+		TonelWriterMethodDefinition
+			uniquelyKnownAs: #withComment
+			in: TonelMockA
+			categorizedAs: 'Accessing'.
+	stream := self newStream.
+	writer write: definition on: stream.
+	self
+		assert: stream contents
+		equals:
+			'
+{ #category : ''Accessing'' }
+TonelMockA >> withComment [
+	"This is a mock method being used within the tests of Tonel"
+
+	^''Method with comment''
+]
+'
+]
+
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWriteMethodDefinitionWithLocalVariable [
 
 	| definition stream |

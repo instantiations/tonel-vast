@@ -54,21 +54,21 @@ TonelReaderClassDefinition class >> name: nameString superclass: superString var
 
 { #category : 'comparing' }
 TonelReaderClassDefinition >> = classDefinition [
+	"Answer whether receiver is equal to classDefinition."
 
-
-	^classDefinition notNil and: [
-		(name = classDefinition name) and: [
-			superclassIdentifier = classDefinition superclassIdentifier and: [
-				category = classDefinition category and: [
-					fieldType = classDefinition fieldType and: [
-						instanceVariables = classDefinition instanceVariables and: [
-							classComment = classDefinition classComment and: [
-								classVariables = classDefinition classVariables and: [
-									classInstanceVariables =
-										classDefinition classInstanceVariables
-											and: [
-												poolDictionaries =
-													classDefinition poolDictionaries]]]]]]]]]
+	^(self class = classDefinition class) and: [
+			(name = classDefinition name) and: [
+				superclassIdentifier = classDefinition superclassIdentifier and: [
+					category = classDefinition category and: [
+						fieldType = classDefinition fieldType and: [
+							instanceVariables = classDefinition instanceVariables and: [
+								classComment = classDefinition classComment and: [
+									classVariables = classDefinition classVariables and: [
+										classInstanceVariables =
+											classDefinition classInstanceVariables
+												and: [
+													poolDictionaries =
+														classDefinition poolDictionaries]]]]]]]]]
 ]
 
 { #category : 'accessing' }
@@ -142,6 +142,20 @@ TonelReaderClassDefinition >> extension [
 TonelReaderClassDefinition >> fieldType [
 
 	^ fieldType ifNil: [ fieldType := 'pointers' ]  "$NON-NLS$"
+]
+
+{ #category : 'comparing' }
+TonelReaderClassDefinition >> hash [
+	"Answer whether receiver is equal to classDefinition."
+
+	^(((((((name hash bitXor: superclassIdentifier hash)
+		bitXor: category hash)
+			bitXor: fieldType hash)
+				bitXor: instanceVariables hash)
+					bitXor: classComment hash)
+						bitXor: classVariables hash )
+							bitXor: classInstanceVariables hash)
+								bitXor: poolDictionaries hash
 ]
 
 { #category : 'testing' }

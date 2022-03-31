@@ -360,7 +360,6 @@ TonelConfigurationMap >> loadWithRequiredMaps [
 
 { #category : 'loading' }
 TonelConfigurationMap >> loadWithRequiredMaps: aBoolean [
-
 	"Load the receiver. And all its required maps first if aBoolean is true.
 	Loading a required map may in turn load other required maps."
 

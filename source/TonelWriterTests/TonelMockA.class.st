@@ -53,6 +53,13 @@ TonelMockA >> withComment [
 ]
 
 { #category : 'Accessing' }
+TonelMockA >> withCommentOnSelectorLine [
+"This is a mock method being used within the tests of Tonel"
+
+	^'Method with comment on the same line as selector'
+]
+
+{ #category : 'Accessing' }
 TonelMockA >> withDenominatorDo: aDyadicBlock [
 
 	^aDyadicBlock value: denominator
