@@ -39,11 +39,30 @@ Starting with VAST 2021 (10.0.0) Tonel comes as a Feature inside the product. Th
 
 ### Installing in VAST 2021
 
-We continue to improve the Tonel support by fixing bugs and adding new features to it, if you want to use the lastest version you can do it by downloading the latest version in this repository into the latest version of VAST 2021 (currently 10.0.2).
+We continue to improve the Tonel support by fixing bugs and adding new features to it, if you want to use the latest version you can do it by downloading the latest version in this repository into the latest version of VAST 2021 (currently 10.0.2).
 
 - Load Tonel VAST Features using `Transcript` -> `Load/Unload Features...`. There you will find two features you can install: `ST: Tonel Support` and `ST:Tonel Support, Testing`.
-- Open Configurations Maps Browser
 - Clone this repository locally using your preferred git tool.
+
+Since there were significant changes in the codebase, the update must be split in sub steps, and do intermediate updates.
+
+#### Update to intermediate version
+- Checkout the commit tagged as `v1.4.2`
+- Open Configurations Maps Browser
+- Right click in the `All names` list, select `Import` -> `Load Configuration Maps from Tonel repository...`
+- Select the `.project` file of the directory you cloned in the step above
+- Select `ENVY/Image Tonel` and/or `Test ENVY/Image Tonel`
+
+You might get an error during the update, since Tonel is modifying itself as it gets loaded.
+If that happens, retry the import.
+
+### Update to latest version
+- Checkout the latest commit (master branch)
+- Open Application Manager
+- Right click in the Applications list, select `Import/Export` -> `Load Applications from Tonel packages...`
+- Select the `.project` file of the directory you cloned in the step above
+- Select `TonelSystemExtensions` and import it
+- Open Configurations Maps Browser
 - Right click in the `All names` list, select `Import` -> `Load Configuration Maps from Tonel repository...`
 - Select the `.project` file of the directory you cloned in the step above
 - Select `ENVY/Image Tonel` and/or `Test ENVY/Image Tonel`
