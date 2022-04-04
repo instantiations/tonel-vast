@@ -125,7 +125,6 @@ TonelTools class >> exportConfigurationMapsNames: anOrderedCollection [
 
 { #category : 'operations' }
 TonelTools class >> exportTonelApplications: aCollection [
-
 	| selectedApps repositoryPath clearSources |
 
 	selectedApps :=

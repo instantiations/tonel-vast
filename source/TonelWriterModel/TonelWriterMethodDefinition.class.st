@@ -123,9 +123,9 @@ TonelWriterMethodDefinition >> methodBody [
 				readStream.
 
 
-	[{ Character space. Character tab } includes: bodyStream peek] whileTrue: [bodyStream next].
-	((CldtConstants::LineDelimiter) includes: bodyStream peek) ifTrue: [bodyStream next].
-	bodyStream peek isSeparator ifTrue: [bodyStream next].
+	[bodyStream atEnd not and: [{ Character space. Character tab } includes: bodyStream peek]] whileTrue: [bodyStream next].
+	(bodyStream atEnd not and: [(CldtConstants::LineDelimiter) includes: bodyStream peek]) ifTrue: [bodyStream next].
+	(bodyStream atEnd not and: [bodyStream peek isSeparator]) ifTrue: [bodyStream next].
 	body := bodyStream upToEnd.
 	^body
 ]

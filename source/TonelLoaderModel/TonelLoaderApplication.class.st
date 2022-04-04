@@ -145,8 +145,7 @@ TonelLoaderApplication >> create [
 		ifFalse: [emApplication := (Smalltalk at: self identifier)]
 ]
 
-{ #category : 'loading',
-  #vaVisibility : 'private' }
+{ #category : 'loading' }
 TonelLoaderApplication >> createApplication [
 	"Create a real Application based on the receiver."
 	

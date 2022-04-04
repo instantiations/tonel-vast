@@ -1,77 +1,77 @@
 [
 	{
 		#conditions : [ ],
-		#ts : 3826174286,
+		#ts : 3826518433,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
 			{
 				#name : 'TonelBaseApp',
-				#versionName : '1.4.7',
-				#ts : 3812608735
+				#versionName : '1c5496a-master',
+				#ts : 3826262502
 			},
 			{
 				#name : 'TonelFileSystem',
-				#versionName : '1.4.7',
-				#ts : 3812609203
+				#versionName : '1c5496a-master',
+				#ts : 3826262502
 			},
 			{
 				#name : 'TonelLoaderInteractiveApp',
-				#versionName : '1.4.9',
-				#ts : 3824381840
+				#versionName : '1c5496a-master',
+				#ts : 3826262522
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : '1.4.9',
-				#ts : 3824364126
+				#versionName : '1c5496a-master',
+				#ts : 3826262510
 			},
 			{
 				#name : 'TonelReaderModel',
-				#versionName : '1.5.1',
-				#ts : 3826106857
+				#versionName : '1c5496a-master',
+				#ts : 3826262507
 			},
 			{
 				#name : 'TonelTools',
-				#versionName : '1.5.2',
-				#ts : 3826171129
+				#versionName : '1.5.3',
+				#ts : 3826518362
 			},
 			{
 				#name : 'TonelWriterModel',
-				#versionName : '1.5.2',
-				#ts : 3826117793
+				#versionName : '1.5.3',
+				#ts : 3826518078
 			}
 		],
 		#name : 'ENVY/Image Tonel',
-		#versionName : '1.5.2'
+		#versionName : '1.5.3'
 	},
 	{
 		#conditions : [ ],
-		#ts : 3826174129,
+		#ts : 3826518422,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
 			{
 				#name : 'EmLibraryToolsApp',
-				#versionName : 'b495 + 68281 b',
-				#ts : 3812609757
+				#versionName : '1c5496a-master',
+				#ts : 3826262522
 			},
 			{
 				#name : 'TonelLoaderTests',
-				#versionName : 'b495 + 68281 b',
-				#ts : 3812609758
+				#versionName : '1c5496a-master',
+				#ts : 3826262546
 			},
 			{
 				#name : 'TonelReaderTests',
-				#versionName : 'b495 + 68281 b',
-				#ts : 3812609758
+				#versionName : '1c5496a-master',
+				#ts : 3826262546
 			},
 			{
 				#name : 'TonelWriterTests',
-				#versionName : '1.5.2',
-				#ts : 3826173175
+				#versionName : '1.5.3',
+				#ts : 3826518082
 			}
 		],
 		#name : 'Test ENVY/Image Tonel',
-		#versionName : '1.5.2'
+		#versionName : '1.5.3'
 	}
 ]
