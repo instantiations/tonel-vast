@@ -239,13 +239,17 @@ TonelWriter >> configurationMaps: anObject [
 TonelWriter >> convertIdentifier: identifier [
 	"Converts identifier <Symbol|String> according to receiver configuration."
 
-	^self identifiersClass = Symbol 
-			ifTrue: [
-				(identifier allSatisfy: [:char | char isAlphaNumeric])
-					ifTrue: [identifier asSymbol printString]
-					ifFalse: ['#', identifier asString printString]] 
-			ifFalse: [identifier asString printString]
-		
+	^String streamContents: [:s | | result |
+		result :=
+			self identifiersClass = Symbol
+				ifTrue: [
+					(identifier allSatisfy: [:char | char isAlphaNumeric])
+						ifTrue: [identifier asSymbol]
+						ifFalse: ['#' , identifier asString]]
+				ifFalse: [identifier asString].
+		(STONWriter on: s)
+			nextPut: result;
+			close]
 ]
 
 { #category : 'configuring' }

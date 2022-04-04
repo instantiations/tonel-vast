@@ -39,6 +39,21 @@ TonelMockA >> privateMethod [
 	^'privateMethod'
 ]
 
+{ #category : 'Not categorized' }
+TonelMockA >> roleAssignmentFromRecord [
+"a misleading name.  ---DZC"
+
+	| roleEntry |
+
+	roleEntry := self recType roleEntryForRole: self role businessEntity: self businessEntity.
+	^roleEntry notNil ifTrue: [ roleEntry ]
+								ifFalse: [ self newRoleAssignments
+												detect: [ :re | (re role = self role) & (re businessEntity = self businessEntity) ]
+												ifNone: [ nil. ].
+											].
+		
+]
+
 { #category : 'Evaluating' }
 TonelMockA >> value [
 
@@ -84,8 +99,13 @@ TonelMockA >> withModeThanOneLine [
 ]
 
 { #category : 'Accessing',
- #vaCategories : ['Accessing','Evaluating','Private'] }
+ #vaCategories : ['Accessing','Evaluating','Good\'ol quoted category','Private'] }
 TonelMockA >> withMultipleCategories [
 
 	^ 'withMultipleCategories'
+]
+
+{ #category : 'Accessing' }
+TonelMockA >> withNoBody [
+
 ]

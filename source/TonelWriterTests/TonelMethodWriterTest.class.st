@@ -232,6 +232,54 @@ TonelMockA >> withModeThanOneLine [
 ]
 
 { #category : 'Test' }
+TonelMethodWriterTest >> testWriteMethodDefinitionWithMultipleCategories [
+
+	| definition stream |
+
+	definition :=
+		TonelWriterMethodDefinition
+			uniquelyKnownAs: #withMultipleCategories
+			in: TonelMockA
+			categorizedAs: 'Accessing'.
+	stream := self newStream.
+	writer write: definition on: stream.
+	self
+		assert: stream contents
+		isEqualSkippingSeparatorsTo:
+			'
+{ #category : ''Accessing'',
+	#vaCategories : [''Accessing'', ''Evaluating'', ''Good\''ol quoted category'', ''Private''] }
+TonelMockA >> withMultipleCategories [
+
+	^ ''withMultipleCategories''
+]
+'
+]
+
+{ #category : 'Test' }
+TonelMethodWriterTest >> testWriteMethodDefinitionWithNoBody [
+
+	| definition stream |
+
+	definition :=
+		TonelWriterMethodDefinition
+			uniquelyKnownAs: #withNoBody
+			in: TonelMockA
+			categorizedAs: 'Accessing'.
+	stream := self newStream.
+	writer write: definition on: stream.
+	self
+		assert: stream contents
+		equals:
+			'
+{ #category : ''Accessing'' }
+TonelMockA >> withNoBody [
+
+]
+'
+]
+
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWritePrivateMethodDefinition [
 
 	| definition stream |
