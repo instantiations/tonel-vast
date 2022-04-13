@@ -4,6 +4,15 @@ Class {
 	#category : 'TonelWriterTests'
 }
 
+{ #category : 'Initialization' }
+TonelMethodWriterTest >> expectedFailures [
+	"Answer a collection of selectors in a test that are expected to fail.
+	 This provides the capability to mask expected failures so they do not
+	 need to be examined on each test run."
+	
+	^ #(testWriteMethodDefinitionWithCommmentInSelectorLine)
+]
+
 { #category : 'Utility',
   #vaVisibility : 'private' }
 TonelMethodWriterTest >> newStream [
@@ -125,6 +134,8 @@ TonelMockA >> withComment [
 
 { #category : 'Test' }
 TonelMethodWriterTest >> testWriteMethodDefinitionWithCommmentInSelectorLine [
+	"This test might require modifying the source of the method TonelMockA>>#withCommentOnSelectorLine, 
+	 because it is automatically corrected when loaded back from a Tonel repository."
 
 	| definition stream |
 

@@ -45,5 +45,7 @@ TonelEmConfigurationMapReference >> loadWithRequiredMaps: aBoolean [
 				'Could not find configuration map <1p> <2p>'
 					expandMacrosWith: self name
 					with: self versionName)].
-	emConfigMap loadWithRequiredMaps.
+	emConfigMap isLoaded ifFalse: [
+		emConfigMap loadWithRequiredMaps
+	].
 ]
