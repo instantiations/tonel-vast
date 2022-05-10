@@ -78,6 +78,13 @@ TonelReaderPackageDefinition >> extensions [
 	^extensions ifNil: [extensions := Dictionary new]
 ]
 
+{ #category : 'testing' }
+TonelReaderPackageDefinition >> hasPrerequisitesMetadata [
+	"Answers whether receiver has metadata describing the app prerequisites."
+
+	^self metadata includesKey: #vaPrerequisites
+]
+
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelReaderPackageDefinition >> initializeFromMetadata: aDictionary [

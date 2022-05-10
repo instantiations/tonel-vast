@@ -162,7 +162,7 @@ TonelLoaderSubApplication >> checkClassExtensionsExcepting: classNames [
 				ifNil: [ 
 					self error: (TonelMsg03 bindWith: self name with: extClass name) ] 
 				ifNotNil: [ :rootClass |
-					self loader addPrerequisite: rootClass controller rootApplication to: self] ] ].
+					self loader addMissingPrerequisite: rootClass controller rootApplication to: self] ] ].
 ]
 
 { #category : 'loading' }
@@ -175,7 +175,7 @@ TonelLoaderSubApplication >> checkSuperclassesExcepting: classDefinitions [
 			  emRootApp |
 			emRootApp := rootClass controller rootApplication.
 			emRootApp ~= (Smalltalk classAt: self rootTonelApplication name asSymbol)
-				ifTrue: [self loader addPrerequisite: emRootApp to: self]]].
+				ifTrue: [self loader addMissingPrerequisite: emRootApp to: self]]].
 
 	self subApplications
 		do: [:tonelSubApp | tonelSubApp checkSuperclassesExcepting: classDefinitions]

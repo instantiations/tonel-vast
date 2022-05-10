@@ -64,16 +64,19 @@ TonelLoader class >> settings [
 
 { #category : 'accessing' }
 TonelLoader >> addLoadedApplication: aTonelApplication [
+	"Adds aTonelApplication to the list of loaded applications of receiver.
+	 It also replaces the prerequisites of receiver applications to point to the 
+	 loaded Application instead of aTonelApplication."
 
 	self loadedApplications add: aTonelApplication.
 	self updatePrerequisitesFrom: aTonelApplication
 ]
 
 { #category : 'resolving' }
-TonelLoader >> addPrerequisite: emApplication to: tonelApplication [
+TonelLoader >> addMissingPrerequisite: emApplication to: tonelApplication [
 	"Adds emApplication as a prerequisite of tonelApplication."
 
-	self prerequisitesStrategy addPrerequisite: emApplication to: tonelApplication
+	self prerequisitesStrategy addMissingPrerequisite: emApplication to: tonelApplication
 ]
 
 { #category : 'strategies-convenience' }

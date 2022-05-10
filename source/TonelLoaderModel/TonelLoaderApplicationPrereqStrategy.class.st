@@ -2,16 +2,47 @@ Class {
 	#name : 'TonelLoaderApplicationPrereqStrategy',
 	#superclass : 'TonelLoaderStrategy',
 	#instVars : [
-		'fixesMismatchs'
+		'fixesMismatchs',
+		'addsMissingPrerequisites'
 	],
 	#category : 'TonelLoaderModel'
 }
 
 { #category : 'api' }
-TonelLoaderApplicationPrereqStrategy >> addPrerequisite: emApplication to: tonelApplication [
+TonelLoaderApplicationPrereqStrategy >> addMissingPrerequisite: emApplication to: tonelApplication [
 	"Add emApplication as a prerequisite to tonelApplication."
 
-	tonelApplication addPrerequisite: emApplication
+	self addsMissingPrerequisites ifTrue: [tonelApplication addPrerequisite: emApplication]
+]
+
+{ #category : 'configuring' }
+TonelLoaderApplicationPrereqStrategy >> addsMissingPrerequisites [
+	"Answers whether missing prereqs will be added to a loaded application
+	 if one of the defined classes is a subclass of a class in an application 
+	 not defined as prerequisite, or if it extends a class in an aplication not 
+	 defined as prerequisite."
+
+	^addsMissingPrerequisites ifNil: [addsMissingPrerequisites := self computeAddsMissingPrerequisites]
+]
+
+{ #category : 'configuring' }
+TonelLoaderApplicationPrereqStrategy >> addsMissingPrerequisites: aBoolean [
+	"Sets whether missing prereqs will be added to a loaded application
+	 if one of the defined classes is a subclass of a class in an application 
+	 not defined as prerequisite, or if it extends a class in an aplication not 
+	 defined as prerequisite."
+
+	addsMissingPrerequisites := aBoolean
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelLoaderApplicationPrereqStrategy >> computeAddsMissingPrerequisites [
+		"By default we add all missing prerequisites."
+	
+		^true
+
+
 ]
 
 { #category : 'api' }
