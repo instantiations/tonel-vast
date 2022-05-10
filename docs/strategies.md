@@ -35,7 +35,6 @@ This strategy uses the prerequisites specified in the metadata plus the ones com
 aTonelLoader useComputedPrerequisites
 ```
 
-
 ### `TonelLoaderApplicationPrereqsTableStrategy`
 
 This strategy allows to specify mappings between a Tonel package name and ENVY applications that will be set as application prerequisites.
@@ -60,7 +59,31 @@ aTonelLoader useApplicationPrerequisitesTable
 
 In the example above, `Seaside-Core` should  only depend on `GreaseCoreApp` since this one already depends on `Kernel`, and should not depend on `SUnit` because there is no real dependency to it. So enabling this options will remove redundant or unnecessary  dependencies.
 
+#### Missing prerequisites
 
+The opposite of having redundant prerequisites is the case where the loaded package has no prerequisites defined in the `package.st` file.
+
+If you add extending or creating a subclass of a class not defined in the application being loaded, 
+you need to have the application where that extended/subclassed app is defined as a prerequisite of
+the app you're loading. 
+
+This mostly happens when the package comes from a Smalltalk dialect other than VAST, because
+when you export from VAST it will add the `#vaPrerequisites` metadata to the `package.st` file.
+
+So if you want to control whether to dynamically add missing prerequisites, the prerequisites strategy
+provides a setting named `addsMissingPrerequisites` that you can set to either true or false. 
+
+If you don't define such setting it will compute its default value based on whether the application's
+package definition (`package.st` file) contains or not the `#vaPrerequisites` metadata. If it contains
+such metadata, it means that the prerequisites were already computed when writing the file, so the 
+loader won't add them when loading back, so the setting will compute to false.
+
+
+In case you need to define or override such setting you can do it with the following expression:
+
+```smalltalk
+aTonelLoader prerequisitesStrategy addsMissingPrerequisites: true
+```
 
 ## Version strategy
 
