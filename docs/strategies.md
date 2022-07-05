@@ -11,6 +11,7 @@ There are strategies for the following:
 * Application naming
 * SubApplication mapping
 * Versioning
+* Configuration Maps Resolution
 
 By "interactive" whe mean involving the GUI, so, it is opening a dialog, a prompt of some sort, etc. While by "unattended" we mean that if there is a decision to be taken, it will be programmed in the strategy without requiring the display of any GUI element.
 
@@ -267,6 +268,10 @@ aTonelLoader usePackageDependenciesTable
 	at: 'Grease-Tests-Core' add: 'Grease-Core'; "adding one"
 	at: 'Grease-Core' put: #('Grease-VAST-Core'); "defining all at once".
 ```
+
+## Configuration Maps resolution
+
+* See specific [Configuration maps documentation](configmaps.md).
 
 ## TonelReader options
 ### Package filtering

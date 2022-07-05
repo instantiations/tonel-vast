@@ -174,3 +174,67 @@ This setting will be honored only for those configuration maps that are "referen
 E.g. If you have `Config Map A` and `Config Map B` in the repository, and `Config Map B` has `Config Map A` and `Config Map C` as prerequisites, if you setup the loader to not load maps prerequisites, when loading `Config Map B` it still will load `Config Map A`, because it is defined in the same repository.
 
 
+## Configuration Maps resolution
+
+When you define a Configuration Map it will likely have required maps, and those maps are defined within a loading condition (`true` by default in  most cases), and each prerequisite will be reference by its timestamp (the internal ID used by the ENVY Library).
+
+When working using file based repositories it's also very likely that different developers will have the same _"code"_ (Applications and Configuration Maps) but with different timestamps, so some prerequisites will be shown as _`missing`_ in the Configurations Maps Browser.
+
+To overcome the situation described above the Tonel Tools provide different strategies to resolve the referenced Configuration Maps when looking for a configuration map.
+
+Taking the example above, we extract this small part related with the definition of a required map (`z.ST: STON Support`):
+
+```smalltalk
+	#requiredMaps : [
+		{
+			#name : 'z.ST: STON Support',
+			#versionName : 'V 9.2.1  [457]',
+			#ts : 3761144594
+		}
+	]
+```
+
+In the required maps definition, you can see that each reference includes its name, its version name and its timestamp.
+
+
+### `TonelLoaderConfigMapResolverByVersion` (default)
+
+This strategy will attempt to find and load a configuration map that matches both the timestamp or version name (if no matching timestamp is found).
+
+If you want the resolution to match only timestamp, then you can do:
+
+```smalltalk
+loader := TonelLoader readFromPath: (CfsPath named: '...').
+loader
+	configMapResolver beExact; "<< this message"
+	loadAllConfigurationMaps.
+```
+
+If no configuration map is found, then an exception will be thrown.
+
+
+### `TonelLoaderConfigMapResolverLatest`
+
+This strategy will load the latest configuration map available in the library that matches the name of the required map. It works in an optimistic way and it is very convenient during development, since most configuration maps are backwards compatible, so for instance in the example above loading `z.ST: STON Support` in its latest version (e.g. `11.0.0`) will not break code developed with the previous version (e.g. `9.2.2`).
+
+To enable this configuration map you can do the following:
+
+```smalltalk
+loader := TonelLoader readFromPath: (CfsPath named: '...').
+loader
+	resolveToLatestConfigMaps; "<< this message"
+	loadAllConfigurationMaps.
+```
+
+Since it will bring the very latest edition of the config map, you can restrict it to only look for editions with a version name by doing:
+
+
+```smalltalk
+loader := TonelLoader readFromPath: (CfsPath named: '...').
+loader resolveToLatestConfigMaps.
+
+loader configMapResolver versionedEditionsOnly: true.
+loader loadAllConfigurationMaps.
+```
+
+Which is very useful if you have a "stable" version and one or more open editions created after it.
