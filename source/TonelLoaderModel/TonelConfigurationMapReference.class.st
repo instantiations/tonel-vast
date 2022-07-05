@@ -37,6 +37,20 @@ TonelConfigurationMapReference >> name: anObject [
 ]
 
 { #category : 'accessing' }
+TonelConfigurationMapReference >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream
+		nextPutAll: '[';
+		nextPutAll: self name printString;
+		space;
+		nextPutAll: self versionName printString;
+		space;
+		nextPutAll: self timeStamp printString;
+		nextPutAll: ']'
+]
+
+{ #category : 'accessing' }
 TonelConfigurationMapReference >> timeStamp [
 	^timeStamp
 ]

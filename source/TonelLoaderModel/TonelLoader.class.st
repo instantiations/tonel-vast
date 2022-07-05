@@ -64,19 +64,16 @@ TonelLoader class >> settings [
 
 { #category : 'accessing' }
 TonelLoader >> addLoadedApplication: aTonelApplication [
-	"Adds aTonelApplication to the list of loaded applications of receiver.
-	 It also replaces the prerequisites of receiver applications to point to the 
-	 loaded Application instead of aTonelApplication."
 
 	self loadedApplications add: aTonelApplication.
 	self updatePrerequisitesFrom: aTonelApplication
 ]
 
 { #category : 'resolving' }
-TonelLoader >> addMissingPrerequisite: emApplication to: tonelApplication [
+TonelLoader >> addPrerequisite: emApplication to: tonelApplication [
 	"Adds emApplication as a prerequisite of tonelApplication."
 
-	self prerequisitesStrategy addMissingPrerequisite: emApplication to: tonelApplication
+	self prerequisitesStrategy addPrerequisite: emApplication to: tonelApplication
 ]
 
 { #category : 'strategies-convenience' }
@@ -189,6 +186,17 @@ TonelLoader >> computeSettings [
 	^self class settings copyFor: self
 ]
 
+{ #category : 'strategies' }
+TonelLoader >> configMapResolver [
+	^self settings configMapResolver
+]
+
+{ #category : 'strategies' }
+TonelLoader >> configMapResolver: aTonelLoaderConfigMapResolver [
+
+	self settings configMapResolver: (aTonelLoaderConfigMapResolver setLoader: self)
+]
+
 { #category : 'lookup' }
 TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: versionName [
 	"Looks into the Configuration Maps of receiver for a configuration map
@@ -213,12 +221,13 @@ TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: ver
 { #category : 'lookup',
   #vaVisibility : 'private' }
 TonelLoader >> configurationMapNamed: aString ts: anEmTimeStamp versionName: versionName ifNone: aBlock [
-	"Looks into the Configuration Maps of receiver for a configuration map
-	 that matches name, timestamp and version name, evaluate aBlock if there is none." 
+	"Delegates into receiver config maps resolver to find one that matches the passed arguments,
+	 evaluate aBlock if there is none."
 
-	^self configurationMaps
-		detect: [:one |
-			one name = aString and: [one timeStamp = anEmTimeStamp or: [one versionName = versionName]]]
+	^self configMapResolver
+		configurationMapNamed: aString
+		ts: anEmTimeStamp
+		versionName: versionName
 		ifNone: aBlock
 ]
 
@@ -588,6 +597,11 @@ TonelLoader >> repositoryPath [
 TonelLoader >> reset [
 
 	loadedApplications := loadedConfigurationMaps := nil
+]
+
+{ #category : 'strategies-convenience' }
+TonelLoader >> resolveToLatestConfigMaps [
+	self configMapResolver: (TonelLoaderConfigMapResolverLatest for: self)
 ]
 
 { #category : 'accessing' }

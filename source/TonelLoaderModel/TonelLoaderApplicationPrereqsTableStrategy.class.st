@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : 'api' }
-TonelLoaderApplicationPrereqsTableStrategy >> addMissingPrerequisite: emApplication to: tonelApplication [
+TonelLoaderApplicationPrereqsTableStrategy >> addPrerequisite: emApplication to: tonelApplication [
 	"Add emApplication as a prerequisite to tonelApplication.
 	 NOTE: Since we base prerequisites on a table, we only won't add anything that is not in the table."
 	

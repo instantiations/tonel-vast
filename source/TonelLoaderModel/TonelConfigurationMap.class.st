@@ -433,12 +433,7 @@ TonelConfigurationMap >> selectPrerequisiteEditionFor: reqMap [
 				versionName: reqMap versionName
 				ifNone: [nil]) 
 					ifNotNil: [:tonelConfigMap | tonelConfigMap emConfigMapEdition].
-	^loadedConfigMap ifNil: 
-			[(EmConfigurationMap editionsFor: reqMap name) detect: 
-					[:one | 
-					one timeStamp = reqMap timeStamp 
-						or: [one versionName = reqMap versionName]]
-				ifNone: [EmConfigurationMap named: reqMap name timeStamp: reqMap timeStamp]]
+	^loadedConfigMap ifNil: [self loader configMapResolver resolveReference: reqMap]
 ]
 
 { #category : 'accessing' }

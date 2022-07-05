@@ -24,22 +24,6 @@ TonelLoaderApplication >> accountForPoolDictionaryClasses [
 ]
 
 { #category : 'querying' }
-TonelLoaderApplication >> addAllDependentsInto: aCollection [
-	"Adds all the dependent applications of receiver into aCollection,
-	 ignore them if they're already included in that collection.
-	 	 
-	 Answers:
-		<Collection>
-	 "
-
-	self dependentApplications do: [:each |
-		(aCollection includes: each)
-			ifFalse: [
-				aCollection add: each.
-				each addAllDependentsInto: aCollection]]
-]
-
-{ #category : 'querying' }
 TonelLoaderApplication >> allDefinedClassNames [
 	
 	^self allDefinedClasses keys
@@ -47,16 +31,25 @@ TonelLoaderApplication >> allDefinedClassNames [
 
 { #category : 'querying' }
 TonelLoaderApplication >> allDependentApplications [
-		"Return the complete set of applications which are dependent
-		 on the receiver starting with its direct dependents. Sort them
-		 alphabetically; then add all of their dependents (sorted
-		 alphabetically and so on). No dependent may appear before
-		 one of its prerequisites."
+	"Return the complete set of applications which are dependent
+	 on the receiver starting with its direct dependents. Sort them
+	 alphabetically; then add all of their dependents (sorted
+	 alphabetically and so on). No dependent may appear before
+	 one of its prerequisites."
 
-	| result |
-	result := Set new.
-	self addAllDependentsInto: result.
-	^(result asSortedCollection: Class sortBlock) asOrderedCollection
+	| result new |
+
+	result := OrderedCollection new.
+	new := self dependentApplications.
+	[ new isEmpty ] whileFalse: [ | temp |
+		temp := Set new.
+		new do: [ :app |
+			result remove: app ifAbsent: [ ].
+			app dependentApplications do: [ :dep |
+				temp add: dep ] ].
+		result addAll: new. "make them be at the end"
+		new := temp asSortedCollection: Class sortBlock ].
+	^ result
 ]
 
 { #category : 'accessing' }
@@ -255,7 +248,7 @@ TonelLoaderApplication >> hasSamePrerequisitesAs: anApplication [
 	 NOTE: Comparison is based only on the names of prerequisites."
 
 	^(anApplication prerequisites collect: [:each | each name asSymbol]) asSortedCollection =
-		(self prerequisites collect: [:each | each name asSymbol]) asSortedCollection
+		(self computePrerequisites collect: [:each | each name asSymbol]) asSortedCollection
 ]
 
 { #category : 'testing' }

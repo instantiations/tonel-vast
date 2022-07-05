@@ -83,6 +83,18 @@ TonelLoaderSettings >> compilerWarningLevel: aLevel [
 	compilerWarningLevel := aLevel
 ]
 
+{ #category : 'strategies' }
+TonelLoaderSettings >> configMapResolver [
+
+	^self strategyAt: #configMapResolver ifAbsentPut: [TonelLoaderConfigMapResolverByVersion new]
+]
+
+{ #category : 'strategies' }
+TonelLoaderSettings >> configMapResolver: aTonelLoaderConfigMapResolver [
+
+	self strategyAt: #configMapResolver put:  aTonelLoaderConfigMapResolver
+]
+
 { #category : 'copying' }
 TonelLoaderSettings >> copyFor: aTonelLoader [
 
@@ -128,6 +140,7 @@ TonelLoaderSettings >> ensureStrategies [
 	self prerequisitesStrategy.
 	self versionStrategy.
 	self subapplicationsStrategy.
+	self configMapResolver.
 
 	
 ]

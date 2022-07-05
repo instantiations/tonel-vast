@@ -37,15 +37,8 @@ TonelEmConfigurationMapReference >> loadWithRequiredMaps: aBoolean [
 	Loading a required map may in turn load other required maps."
 
 	| emConfigMap |
+
 	aBoolean ifFalse: [^self].
-	emConfigMap := (EmConfigurationMap editionsFor: self name)
-		detect: [:one | self hasSameVersionAs: one]
-		ifNone: [
-			TonelLoaderError signal: (
-				'Could not find configuration map <1p> <2p>'
-					expandMacrosWith: self name
-					with: self versionName)].
-	emConfigMap isLoaded ifFalse: [
-		emConfigMap loadWithRequiredMaps
-	].
+	emConfigMap := self loader configMapResolver resolveReference: self.
+	emConfigMap isLoaded ifFalse: [emConfigMap loadWithRequiredMaps]
 ]
