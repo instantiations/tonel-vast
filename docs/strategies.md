@@ -362,6 +362,24 @@ So to avoid having file differences when working on code that share a common rep
 writer := TonelWriter new.
 writer identifiersClass: Symbol.
 ```
+### Format convenience settings
+
+#### _"Canonical"_ format
+
+If your objective is to export code to be used in another dialect, you can set different options as a whole like [converting shared pools](sharedpools.md) to `SharedPools` subclasses, not writing ENVY Application classes, using the Monticello extension category (as in `*PackageName` category) and will flatten SubApplications (if any) as package tags.
+
+```smalltalk
+writer := TonelWriter new.
+writer beCanonical.
+```
+#### _"VAST Only"_ format
+
+If the purpose of using Tonel Tools in VAST is to export code to files to be loaded back into VAST, then you can optimize a lot of settings by configuring the writer to write the files to be read only by VAST's Tonel Tools.
+
+```smalltalk
+writer := TonelWriter new.
+writer beVASTOnly.
+```
 
 
 # Common recipes

@@ -2,8 +2,7 @@ Extension {
 	#name : 'Object'
 }
 
-{ #category : '*TonelSubapplication',
- #vaCategories : ['Not categorized'] }
+{ #category : 'Not categorized' }
 Object >> subExtensionForTest [
 
 	^'sub Method extension for testing TonelWriter'

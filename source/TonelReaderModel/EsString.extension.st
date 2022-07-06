@@ -2,8 +2,7 @@ Extension {
 	#name : 'EsString'
 }
 
-{ #category : '*TonelReaderModel',
- #vaCategories : ['Tonel-Iterating'] }
+{ #category : 'Tonel-Iterating' }
 EsString >> lineIndicesDo: aBlock [
 	"execute aBlock with 3 arguments for each line:
 	- start index of line
@@ -39,8 +38,7 @@ EsString >> lineIndicesDo: aBlock [
 					nextCR := self indexOf: cr startingAt: start ]]]
 ]
 
-{ #category : '*TonelReaderModel',
- #vaCategories : ['Tonel-Iterating'] }
+{ #category : 'Tonel-Iterating' }
 EsString >> tonelWithLineEndings: lineEndingString [
 
 	| stream |

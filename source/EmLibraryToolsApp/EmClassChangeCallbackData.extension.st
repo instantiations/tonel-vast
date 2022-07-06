@@ -2,8 +2,7 @@ Extension {
 	#name : 'EmClassChangeCallbackData'
 }
 
-{ #category : '*EmLibraryToolsApp',
- #vaCategories : ['EM-Internal'] }
+{ #category : 'EM-Internal' }
 EmClassChangeCallbackData >> asEmEvent [
 
 	(self changeType bitAnd: EMCAdded) == EMCAdded

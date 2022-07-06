@@ -84,7 +84,7 @@ TonelMethodWriter >> write: aMethodDefinition on: aWriteStream [
   #vaVisibility : 'private' }
 TonelMethodWriter >> writeCategoryOf: aMethodDefinition on: aWriteStream [
 
-	aWriteStream << space << '#category : ' << (self convertIdentifier: aMethodDefinition category)
+	aWriteStream << space << '#category : ' << (self convertIdentifier: (aMethodDefinition categoryFor: self parent))
 ]
 
 { #category : 'writing',
@@ -93,15 +93,18 @@ TonelMethodWriter >> writeVACategoriesOf: aMethodDefinition on: aWriteStream [
 
 	| categories |
 
-	aMethodDefinition hasDefaultVACategories
-		ifFalse: [
-			aWriteStream << ',' << lineDelimiter << space << '#vaCategories : '.
-			categories := aMethodDefinition allCategories asSortedCollection.
-			aWriteStream nextPut: $[.
-			categories
-				do: [:each | aWriteStream nextPutAll: (self convertIdentifier: each)]
-				separatedBy: [aWriteStream nextPut: $,].
-			aWriteStream nextPut: $]]
+	((aMethodDefinition hasDefaultVACategories not and: [aMethodDefinition isMonticelloExtension not])
+		or: [
+			aMethodDefinition hasDefaultVACategories and: [
+				aMethodDefinition isMonticelloExtension and: [self parent useMonticelloExtensions]]])
+					ifTrue: [
+						aWriteStream << ',' << lineDelimiter << space << '#vaCategories : '.
+						categories := aMethodDefinition allCategories asSortedCollection.
+						aWriteStream nextPut: $[.
+						categories
+							do: [:each | aWriteStream nextPutAll: (self convertIdentifier: each)]
+							separatedBy: [aWriteStream nextPut: $,].
+						aWriteStream nextPut: $]]
 
 
 ]

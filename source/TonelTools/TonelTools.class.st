@@ -88,6 +88,17 @@ TonelTools class >> addToNamesMenu: aMenu browser: aBrowser [
 			menu subMenu addLineAfter: #exportTonelConfigMaps]
 ]
 
+{ #category : 'convenience' }
+TonelTools class >> configurationMapNamed: aString [
+
+	| editions |
+
+	editions := (EmConfigurationMap editionsFor: aString).
+	^editions
+		detect: [:one | one isLoaded]
+		ifNone: [editions detect: [:one | one areApplicationsInTheImage]]
+]
+
 { #category : 'Not categorized',
   #vaVisibility : 'private' }
 TonelTools class >> defaultToolsRepositoryPath [
@@ -167,11 +178,11 @@ TonelTools class >> exportTonelToolsTo: aCfsPath [
 
 	TonelWriter new
 		autoLoad: false;
-		addLatestConfigurationMapNamed: 'ENVY/Image Tonel';
-		addLatestConfigurationMapNamed: 'Test ENVY/Image Tonel';
+		addConfigurationMap: (self configurationMapNamed: 'ENVY/Image Tonel') force: true;
+		addConfigurationMap: (self configurationMapNamed: 'Test ENVY/Image Tonel') force: true;
 		addApplicationsFromConfigurationMaps;
+		beVASTOnly;
 		writeProjectInto: aCfsPath
-
 ]
 
 { #category : 'operations' }

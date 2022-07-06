@@ -2,15 +2,13 @@ Extension {
 	#name : 'EmStandardAccessor'
 }
 
-{ #category : '*EmLibraryToolsApp',
- #vaCategories : ['EM-Internal'] }
+{ #category : 'EM-Internal' }
 EmStandardAccessor >> isLoggingAccessor [
 
 	^false
 ]
 
-{ #category : '*EmLibraryToolsApp',
- #vaCategories : ['initializing'] }
+{ #category : 'initializing' }
 EmStandardAccessor >> monitor [
 
 	^EmMonitor default

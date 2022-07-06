@@ -2,8 +2,7 @@ Extension {
 	#name : 'TonelReader'
 }
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['Convenience'] }
+{ #category : 'Convenience' }
 TonelReader >> createLoader [
 	
 	^TonelLoader on: self

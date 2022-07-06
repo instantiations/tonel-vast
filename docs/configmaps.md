@@ -176,9 +176,9 @@ E.g. If you have `Config Map A` and `Config Map B` in the repository, and `Confi
 
 ## Configuration Maps resolution
 
-When you define a Configuration Map it will likely have required maps, and those maps are defined within a loading condition (`true` by default in  most cases), and each prerequisite will be reference by its timestamp (the internal ID used by the ENVY Library).
+When you define a Configuration Map it will likely have required maps, and those maps are defined within a loading condition (`true` by default in  most cases), and each required map will be referenced by its timestamp (the internal ID used by the ENVY Library).
 
-When working using file based repositories it's also very likely that different developers will have the same _"code"_ (Applications and Configuration Maps) but with different timestamps, so some prerequisites will be shown as _`missing`_ in the Configurations Maps Browser.
+When working using file based repositories it's also very likely that different developers will have the same _"code"_ (Applications and Configuration Maps) but with different timestamps, so some required maps will be shown as _`missing`_ in the Configurations Maps Browser.
 
 To overcome the situation described above the Tonel Tools provide different strategies to resolve the referenced Configuration Maps when looking for a configuration map.
 

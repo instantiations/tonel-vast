@@ -2,8 +2,7 @@ Extension {
 	#name : 'SubApplication'
 }
 
-{ #category : '*TonelWriterModel',
- #vaCategories : ['Not categorized'],
+{ #category : 'Not categorized',
   #vaVisibility : 'private' }
 SubApplication class >> computeTonelPackageTag [
 	"Private - Computes the receiver package Tag.
@@ -20,8 +19,7 @@ SubApplication class >> computeTonelPackageTag [
 		ifFalse: [self name]
 ]
 
-{ #category : '*TonelWriterModel',
- #vaCategories : ['Tonel-Metadata'],
+{ #category : 'Tonel-Metadata',
   #vaVisibility : 'private' }
 SubApplication class >> tonelPackageName [
 
@@ -30,8 +28,7 @@ SubApplication class >> tonelPackageName [
 		ifFalse: [self name asString]
 ]
 
-{ #category : '*TonelWriterModel',
- #vaCategories : ['Not categorized'],
+{ #category : 'Not categorized',
   #vaVisibility : 'private' }
 SubApplication class >> tonelPackageTag [
 

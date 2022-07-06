@@ -2,8 +2,7 @@ Extension {
 	#name : 'EsString'
 }
 
-{ #category : '*TonelReaderTests',
- #vaCategories : ['Converting'] }
+{ #category : 'Converting' }
 EsString >> normalizedLineDelimiter [
 
   ^(String streamContents: [:outputStream | 

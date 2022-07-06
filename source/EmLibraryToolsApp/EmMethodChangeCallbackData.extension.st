@@ -2,8 +2,7 @@ Extension {
 	#name : 'EmMethodChangeCallbackData'
 }
 
-{ #category : '*EmLibraryToolsApp',
- #vaCategories : ['EM-Internal'] }
+{ #category : 'EM-Internal' }
 EmMethodChangeCallbackData >> asEmEvent [
 
 	| class methodTs |

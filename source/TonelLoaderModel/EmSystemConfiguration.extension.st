@@ -2,8 +2,7 @@ Extension {
 	#name : 'EmSystemConfiguration'
 }
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['EM-Internal'] }
+{ #category : 'EM-Internal' }
 EmSystemConfiguration >> defaultApplication: anApplication during: aBlock [
 
 	| previousDefault |

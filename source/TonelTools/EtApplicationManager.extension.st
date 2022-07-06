@@ -2,8 +2,7 @@ Extension {
 	#name : 'EtApplicationManager'
 }
 
-{ #category : '*TonelTools',
- #vaCategories : ['operations'] }
+{ #category : 'operations' }
 EtApplicationManager >> exportTonelApplications [
 	
 	TonelTools exportTonelApplications: self selectedApplications

@@ -2,16 +2,14 @@ Extension {
 	#name : 'TonelReaderAbstractClassDefinition'
 }
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['accessing'],
+{ #category : 'accessing',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> concreteClassIn: anApp [
 
 	self subclassResponsibility 
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading-changes'],
+{ #category : 'loading-changes',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> deleteRemovedClassMethodsFrom: aClass in: anApp [
 
@@ -29,8 +27,7 @@ TonelReaderAbstractClassDefinition >> deleteRemovedClassMethodsFrom: aClass in: 
 		do: [:compiledMethod | self removeCompiledMethod: compiledMethod from: anApp]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading-changes'],
+{ #category : 'loading-changes',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> deleteRemovedInstanceMethodsFrom: aClass in: anApp [
 
@@ -44,8 +41,7 @@ TonelReaderAbstractClassDefinition >> deleteRemovedInstanceMethodsFrom: aClass i
 				ifTrue: [self removeCompiledMethod: compiledMethod from: anApp]]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading-changes'],
+{ #category : 'loading-changes',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp using: aLoader [
 
@@ -61,8 +57,7 @@ TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp using: aLo
 
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['testing'] }
+{ #category : 'testing' }
 TonelReaderAbstractClassDefinition >> hasChangesIn: emAppOrSubApp [
 	"Answer whether receiver has changes considering it was 
 	 defined in emAppOrSubApp."
@@ -83,16 +78,14 @@ TonelReaderAbstractClassDefinition >> hasChangesIn: emAppOrSubApp [
 	^hasChanges
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['testing'],
+{ #category : 'testing',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> hasChangesIn: anApp comparedTo: aClass [
 
 	self subclassResponsibility
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['testing'],
+{ #category : 'testing',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> hasClassMethodsRemovedFrom: aClass in: anApp [
 	"Answer whether receiver has class methods removed from aClass
@@ -105,8 +98,7 @@ TonelReaderAbstractClassDefinition >> hasClassMethodsRemovedFrom: aClass in: anA
 					compiledMethod selector = anMCMethod selector ] ] ] ]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['testing'],
+{ #category : 'testing',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> hasInstanceMethodsRemovedFrom: aClass in: emAppOrSubapp [
 
@@ -117,16 +109,14 @@ TonelReaderAbstractClassDefinition >> hasInstanceMethodsRemovedFrom: aClass in: 
 					compiledMethod selector = aTonelMethod selector ] ] ] ]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['testing'],
+{ #category : 'testing',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> hasMethodsRemovedFrom: aClass in: emAppOrSubApp [
 	^(self hasInstanceMethodsRemovedFrom: aClass in: emAppOrSubApp)
 		or: [self hasClassMethodsRemovedFrom: aClass in: emAppOrSubApp]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['testing'] }
+{ #category : 'testing' }
 TonelReaderAbstractClassDefinition >> isArtificiallyCreatedMethod: aCompiledMethod inApp: emApplication [
 	"Answer whether aCompiledMethod was artificially created for emApplication.
 	 
@@ -149,8 +139,7 @@ TonelReaderAbstractClassDefinition >> isArtificiallyCreatedMethod: aCompiledMeth
 	^false
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading'] }
+{ #category : 'loading' }
 TonelReaderAbstractClassDefinition >> loadDeclarationMethodsInto: anApp using: aTonelLoader [
 	"Load declaration methods (as in pragma declarations) into an App
 	 using aTonelLoader."
@@ -165,8 +154,7 @@ TonelReaderAbstractClassDefinition >> loadDeclarationMethodsInto: anApp using: a
 				using: aTonelLoader]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading'] }
+{ #category : 'loading' }
 TonelReaderAbstractClassDefinition >> loadInto: anApp using: appLoader [
 	"Loads receiver into anApp using an appLoader <TonelApplicationLoader>."
 
@@ -180,8 +168,7 @@ TonelReaderAbstractClassDefinition >> loadInto: anApp using: appLoader [
 				].
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading'],
+{ #category : 'loading',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> loadMethodsInto: anApp using: aTonelLoader [
 
@@ -195,8 +182,7 @@ TonelReaderAbstractClassDefinition >> loadMethodsInto: anApp using: aTonelLoader
 				using: aTonelLoader]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading-changes'],
+{ #category : 'loading-changes',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> makeConsistentIn: anApp [
 	"Load the current edition, which is similar to 'ReLoad Current'. This is done to
@@ -205,16 +191,14 @@ TonelReaderAbstractClassDefinition >> makeConsistentIn: anApp [
 		loadClasses: (Array with: ((self concreteClassIn: anApp) asEditionIn: anApp))
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading-changes'],
+{ #category : 'loading-changes',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> methodChangesIn: aClass [
 
 	^self tonelMethods select: [:aTonelMethod | aTonelMethod hasChangesIn: aClass]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading-changes'],
+{ #category : 'loading-changes',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> removeCompiledMethod: compiledMethod from: emApp [
 
@@ -223,8 +207,7 @@ TonelReaderAbstractClassDefinition >> removeCompiledMethod: compiledMethod from:
 		withSuperUser: emApp manager
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['testing'],
+{ #category : 'testing',
   #vaVisibility : 'private' }
 TonelReaderAbstractClassDefinition >> shouldCreateEditionOf: baseClass in: anApp using: aTonelLoader [
 
@@ -233,8 +216,7 @@ TonelReaderAbstractClassDefinition >> shouldCreateEditionOf: baseClass in: anApp
 				or: [self hasChangesIn: anApp comparedTo: baseClass]]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading'] }
+{ #category : 'loading' }
 TonelReaderAbstractClassDefinition >> updateCommentIn: anApp [
 	"If the receiver represents a class definition, then update the
 	 class comment if it has changed."
@@ -242,8 +224,7 @@ TonelReaderAbstractClassDefinition >> updateCommentIn: anApp [
 	
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading'] }
+{ #category : 'loading' }
 TonelReaderAbstractClassDefinition >> versionClass: emClass in: anApp using: aLoader [
 	"Versions the edition of emClass in anApp (or subapp) using aLoader."
 
@@ -262,8 +243,7 @@ TonelReaderAbstractClassDefinition >> versionClass: emClass in: anApp using: aLo
 			]
 ]
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['loading'] }
+{ #category : 'loading' }
 TonelReaderAbstractClassDefinition >> versionIn: anApp using: aTonelLoader [
 	"Versions the edition of anApp using aTonelLoader."
 

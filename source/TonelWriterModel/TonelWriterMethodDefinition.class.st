@@ -21,10 +21,29 @@ TonelWriterMethodDefinition >> allCategories [
 	^definitionClass categoriesFor: selector
 ]
 
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
+TonelWriterMethodDefinition >> basicCategory [
+
+	^category
+]
+
 { #category : 'accessing' }
 TonelWriterMethodDefinition >> category [
 
 	^category
+]
+
+{ #category : 'accessing' }
+TonelWriterMethodDefinition >> categoryFor: aTonelWriter [
+	"Answer the category used in a TonelWriter."
+
+	^(self isMonticelloExtension and: [aTonelWriter useMonticelloExtensions not])
+		ifTrue: [self allCategories first]
+		ifFalse: [self category]
+
+
+
 ]
 
 { #category : 'accessing' }
@@ -45,7 +64,7 @@ TonelWriterMethodDefinition >> definitionClassName [
 	^self definitionClass name
 ]
 
-{ #category : 'Defaults' }
+{ #category : 'testing' }
 TonelWriterMethodDefinition >> hasDefaultVACategories [
 	"Answer whether receiver should write the categories into aCollection."
 	"NOTE:
@@ -54,10 +73,10 @@ TonelWriterMethodDefinition >> hasDefaultVACategories [
 	 In the case of extension methods the first in allCategories will be the real one in VA
 	 while the one of #category will be one with *X compatible with Tonel/Pharo"
 
-	^self allCategories size = 1 and: [self allCategories first  match: self category]
+	^self allCategories size = 1 and: [self allCategories first match: self category]
 ]
 
-{ #category : 'Defaults' }
+{ #category : 'testing' }
 TonelWriterMethodDefinition >> hasDefaultVAVisibility [
 
 	^self visibilityString = 'public'
@@ -70,6 +89,12 @@ TonelWriterMethodDefinition >> initializeUniquelyKnownAs: aSymbol in: aClass cat
 	definitionClass := aClass.
 	selector := aSymbol.
 	category := aCategory
+]
+
+{ #category : 'testing' }
+TonelWriterMethodDefinition >> isMonticelloExtension [
+		
+	^self basicCategory beginsWithSubCollection: '*'
 ]
 
 { #category : 'testing' }
@@ -162,7 +187,7 @@ TonelWriterMethodDefinition >> pragmaSuffix [
 	^selector copyFrom: (self pragmaPrefix size + 1 min: selector size) to: selector size
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'printing' }
 TonelWriterMethodDefinition >> printOn: aStream [
 
 	super printOn: aStream.

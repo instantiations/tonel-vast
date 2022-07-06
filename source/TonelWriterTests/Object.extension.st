@@ -2,15 +2,13 @@ Extension {
 	#name : 'Object'
 }
 
-{ #category : '*TonelWriterTests',
- #vaCategories : ['Not categorized'] }
+{ #category : 'Not categorized' }
 Object >> extensionForTest [
 
 	^'Method extension for testing TonelWriter'
 ]
 
-{ #category : '*TonelWriterTests',
- #vaCategories : ['Not categorized'],
+{ #category : 'Not categorized',
   #vaVisibility : 'private' }
 Object >> privateExtensionForTest [
 

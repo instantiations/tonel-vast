@@ -2,8 +2,7 @@ Extension {
 	#name : 'EmClassCallbackData'
 }
 
-{ #category : '*EmLibraryToolsApp',
- #vaCategories : ['EM-Internal'] }
+{ #category : 'EM-Internal' }
 EmClassCallbackData >> asEmEvent [
 
 	self subclassResponsibility

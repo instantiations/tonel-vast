@@ -2,16 +2,14 @@ Extension {
 	#name : 'EmLibrary'
 }
 
-{ #category : '*EmLibraryToolsApp',
- #vaCategories : ['Not categorized'] }
+{ #category : 'Not categorized' }
 EmLibrary >> operationsInterface: anEmLibraryAccesor [
 	"Answer the interface used to perform library operations."
 
 	libraryAccessor := anEmLibraryAccesor
 ]
 
-{ #category : '*EmLibraryToolsApp',
- #vaCategories : ['EM-Internal'] }
+{ #category : 'EM-Internal' }
 EmLibrary >> resetOperationsInterface [
 
 	libraryAccessor := nil

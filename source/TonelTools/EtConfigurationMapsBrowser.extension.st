@@ -2,8 +2,7 @@ Extension {
 	#name : 'EtConfigurationMapsBrowser'
 }
 
-{ #category : '*TonelTools',
- #vaCategories : ['Not categorized'] }
+{ #category : 'Not categorized' }
 EtConfigurationMapsBrowser >> exportTonelConfigMaps [
 		
 	TonelTools exportConfigurationMapsNames:  self selectedNames

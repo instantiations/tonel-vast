@@ -2,8 +2,7 @@ Extension {
 	#name : 'Behavior'
 }
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['Tonel-Comparing'] }
+{ #category : 'Tonel-Comparing' }
 Behavior >> tonelTopologicalSubordinateOf: aBehavior [
 	"This method will returns true if the current Behavior 
 	  is a subclass of aBehavior" 

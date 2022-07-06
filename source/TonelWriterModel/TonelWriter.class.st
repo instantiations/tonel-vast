@@ -12,7 +12,8 @@ Class {
 		'canonical',
 		'flattenSubApplications',
 		'writeENVYApps',
-		'identifiersClass'
+		'identifiersClass',
+		'useMonticelloExtensions'
 	],
 	#classVars : [
 		'LineDelimiter'
@@ -96,6 +97,15 @@ TonelWriter >> addApplicationsFromConfigurationMaps [
 
 { #category : 'accessing' }
 TonelWriter >> addConfigurationMap: anEmConfigurationMap [
+	"Adds anEmConfigurationMap to receiver loading it first if autoLoad is true."
+
+	self addConfigurationMap: anEmConfigurationMap force: false
+]
+
+{ #category : 'accessing' }
+TonelWriter >> addConfigurationMap: anEmConfigurationMap force: aBoolean [
+	"Adds anEmConfigurationMap to receiver loading it first if autoLoad is true.
+	 Force addition if aBoolean is true."
 
 	(self configurationMaps anySatisfy: [:each | each name = anEmConfigurationMap name])
 		ifTrue: [
@@ -103,7 +113,7 @@ TonelWriter >> addConfigurationMap: anEmConfigurationMap [
 				'You can only add one Configuration Map for <1p>.'
 					expandMacrosWith: anEmConfigurationMap name)].
 
-	anEmConfigurationMap isLoaded 
+	(anEmConfigurationMap isLoaded or: [aBoolean])
 		ifFalse: [
 			self autoLoad 
 				ifTrue: [anEmConfigurationMap loadWithRequiredMaps]
@@ -199,9 +209,25 @@ TonelWriter >> autoLoad: aBoolean [
 	autoLoad := aBoolean
 ]
 
-{ #category : 'accessing' }
+{ #category : 'configuring' }
 TonelWriter >> beCanonical [
-	self canonical: true
+	"Sets the receiver settings to be 'canonical' as in compatible with other dialects.
+	 without doing any conversion."
+	
+	self convertsSharedPools: true.
+	self flattenSubApplications: true.
+	self useMonticelloExtensions: true.
+	self writeENVYApps: false
+]
+
+{ #category : 'configuring' }
+TonelWriter >> beVASTOnly [
+	"Sets the receiver settings to target VAST as the target dialect for its output."
+	
+	self convertsSharedPools: false.
+	self flattenSubApplications: false.
+	self useMonticelloExtensions: false.
+	self writeENVYApps: true
 ]
 
 { #category : 'utility' }
@@ -398,6 +424,22 @@ TonelWriter >> useLfEOL [
 	self lineDelimiter: Character lf asString
 
 
+]
+
+{ #category : 'accessing' }
+TonelWriter >> useMonticelloExtensions [
+	"Answer whether receiver will write method extensions using 
+	 Monticello extension method category, as in '*PackageName'."
+
+	^useMonticelloExtensions ifNil: [useMonticelloExtensions := true]
+]
+
+{ #category : 'accessing' }
+TonelWriter >> useMonticelloExtensions: aBoolean [
+	"Sets whether receiver will write method extensions using 
+	 Monticello extension method category, as in '*PackageName'."
+
+	useMonticelloExtensions := aBoolean
 ]
 
 { #category : 'configuring' }

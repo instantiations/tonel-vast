@@ -2,8 +2,7 @@ Extension {
 	#name : 'EmClassDefinition'
 }
 
-{ #category : '*TonelWriterModel',
- #vaCategories : ['EM-Internal'] }
+{ #category : 'EM-Internal' }
 EmClassDefinition >> tonelKindOfSubclass [
 	"Private - Answer a string describing the receiver type.
 	 This is similar to #kindOfSubclass but trying to use Tonel/Pharo 

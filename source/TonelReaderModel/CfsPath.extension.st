@@ -2,8 +2,7 @@ Extension {
 	#name : 'CfsPath'
 }
 
-{ #category : '*TonelReaderModel',
- #vaCategories : ['CFS-API'] }
+{ #category : 'CFS-API' }
 CfsPath >> readUtf8StreamDo: aBlock [
 	"Opens a read stream on the receiver.  If a stream
 	cannot be opened then answer nil. If it can,
@@ -26,8 +25,7 @@ CfsPath >> readUtf8StreamDo: aBlock [
 				latin1 ifNotNil: [aBlock value: latin1 readStream]]
 ]
 
-{ #category : '*TonelReaderModel',
- #vaCategories : ['CFS-API'] }
+{ #category : 'CFS-API' }
 CfsPath >> utf8Contents [
 	"Answer the contents of receiver asuming it was encoded using UTF-8."
 

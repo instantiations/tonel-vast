@@ -2,8 +2,7 @@ Extension {
 	#name : 'Collection'
 }
 
-{ #category : '*TonelLoaderModel',
- #vaCategories : ['Not categorized'] }
+{ #category : 'Not categorized' }
 Collection >> tonelSingleEdgeTopologicallySortedCollection [
 	"Replica from EtMonticelloImporter application to avoid unnecesary dependency."
 	
