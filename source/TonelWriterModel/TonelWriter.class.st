@@ -431,7 +431,7 @@ TonelWriter >> useMonticelloExtensions [
 	"Answer whether receiver will write method extensions using 
 	 Monticello extension method category, as in '*PackageName'."
 
-	^useMonticelloExtensions ifNil: [useMonticelloExtensions := true]
+	^useMonticelloExtensions ifNil: [useMonticelloExtensions := false]
 ]
 
 { #category : 'accessing' }
