@@ -173,13 +173,12 @@ TonelReaderAbstractClassDefinition >> loadInto: anApp using: appLoader [
 TonelReaderAbstractClassDefinition >> loadMethodsInto: anApp using: aTonelLoader [
 
 	| concreteClass |
+
 	concreteClass := self concreteClassIn: anApp.
-	self tonelMethods do: 
-			[:aTonelMethod | 
-			aTonelMethod 
-				loadFor: concreteClass
-				into: anApp
-				using: aTonelLoader]
+	self tonelMethods do: [:aTonelMethod |
+		aTonelMethod loadFor: concreteClass into: anApp using: aTonelLoader.
+		aTonelMethod isDeclaration ifTrue: [EmInterface current rebuildNamespaceFor: anApp]
+	]
 ]
 
 { #category : 'loading-changes',

@@ -300,11 +300,9 @@ TonelLoaderSubApplication >> createEditionIn: parentEmApp underCondition: condit
 { #category : 'loading' }
 TonelLoaderSubApplication >> createFor: parentApp underCondition: conditionCode withRoot: rootApp [
 
-	| aSubApp |
-
-	aSubApp := self createEditionIn: parentApp underCondition: conditionCode withRoot: rootApp.
-	self createSubApplicationsFor: aSubApp withRoot: rootApp.
-	^aSubApp
+	emApplication := self createEditionIn: parentApp underCondition: conditionCode withRoot: rootApp.
+	self createSubApplicationsFor: emApplication withRoot: rootApp.
+	^emApplication
 ]
 
 { #category : 'loading' }
@@ -364,7 +362,8 @@ TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 	(self definedClasses select: [:each | (self emApplication notNil and: [each identifier = self emApplication name]) or: [each identifier = self identifier]]) collect: [
 		:tonelClass |
 		tonelClass loadDeclarationMethodsInto: anApp using: self loader.
-		EmInterface current rebuildNamespaceFor: anApp].
+		EmInterface current rebuildNamespaceFor: self emApplication
+	].
 
 	definedSharedPools notEmpty
 		ifTrue: [
@@ -400,6 +399,13 @@ TonelLoaderSubApplication >> emApplication [
 	"Answer the actual Application/SubApplication instance of receiver, or nil if there is none."
 
 	^emApplication
+]
+
+{ #category : 'accessing' }
+TonelLoaderSubApplication >> emApplication: emAppOrSubApp [
+	"Sets the Application/SubApplication instance of receiver."
+
+	emApplication := emAppOrSubApp
 ]
 
 { #category : 'querying' }
