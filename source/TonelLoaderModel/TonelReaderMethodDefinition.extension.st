@@ -141,15 +141,41 @@ TonelReaderMethodDefinition >> commentedSource [
 			nextPutAll: TonelMsg17] "$NLS$ ^ self halt: 'The source for this method failed to compile'"
 ]
 
-{ #category : 'Loading-Internal',
+{ #category : 'testing',
   #vaVisibility : 'private' }
-TonelReaderMethodDefinition >> hasChangesIn: aClass [
-	^(self isUnchangedIn: aClass) not
+TonelReaderMethodDefinition >> hasCategoryChangesIn: aClass [
+	"Answer whether there are category changes between receiver
+	 and the method with the same selector defined in aClass."
+
+	^self categories asSortedCollection 
+		~= ((self onSideClass: aClass) categoriesFor: self selector) 
+				asSortedCollection
 ]
 
-{ #category : 'Loading-Internal',
+{ #category : 'testing' }
+TonelReaderMethodDefinition >> hasChangesIn: aClass [
+	"Answer whether receiver has changes in aClass."
+
+	^(self hasMethodDefinedIn: aClass) not
+		or: [(self hasCategoryChangesIn: aClass) or: [self hasSourceChangesIn: aClass]]
+]
+
+{ #category : 'testing',
+  #vaVisibility : 'private' }
+TonelReaderMethodDefinition >> hasMethodDefinedIn: aClass [
+	"Answer whether receiver has a method with the same selector defined in aClass."
+
+	^((self onSideClass: aClass) methodDictionary
+		detect: [:ea | ea selector = self selector]
+		ifNone: [])
+			notNil
+]
+
+{ #category : 'testing',
   #vaVisibility : 'private' }
 TonelReaderMethodDefinition >> hasSourceChangesIn: aClass [
+	"Answer whether receiver has different source than the same method defined in aClass.
+	 If there is no method defined, then we assume the source has changes."
 
 	| aMethod |
 
@@ -157,30 +183,7 @@ TonelReaderMethodDefinition >> hasSourceChangesIn: aClass [
 		(self onSideClass: aClass) methodDictionary
 			detect: [:ea | ea selector = self selector]
 			ifNone: [].
-	^aMethod isNil "there is no method" or: [ "the source is different (doesn't match the source or the commented source)"
-		((aMethod sourceString = self source)
-		"or: [
-					aMethod sourceString = self commentedSource]"
-		)
-			not]
-]
-
-{ #category : 'testing',
-  #vaVisibility : 'private' }
-TonelReaderMethodDefinition >> isUnchangedIn: aClass [
-
-	| aMethod |
-		
-	aMethod := (self onSideClass: aClass) methodDictionary
-			detect: [ :ea | ea selector = self selector ]
-			ifNone: [ ].
-	^ aMethod notNil "a method was found"
-		and: [ "the method is in the same categories"
-			((self categories asSortedCollection = ((self onSideClass: aClass) categoriesFor: self selector) asSortedCollection ))
-				and: ["the source is the same"
-					(aMethod sourceString = self source) 
-						or: [ "the source matches the non-compiled source warning from a Tonel load"
-							aMethod sourceString = self commentedSource ] ] ]
+	^aMethod isNil or: [((aMethod sourceString ~= self source))]
 ]
 
 { #category : 'Loading-Internal',
