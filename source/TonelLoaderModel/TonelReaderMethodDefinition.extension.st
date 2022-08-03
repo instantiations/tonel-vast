@@ -156,7 +156,9 @@ TonelReaderMethodDefinition >> hasCategoryChangesIn: aClass [
 TonelReaderMethodDefinition >> hasChangesIn: aClass [
 	"Answer whether receiver has changes in aClass."
 
-	^(self hasMethodDefinedIn: aClass) not
+	^((self onSideClass: aClass) methodDictionary
+		detect: [:ea | ea selector = self selector]
+		ifNone: []) notNil
 		or: [(self hasCategoryChangesIn: aClass) or: [self hasSourceChangesIn: aClass]]
 ]
 
