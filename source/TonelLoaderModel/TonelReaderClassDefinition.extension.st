@@ -245,6 +245,14 @@ TonelReaderClassDefinition >> pragmaSourceFromClassVariables [
 
 ]
 
+{ #category : 'accessing',
+  #vaVisibility : 'private' }
+TonelReaderClassDefinition >> setIdentifier: aSymbol [
+	"Sets the identifier of receiver to be aSymbol."
+	
+	identifier := aSymbol
+]
+
 { #category : 'loading',
   #vaVisibility : 'private' }
 TonelReaderClassDefinition >> superclassChangeIn: aClass [

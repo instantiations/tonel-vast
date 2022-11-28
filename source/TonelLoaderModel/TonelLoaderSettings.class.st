@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'appSuperGroupSetting',
 		'compilerWarningLevel',
-		'defaultAppNameSuffix',
 		'strategies'
 	],
 	#classVars : [
@@ -104,19 +103,6 @@ TonelLoaderSettings >> copyFor: aTonelLoader [
 	self strategies keysAndValuesDo: [:key :strategy |
 		copy strategyAt: key put: (strategy copyFor: aTonelLoader)].
 	^copy
-]
-
-{ #category : 'defaults' }
-TonelLoaderSettings >> defaultAppNameSuffix [
-		
-	^defaultAppNameSuffix
-]
-
-{ #category : 'naming' }
-TonelLoaderSettings >> defaultAppNameSuffix: aStringOrNil [
-	"Sets the default app name suffix used by naming strategies."
-		
-	defaultAppNameSuffix := aStringOrNil
 ]
 
 { #category : 'defaults' }

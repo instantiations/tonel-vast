@@ -122,6 +122,24 @@ TonelLoaderSubApplication >> allExtendedClasses [
 		yourself
 ]
 
+{ #category : 'loading' }
+TonelLoaderSubApplication >> ammendApplicationClass [
+	"Renames the Application/SubApplication class
+	 that might have a different name that the actual application created in the image
+	 due to custom suffixes, etc."
+
+	| appNameWithoutSuffix |
+
+	appNameWithoutSuffix := self loader namingStrategy appNameWithoutSuffix: self.
+	self tonelDefinedClasses do: [:each |
+		((#(Application SubApplication) includes: each superclassIdentifier)
+			and: [each name = appNameWithoutSuffix])
+				ifTrue: [
+					each name: self name.
+					each setIdentifier: self identifier]].
+	self subApplications do: [:tonelSubApp | tonelSubApp ammendApplicationClass]
+]
+
 { #category : 'querying' }
 TonelLoaderSubApplication >> availableShadows [
 	^self emClass shadowsFor: self name
@@ -287,12 +305,14 @@ TonelLoaderSubApplication >> createEditionIn: parentEmApp underCondition: condit
 
 
 	self loader
-		changeUserTo: emApp manager 
+		changeUserTo: emApp manager
 		for: [
 			emApp isEdition ifFalse: [(emApp newEdition)].
-			self changeCurrentUserAndSuperGroupSettingOf: emApp.
-			parentEmApp releaseSubApplication: emApp in: conditionCode.
-			].
+			self changeCurrentUserAndSuperGroupSettingOf: emApp].
+
+	self loader
+		changeUserTo: parentEmApp manager
+		for: [parentEmApp releaseSubApplication: emApp in: conditionCode].
 
 	^emApp
 ]

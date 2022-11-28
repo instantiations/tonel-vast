@@ -17,15 +17,10 @@ TonelLoaderDefaultNamingStrategy >> appNameWithoutSuffix: aTonelLoaderApplicatio
 	| appName suffixToRemove |
 
 	appName := aTonelLoaderApplication name.
-	suffixToRemove := (self appSuffix isEmpty and: [self guessAppSuffix])
-			ifTrue: [ 
-				(appName endsWithSubCollection: 'App')
-					ifTrue: ['App']
-					ifFalse: [String new]
-			]
-			ifFalse: [
-				self appSuffix
-			].
+	suffixToRemove :=
+		(self appSuffix isEmpty and: [self guessAppSuffix])
+			ifTrue: [(appName endsWithSubCollection: 'App') ifTrue: ['App'] ifFalse: [String new]]
+			ifFalse: [self appSuffix].
 	^suffixToRemove isEmpty
 		ifTrue: [appName]
 		ifFalse: [appName copyFrom: 1 to: appName size - suffixToRemove size]
@@ -41,7 +36,7 @@ TonelLoaderDefaultNamingStrategy >> appSuffix: anObject [
 	appSuffix := anObject
 ]
 
-{ #category : 'Not categorized' }
+{ #category : 'accessing' }
 TonelLoaderDefaultNamingStrategy >> guessAppSuffix [
 	"Answer whether we will guess the app suffix when trying to know the base name of a parent app.
 	 E.g. to guess MyApplication from MyApplicationApp."

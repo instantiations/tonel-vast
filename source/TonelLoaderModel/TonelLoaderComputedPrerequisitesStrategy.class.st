@@ -23,5 +23,6 @@ TonelLoaderComputedPrerequisitesStrategy >> prerequisitesFor: tonelApplication c
 		<EmShadowApplication>
 	 "
 
-	^tonelApplication prerequisites
+	^(tonelApplication prerequisites, (tonelApplication subApplications collect: [:each | each prerequisites ])) flattened asSet asOrderedCollection
+	
 ]

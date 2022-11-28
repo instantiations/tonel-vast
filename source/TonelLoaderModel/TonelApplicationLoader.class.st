@@ -34,6 +34,12 @@ TonelApplicationLoader >> alwaysCreateEditions [
 ]
 
 { #category : 'loading-internal' }
+TonelApplicationLoader >> ammendApplicationClass [
+	
+	self tonelApplication ammendApplicationClass
+]
+
+{ #category : 'loading-internal' }
 TonelApplicationLoader >> autogenerateClassSideNewInitializers [
 
 	| allDefinedClasses superclasses |
@@ -97,7 +103,6 @@ TonelApplicationLoader >> computePrerequisites [
 
 { #category : 'loading-internal' }
 TonelApplicationLoader >> convertSharedPoolClasses [
-	"Enter the new method definition below and click 'Resume'."
 	
 	self tonelApplication convertSharedPoolClasses
 ]
@@ -248,6 +253,7 @@ TonelApplicationLoader >> load [
 	[
 		self
 			convertSharedPoolClasses;
+			ammendApplicationClass;
 			checkClassExtensions;
 			checkSuperclasses;
 			checkForUnloadedApplication;

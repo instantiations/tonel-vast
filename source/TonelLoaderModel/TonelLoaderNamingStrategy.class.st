@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : 'resolving' }
+TonelLoaderNamingStrategy >> appNameWithoutSuffix: aTonelLoaderApplication [
+
+	self subclassResponsibility
+]
+
+{ #category : 'resolving' }
 TonelLoaderNamingStrategy >> nameForApp: aTonelLoaderApplication [
 
 	self subclassResponsibility

@@ -53,13 +53,6 @@ TonelMockA >> withComment [
 ]
 
 { #category : 'Accessing' }
-TonelMockA >> withCommentOnSelectorLine [
-"This is a mock method being used within the tests of Tonel"
-
-	^'Method with comment on the same line as selector'
-]
-
-{ #category : 'Accessing' }
 TonelMockA >> withDenominatorDo: aDyadicBlock [
 
 	^aDyadicBlock value: denominator
@@ -84,13 +77,8 @@ TonelMockA >> withModeThanOneLine [
 ]
 
 { #category : 'Accessing',
- #vaCategories : ['Accessing','Evaluating','Good\'ol quoted category','Private'] }
+ #vaCategories : ['Accessing','Evaluating','Private'] }
 TonelMockA >> withMultipleCategories [
 
 	^ 'withMultipleCategories'
-]
-
-{ #category : 'Accessing' }
-TonelMockA >> withNoBody [
-
 ]

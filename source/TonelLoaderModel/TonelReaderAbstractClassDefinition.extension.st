@@ -11,34 +11,30 @@ TonelReaderAbstractClassDefinition >> concreteClassIn: anApp [
 
 { #category : 'loading-changes',
   #vaVisibility : 'private' }
-TonelReaderAbstractClassDefinition >> deleteRemovedClassMethodsFrom: aClass in: anApp [
+TonelReaderAbstractClassDefinition >> deleteRemovedClassMethodsFrom: aClass in: anApp using: aLoader [
 
 	| methodsToRemove |
-	methodsToRemove := aClass class methodDictionary values select: 
-					[:compiledMethod | 
-					compiledMethod application = anApp and: 
-							[self tonelMethods noneSatisfy: 
-									[:anMCMethod | 
-									anMCMethod isClassSide 
-										and: [compiledMethod selector = anMCMethod selector]]]].
-	methodsToRemove := methodsToRemove 
-				reject: [:each | self isArtificiallyCreatedMethod: each inApp: anApp].
-	methodsToRemove 
-		do: [:compiledMethod | self removeCompiledMethod: compiledMethod from: anApp]
+
+	methodsToRemove :=
+		aClass class methodDictionary values select: [:compiledMethod |
+			compiledMethod application = anApp and: [
+				self tonelMethods noneSatisfy: [:anMCMethod |
+					anMCMethod isClassSide and: [compiledMethod selector = anMCMethod selector]]]].
+	methodsToRemove :=
+		methodsToRemove reject: [:each | self isArtificiallyCreatedMethod: each inApp: anApp].
+	methodsToRemove
+		do: [:compiledMethod | self removeCompiledMethod: compiledMethod from: anApp using: aLoader]
 ]
 
 { #category : 'loading-changes',
   #vaVisibility : 'private' }
-TonelReaderAbstractClassDefinition >> deleteRemovedInstanceMethodsFrom: aClass in: anApp [
+TonelReaderAbstractClassDefinition >> deleteRemovedInstanceMethodsFrom: aClass in: anApp using: aLoader [
 
-	aClass methodDictionary do: 
-			[:compiledMethod | 
-			(compiledMethod application = anApp and: 
-					[self tonelMethods noneSatisfy: 
-							[:anMCMethod | 
-							anMCMethod isClassSide not 
-								and: [compiledMethod selector = anMCMethod selector]]]) 
-				ifTrue: [self removeCompiledMethod: compiledMethod from: anApp]]
+	aClass methodDictionary do: [:compiledMethod |
+		(compiledMethod application = anApp and: [
+			self tonelMethods noneSatisfy: [:anMCMethod |
+				anMCMethod isClassSide not and: [compiledMethod selector = anMCMethod selector]]])
+					ifTrue: [self removeCompiledMethod: compiledMethod from: anApp using: aLoader]]
 ]
 
 { #category : 'loading-changes',
@@ -48,13 +44,12 @@ TonelReaderAbstractClassDefinition >> deleteRemovedMethodsFrom: anApp using: aLo
 	(self concreteClassIn: anApp)
 		ifNil: [
 			self isSharedPool
-				ifFalse: [self error: ('Cannot find the concrete app for <1p>' expandMacrosWith: self name)]
-		]
+				ifFalse: [
+					self error: ('Cannot find the concrete app for <1p>' expandMacrosWith: self name)]]
 		ifNotNil: [:concreteClass |
 			self
-				deleteRemovedInstanceMethodsFrom: concreteClass in: anApp;
-				deleteRemovedClassMethodsFrom: concreteClass in: anApp]
-
+				deleteRemovedInstanceMethodsFrom: concreteClass in: anApp using: aLoader;
+				deleteRemovedClassMethodsFrom: concreteClass in: anApp using: aLoader]
 ]
 
 { #category : 'testing' }
@@ -158,14 +153,26 @@ TonelReaderAbstractClassDefinition >> loadDeclarationMethodsInto: anApp using: a
 TonelReaderAbstractClassDefinition >> loadInto: anApp using: appLoader [
 	"Loads receiver into anApp using an appLoader <TonelApplicationLoader>."
 
+	| concreteClass developer ownerExists |
+
+	concreteClass := (self concreteClassIn: anApp).
+	ownerExists := false.
+	(EmClassEditions for: concreteClass in: anApp) ifNotNil: [:editionsRecord | | currentEntry |
+		currentEntry := editionsRecord entryAt: (concreteClass timeStampIn: anApp).
+		(EmUser called: currentEntry developer ifAbsent: [])
+			ifNil: [developer := EmUser current]
+			ifNotNil: [:user |
+				developer := user.
+				ownerExists := true]].
+	ownerExists ifFalse: [anApp ownerOf: concreteClass to: developer].
+
 	appLoader loader
-		changeUserTo: anApp manager
+		changeUserTo: developer
 		for: [
 			self
 				loadMethodsInto: anApp using: appLoader;
 				deleteRemovedMethodsFrom: anApp using: appLoader;
-				updateCommentIn: anApp
-				].
+				updateCommentIn: anApp]
 ]
 
 { #category : 'loading',
@@ -199,11 +206,9 @@ TonelReaderAbstractClassDefinition >> methodChangesIn: aClass [
 
 { #category : 'loading-changes',
   #vaVisibility : 'private' }
-TonelReaderAbstractClassDefinition >> removeCompiledMethod: compiledMethod from: emApp [
+TonelReaderAbstractClassDefinition >> removeCompiledMethod: compiledMethod from: emApp using: aLoader [
 
-	TonelLoader
-		do: [EmInterface current removeMethods: (Array with: compiledMethod)]
-		withSuperUser: emApp manager
+	EmInterface current removeMethods: (Array with: compiledMethod)
 ]
 
 { #category : 'testing',

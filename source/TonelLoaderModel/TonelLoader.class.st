@@ -652,10 +652,10 @@ TonelLoader >> settings: anObject [
 TonelLoader >> shouldLoadPrerequisiteApplication: anApplication [
 	"Answer whether receiver should load the prerequisite application anApplication."
 
-	^(self applications anySatisfy: [:any | any name asSymbol = anApplication name]) 
+	^(self applications anySatisfy: [:any | any identifier = anApplication name]) 
 		and: 
 			[self loadedApplications 
-				noneSatisfy: [:each | each name asSymbol = anApplication name]]
+				noneSatisfy: [:each | each identifier = anApplication name]]
 ]
 
 { #category : 'lookup' }
