@@ -13,7 +13,8 @@ Class {
 		'flattenSubApplications',
 		'writeENVYApps',
 		'identifiersClass',
-		'useMonticelloExtensions'
+		'useMonticelloExtensions',
+		'ignoresTonelPackageNameMethod'
 	],
 	#classVars : [
 		'LineDelimiter'
@@ -217,7 +218,8 @@ TonelWriter >> beCanonical [
 	self convertsSharedPools: true.
 	self flattenSubApplications: true.
 	self useMonticelloExtensions: true.
-	self writeENVYApps: false
+	self writeENVYApps: false.
+	self ignoresTonelPackageNameMethod: false
 ]
 
 { #category : 'configuring' }
@@ -227,7 +229,8 @@ TonelWriter >> beVASTOnly [
 	self convertsSharedPools: false.
 	self flattenSubApplications: false.
 	self useMonticelloExtensions: false.
-	self writeENVYApps: true
+	self writeENVYApps: true.
+	self ignoresTonelPackageNameMethod: true.
 ]
 
 { #category : 'utility' }
@@ -341,6 +344,22 @@ TonelWriter >> identifiersClass: aClass [
 	identifiersClass := aClass
 ]
 
+{ #category : 'accessing' }
+TonelWriter >> ignoresTonelPackageNameMethod [
+	"Answers whether receiver ignores the _TONEL_packageName method (if defined)
+	 to compute the package name."
+
+	^ignoresTonelPackageNameMethod
+]
+
+{ #category : 'accessing' }
+TonelWriter >> ignoresTonelPackageNameMethod: aBoolean [
+	"Defines whether receiver will ignore the _TONEL_packageName method (if defined)
+	 to compute the package name."
+
+	ignoresTonelPackageNameMethod := aBoolean
+]
+
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelWriter >> initializeOn: aFileSystem [
@@ -352,7 +371,8 @@ TonelWriter >> initializeOn: aFileSystem [
 	autoLoad := true.
 	convertsSharedPools := false.
 	flattenSubApplications := false.
-	writeENVYApps := true
+	writeENVYApps := true.
+	ignoresTonelPackageNameMethod := false
 ]
 
 { #category : 'accessing' }
@@ -473,11 +493,13 @@ TonelWriter >> writeApplication: anApplication into: aPath rootApp: rootApplicat
 	| applicationDefinition packageDirectory isRootApp |
 
 	isRootApp := anApplication = rootApplication.
-
-	applicationDefinition :=
-		(self flattenSubApplications and: [anApplication isSubApplication])
-			ifTrue: [TonelWriterSubApplicationDefinition for: anApplication]
-			ifFalse: [TonelWriterApplicationDefinition for: anApplication].
+	(self flattenSubApplications and: [anApplication isSubApplication])
+		ifTrue: [applicationDefinition := TonelWriterSubApplicationDefinition for: anApplication]
+		ifFalse: [
+			applicationDefinition := TonelWriterApplicationDefinition for: anApplication.
+			self ignoresTonelPackageNameMethod
+				ifTrue: [applicationDefinition setPackageNameFromAppName]
+			].
 
 	packageDirectory :=
 		self

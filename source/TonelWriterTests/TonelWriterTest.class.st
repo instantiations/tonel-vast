@@ -200,7 +200,9 @@ TonelWriterTest >> setUp [
 { #category : 'Tests' }
 TonelWriterTest >> testShadowApplications [
 
-	self writer writeApplication: TonelWriterTests into: self directoryForTestingPath.
+	self writer 
+		useMonticelloExtensions: false;
+		writeApplication: TonelWriterTests into: self directoryForTestingPath.
 	
 	self assertContentsOfFileAt:
 				'/TonelWriterTestShadowSubSubApp/TonelShadowMockJ.class.st'
@@ -239,8 +241,7 @@ TonelShadowMockJ >> shadowMethodForTest [
 	#name : ''Object''
 }
 
-{ #category : ''*TonelWriterTestShadowSubSubApp'',
-  #vaCategories : [''Not categorized''] }
+{ #category :''Not categorized'' }
 Object >> shadowSubSubExtensionForTest [
 
 	^''shadow sub sub Method extension for testing TonelWriter''
@@ -251,7 +252,9 @@ Object >> shadowSubSubExtensionForTest [
 { #category : 'Tests' }
 TonelWriterTest >> testShadowSubApplications [
 
-	self writer writeApplication: TonelWriterTests into: self directoryForTestingPath.
+	self writer 
+		useMonticelloExtensions: false;
+		writeApplication: TonelWriterTests into: self directoryForTestingPath.
 	
 	self assertContentsOfFileAt:
 				'/TonelWriterTestShadowSubSubSubApp/TonelShadowMockK.class.st'
@@ -291,8 +294,7 @@ TonelShadowMockK >> shadowSubMethodForTest [
 }
 
 {
-	#category : ''*TonelWriterTestShadowSubSubSubApp'',
-	#vaCategories : [''Not categorized'']
+	#category : ''Not categorized''
 }
 Object >> shadowSubSubSubExtensionForTest [
 

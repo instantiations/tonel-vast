@@ -59,10 +59,15 @@ TonelWriterApplicationDefinition >> classDefinitionsOfDefinedClasses [
 { #category : 'initializing',
   #vaVisibility : 'private' }
 TonelWriterApplicationDefinition >> computeTonelPackageName [
-
-	^(application respondsTo: #_TONEL_packageName)
+	^(application respondsTo: #_TONEL_packageName) 
 		ifTrue: [application _TONEL_packageName]
-		ifFalse: [application name asString]
+		ifFalse: [self computeTonelPackageNameFromAppName]
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelWriterApplicationDefinition >> computeTonelPackageNameFromAppName [
+	^application name asString
 ]
 
 { #category : 'accessing' }
@@ -110,6 +115,14 @@ TonelWriterApplicationDefinition >> hasDefaultSubApps [
 TonelWriterApplicationDefinition >> initializeFor: anApplication [
 
 	application := anApplication
+]
+
+{ #category : 'initializing',
+  #vaVisibility : 'private' }
+TonelWriterApplicationDefinition >> setPackageNameFromAppName [
+	"Sets receiver package name from receiver app name."
+
+	tonelPackageName := self computeTonelPackageNameFromAppName
 ]
 
 { #category : 'accessing' }

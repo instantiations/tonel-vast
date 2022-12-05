@@ -57,11 +57,30 @@ TonelMethodWriter >> parent [
 	^parent
 ]
 
+{ #category : 'testing',
+  #vaVisibility : 'private' }
+TonelMethodWriter >> shouldWriteVACategoriesOf: aMethodDefinition monticelloExtensionsEnabled: aBoolean [
+	
+	aBoolean | aMethodDefinition hasMultipleCategories ifTrue: [^true].
+	(aMethodDefinition hasDefaultVACategories and: 
+			[aMethodDefinition isMonticelloExtension 
+				and: [self parent useMonticelloExtensions]]) 
+		ifTrue: [^true].
+	^false
+]
+
 { #category : 'writing',
   #vaVisibility : 'private' }
 TonelMethodWriter >> splitSourceOf: aMethodDefinition into: aBlock [
 
 	^aBlock value: aMethodDefinition methodDeclaration value: aMethodDefinition methodBody
+]
+
+{ #category : 'public' }
+TonelMethodWriter >> tonelWriter [
+	"Answer the TonelWriter of receiver."
+
+	^self parent
 ]
 
 { #category : 'writing' }
@@ -90,23 +109,17 @@ TonelMethodWriter >> writeCategoryOf: aMethodDefinition on: aWriteStream [
 { #category : 'writing',
   #vaVisibility : 'private' }
 TonelMethodWriter >> writeVACategoriesOf: aMethodDefinition on: aWriteStream [
-
 	| categories |
-
-	((aMethodDefinition hasDefaultVACategories not and: [aMethodDefinition isMonticelloExtension not])
-		or: [
-			aMethodDefinition hasDefaultVACategories and: [
-				aMethodDefinition isMonticelloExtension and: [self parent useMonticelloExtensions]]])
-					ifTrue: [
-						aWriteStream << ',' << lineDelimiter << space << '#vaCategories : '.
-						categories := aMethodDefinition allCategories asSortedCollection.
-						aWriteStream nextPut: $[.
-						categories
-							do: [:each | aWriteStream nextPutAll: (self convertIdentifier: each)]
-							separatedBy: [aWriteStream nextPut: $,].
-						aWriteStream nextPut: $]]
-
-
+	(self shouldWriteVACategoriesOf: aMethodDefinition
+		monticelloExtensionsEnabled: self tonelWriter useMonticelloExtensions) 
+			ifTrue: 
+				[aWriteStream << ',' << lineDelimiter << space << '#vaCategories : '.
+				categories := aMethodDefinition allCategories asSortedCollection.
+				aWriteStream nextPut: $[.
+				categories 
+					do: [:each | aWriteStream nextPutAll: (self convertIdentifier: each)]
+					separatedBy: [aWriteStream nextPut: $,].
+				aWriteStream nextPut: $]]
 ]
 
 { #category : 'writing',

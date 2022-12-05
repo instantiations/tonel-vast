@@ -13,7 +13,10 @@ TonelClassExtensionWriterTest >> setUp [
 			on: fileSystem
 			directory: self directoryForTestingPath
 			lineDelimiter: TonelWriter lineDelimiter
-			in: TonelWriter new
+			in: (
+				TonelWriter new
+					useMonticelloExtensions: true;
+					yourself)
 ]
 
 { #category : 'Test' }
