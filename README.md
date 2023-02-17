@@ -32,10 +32,10 @@ Open source projects using Tonel for VAST can be found in the [VAST Community Hu
 
 ## Installation
 
-We continue to improve the Tonel support by fixing bugs and adding new features to it, if you want to use the latest version you can do it by downloading the latest version in this repository into the latest version of VAST (currently 11.0.1).
+We continue to improve the Tonel support by fixing bugs and adding new features to it, if you want to use the latest version you can do it by downloading the latest version in this repository into the latest version of VAST.
 
 
-### Installing in VAST 2022
+### Installing in VAST 2022-2033
 
 Tonel comes as a Feature inside the product. That means it can be easily installed from the `Transcript` -> `Load/Unload Features...`. You will find two features you can install: `ST: Tonel Support` and `ST:Tonel Support, Testing`.
 

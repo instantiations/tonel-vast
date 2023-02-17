@@ -1,7 +1,7 @@
 [
 	{
 		#conditions : [ ],
-		#ts : 3847711731,
+		#ts : 3851938730,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -22,8 +22,8 @@
 			},
 			{
 				#name : 'TonelLoaderModel',
-				#versionName : '1.5.9',
-				#ts : 3846572097
+				#versionName : '1.6.1',
+				#ts : 3854101104
 			},
 			{
 				#name : 'TonelReaderModel',
@@ -42,7 +42,7 @@
 			}
 		],
 		#name : 'ENVY/Image Tonel',
-		#versionName : '1.6.0'
+		#versionName : '1.6.1'
 	},
 	{
 		#conditions : [ ],

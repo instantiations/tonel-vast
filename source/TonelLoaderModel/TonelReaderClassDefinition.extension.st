@@ -84,18 +84,19 @@ TonelReaderClassDefinition >> createDefinedIn: anApp using: aTonelLoader [
 		ifFalse: [
 			anApp owningImage
 				defaultApplication: anApp
-				during: [
-					(Smalltalk
-						classAt: self superclassIdentifier
-						ifAbsent: [self halt: (TonelMsg10 bindWith: self name)])
+				during: [| residentSuperclass |
+					residentSuperclass := self residentSuperclass.
+					(residentSuperclass isClass
+						ifTrue: [residentSuperclass]
+						ifFalse: [residentSuperclass class])
 							createClassNamed: self identifier
-							subclassOf: (Smalltalk classAt: self superclassIdentifier)
+							subclassOf: self residentSuperclass
 							variable: self variableClass
 							fieldType: self fieldType
 							classInstanceVariableString: ''
 							instanceVariableString: ''
 							classVariableString: ''
-							sharedPoolString: '' "$NLS$ Missing superclass for %1" "$NON-NLS$" "$NON-NLS$" "$NON-NLS$"]] "$NON-NLS$"
+							sharedPoolString: '']]
 ]
 
 { #category : 'loading' }
@@ -245,6 +246,16 @@ TonelReaderClassDefinition >> pragmaSourceFromClassVariables [
 
 ]
 
+{ #category : 'accessing' }
+TonelReaderClassDefinition >> residentSuperclass [
+	"Answer the class represented by receiver that's actually in the image."
+
+	(self superclassIdentifier isNil or: [self superclassIdentifier = 'nil']) ifTrue: [^nil].
+	^Smalltalk
+		classAt: self superclassIdentifier
+		ifAbsent: [self halt: (TonelMsg10 bindWith: self name)]
+]
+
 { #category : 'accessing',
   #vaVisibility : 'private' }
 TonelReaderClassDefinition >> setIdentifier: aSymbol [
@@ -300,7 +311,7 @@ TonelReaderClassDefinition >> updateVariables [
 				createClassNamed: aClass environmentKey
 				in: aClass environment
 				for: (aClass hasController ifTrue: [aClass controller] ifFalse: [nil])
-				subclassOf: (Smalltalk classAt: self superclassIdentifier)
+				subclassOf: self residentSuperclass
 				instanceShape: aClass instanceShape
 				classInstanceVariables: (self classInstanceVariables)
 				instanceVariables: (self instanceVariables)
