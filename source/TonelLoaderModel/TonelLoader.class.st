@@ -704,12 +704,14 @@ TonelLoader >> systemLoadedApplications [
 
 { #category : 'accessing' }
 TonelLoader >> tonelClassNamed: aSymbol [
+	"Returns the Tonel class definition defined in one of receiver's application.
+	 
+	 Answers:
+		<TonelReaderClassDefinition>
+	 "
 
 	self applications do: [:tonelApp |
-		(tonelApp allDefinedClasses
-			detect: [:tonelClass | tonelClass identifier = aSymbol]
-			ifNone: [])
-				ifNotNil: [:foundClass | ^foundClass]].
+		(tonelApp definedClassNamed: aSymbol ifAbsent: []) ifNotNil: [:foundClass | ^foundClass]].
 	^nil
 ]
 

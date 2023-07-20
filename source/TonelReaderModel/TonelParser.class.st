@@ -236,13 +236,17 @@ TonelParser >> newClassDefinitionFrom: anArray [
 			superclass: (metadata at: #superclass)
 			variable: nil
 			fieldType: typeName
-			instanceVariables: (metadata at: #instVars ifAbsent: [#()])
-			classVariables: (metadata at: #classVars ifAbsent: [#()])
-			poolDictionaries: (metadata at: #pools ifAbsent: [#()]))
-				category: (metadata at: #category);
-				classInstanceVariables: (metadata at: #classInstVars ifAbsent: [#()]);
-				classComment: classComment;
-				yourself)
+			instanceVariables:
+				((metadata at: #instVars ifAbsent: [#()]) collect: [:each | each asString])
+			classVariables:
+				((metadata at: #classVars ifAbsent: [#()]) collect: [:each | each asString])
+			poolDictionaries:
+				((metadata at: #pools ifAbsent: [#()]) collect: [:each | each asString])
+	)
+		category: (metadata at: #category);
+		classInstanceVariables: (metadata at: #classInstVars ifAbsent: [#()]);
+		classComment: classComment;
+		yourself)
 
 
 ]

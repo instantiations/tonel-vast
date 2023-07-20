@@ -49,7 +49,7 @@ TonelApplicationLoader >> autogenerateClassSideNewInitializers [
 	superclasses do: [:aSuperclass | | tonelClass |
 		tonelClass := allDefinedClasses at: aSuperclass.
 		"Only generate #new if it does not have it...we don't want to override it"
-		tonelClass includesClassSideNewMethod
+		(tonelClass includesClassSideNewMethod or: [self classSideNewMethodIsDefinedInSuperclassOf: tonelClass])
 			ifFalse: [
 				tonelClass addMethod: (TonelReaderMethodDefinition newInitializeMethodFor: aSuperclass)]]
 ]
@@ -94,6 +94,27 @@ TonelApplicationLoader >> chooseVersionName [
 
 	self versionName: (self loader versionFor: self tonelApplication)
 	
+]
+
+{ #category : 'loading-internal' }
+TonelApplicationLoader >> classSideNewMethodIsDefinedInSuperclassOf: tonelClass [
+
+	| superClass superClassImplementor |
+
+	superClass :=
+		Smalltalk
+			classAt: tonelClass superclassIdentifier
+			ifAbsent: [
+				self tonelApplication
+					definedClassNamed: tonelClass superclassIdentifier
+					ifAbsent: [self loader tonelClassNamed: tonelClass superclassIdentifier]].
+	superClass isNil ifTrue: [^false].
+
+	(superClass class = TonelReaderClassDefinition) ifTrue: [^tonelClass includesClassSideNewMethod].
+	superClassImplementor := (superClass class whichClassIncludesSelector: #new).
+	^superClassImplementor notNil and: [superClassImplementor ~= Behavior]
+
+
 ]
 
 { #category : 'loading-prompters' }
@@ -209,10 +230,10 @@ TonelApplicationLoader >> detectAllRootSuperclassesWithinApp [
 	superclasses := Set new.
 	allDefinedClasses keysAndValuesDo: [:aClassName :tonelClass |
 		superclassBlock := [:aClass |
-			(allDefinedClasses includesKey: aClass superclassIdentifier asString)
+			(allDefinedClasses includesKey: aClass superclassIdentifier asSymbol)
 				ifTrue: [
 					superclassBlock
-						value: (allDefinedClasses at: aClass superclassIdentifier asString)]
+						value: (allDefinedClasses at: aClass superclassIdentifier asSymbol)]
 				ifFalse: [aClass name]].
 		superclasses add: (superclassBlock value: tonelClass)].
 	^superclasses

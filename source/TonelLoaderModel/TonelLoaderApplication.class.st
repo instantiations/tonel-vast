@@ -197,6 +197,12 @@ TonelLoaderApplication >> createTonelPackageNameMethodFor: anApp [
 			categorizeIn: #('Tonel-Metadata')] "Have it notify itself?"
 ]
 
+{ #category : 'querying' }
+TonelLoaderApplication >> definedClassNamed: aSymbol ifAbsent: aBlock [
+	
+	^self allDefinedClasses at: aSymbol ifAbsent: aBlock
+]
+
 { #category : 'loading' }
 TonelLoaderApplication >> definePoolDictionaries [
 	"Define the pool dictionaries declared in the receiver."

@@ -36,7 +36,7 @@ TonelReaderClassDefinition class >> name: aString [
 ]
 
 { #category : 'Initialize-Release' }
-TonelReaderClassDefinition class >> name: nameString superclass: superString variable: varBoolean fieldType: fieldTypeString instanceVariables: instVarString classVariables: classVarString poolDictionaries: poolDictString [
+TonelReaderClassDefinition class >> name: nameString superclass: superString variable: varBoolean fieldType: fieldTypeString instanceVariables: instVars classVariables: classVars poolDictionaries: poolDicts [
 	"Answer a new instance of receiver with all the parameters 
 	 specified as arguments."
 
@@ -45,9 +45,9 @@ TonelReaderClassDefinition class >> name: nameString superclass: superString var
 		superclass: superString 
 		variable: varBoolean
 		fieldType: fieldTypeString
-		instanceVariables: instVarString 
-		classVariables: classVarString 
-		poolDictionaries: poolDictString;
+		instanceVariables: instVars 
+		classVariables: classVars 
+		poolDictionaries: poolDicts;
 		yourself
 
 ]
@@ -186,22 +186,21 @@ TonelReaderClassDefinition >> initialize: aString [
 	isSharedPool := false
 ]
 
-{ #category : 'Initialize-Release' }
-TonelReaderClassDefinition >> initializeWithName: nameString superclass: superString variable: varBoolean fieldType: fieldTypeString instanceVariables: instVarString classVariables: classVarString poolDictionaries: poolDictString [
+{ #category : 'Initialize-Release',
+  #vaVisibility : 'private' }
+TonelReaderClassDefinition >> initializeWithName: nameString superclass: superString variable: varBoolean fieldType: fieldTypeString instanceVariables: instVars classVariables: classVars poolDictionaries: poolDicts [
 	
 	name := nameString.
 	identifier := nameString asSymbol.
 	superclassIdentifier := superString asSymbol = #nil ifTrue: [nil] ifFalse: [superString asSymbol].
 	variableClass := varBoolean.
 	fieldType := fieldTypeString.
-	instanceVariables := instVarString.
+	instanceVariables := instVars.
 	classInstanceVariables := #().	"If the class has class instance variables, they are provided separately"
-	classVariables := classVarString.
-	poolDictionaries := poolDictString.
+	classVariables := classVars.
+	poolDictionaries := poolDicts.
 	extension := false.
-	tonelMethods := OrderedCollection new.
-	
-
+	tonelMethods := OrderedCollection new
 ]
 
 { #category : 'accessing' }

@@ -10,9 +10,9 @@ TonelReaderClassDefinition class >> appNamed: aString [
 		superclass: 'Application'   "$NON-NLS$"
 		variable: false
 		fieldType: 'pointers'  "$NON-NLS$"
-		instanceVariables: ''   "$NON-NLS$"
-		classVariables: ''   "$NON-NLS$"
-		poolDictionaries: '')  "$NON-NLS$"
+		instanceVariables: #()
+		classVariables: #()
+		poolDictionaries: #())
 			addSubAppMethods;
 			yourself
 ]
@@ -25,9 +25,9 @@ TonelReaderClassDefinition class >> subAppNamed: aString [
 		superclass: 'SubApplication'   "$NON-NLS$"
 		variable: false
 		fieldType: 'pointers'  "$NON-NLS$"
-		instanceVariables: ''   "$NON-NLS$"
-		classVariables: ''   "$NON-NLS$"
-		poolDictionaries: '')  "$NON-NLS$"
+		instanceVariables: #()
+		classVariables: #()
+		poolDictionaries: #())
 			addSubAppMethods;
 			yourself
 ]
