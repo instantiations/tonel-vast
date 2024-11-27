@@ -234,21 +234,15 @@ TonelParser >> newClassDefinitionFrom: anArray [
 		ifFalse: [TonelReaderClassDefinition])
 			name: (metadata at: #name)
 			superclass: (metadata at: #superclass)
-			variable: nil
+			variable: ((metadata at: #type ifAbsent: ['']) = 'variable')
 			fieldType: typeName
-			instanceVariables:
-				((metadata at: #instVars ifAbsent: [#()]) collect: [:each | each asString])
-			classVariables:
-				((metadata at: #classVars ifAbsent: [#()]) collect: [:each | each asString])
-			poolDictionaries:
-				((metadata at: #pools ifAbsent: [#()]) collect: [:each | each asString])
-	)
-		category: (metadata at: #category);
-		classInstanceVariables: (metadata at: #classInstVars ifAbsent: [#()]);
-		classComment: classComment;
-		yourself)
-
-
+			instanceVariables: (metadata at: #instVars ifAbsent: [#()])
+			classVariables: (metadata at: #classVars ifAbsent: [#()])
+			poolDictionaries: (metadata at: #pools ifAbsent: [#()]))
+				category: (metadata at: #category);
+				classInstanceVariables: (metadata at: #classInstVars ifAbsent: [#()]);
+				classComment: classComment;
+				yourself)
 ]
 
 { #category : 'private factory',

@@ -144,12 +144,13 @@ TonelLoader >> baseEditionStrategy: aTonelLoaderBaseEditionStrategy [
   #vaVisibility : 'private' }
 TonelLoader >> basicLoadApplication: aTonelApplication [
 
-	aTonelApplication prerequisites do: 
-			[:prereq | 
-			(self shouldLoadPrerequisiteApplication: prereq) 
-				ifTrue: [self basicLoadApplication: (self applicationNamed: prereq name)]].
-	(self loadedApplications includes: aTonelApplication) 
-		ifFalse: [(TonelApplicationLoader on: aTonelApplication in: self) load]
+	(self loadedApplications includes: aTonelApplication)
+		ifFalse: [
+			aTonelApplication prerequisites do: [:prereq |
+				(self shouldLoadPrerequisiteApplication: prereq)
+					ifTrue: [self basicLoadApplication: (self applicationNamed: prereq name)]].
+			self addLoadedApplication: aTonelApplication.
+			(TonelApplicationLoader on: aTonelApplication in: self) load]
 ]
 
 { #category : 'strategies-convenience' }

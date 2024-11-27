@@ -317,11 +317,30 @@ TonelWriter >> ensureDirectory: aString inside: aPath recreate: aBoolean [
 	 directory exists."
 
 	| path |
-
 	path := aPath append: aString.
-	(aBoolean and: [path exists]) ifTrue: [path deleteAll].
+	(aBoolean and: [path exists]) ifTrue: [self ensureDirectoryIsClear: path].
 	path realize.
 	^path
+]
+
+{ #category : 'utility',
+  #vaVisibility : 'private' }
+TonelWriter >> ensureDirectoryIsClear: path [
+	"Private - We ensure the directory is clean.
+	 
+	 NOTE: Since the delete operation might return before the file is actually deleted from disk
+	 we perform up to three retries waiting, with an exponential backoff of the delay.
+	 This avoids file access errors when attempting to write files with the same names.
+	 After that, if the files weren't deleted, we continue as if they were."
+	
+	| retries |
+	path deleteAll.
+	retries := 0.
+	[path allFilesAndDirectories notEmpty and: [retries < 3]] whileTrue: [
+		(Delay forSeconds: (2 raisedTo: retries)) wait.
+		retries := retries + 1.
+	].
+
 ]
 
 { #category : 'accessing' }

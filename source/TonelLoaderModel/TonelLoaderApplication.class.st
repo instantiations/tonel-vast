@@ -181,13 +181,24 @@ TonelLoaderApplication >> createEdition [
 TonelLoaderApplication >> createTonelPackageNameMethodFor: anApp [
 	"Enter the new method definition below and click 'Resume'."
 
-	| source |
+	| source existingEdition |
+
 	(anApp respondsTo: self tonelPackageNameSelector)
 		ifTrue: [| tonelPackageName |
 			tonelPackageName := anApp perform: self tonelPackageNameSelector.
 			self packageName = tonelPackageName ifTrue: [^self]].
 	self packageName = self name ifTrue: [^self].
 	source := self tonelPackageNameMethodSource.
+
+	self loader alwaysCreateEditions
+		ifFalse: [
+			existingEdition :=
+				(anApp class shadowEditionsOf: self tonelPackageNameSelector)
+					detect: [:one | one sourceString = source]
+					ifNone: [].
+			existingEdition notNil ifTrue: [existingEdition load ifTrue: [^self]]].
+
+
 	(anApp class basicCompile: source notifying: Transcript ifFail: []) ifNotNil: [:compiledMethod |
 		anApp class
 			install: compiledMethod
