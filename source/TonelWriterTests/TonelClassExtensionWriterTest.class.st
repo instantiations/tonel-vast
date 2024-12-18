@@ -53,7 +53,6 @@ TonelWriter >> extensionForTest [
 
 { #category : 'Test' }
 TonelClassExtensionWriterTest >> testWriteClassExtensionWithOtherExtensions [
-
 	writer write: (TonelWriterClassExtensionDefinition of: Object extendedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/Object.extension.st';

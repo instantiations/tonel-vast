@@ -137,11 +137,11 @@ TonelWriterMethodDefinition >> isVirtualPragma [
 { #category : 'accessing' }
 TonelWriterMethodDefinition >> methodBody [
 
-	| result body bodyStream messagePattern foundFirstChar |
-
+	| result body bodyStream messagePattern foundFirstChar sourceString |
+	sourceString :=  self compiledMethod tonelSourceString.
 	result :=
 		EsCompiler
-			parse: self compiledMethod sourceString
+			parse: sourceString
 			environment: (EsCompiler nameEnvironmentForClass: self compiledMethod methodClass)
 			messagePattern: true
 			scanComments: false
@@ -149,7 +149,7 @@ TonelWriterMethodDefinition >> methodBody [
 
 	messagePattern := result parseTree messagePattern.
 	bodyStream :=
-		(self compiledMethod sourceString
+		 (sourceString
 			copyFrom: (messagePattern sourceEnd + 1)
 			to: result parseTree sourceEnd)
 				readStream.
@@ -168,7 +168,7 @@ TonelWriterMethodDefinition >> methodDeclaration [
 	| result declaration messagePattern |
 
 	result := EsCompiler
-		parse: self compiledMethod sourceString
+		parse: self compiledMethod tonelSourceString
 		environment: (EsCompiler nameEnvironmentForClass: self compiledMethod methodClass)
 		messagePattern: true
 		scanComments: false

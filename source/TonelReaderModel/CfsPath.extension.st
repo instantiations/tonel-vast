@@ -20,9 +20,13 @@ CfsPath >> readUtf8StreamDo: aBlock [
 							  convert: utf8
 							  fromCodePage: converter class utf8CodePage
 							  toCodePage: converter currentCodePage
-							  bufferSize: utf8 size * 4.
+							  bufferSize: utf8 size * 4
+							  policy: (EsAbstractCodePageConverter	codePageConversionPolicyClass	new
+											beStrictMode;
+											yourself).
 				] ensure: [stream close].
 				latin1 ifNotNil: [aBlock value: latin1 readStream]]
+
 ]
 
 { #category : 'CFS-API' }

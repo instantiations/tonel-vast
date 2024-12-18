@@ -45,7 +45,7 @@ TonelWriterSharedPoolInitializationMethodDefinition >> methodBody [
 
 	| bodyStream |
 	bodyStream :=
-		(self compiledMethod sourceString
+		(self compiledMethod tonelsourceString
 			copyFrom: (selector size + (CldtConstants::LineDelimiter size) + 1)
 			to: self compiledMethod sourceString size)
 				readStream.

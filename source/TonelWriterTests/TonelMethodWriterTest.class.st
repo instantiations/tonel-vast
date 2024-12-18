@@ -71,6 +71,32 @@ TonelMockA >> denominator [
 ]
 
 { #category : 'Test' }
+TonelMethodWriterTest >> testWriteMethodDefinitionAsIs [
+
+	| definition stream |
+
+	definition :=
+		TonelWriterMethodDefinition
+			uniquelyKnownAs: #withSpacesInsteadOfTabs
+			in: TonelMockA
+			categorizedAs: 'Accessing'.
+	stream := self newStream.
+	writer write: definition on: stream.
+	self
+		assert: stream contents
+		isEqualSkippingSeparatorsTo:
+		'{	#category : ''Accessing'' }
+TonelMockA >> withSpacesInsteadOfTabs [
+
+	^''{
+  "foo": 1,
+  "baz": true
+  }''
+]
+'
+]
+
+{ #category : 'Test' }
 TonelMethodWriterTest >> testWriteMethodDefinitionWithBinaryMessage [
 
 	| definition stream |

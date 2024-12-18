@@ -58,7 +58,6 @@ TonelWriterTest >> assertTonelWriterModelOnPath: aPath [
 
 { #category : 'Tests - Support' }
 TonelWriterTest >> assertTonelWriterTestOnPath: aPath [
-
 	self
 		assertFileSystemIncludesFileAt: aPath , '/TonelWriterTests/Object.extension.st';
 		assertContentsOfFileAt: aPath , '/TonelWriterTests/package.st'

@@ -1,7 +1,7 @@
 [
 	{
 		#conditions : [ ],
-		#ts : 3910171340,
+		#ts : 3911984229,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -27,8 +27,8 @@
 			},
 			{
 				#name : 'TonelReaderModel',
-				#versionName : 'b0a807a-master + 134, 135, 137, 138',
-				#ts : 3910170532
+				#versionName : '0bb8e91-master + 139 a',
+				#ts : 3910689761
 			},
 			{
 				#name : 'TonelTools',
@@ -37,16 +37,16 @@
 			},
 			{
 				#name : 'TonelWriterModel',
-				#versionName : 'b0a807a-master + 134, 135, 137, 138',
-				#ts : 3910168633
+				#versionName : '0bb8e91-master + 140 a',
+				#ts : 3911986415
 			}
 		],
 		#name : 'ENVY/Image Tonel',
-		#versionName : 'b0a8807a-master + 134, 135, 137, 138'
+		#versionName : '0bb8e91-master + 134, 135, 137, 138, 139, 140'
 	},
 	{
 		#conditions : [ ],
-		#ts : 3847711695,
+		#ts : 3911983317,
 		#comment : '',
 		#formatVersion : '1.1',
 		#applications : OrderedCollection [
@@ -67,11 +67,11 @@
 			},
 			{
 				#name : 'TonelWriterTests',
-				#versionName : '1.6.0',
-				#ts : 3847697134
+				#versionName : '0bb8e91-master + 140 a',
+				#ts : 3911988553
 			}
 		],
 		#name : 'Test ENVY/Image Tonel',
-		#versionName : '1.6.0'
+		#versionName : '0bb8e91-master + 134, 135, 137, 138, 139, 140'
 	}
 ]

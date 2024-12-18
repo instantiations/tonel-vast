@@ -262,7 +262,6 @@ TonelParserTest >> testMethod [
 
 { #category : 'tests' }
 TonelParserTest >> testMethodBody [
-
 	self
 		assertParse: '[method body... I will ignore what is inside]' normalizedLineDelimiter
 		rule: #methodBody
@@ -334,7 +333,6 @@ TonelParserTest >> testMethodBodyWithTrickyDollarCharLiteralInLiteralArray [
 
 { #category : 'tests' }
 TonelParserTest >> testMethodDef [
-
 	self
 		assertParse: '
 { #category: ''accessing'' }
@@ -399,7 +397,6 @@ Object>>printOn: aStream [
 
 { #category : 'tests' }
 TonelParserTest >> testMethodDefPrivateCategory [
-
 	self
 		assertParse: '
 { #category: ''private'' }
@@ -421,7 +418,6 @@ Object>>name [
 
 { #category : 'tests' }
 TonelParserTest >> testMethodDefVACustomKeys [
-
 	self
 		assertParse: '
 {

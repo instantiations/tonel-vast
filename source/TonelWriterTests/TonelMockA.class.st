@@ -82,3 +82,12 @@ TonelMockA >> withMultipleCategories [
 
 	^ 'withMultipleCategories'
 ]
+
+{ #category : 'Accessing' }
+TonelMockA >> withSpacesInsteadOfTabs [
+
+    ^'{
+  "foo": 1,
+  "baz": true
+  }'
+]

@@ -18,7 +18,6 @@ TonelClassWriterTest >> setUp [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClass [
-
 	self writer write: (TonelWriterClassDefinition of: TonelMockB definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockB.class.st';
@@ -34,7 +33,6 @@ TonelClassWriterTest >> testWriteClass [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassInSubApp [
-
 	self writer write: (TonelWriterClassDefinition of: TonelMockD definedIn: TonelSubapplication).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockD.class.st';
@@ -60,7 +58,6 @@ TonelMockD >> withoutCategory [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassInSubSubApp [
-
 	self writer write: (TonelWriterClassDefinition of: TonelMockH definedIn: TonelWriterTestSubSubApp).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockH.class.st';
@@ -76,7 +73,6 @@ TonelClassWriterTest >> testWriteClassInSubSubApp [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassSubclassingNil [
-
 	self writer write: (TonelWriterClassDefinition of: TonelMockE definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockE.class.st';
@@ -95,7 +91,6 @@ Class {
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithByteSubclass [
-
 	self writer write: (TonelWriterClassDefinition of: TonelBytesMock definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelBytesMock.class.st';
@@ -112,7 +107,6 @@ TonelClassWriterTest >> testWriteClassWithByteSubclass [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithCIassAndClassInstanceVariables [
-
 	self writer write: (TonelWriterClassDefinition of: TonelMockF definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockF.class.st';
@@ -134,7 +128,6 @@ TonelClassWriterTest >> testWriteClassWithCIassAndClassInstanceVariables [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithComment [
-
 	self writer write: (TonelWriterClassDefinition of: TonelMockA definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockA.class.st';
@@ -249,7 +242,6 @@ TonelMockA >> withMultipleCategories [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithExtensionMethod [
-
 	self writer write: (TonelWriterClassDefinition of: TonelMockA definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockA.class.st';
@@ -364,7 +356,6 @@ TonelMockA >> withMultipleCategories [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithInstanceVariables [
-
 	self writer write: (TonelWriterClassDefinition of: TonelMockC definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockC.class.st';
@@ -384,7 +375,6 @@ TonelClassWriterTest >> testWriteClassWithInstanceVariables [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithPoolDictionaryUsage [
-
 	self writer write: (TonelWriterClassDefinition of: TonelMockG definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockG.class.st';
@@ -411,7 +401,6 @@ TonelMockG >> methodWithPoolDictionaryUsage [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithVariableSubclass [
-
 	self writer write: (TonelWriterClassDefinition of: TonelVariableMock definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelVariableMock.class.st';

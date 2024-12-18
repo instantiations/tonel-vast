@@ -12,7 +12,6 @@ TonelSourceScannerTest class >> new [
 
 { #category : 'tests' }
 TonelSourceScannerTest >> testScan [
-
 	| scanner |
 
 	scanner := TonelSourceScanner on: '[^'''']' readStream.

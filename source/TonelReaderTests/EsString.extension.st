@@ -4,7 +4,6 @@ Extension {
 
 { #category : 'Converting' }
 EsString >> normalizedLineDelimiter [
-
   ^(String streamContents: [:outputStream | 
 	| sourceStream |
 	sourceStream := self readStream.
