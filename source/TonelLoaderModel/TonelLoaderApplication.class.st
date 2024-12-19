@@ -194,7 +194,7 @@ TonelLoaderApplication >> createTonelPackageNameMethodFor: anApp [
 		ifFalse: [
 			existingEdition :=
 				(anApp class shadowEditionsOf: self tonelPackageNameSelector)
-					detect: [:one | one sourceString = source]
+					detect: [:one | one tonelSourceString = source]
 					ifNone: [].
 			existingEdition notNil ifTrue: [existingEdition load ifTrue: [^self]]].
 

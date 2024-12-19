@@ -183,7 +183,7 @@ TonelReaderMethodDefinition >> hasSourceChangesIn: aClass [
 		(self onSideClass: aClass) methodDictionary
 			detect: [:ea | ea selector = self selector]
 			ifNone: [].
-	^aMethod isNil or: [((aMethod sourceString ~= self source))]
+	^aMethod isNil or: [((aMethod tonelSourceString ~= self source))]
 ]
 
 { #category : 'Loading-Internal',

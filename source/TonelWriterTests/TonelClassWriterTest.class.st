@@ -128,6 +128,7 @@ TonelClassWriterTest >> testWriteClassWithCIassAndClassInstanceVariables [
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithComment [
+
 	self writer write: (TonelWriterClassDefinition of: TonelMockA definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockA.class.st';
@@ -237,11 +238,21 @@ TonelMockA >> withMultipleCategories [
 
 	^ ''withMultipleCategories''
 ]
+
+{	#category : ''Accessing'' }
+TonelMockA >> withSpacesInsteadOfTabs [
+
+	^''{
+  "foo": 1,
+  "baz": true
+  }''
+]
 '
 ]
 
 { #category : 'Tests' }
 TonelClassWriterTest >> testWriteClassWithExtensionMethod [
+
 	self writer write: (TonelWriterClassDefinition of: TonelMockA definedIn: TonelWriterTests).
 	self
 		assertFileSystemIncludesFileAt: '/TonelMockA.class.st';
@@ -350,6 +361,15 @@ TonelMockA >> withModeThanOneLine [
 TonelMockA >> withMultipleCategories [
 
 	^ ''withMultipleCategories''
+]
+
+{	#category : ''Accessing'' }
+TonelMockA >> withSpacesInsteadOfTabs [
+
+	^''{
+  "foo": 1,
+  "baz": true
+  }''
 ]
 '
 ]
