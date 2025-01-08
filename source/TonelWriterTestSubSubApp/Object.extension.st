@@ -2,7 +2,7 @@ Extension {
 	#name : 'Object'
 }
 
-{ #category : 'Real Category',
+{ #category : 'Another One',
  #vaCategories : ['Another One','Real Category'] }
 Object >> subSubExtensionForTest [
 

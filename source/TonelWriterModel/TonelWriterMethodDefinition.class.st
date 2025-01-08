@@ -39,7 +39,7 @@ TonelWriterMethodDefinition >> categoryFor: aTonelWriter [
 	"Answer the category used in a TonelWriter."
 
 	^(self isMonticelloExtension and: [aTonelWriter useMonticelloExtensions not])
-		ifTrue: [self allCategories first]
+		ifTrue: [self allCategories asSortedCollection first]
 		ifFalse: [self category]
 
 

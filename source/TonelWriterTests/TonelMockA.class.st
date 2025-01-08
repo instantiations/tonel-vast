@@ -80,7 +80,7 @@ TonelMockA >> withModeThanOneLine [
  #vaCategories : ['Accessing','Evaluating','Private'] }
 TonelMockA >> withMultipleCategories [
 
-	^ 'withMultipleCategories'
+	^'withMultipleCategories'
 ]
 
 { #category : 'Accessing' }
