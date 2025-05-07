@@ -7,13 +7,34 @@
     <a href="docs/"><strong>Explore the docs »</strong></a>
     <br>
     -->
-    <br>
-    <a href="https://github.com/instantiations/tonel-vast/issues/new?labels=Type%3A+Defect">Report a defect</a>
-    |
-    <a href="https://github.com/instantiations/tonel-vast/issues/new?labels=Type%3A+Feature">Request feature</a>
   </p>
 </p>
 
+## ⚠️ NOTICE: This repository is deprecated ⚠️ 
+
+As of VAST 14.0.0, this repository is no longer actively maintained. While the code remains available in **read-only mode**, all ongoing development and maintenance of Tonel Tools in VAST will continue **internally** at Instantiations.
+
+### Why is this change happening?
+
+Most users of Tonel Tools in VAST report issues and request features directly through **Instantiations' Support Portal**. To stay aligned with this workflow, our team has had to duplicate tasks between this public repository and our internal systems, leading to unnecessary overhead and reduced efficiency.
+
+In addition, external code contributions via pull requests have been rare, which makes this public repository an **additional layer** that doesn't align with our optimized internal development process.
+
+### What does this mean for users?
+
+- Development of Tonel Tools will continue internally at Instantiations.
+- Updates and improvements will be reflected in the VAST release README.
+- Bug fixes and enhancements will be delivered as part of regular VAST updates.
+- All relevant documentation will be integrated to the official VAST documentation.
+- If you encounter issues, have feature requests or like to contribute code, feel free to reach out to us through Instantiations' [VAST Support Portal](https://vast-support.instantiations.com/).
+
+The latest public version of Tonel Tools corresponds to the release included in **VAST 14.0.0**.
+
+We believe this change will allow us to serve our customers more efficiently while continuing to support and evolve the tools that matter to them.
+
+Thank you for your understanding and continued support!
+
+<hr></hr>
 
 
 ## Introduction
@@ -35,7 +56,7 @@ Open source projects using Tonel for VAST can be found in the [VAST Community Hu
 We continue to improve the Tonel support by fixing bugs and adding new features to it, if you want to use the latest version you can do it by downloading the latest version in this repository into the latest version of VAST.
 
 
-### Installing in VAST 2022 / 2023 / 2024
+### Installing in VAST 2022 / 2023 / 2024 / 2025
 
 Tonel comes as a Feature inside the product. That means it can be easily installed from the `Transcript` -> `Load/Unload Features...`. You will find two features you can install: `ST: Tonel Support` and `ST:Tonel Support, Testing`.
 
