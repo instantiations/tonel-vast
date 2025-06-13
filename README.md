@@ -28,7 +28,7 @@ In addition, external code contributions via pull requests have been rare, which
 - All relevant documentation will be integrated to the official VAST documentation.
 - If you encounter issues, have feature requests or like to contribute code, feel free to reach out to us through Instantiations' [VAST Support Portal](https://vast-support.instantiations.com/).
 
-The latest public version of Tonel Tools corresponds to the release included in **VAST 14.0.0**.
+The latest public version of Tonel Tools corresponds to the release included in **VAST 14.1.0**.
 
 We believe this change will allow us to serve our customers more efficiently while continuing to support and evolve the tools that matter to them.
 
