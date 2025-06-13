@@ -12,7 +12,7 @@
 
 ## ⚠️ NOTICE: This repository is deprecated ⚠️ 
 
-As of VAST 14.0.0, this repository is no longer actively maintained. While the code remains available in **read-only mode**, all ongoing development and maintenance of Tonel Tools in VAST will continue **internally** at Instantiations.
+As of VAST 14.1.0, this repository is no longer actively maintained. While the code remains available in **read-only mode**, all ongoing development and maintenance of Tonel Tools in VAST will continue **internally** at Instantiations.
 
 ### Why is this change happening?
 

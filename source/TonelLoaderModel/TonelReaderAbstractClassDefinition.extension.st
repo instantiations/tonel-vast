@@ -86,11 +86,11 @@ TonelReaderAbstractClassDefinition >> hasClassMethodsRemovedFrom: aClass in: anA
 	"Answer whether receiver has class methods removed from aClass
 	 as defined in anApp."
 
-	^ aClass class methodDictionary anySatisfy: [ :compiledMethod |
-		compiledMethod application = anApp and: [
-			self tonelMethods noneSatisfy: [ :anMCMethod |
-				anMCMethod isClassSide and: [
-					compiledMethod selector = anMCMethod selector ] ] ] ]
+	^aClass class methodDictionary anySatisfy: [:compiledMethod |
+		(compiledMethod selector = #_TONEL_packageName) not and: [
+			compiledMethod application = anApp and: [
+				self tonelMethods noneSatisfy: [:anMCMethod |
+					anMCMethod isClassSide and: [compiledMethod selector = anMCMethod selector]]]]]
 ]
 
 { #category : 'testing',

@@ -149,7 +149,7 @@ TonelLoader >> basicLoadApplication: aTonelApplication [
 			aTonelApplication prerequisites do: [:prereq |
 				(self shouldLoadPrerequisiteApplication: prereq)
 					ifTrue: [self basicLoadApplication: (self applicationNamed: prereq name)]].
-			self addLoadedApplication: aTonelApplication.
+
 			(TonelApplicationLoader on: aTonelApplication in: self) load]
 ]
 

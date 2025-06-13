@@ -291,13 +291,16 @@ TonelConfigurationMap >> isReference [
 
 { #category : 'loading' }
 TonelConfigurationMap >> load [
+
 	| emApps |
+
 	emApps := self loadApplications.
 	emConfigMapEdition := self selectOrCreateNewEdition.
-	emConfigMapEdition isVersion 
-		ifFalse: 
-			[emApps do: [:each | emConfigMapEdition addApplication: each].
+	emConfigMapEdition isVersion
+		ifFalse: [
+			emApps do: [:each | emConfigMapEdition addApplication: each].
 			self addPrerequisitesTo: emConfigMapEdition.
+			emConfigMapEdition comment: self comment.
 			self versionEdition: emConfigMapEdition].
 	self loader loadedConfigurationMaps add: self
 ]

@@ -379,11 +379,10 @@ TonelLoaderSubApplication >> definePoolDictionariesForClassesIn: anApp [
 
 	(definedSharedPools := self definedSharedPools).
 
-	(self definedClasses select: [:each | (self emApplication notNil and: [each identifier = self emApplication name]) or: [each identifier = self identifier]]) collect: [
-		:tonelClass |
-		tonelClass loadDeclarationMethodsInto: anApp using: self loader.
-		EmInterface current rebuildNamespaceFor: self emApplication
-	].
+	self emApplication isNil ifFalse: [
+		(self definedClasses select: [:each | (self emApplication notNil and: [each identifier = self emApplication name]) or: [each identifier = self identifier]]) collect: [:tonelClass |
+			tonelClass loadDeclarationMethodsInto: anApp using: self loader.
+			EmInterface current rebuildNamespaceFor: self emApplication]].
 
 	definedSharedPools notEmpty
 		ifTrue: [

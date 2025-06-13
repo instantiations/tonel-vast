@@ -11,22 +11,27 @@ CfsPath >> readUtf8StreamDo: aBlock [
 	Answers the return of @aBlock execution"
 
 	| stream latin1 |
-  ^(stream := CfsReadFileStream open: self asString) isCfsError
-		  ifFalse: [
-				[ | utf8 converter |
-					  converter := EsAbstractCodePageConverter current.
-					  utf8 := stream contents.
-					  latin1 := converter
-							  convert: utf8
-							  fromCodePage: converter class utf8CodePage
-							  toCodePage: converter currentCodePage
-							  bufferSize: utf8 size * 4
-							  policy: (EsAbstractCodePageConverter	codePageConversionPolicyClass	new
-											beStrictMode;
-											yourself).
-				] ensure: [stream close].
-				latin1 ifNotNil: [aBlock value: latin1 readStream]]
 
+	(stream := CfsReadFileStream open: self asString) isCfsError ifTrue: [^self].
+
+	[| converter utf8 |
+		converter := EsAbstractCodePageConverter current.
+		utf8 := stream contents.
+		latin1 :=
+			converter
+				convert: utf8
+				fromCodePage: converter class utf8CodePage
+				toCodePage: converter currentCodePage
+				bufferSize: utf8 size * 4
+				policy: (
+					EsAbstractCodePageConverter codePageConversionPolicyClass new
+						beStrictMode;
+						yourself)]
+							ensure: [stream close].
+
+	latin1 isNil ifTrue: [^self].
+
+	aBlock value: latin1 readStream
 ]
 
 { #category : 'CFS-API' }

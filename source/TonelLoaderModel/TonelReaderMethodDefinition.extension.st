@@ -124,18 +124,18 @@ TonelReaderMethodDefinition >> commentedSource [
 			nextPutAll: TonelMsg16; "$NLS$ 'The following source failed to compile (all double quotes have been doubled):"
 			nextPut: $";
 			cr.
-			
+
 		outStream nextPut: $".
 		[inStream atEnd] whileFalse: [
 			outStream cr.
 			inStream nextLine do: [:eachChar |
 				eachChar = $" ifTrue: [outStream nextPut: $"].
-				outStream nextPut: eachChar].
-			].
+				outStream nextPut: eachChar]].
 		outStream
 			nextPut: $";
 			cr;
-			nextPutAll: '#tonelCompilationFailure.';
+			tab;
+			nextPutAll: '##tonel == ##tonelCompilationFailure.';
 			cr;
 			cr;
 			nextPutAll: TonelMsg17] "$NLS$ ^ self halt: 'The source for this method failed to compile'"

@@ -122,7 +122,7 @@ TonelLoaderGitVersionStrategy >> attemptVersionFromGit [
 							gitBranchCommitFile := CfsReadFileStream open: gitBranchPath asString.
 
 							[
-								commitHash := gitBranchCommitFile nextLine.
+								commitHash := gitBranchCommitFile nextLine first: 7.
 								stat := gitBranchPath cfsStat.
 								commitDate :=
 									DateAndTime date: stat stMtime first time: stat stMtime last]
@@ -133,9 +133,12 @@ TonelLoaderGitVersionStrategy >> attemptVersionFromGit [
 										('Could not retrieve commit hash from the repository')]
 								ifFalse: [
 									^(self versionNamePattern
-										expandMacrosWith: (hashToVersionPart value: commitHash)
-										with: (pathToVersionPart value: gitBranchPath)
-										with: (dateToVersionPart value: commitDate))]]]
+										expandMacrosWith: commitHash
+										with: gitBranchPath parts last
+										with: commitDate)]]
+						ifFalse: [
+							TonelLoaderError signal: (
+								'There is no git branch path at <1p>' expandMacrosWith: gitBranchPath)]]
 				ifFalse: [
 					TonelLoaderError signal: (
 						'There is no git repository at <1p>'
